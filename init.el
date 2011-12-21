@@ -37,3 +37,7 @@
 ;; scss
 (autoload 'scss-mode "scss-mode")
 (add-to-list 'auto-mode-alist '("\\.scss\\'" . scss-mode))
+
+;; ibus
+(require 'ibus)
+(add-hook 'after-init-hook 'ibus-mode-on)
