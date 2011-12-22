@@ -41,3 +41,5 @@
 ;; ibus
 (require 'ibus)
 (add-hook 'after-init-hook 'ibus-mode-on)
+
+(ansi-color-for-comint-mode-on)
