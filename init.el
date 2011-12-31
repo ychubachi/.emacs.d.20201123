@@ -1,4 +1,5 @@
 (require 'uniquify)
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (custom-set-variables
   ;; custom-set-variables was added by Custom.
@@ -18,6 +19,8 @@
 (add-to-list 'load-path "~/.emacs.d/lisp/")
 (let ((default-directory  "~/.emacs.d/lisp/"))
   (normal-top-level-add-subdirs-to-load-path))
+
+;; Global Set Key
 (global-set-key (kbd "C-z") 'shell)
 (global-set-key (kbd "M-?") 'help-command)
 
