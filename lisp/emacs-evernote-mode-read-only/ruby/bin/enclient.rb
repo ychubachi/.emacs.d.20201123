@@ -1,4 +1,4 @@
-#! /usr/bin/ruby1.8 -sWKu
+#! /home/yc/.rvm/rubies/ruby-1.9.3-p0/bin/ruby -sWKu
 # -*- coding: utf-8 -*-
 
 #

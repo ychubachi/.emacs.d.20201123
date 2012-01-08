@@ -14,6 +14,7 @@
  )
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+;; Load path
 (add-to-list 'load-path "~/.emacs.d/lisp/")
 (let ((default-directory  "~/.emacs.d/lisp/"))
   (normal-top-level-add-subdirs-to-load-path))
@@ -38,8 +39,24 @@
 (autoload 'scss-mode "scss-mode")
 (add-to-list 'auto-mode-alist '("\\.scss\\'" . scss-mode))
 
-;; Color (for Shell
+;; Color (for Shell)
 (ansi-color-for-comint-mode-on)
 
 ;; Uniquify
 (require 'uniquify)
+
+;; Evernote
+(require 'evernote-mode)
+(setq evernote-enml-formatter-command '("w3m" "-dump" "-I" "UTF8" "-O" "UTF8"))
+(global-set-key "\C-cec" 'evernote-create-note)
+     (global-set-key "\C-ceo" 'evernote-open-note)
+     (global-set-key "\C-ces" 'evernote-search-notes)
+     (global-set-key "\C-ceS" 'evernote-do-saved-search)
+     (global-set-key "\C-cew" 'evernote-write-note)
+     (global-set-key "\C-cep" 'evernote-post-region)
+     (global-set-key "\C-ceb" 'evernote-browser)
+
+;; japanese-anthy をデフォルトの input-method にする。
+(set-language-environment "Japanese")
+(load-library "anthy")
+(setq default-input-method "japanese-anthy")
