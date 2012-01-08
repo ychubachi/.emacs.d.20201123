@@ -1,5 +1,3 @@
-(require 'uniquify)
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (custom-set-variables
   ;; custom-set-variables was added by Custom.
@@ -22,7 +20,6 @@
 
 ;; Global Set Key
 (global-set-key (kbd "C-z") 'shell)
-(global-set-key (kbd "M-?") 'help-command)
 
 ;; Magit
 (require 'magit)
@@ -41,8 +38,8 @@
 (autoload 'scss-mode "scss-mode")
 (add-to-list 'auto-mode-alist '("\\.scss\\'" . scss-mode))
 
-;; ibus
-(require 'ibus)
-(add-hook 'after-init-hook 'ibus-mode-on)
-
+;; Color (for Shell
 (ansi-color-for-comint-mode-on)
+
+;; Uniquify
+(require 'uniquify)
