@@ -57,6 +57,6 @@
      (global-set-key "\C-ceb" 'evernote-browser)
 
 ;; japanese-anthy をデフォルトの input-method にする。
-; (set-language-environment "Japanese")
 (load-library "anthy")
 (setq default-input-method "japanese-anthy")
+(setq anthy-wide-space " ")
