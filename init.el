@@ -25,16 +25,28 @@
 
 ;; ibus-mode
 ;; http://d.hatena.ne.jp/supermassiveblackhole/20100609/1276059762
-(require 'ibus)
-; Turn on ibus-mode automatically after loading .emacs
-(add-hook 'after-init-hook 'ibus-mode-on)
-; Use C-SPC for Set Mark command
-(ibus-define-common-key ?\C-\s nil)
-; Use C-/ for Undo command
-(ibus-define-common-key ?\C-/ nil)
-; Change cursor color depending on IBus status
-(setq ibus-cursor-color '("limegreen" "white" "blue"))
-(global-set-key "\C-\\" 'ibus-toggle)
+;; (require 'ibus)
+;; ; Turn on ibus-mode automatically after loading .emacs
+;; (add-hook 'after-init-hook 'ibus-mode-on)
+;; ; Use C-SPC for Set Mark command
+;; (ibus-define-common-key ?\C-\s nil)
+;; ; Use C-/ for Undo command
+;; (ibus-define-common-key ?\C-/ nil)
+;; ; Change cursor color depending on IBus status
+;; (setq ibus-cursor-color '("limegreen" "white" "blue"))
+;; ; Use C-\ for IBus toggle command
+;; (global-set-key "\C-\\" 'ibus-toggle)
+
+;; flymake
+(require 'flymake)
+(global-set-key [f3] 'flymake-display-err-menu-for-current-line)
+(global-set-key [f4] 'flymake-goto-next-error)
+
+;; yatex
+(require 'yatex)
+(setq auto-mode-alist
+      (cons (cons "\\.tex$" 'yatex-mode) auto-mode-alist))
+(autoload 'yatex-mode "yatex" "Yet Another LaTeX mode" t)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Options (Run M-x customize-option to change them)
@@ -44,6 +56,7 @@
   ;; Your init file should contain only one such instance.
   ;; If there is more than one, they won't work right.
  '(inhibit-startup-screen t)
+ '(rst-mode-hook (quote (flymake-find-file-hook)))
  '(show-paren-mode t)
  '(uniquify-buffer-name-style (quote post-forward) nil (uniquify)))
 (custom-set-faces
@@ -51,4 +64,4 @@
   ;; If you edit it by hand, you could mess it up, so be careful.
   ;; Your init file should contain only one such instance.
   ;; If there is more than one, they won't work right.
- '(default ((t (:inherit nil :stipple nil :background "white" :foreground "black" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 120 :width normal :foundry "unknown" :family "Takaoゴシック")))))
+ '(default ((t (:inherit nil :stipple nil :background "white" :foreground "black" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 120 :width normal :foundry "unknown" :family "Ricty")))))
