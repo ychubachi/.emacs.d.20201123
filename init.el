@@ -10,6 +10,29 @@
 
 (add-to-load-path "elisp" "config")
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(require 'package)
+
+;; package.elでelispを入れるdirectoryの設定
+(setq package-user-dir "~/.emacs.d/elpa/")
+
+;; MELPAを追加
+(add-to-list 'package-archives '("melpa" . "http://melpa.milkbox.net/packages/") t)
+(add-to-list 'package-archives '("marmalade" . "http://marmalade-repo.org/packages/")) ; ついでにmarmaladeも追加
+
+;; Packages to install from MELPA
+(defvar my/packages
+  '(magit)
+  "A list of packages to install from MELPA at launch.")
+
+;; Install Melpa packages
+(dolist (package my/packages)
+  (when (or (not (package-installed-p package)))
+    (package-install package)))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(package-initialize)
 ;; load my configrations.
 (load "emacs-kicker")			; el-get and several configrations.
 (load "my-ibus")			; ibus configrations.

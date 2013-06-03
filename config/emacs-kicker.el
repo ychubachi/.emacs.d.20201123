@@ -42,6 +42,19 @@
    ;; (:name magit				; git meet emacs, and a binding
    ;; 	  :after (lambda ()
    ;; 		   (global-set-key (kbd "C-x C-z") 'magit-status)))
+   ;; (:name magit
+   ;; 	  :website "https://github.com/magit/magit#readme"
+   ;; 	  :description "It's Magit! An Emacs mode for Git."
+   ;; 	  :type github
+   ;; 	  :pkgname "magit/magit"
+   ;; 	  :depends (cl-lib)
+   ;; 	  ;:info "."
+   ;;        ;;; let el-get care about autoloads so that it works with all OSes
+   ;;        ;:build `(("make"
+   ;;        ;          ,(format "EMACS=%s" el-get-emacs)
+   ;;        ;          "all"))
+   ;;        ;:build/berkeley-unix (("touch" "`find . -name Makefile`") ("gmake"))
+   ;; 	  )
 
    (:name goto-last-change		; move pointer back to last change
 	  :after (progn
