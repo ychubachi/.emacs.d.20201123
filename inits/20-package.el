@@ -14,7 +14,10 @@
   '(
     auto-complete
     coffee-mode
+    color-theme		                ; nice looking emacs
+    color-theme-tango	                ; check out color-theme-solarized
     dropdown-list
+    escreen            			; screen for emacs, C-\ C-h
     flymake-easy
     flymake-php
     flymake-ruby
@@ -22,17 +25,21 @@
     haml-mode
     haskell-mode
     js2-mode
+    magit
     markdown-mode
     migemo
     open-junk-file
     php-mode
     rbenv
     recentf-ext
+    redo+
     ruby-block
     scala-mode
     scss-mode
+    switch-window			; takes over C-x o
     yaml-mode
     yasnippet
+    zencoding-mode			; http://www.emacswiki.org/emacs/ZenCoding
     ))
 
 (let ((not-installed (loop for x in installing-package-list

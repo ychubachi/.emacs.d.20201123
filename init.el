@@ -1,3 +1,4 @@
+;;
 ;; Author: Y.Chubachi
 ;; Created: 2013-06-04
 ;;
@@ -21,29 +22,11 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; on to the visual settings
-(setq inhibit-splash-screen t)		; no splash screen, thanks
-(line-number-mode 1)			; have line numbers and
-(column-number-mode 1)			; column numbers in the mode line
-
-(tool-bar-mode -1)			; no tool bar with icons
-(scroll-bar-mode -1)			; no scroll bars
-
-(global-hl-line-mode)			; highlight current line
-(global-linum-mode 1)			; add line numbers on the left
 
 ;; avoid compiz manager rendering bugs
 (add-to-list 'default-frame-alist '(alpha . 100))
 
-;; C-RET to cua-set-rectangle-mark
-(cua-mode t)
-;; C-cやC-vの乗っ取りを阻止
-(setq cua-enable-cua-keys nil)
 
-;; under mac, have Command as Meta and keep Option for localized input
-(when (string-match "apple-darwin" system-configuration)
-  (setq mac-allow-anti-aliasing t)
-  (setq mac-command-modifier 'meta)
-  (setq mac-option-modifier 'none))
 
 ;; Use the clipboard, pretty please, so that copy/paste "works"
 (setq x-select-enable-clipboard t)
@@ -60,11 +43,6 @@
 ;; content to reflect what's on-disk.
 (global-auto-revert-mode 1)
 
-;; M-x shell is a nice shell interface to use, let's make it colorful.  If
-;; you need a terminal emulator rather than just a shell, consider M-x term
-;; instead.
-(autoload 'ansi-color-for-comint-mode-on "ansi-color" nil t)
-(add-hook 'shell-mode-hook 'ansi-color-for-comint-mode-on)
 
 ;; If you do use M-x term, you will notice there's line mode that acts like
 ;; emacs buffers, and there's the default char mode that will send your
@@ -101,14 +79,20 @@
 ;; C-x C-j opens dired with the cursor right on the file you're editing
 (require 'dired-x)
 
-(unless (string-match "apple-darwin" system-configuration)
-  ;; on mac, there's always a menu bar drown, don't have it empty
-  (menu-bar-mode -1))
+;; ;; under mac, have Command as Meta and keep Option for localized input
+;; (when (string-match "apple-darwin" system-configuration)
+;;   (setq mac-allow-anti-aliasing t)
+;;   (setq mac-command-modifier 'meta)
+;;   (setq mac-option-modifier 'none))
 
-;; choose your own fonts, in a system dependant way
-(if (string-match "apple-darwin" system-configuration)
-    (set-face-font 'default "Monaco-13")
-  (set-face-font 'default "Monospace-10")n
+;; (unless (string-match "apple-darwin" system-configuration)
+;;   ;; on mac, there's always a menu bar drown, don't have it empty
+;;   (menu-bar-mode -1))
+
+;; ;; choose your own fonts, in a system dependant way
+;; (if (string-match "apple-darwin" system-configuration)
+;;     (set-face-font 'default "Monaco-13")
+;;   (set-face-font 'default "Monospace-10"))
 
 ;; ;; Magit
 ;; (require 'magit)
@@ -122,3 +106,59 @@
 ;; ;; flymake-haml
 ;; (require 'flymake-haml)
 ;; (add-hook 'haml-mode-hook 'flymake-haml-load)
+
+;; ;; set local recipes
+;; (setq
+;;  el-get-sources
+;;  '((:name buffer-move			; have to add your own keys
+;; 	  :after (progn
+;; 		   (global-set-key (kbd "<C-S-up>")     'buf-move-up)
+;; 		   (global-set-key (kbd "<C-S-down>")   'buf-move-down)
+;; 		   (global-set-key (kbd "<C-S-left>")   'buf-move-left)
+;; 		   (global-set-key (kbd "<C-S-right>")  'buf-move-right)))
+
+;;    (:name smex				; a better (ido like) M-x
+;; 	  :after (progn
+;; 		   (setq smex-save-file "~/.emacs.d/.smex-items")
+;; 		   (global-set-key (kbd "M-x") 'smex)
+;; 		   (global-set-key (kbd "M-X") 'smex-major-mode-commands)))
+
+;;    ;; (:name magit				; git meet emacs, and a binding
+;;    ;; 	  :after (lambda ()
+;;    ;; 		   (global-set-key (kbd "C-x C-z") 'magit-status)))
+
+;;    (:name goto-last-change		; move pointer back to last change
+;; 	  :after (progn
+;; 		   ;; when using AZERTY keyboard, consider C-x C-_
+;; 		   (global-set-key (kbd "C-x C-/") 'goto-last-change)))))
+
+;; ;; now set our own packages
+;; (setq
+;;  my:el-get-packages
+;;  '(el-get				; el-get is self-hosting
+;;    ibus
+;;    ))
+
+;; ;;
+;; ;; Some recipes require extra tools to be installed
+;; ;;
+;; ;; Note: el-get-install requires git, so we know we have at least that.
+;; ;;
+;; (when (el-get-executable-find "cvs")
+;;   (add-to-list 'my:el-get-packages 'emacs-goodies-el)) ; the debian addons for emacs
+
+;; (when (el-get-executable-find "svn")
+;;   (loop for p in '(psvn    		; M-x svn-status
+;; 		   yasnippet		; powerful snippet mode
+;; 		   )
+;; 	do (add-to-list 'my:el-get-packages p)))
+
+;; (setq my:el-get-packages
+;;       (append
+;;        my:el-get-packages
+;;        (loop for src in el-get-sources collect (el-get-source-name src))))
+
+;; ;; install new packages and init already installed packages
+;; (el-get 'sync my:el-get-packages)
+
+
