@@ -3,3 +3,6 @@ auto-save-list/*
 \#*
 tutorial
 el-get/
+.ido.last
+.smex-items
+ac-comphist.dat

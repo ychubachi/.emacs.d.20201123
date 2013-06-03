@@ -58,7 +58,13 @@
    auto-complete			; complete as you type with overlays
    zencoding-mode			; http://www.emacswiki.org/emacs/ZenCoding
    color-theme		                ; nice looking emacs
-   color-theme-tango))	                ; check out color-theme-solarized
+   color-theme-tango	                ; check out color-theme-solarized
+   ibus
+   haml-mode
+   scss-mode
+   coffee-mode
+   js2-mode
+   redo+))
 
 ;;
 ;; Some recipes require extra tools to be installed
@@ -104,8 +110,8 @@
 ;; avoid compiz manager rendering bugs
 (add-to-list 'default-frame-alist '(alpha . 100))
 
-;; copy/paste with C-c and C-v and C-x, check out C-RET too
-(cua-mode)
+;; ;; copy/paste with C-c and C-v and C-x, check out C-RET too
+;; (cua-mode)
 
 ;; under mac, have Command as Meta and keep Option for localized input
 (when (string-match "apple-darwin" system-configuration)
@@ -163,7 +169,7 @@
 ;; manager or do M-x kill-emacs.  Don't need a nice shortcut for a once a
 ;; week (or day) action.
 (global-set-key (kbd "C-x C-b") 'ido-switch-buffer)
-(global-set-key (kbd "C-x C-c") 'ido-switch-buffer)
+;; (global-set-key (kbd "C-x C-c") 'ido-switch-buffer)
 (global-set-key (kbd "C-x B") 'ibuffer)
 
 ;; C-x C-j opens dired with the cursor right on the file you're editing
