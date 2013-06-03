@@ -1,0 +1,3 @@
+[submodule "site-lisp/init-loader"]
+	path = site-lisp/init-loader
+	url = https://github.com/emacs-jp/init-loader.git
