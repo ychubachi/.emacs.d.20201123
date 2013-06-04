@@ -1,5 +1,5 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Author: Y.Chubachi
+;; Author: Y.Chubachi （中鉢 欣秀）
 ;; Created: 2013-06-04
 ;;
 ;; Thanks: http://qiita.com/items/5f1cd86e2522fd3384a0

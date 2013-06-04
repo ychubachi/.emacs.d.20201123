@@ -1,3 +1,6 @@
 [submodule "git/init-loader"]
 	path = git/init-loader
 	url = https://github.com/emacs-jp/init-loader.git
+[submodule "git/evernote-mode"]
+	path = git/evernote-mode
+	url = https://github.com/rubbish/evernote-mode.git
