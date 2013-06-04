@@ -16,7 +16,7 @@
     auto-complete
     coffee-mode
     color-theme		                ; nice looking emacs
-    color-theme-tango	                ; check out color-theme-solarized
+;    color-theme-tango	                ; check out color-theme-solarized
     dropdown-list
     escreen            			; screen for emacs, C-\ C-h
     flymake-easy
