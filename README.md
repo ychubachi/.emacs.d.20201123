@@ -10,6 +10,8 @@ $ git submolude update
 
 # 新しくsubmoduleを追加するときの方法
 
+package.elで追加できないものを追加するときは，gitでcloneします．
+
 ```shell
 git submodule add https://github.com/magit/magit.git git/magit
 ```
