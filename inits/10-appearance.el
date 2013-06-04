@@ -14,3 +14,6 @@
 
 (global-hl-line-mode)			; highlight current line
 (global-linum-mode 1)			; add line numbers on the left
+
+;; avoid compiz manager rendering bugs
+(add-to-list 'default-frame-alist '(alpha . 80))

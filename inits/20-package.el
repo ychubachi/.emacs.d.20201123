@@ -4,8 +4,8 @@
 (setq package-user-dir "~/.emacs.d/packages/elpa/")
 (add-to-list 'package-archives
 	     '("melpa" . "http://melpa.milkbox.net/packages/"))
-(add-to-list 'package-archives
-	     '("marmalade" . "http://marmalade-repo.org/packages/"))
+;(add-to-list 'package-archives
+;	     '("marmalade" . "http://marmalade-repo.org/packages/"))
 (package-initialize)
 
 (require 'cl)
@@ -41,6 +41,9 @@
     yaml-mode
     yasnippet
     zencoding-mode			; http://www.emacswiki.org/emacs/ZenCoding
+    smex
+    goto-last-change
+    buffer-move
     ))
 
 (let ((not-installed (loop for x in installing-package-list
