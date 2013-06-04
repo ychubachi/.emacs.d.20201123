@@ -80,9 +80,6 @@
 ;;     (set-face-font 'default "Monaco-13")
 ;;   (set-face-font 'default "Monospace-10"))
 
-;; ;; Magit
-;; (require 'magit)
-;; (global-set-key (kbd "M-v") 'magit-status)
 
 ;; ;; flymake
 ;; (require 'flymake)
@@ -109,42 +106,10 @@
 ;; 		   (global-set-key (kbd "M-x") 'smex)
 ;; 		   (global-set-key (kbd "M-X") 'smex-major-mode-commands)))
 
-;;    ;; (:name magit				; git meet emacs, and a binding
-;;    ;; 	  :after (lambda ()
-;;    ;; 		   (global-set-key (kbd "C-x C-z") 'magit-status)))
 
 ;;    (:name goto-last-change		; move pointer back to last change
 ;; 	  :after (progn
 ;; 		   ;; when using AZERTY keyboard, consider C-x C-_
 ;; 		   (global-set-key (kbd "C-x C-/") 'goto-last-change)))))
-
-;; ;; now set our own packages
-;; (setq
-;;  my:el-get-packages
-;;  '(el-get				; el-get is self-hosting
-;;    ibus
-;;    ))
-
-;; ;;
-;; ;; Some recipes require extra tools to be installed
-;; ;;
-;; ;; Note: el-get-install requires git, so we know we have at least that.
-;; ;;
-;; (when (el-get-executable-find "cvs")
-;;   (add-to-list 'my:el-get-packages 'emacs-goodies-el)) ; the debian addons for emacs
-
-;; (when (el-get-executable-find "svn")
-;;   (loop for p in '(psvn    		; M-x svn-status
-;; 		   yasnippet		; powerful snippet mode
-;; 		   )
-;; 	do (add-to-list 'my:el-get-packages p)))
-
-;; (setq my:el-get-packages
-;;       (append
-;;        my:el-get-packages
-;;        (loop for src in el-get-sources collect (el-get-source-name src))))
-
-;; ;; install new packages and init already installed packages
-;; (el-get 'sync my:el-get-packages)
 
 
