@@ -36,6 +36,7 @@
     recentf-ext
     redo+
     ruby-block
+    ruby-electric
     scala-mode
     scss-mode
     switch-window			; takes over C-x o
