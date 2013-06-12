@@ -18,6 +18,7 @@
 ; (add-to-list 'auto-mode-alist '("\\.rb$" . ruby-mode))  
 (add-to-list 'auto-mode-alist '("Capfile$" . ruby-mode))  
 (add-to-list 'auto-mode-alist '("Gemfile$" . ruby-mode))  
+(add-to-list 'auto-mode-alist '("Guardfile$" . ruby-mode))  
 
 (require 'ruby-electric)  
 (add-hook 'ruby-mode-hook '(lambda () (ruby-electric-mode t)))  
@@ -27,8 +28,6 @@
 (ruby-block-mode t)  
 (setq ruby-block-highlight-toggle t)
 
-;(when (require 'rcodetools nil t)
-;  (define-key ruby-mode-map (kbd "<C-return>") 'rct-complete-symbol))
-(require 'rcodetools)
-(define-key ruby-mode-map (kbd "<C-return>") 'rct-complete-symbol)
+(when (require 'rcodetools nil t)
+  (define-key ruby-mode-map (kbd "<C-return>") 'rct-complete-symbol))
 

@@ -23,6 +23,7 @@
     flymake-php
     flymake-ruby
     flymake-haml
+    flymake-sass
     google-c-style
     haml-mode
     haskell-mode
