@@ -28,6 +28,7 @@
     haskell-mode
     js2-mode
     magit
+    magithub
     markdown-mode
     migemo
     open-junk-file
