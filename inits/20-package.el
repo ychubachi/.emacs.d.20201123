@@ -23,6 +23,7 @@
     flymake-php
     flymake-ruby
     flymake-haml
+    flymake-sass
     google-c-style
     haml-mode
     haskell-mode
@@ -37,6 +38,7 @@
     recentf-ext
     redo+
     ruby-block
+    ruby-electric
     scala-mode
     scss-mode
     switch-window			; takes over C-x o
