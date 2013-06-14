@@ -19,7 +19,8 @@
       (unless (= col -1)
         (move-to-column col)))))
 
-(dbus-register-signal
- :session nil "/org/gnome/evince/Window/0"
- "org.gnome.evince.Window" "SyncSource"
- 'evince-inverse-search)
+(when (boundp 'dbus-message-type-method-call) nil t
+      (dbus-register-signal
+       :session nil "/org/gnome/evince/Window/0"
+       "org.gnome.evince.Window" "SyncSource"
+       'evince-inverse-search))
