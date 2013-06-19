@@ -48,6 +48,7 @@
     smex
     goto-last-change
     buffer-move
+    mew
     ))
 
 (let ((not-installed (loop for x in installing-package-list
