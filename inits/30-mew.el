@@ -15,6 +15,7 @@
 (setq mew-fcc "%Sent") ; 送信メイルを保存する
 (setq mew-imap-trash-folder "%[Gmail]/すべてのメール")
 (setq mew-use-cached-passwd t)
+;(setq mew-use-master-passwd t)
 
 (setq mew-ssl-verify-level 0)
 (setq mew-use-unread-mark t)
