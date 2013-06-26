@@ -5,6 +5,7 @@
   '(
     magit
     auctex
+    helm
 ;;     auto-complete
 ;;     coffee-mode
 ;;     color-theme		                ; nice looking emacs
