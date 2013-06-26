@@ -1,11 +1,12 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Author: Y.Chubachi （中鉢 欣秀）
 ;; Created: 2013-06-04
+;; Updated: 2013-06-26
 ;;
 ;; Thanks: http://qiita.com/items/5f1cd86e2522fd3384a0
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-;; load paths
+;; load-pathの設定
 (defun add-to-load-path (&rest paths)
   (let (path)
     (dolist (path paths paths)
@@ -16,6 +17,18 @@
 	    (normal-top-level-add-subdirs-to-load-path))))))
 (add-to-load-path "site-lisp" "git")
 
+;; packageの初期設定
+(require 'package)
+(setq package-user-dir "~/.emacs.d/packages/elpa/")
+(add-to-list 'package-archives
+	     '("melpa" . "http://melpa.milkbox.net/packages/"))
+(add-to-list 'package-archives
+	     '("marmalade" . "http://marmalade-repo.org/packages/"))
+(package-initialize)
+
+;; init-loaderの初期設定
+(when (not (package-installed-p 'init-loader))
+  (package-install 'init-loader))	;パッケージがなければインストール
 (require 'init-loader)
 ;(setq init-loader-show-log-after-init nil)
 (init-loader-load "~/.emacs.d/inits")
