@@ -4,7 +4,7 @@
 (defvar installing-package-list
   '(
     magit
-    auctex
+;;    auctex
     helm
     mew
     w3m ; show PDF in Mew
