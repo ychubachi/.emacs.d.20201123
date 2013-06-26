@@ -6,6 +6,8 @@
     magit
     auctex
     helm
+    mew
+    w3m ; show PDF in Mew
 ;;     auto-complete
 ;;     coffee-mode
 ;;     color-theme		                ; nice looking emacs
@@ -40,10 +42,8 @@
 ;;     smex
 ;;     goto-last-change
 ;;     buffer-move
-;;     mew
 ;;     multi-term
 ;;     shell-pop
-;;     w3m
     ))
 
 (let ((not-installed (loop for x in installing-package-list
