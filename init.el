@@ -19,7 +19,7 @@
 
 ;; packageの初期設定
 (require 'package)
-(setq package-user-dir "~/.emacs.d/packages/elpa/")
+(setq package-user-dir "~/.emacs.d/packages/")
 (add-to-list 'package-archives
 	     '("melpa" . "http://melpa.milkbox.net/packages/"))
 (add-to-list 'package-archives
@@ -28,6 +28,7 @@
 
 ;; init-loaderの初期設定
 (when (not (package-installed-p 'init-loader))
+  (package-refresh-contents)
   (package-install 'init-loader))	;パッケージがなければインストール
 (require 'init-loader)
 ;(setq init-loader-show-log-after-init nil)
