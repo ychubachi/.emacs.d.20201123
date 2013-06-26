@@ -12,10 +12,11 @@
 (setq mew-smtp-ssl-port "465")
 (setq mew-smtp-user "yoshihide.chubachi@gmail.com")
 (setq mew-smtp-server "smtp.gmail.com")
-(setq mew-fcc "%Sent") ; 送信メイルを保存する
+(setq mew-fcc "%[Gmail]/送信済みメール") ; 送信メイルを保存する
 (setq mew-imap-trash-folder "%[Gmail]/すべてのメール")
+
 (setq mew-use-cached-passwd t)
 ;(setq mew-use-master-passwd t)
 
 (setq mew-ssl-verify-level 0)
-(setq mew-use-unread-mark t)
+;(setq mew-use-unread-mark t)

@@ -49,6 +49,9 @@
     goto-last-change
     buffer-move
     mew
+    multi-term
+    shell-pop
+    w3m
     ))
 
 (let ((not-installed (loop for x in installing-package-list
