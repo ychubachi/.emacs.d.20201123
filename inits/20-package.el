@@ -3,6 +3,7 @@
 ;; ここに使っているパッケージを書く。
 (defvar installing-package-list
   '(
+    magit
 ;;     auto-complete
 ;;     coffee-mode
 ;;     color-theme		                ; nice looking emacs
@@ -18,7 +19,6 @@
 ;;     haml-mode
 ;;     haskell-mode
 ;;     js2-mode
-    magit
 ;;     magithub
 ;;     markdown-mode
 ;;     migemo
