@@ -4,6 +4,7 @@
 (defvar installing-package-list
   '(
     magit
+    auctex
 ;;     auto-complete
 ;;     coffee-mode
 ;;     color-theme		                ; nice looking emacs
