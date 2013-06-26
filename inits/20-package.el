@@ -1,13 +1,3 @@
-(require 'package)
-
-;; package.elでelispを入れるdirectoryの設定
-(setq package-user-dir "~/.emacs.d/packages/elpa/")
-(add-to-list 'package-archives
-	     '("melpa" . "http://melpa.milkbox.net/packages/"))
-;(add-to-list 'package-archives
-;	     '("marmalade" . "http://marmalade-repo.org/packages/"))
-(package-initialize)
-
 (require 'cl)
 
 ;; ここに使っているパッケージを書く。
