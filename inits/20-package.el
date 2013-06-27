@@ -4,11 +4,11 @@
 (defvar installing-package-list
   '(
     magit
-;;    auctex
     helm
     mew
     w3m ; show PDF in Mew
-;;     auto-complete
+    auto-complete
+;;     auctex
 ;;     coffee-mode
 ;;     color-theme		                ; nice looking emacs
 ;; ;    color-theme-tango	                ; check out color-theme-solarized
