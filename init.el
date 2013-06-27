@@ -6,7 +6,9 @@
 ;; Thanks: http://qiita.com/items/5f1cd86e2522fd3384a0
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+;;
 ;; load-pathの設定
+;;
 (defun add-to-load-path (&rest paths)
   (let (path)
     (dolist (path paths paths)
