@@ -1,9 +1,8 @@
-;; mewのインストール
-(setq package-name 'mew)
-
-;; パッケージがなければインストール
-(when (not (package-installed-p package-name))
-  (package-install package-name))
+;; パッケージのインストール
+(setq package-list '(mew w3m))
+(dolist (package package-list)
+  (when (not (package-installed-p package))
+    (package-install package)))
 
 ; Stunnel
 (setq mew-prog-ssl "/usr/bin/stunnel4")
@@ -34,4 +33,5 @@
     (require 'mew-w3m)
   (file-error nil))
 
+; pdf viewer
 (setq mew-prog-pdf '("evince" nil t)) 
