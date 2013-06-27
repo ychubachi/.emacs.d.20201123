@@ -6,7 +6,9 @@
 ;; Thanks: http://qiita.com/items/5f1cd86e2522fd3384a0
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+;;
 ;; load-pathの設定
+;;
 (defun add-to-load-path (&rest paths)
   (let (path)
     (dolist (path paths paths)
@@ -17,18 +19,48 @@
 	    (normal-top-level-add-subdirs-to-load-path))))))
 (add-to-load-path "site-lisp" "git")
 
+;;
 ;; packageの初期設定
+;;
 (require 'package)
-(setq package-user-dir "~/.emacs.d/packages/elpa/")
-(add-to-list 'package-archives
-	     '("melpa" . "http://melpa.milkbox.net/packages/"))
-(add-to-list 'package-archives
-	     '("marmalade" . "http://marmalade-repo.org/packages/"))
+
+;; ディレクトリの設定
+(setq package-user-dir "~/.emacs.d/packages/")
+
+;; リポジトリの設定
+(setq package-archives '(("elpa" . "http://tromey.com/elpa/")
+                         ("gnu" . "http://elpa.gnu.org/packages/")
+                         ("marmalade" . "http://marmalade-repo.org/packages/")
+			 ("melpa" . "http://melpa.milkbox.net/packages/")))
+
+;; 全てのパッケージをアーカイブ
 (package-initialize)
 
-;; init-loaderの初期設定
-(when (not (package-installed-p 'init-loader))
-  (package-install 'init-loader))	;パッケージがなければインストール
+;; アーカイブがなければ取得
+(when (not package-archive-contents)
+  (package-refresh-contents))
+
+;;
+;; init-leaderの設定
+;;
+
+;; init-loaderのインストール
+(setq package-name 'init-loader)
+
+;; パッケージがなければインストール
+(when (not (package-installed-p package-name))
+  (package-install package-name))
+
+;; init-loaderの初期化
 (require 'init-loader)
 ;(setq init-loader-show-log-after-init nil)
 (init-loader-load "~/.emacs.d/inits")
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

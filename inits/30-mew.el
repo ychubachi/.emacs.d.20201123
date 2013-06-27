@@ -1,5 +1,12 @@
+;; パッケージのインストール
+(setq package-list '(mew w3m))
+(dolist (package package-list)
+  (when (not (package-installed-p package))
+    (package-install package)))
+
 ; Stunnel
 (setq mew-prog-ssl "/usr/bin/stunnel4")
+
 ; IMAP for Gmail
 (setq mew-proto "%")
 (setq mew-imap-server "imap.gmail.com")
@@ -20,3 +27,11 @@
 
 (setq mew-ssl-verify-level 0)
 ;(setq mew-use-unread-mark t)
+
+; w3m
+(condition-case nil
+    (require 'mew-w3m)
+  (file-error nil))
+
+; pdf viewer
+(setq mew-prog-pdf '("evince" nil t)) 

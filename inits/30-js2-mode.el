@@ -1,9 +1,9 @@
-;; 最後に編集した場所へ移動します
-
 ;; パッケージのインストール
-(setq package-list '(goto-last-change))
+(setq package-list '(js2-mode))
 (dolist (package package-list)
   (when (not (package-installed-p package))
     (package-install package)))
 
-(global-set-key (kbd "C-x C-/") 'goto-last-change)
+;; json
+(setq auto-mode-alist
+      (cons (cons "\\.json$" 'js2-mode) auto-mode-alist))
