@@ -5,9 +5,11 @@
   '(
     magit
     helm
-    mew
+;;    mew
     w3m ; show PDF in Mew
     auto-complete
+    haml-mode
+    flymake-haml
 ;;     auctex
 ;;     coffee-mode
 ;;     color-theme		                ; nice looking emacs
@@ -17,10 +19,8 @@
 ;;     flymake-easy
 ;;     flymake-php
 ;;     flymake-ruby
-;;     flymake-haml
 ;;     flymake-sass
 ;;     google-c-style
-;;     haml-mode
 ;;     haskell-mode
 ;;     js2-mode
 ;;     magithub

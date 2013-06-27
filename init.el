@@ -17,19 +17,39 @@
 	    (normal-top-level-add-subdirs-to-load-path))))))
 (add-to-load-path "site-lisp" "git")
 
+;;
 ;; packageの初期設定
+;;
 (require 'package)
+
+;; ディレクトリの設定
 (setq package-user-dir "~/.emacs.d/packages/")
-(add-to-list 'package-archives
-	     '("melpa" . "http://melpa.milkbox.net/packages/"))
-(add-to-list 'package-archives
-	     '("marmalade" . "http://marmalade-repo.org/packages/"))
+
+;; リポジトリの設定
+(setq package-archives '(("elpa" . "http://tromey.com/elpa/")
+                         ("gnu" . "http://elpa.gnu.org/packages/")
+                         ("marmalade" . "http://marmalade-repo.org/packages/")
+			 ("melpa" . "http://melpa.milkbox.net/packages/")))
+
+;; 全てのパッケージをアーカイブ
 (package-initialize)
 
-;; init-loaderの初期設定
-(when (not (package-installed-p 'init-loader))
-  (package-refresh-contents)
-  (package-install 'init-loader))	;パッケージがなければインストール
+;; アーカイブがなければ取得
+(when (not package-archive-contents)
+  (package-refresh-contents))
+
+;;
+;; init-leaderの設定
+;;
+
+;; init-loaderのインストール
+(setq package-name 'init-loader)
+
+;; パッケージがなければインストール
+(when (not (package-installed-p package-name))
+  (package-install package-name))
+
+;; init-loaderの初期化
 (require 'init-loader)
 ;(setq init-loader-show-log-after-init nil)
 (init-loader-load "~/.emacs.d/inits")

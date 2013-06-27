@@ -1,3 +1,10 @@
+;; mewのインストール
+(setq package-name 'mew)
+
+;; パッケージがなければインストール
+(when (not (package-installed-p package-name))
+  (package-install package-name))
+
 ; Stunnel
 (setq mew-prog-ssl "/usr/bin/stunnel4")
 
