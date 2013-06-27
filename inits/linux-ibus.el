@@ -1,4 +1,8 @@
 ;; Settings for IBUS
+::
+;; 注意: in ~/.Xresourcesに
+;;   Emacs*useXIM:	false
+;; と設定しておくこと．
 ;;
 ;; Thanks: http://www11.atwiki.jp/s-irie/pages/21.html#basic
 ;; Thanks: http://d.hatena.ne.jp/iRiE/20100530/1275212234
