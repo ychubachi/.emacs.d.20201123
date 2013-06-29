@@ -6,4 +6,4 @@
   (when (not (package-installed-p package))
     (package-install package)))
 
-(global-set-key (kbd "C-x C-/") 'goto-last-change)
+(global-set-key (kbd "C-'") 'goto-last-change)
