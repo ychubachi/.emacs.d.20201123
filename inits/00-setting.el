@@ -16,10 +16,5 @@
 ;; シンボリックリンクを開くときの質問省略
 (setq vc-follow-symlinks t)
 
-;; linum-mode をいじって Emacs を高速化
-(setq linum-delay t)
-(defadvice linum-schedule (around my-linum-schedule () activate)
-  (run-with-idle-timer 0.2 nil #'linum-update-current))
-
 ;; マウスで選択するとコピーする Emacs 24 ではデフォルトが nil
 (setq mouse-drag-copy-region t)
