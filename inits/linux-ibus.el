@@ -11,12 +11,17 @@
 (require 'ibus)
 ;; Turn on ibus-mode automatically after loading .emacs
 (add-hook 'after-init-hook 'ibus-mode-on)
+
 ;; Use C-SPC for Set Mark command
 (ibus-define-common-key ?\C-\s nil)
 ;; Use C-/ for Undo command
 (ibus-define-common-key ?\C-/ nil)
+;; Toggle input status by C-o
+(global-set-key (kbd "C-o") 'ibus-toggle)
+
 ;; Change cursor color depending on IBus status
 (setq ibus-cursor-color '("red" "blue" "limegreen"))
+
 ;; Set the window position
 (setq ibus-prediction-window-position t)
 
