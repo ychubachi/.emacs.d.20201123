@@ -1,6 +1,5 @@
-;; orgはビルトインのため，一回手動でインストールしないとだめなのかも．
-
 ;; パッケージのインストール
+;; orgはビルトインのため，一回手動でインストールしないとだめなのかも．
 (setq package-list '(org))
 (dolist (package package-list)
   (when (not (package-installed-p package))
