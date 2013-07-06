@@ -1,0 +1,5 @@
+;; パッケージのインストール
+(setq package-list '(PACKAGE1 PACKAGE1))
+(dolist (package package-list)
+  (when (not (package-installed-p package))
+    (package-install package)))
