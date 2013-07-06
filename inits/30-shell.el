@@ -29,6 +29,3 @@
 ;; shell-pop
 ;;
 (require 'shell-pop)
- (custom-set-variables
-  '(shell-pop-shell-type (quote ("multi-term" "*terminal<1>*" '(lambda () (multi-term)))))
-  '(shell-pop-universal-key "C-z"))
