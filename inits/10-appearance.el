@@ -10,7 +10,7 @@
 (setq frame-title-format
       (format "%%f - Emacs@%s" (system-name)))
 
-(global-hl-line-mode)			; highlight current line
+;; (global-hl-line-mode)			; highlight current line
 
 ;; avoid compiz manager rendering bugs
 (add-to-list 'default-frame-alist '(alpha . 80))
