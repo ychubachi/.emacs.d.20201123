@@ -20,7 +20,8 @@
 (global-set-key (kbd "C-o") 'ibus-toggle)
 
 ;; Change cursor color depending on IBus status
-(setq ibus-cursor-color '("red" "blue" "limegreen"))
+; (setq ibus-cursor-color '("red" "blue" "limegreen"))
+(setq ibus-cursor-color '("green" "red" "blue"))
 
 ;; Set the window position
 (setq ibus-prediction-window-position t)
