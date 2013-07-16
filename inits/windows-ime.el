@@ -19,3 +19,6 @@
 
 ;;;** バッファ切り替え時にIME状態を引き継ぐ
 (setq w32-ime-buffer-switch-p nil)
+
+;;;** Ctrl-Oでトグルするようにする
+(global-set-key (kbd "C-o") 'toggle-input-method)
