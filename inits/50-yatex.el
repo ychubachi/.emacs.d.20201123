@@ -77,3 +77,8 @@
 (add-hook 'yatex-mode-hook
           '(lambda ()
              (define-key YaTeX-mode-map (kbd "C-c e") 'evince-forward-search)))
+
+;; BibTeX
+(add-hook 'bibtex-mode-hook
+	  '(lambda ()
+	     (outline-minor-mode)))
