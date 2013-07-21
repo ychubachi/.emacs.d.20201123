@@ -33,14 +33,6 @@
 (add-hook 'ruby-mode-hook 'flymake-ruby-load)
 
 ;;
-;; ruby-electric
-;; * do-end，カッコの補完
-;;
-(require 'ruby-electric)  
-(add-hook 'ruby-mode-hook '(lambda () (ruby-electric-mode t)))  
-(setq ruby-electric-expand-delimiters-list nil)
-
-;;
 ;; ruby-block
 ;;  endにカーソルを当てると，対応する行をハイライト
 ;;
