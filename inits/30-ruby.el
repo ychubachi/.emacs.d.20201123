@@ -38,6 +38,10 @@
 (add-hook 'ruby-mode-hook 'flymake-ruby-load)
 
 ;;
-;; rbenv（設定不要）
+;; smart-compile
 ;;
+(define-key ruby-mode-map (kbd "C-c c") 'smart-compile)
+(define-key ruby-mode-map (kbd "C-c C-c") (kbd "C-c c C-m"))
 
+
+(add-to-list 'smart-compile-alist '("\\.rb\\'" . "ruby %f"))
