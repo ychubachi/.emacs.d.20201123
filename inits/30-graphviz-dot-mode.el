@@ -5,5 +5,5 @@
     (package-install package)))
 
 (setq auto-mode-alist
-      (append '(("\\.dot$" . graphviz-dot-mode)
+      (append '(("\\.dot$" . graphviz-dot-mode))))
 
