@@ -3,7 +3,7 @@
 ; http://hmi-me.ciao.jp/wordpress/archives/1295
 
 ;; パッケージのインストール
-(setq package-list '(flymake-ruby ruby-end))
+(setq package-list '(flymake-ruby ruby-end smart-compile))
 (dolist (package package-list)
   (when (not (package-installed-p package))
     (package-install package)))
@@ -42,7 +42,9 @@
 ;; smart-compile
 ;;
 (require 'smart-compile)
+;; コンパイル前に自動保存します
+(setq compilation-ask-about-save nil)
 (define-key ruby-mode-map (kbd "C-c c") 'smart-compile)
 (define-key ruby-mode-map (kbd "C-c C-c") (kbd "C-c c C-m"))
-
 (add-to-list 'smart-compile-alist '("\\.rb\\'" . "ruby %f"))
+
