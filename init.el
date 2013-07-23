@@ -57,6 +57,12 @@
 (init-loader-load "~/.emacs.d/inits")
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(defun my-open-inits()        ; 対話的版
+  "自分の設定フォルダを開きます．"
+  (interactive)
+  (dired "~/.emacs.d/inits"))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
