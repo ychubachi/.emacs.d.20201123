@@ -3,10 +3,4 @@
 (dolist (package package-list)
   (when (not (package-installed-p package))
     (package-install package)))
-
 (require 'smart-compile)
-
-(define-key ruby-mode-map (kbd "C-c c") 'smart-compile)
-(define-key ruby-mode-map (kbd "C-c C-c") (kbd "C-c c C-m"))
-
-(add-to-list 'smart-compile-alist '("\\.rb\\'" . "ruby %f"))

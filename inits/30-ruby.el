@@ -37,3 +37,12 @@
 ;;
 (require 'flymake-ruby)
 (add-hook 'ruby-mode-hook 'flymake-ruby-load)
+
+;;
+;; smart-compile
+;;
+(require 'smart-compile)
+(define-key ruby-mode-map (kbd "C-c c") 'smart-compile)
+(define-key ruby-mode-map (kbd "C-c C-c") (kbd "C-c c C-m"))
+
+(add-to-list 'smart-compile-alist '("\\.rb\\'" . "ruby %f"))
