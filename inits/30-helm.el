@@ -8,7 +8,7 @@
 ;;
 
 ;; パッケージのインストール
-(setq package-list '(helm helm-descbinds migemo helm-migemo imenu-anywhere))
+(setq package-list '(helm helm-descbinds migemo helm-migemo imenu-anywhere helm-themes))
 (dolist (package package-list)
   (when (not (package-installed-p package))
     (package-install package)))
@@ -29,7 +29,7 @@
 (setq helm-delete-minibuffer-contents-from-point t)
 
 ;; TAB で補完する（C-zと同じにする）
-(define-key helm-map (kbd "TAB") 'helm-execute-persistent-action)
+; (define-key helm-map (kbd "TAB") 'helm-execute-persistent-action)
 
 ;; C-h でバックスペースと同じように文字を削除できるようにする
 (define-key helm-map (kbd "C-h") 'delete-backward-char)
