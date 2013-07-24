@@ -8,8 +8,11 @@
 ;; My minimum settings
 (load "~/.emacs.d/minimum.el")
 
-;; Load a lot of packages
+;; Setup for packages
 (load "~/.emacs.d/package.el")
+
+;; Load a lot of packages
+(load "~/.emacs.d/load.el")
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (custom-set-variables
