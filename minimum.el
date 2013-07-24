@@ -16,12 +16,7 @@
 ;; key bindings
 ;;
 
-;; C-hをBSにする
 (global-set-key "\C-h" 'delete-backward-char)
-
-;; C-c C-hをhelpにする
 (global-set-key (kbd "C-c C-h") 'help-command)
-
-;; C-zでshellを起動する
+(global-set-key (kbd "C-.") 'undo)
 (global-set-key (kbd "C-z") 'shell)
-
