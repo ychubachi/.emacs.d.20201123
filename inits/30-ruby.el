@@ -3,15 +3,16 @@
 ; http://hmi-me.ciao.jp/wordpress/archives/1295
 
 ;; パッケージのインストール
-(setq package-list '(flymake-ruby ruby-end smart-compile))
+(setq package-list '(flymake-ruby ruby-end smart-compile rspec-mode))
 (dolist (package package-list)
   (when (not (package-installed-p package))
     (package-install package)))
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
 ;; ruby-mode
 ;;
-; (add-to-list 'auto-mode-alist '("\\.rb$" . ruby-mode))  
+
 (add-to-list 'auto-mode-alist '("Capfile" . ruby-mode))  
 (add-to-list 'auto-mode-alist '("Gemfile" . ruby-mode))  
 (add-to-list 'auto-mode-alist '("Guardfile" . ruby-mode))  
@@ -32,19 +33,33 @@
 ;; endを補間します
 (require 'ruby-end)
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
 ;; flymake-ruby
 ;;
 (require 'flymake-ruby)
 (add-hook 'ruby-mode-hook 'flymake-ruby-load)
 
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
 ;; smart-compile
 ;;
 (require 'smart-compile)
-;; コンパイル前に自動保存します
+
+; コンパイル前に自動保存
 (setq compilation-ask-about-save nil)
-(define-key ruby-mode-map (kbd "C-c c") 'smart-compile)
-(define-key ruby-mode-map (kbd "C-c C-c") (kbd "C-c c C-m"))
+
+; コンパイルコマンドを修正
 (add-to-list 'smart-compile-alist '("\\.rb\\'" . "ruby %f"))
 
+; キーバインドを設定
+(define-key ruby-mode-map (kbd "C-c c") 'smart-compile)
+(define-key ruby-mode-map (kbd "C-c C-c") (kbd "C-c c C-m"))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
+;; rspec-modeを導入する
+;;
+(require 'rspec-mode)
+(add-hook 'dired-mode-hook 'rspec-dired-mode)
