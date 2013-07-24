@@ -46,5 +46,9 @@
 ;; helm-migemo
 (require 'helm-migemo)
 
+;; imenu-anywhere
 (global-set-key (kbd "C-/") 'helm-imenu-anywhere)
+
+;; helm-themes
+(require 'helm-themes)
 
