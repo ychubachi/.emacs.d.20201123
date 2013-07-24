@@ -1,4 +1,11 @@
-;; https://github.com/emacs-helm/helm/wiki
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; helm-mode
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;;
+;; * https://github.com/emacs-helm/helm/wiki
+;; * http://www49.atwiki.jp/ntemacs/m/pages/32.html
+;;
 
 ;; パッケージのインストール
 (setq package-list '(helm helm-descbinds migemo helm-migemo imenu-anywhere))
@@ -6,19 +13,17 @@
   (when (not (package-installed-p package))
     (package-install package)))
 
-;;
-;; http://www49.atwiki.jp/ntemacs/m/pages/32.html
-;;
+;; 初期設定
 (require 'helm-config)
-;(require 'helm-gtags)
-
 (helm-mode 1)
-
 (global-set-key (kbd "C-c h") 'helm-mini)
 (global-set-key (kbd "C-x C-f") 'helm-find-files)
 
 ;; 候補を作って描写するまでのタイムラグ設定する（デフォルトは 0.1）
-; (setq helm-idle-delay 0.2)
+(setq helm-idle-delay 0.2)
+
+;; 文字列を入力してから検索するまでのタイムラグを設定する（デフォルトは 0.1）
+(setq helm-input-idle-delay 0.2)
 
 ;; ミニバッファで C-k 入力時にカーソル以降を削除する
 (setq helm-delete-minibuffer-contents-from-point t)
