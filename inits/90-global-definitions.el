@@ -1,19 +1,20 @@
 ;; Global definitions for Emacs
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
+;; 自作関数
+;;
 ;; full screen
-(defun fullscreen ()
+(defun my/fullscreen ()
   (interactive)
   (set-frame-parameter nil 'fullscreen
 		       (if (frame-parameter nil 'fullscreen) nil 'fullboth)))
-(global-set-key [f11] 'fullscreen)
+(global-set-key [f11] 'my/fullscreen)
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; 自作関数
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(defun my-open-inits-folder()        ; 対話的版
+(defun my/open-inits-folder()
   "自分の設定フォルダを開きます．"
   (interactive)
   (dired "~/.emacs.d/inits"))
-(global-set-key (kbd "C-`") 'my-open-inits-folder)
+(global-set-key (kbd "C-`") 'my/open-inits-folder)
 
 
