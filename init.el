@@ -57,15 +57,6 @@
 (init-loader-load "~/.emacs.d/inits")
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; 自作関数
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(defun my-open-inits-folder()        ; 対話的版
-  "自分の設定フォルダを開きます．"
-  (interactive)
-  (dired "~/.emacs.d/inits"))
-(global-set-key (kbd "C-c i") 'my-open-inits-folder)
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
