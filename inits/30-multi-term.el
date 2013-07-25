@@ -1,5 +1,5 @@
 ;; パッケージのインストール
-(setq package-list '(multi-term shell-pop))
+(setq package-list '(multi-term))
 (dolist (package package-list)
   (when (not (package-installed-p package))
     (package-install package)))
@@ -25,7 +25,4 @@
 	     ;; Well the real default would be C-c C-j C-y C-c C-k.
 	     (define-key term-raw-map  (kbd "C-y") 'term-paste)
 	     ))
-;;
-;; shell-pop
-;;
-(require 'shell-pop)
+
