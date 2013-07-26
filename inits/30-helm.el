@@ -20,10 +20,10 @@
 (global-set-key (kbd "C-x C-f") 'helm-find-files)
 
 ;; 候補を作って描写するまでのタイムラグ設定する（デフォルトは 0.1）
-(setq helm-idle-delay 0.2)
+(setq helm-idle-delay 0.1)
 
 ;; 文字列を入力してから検索するまでのタイムラグを設定する（デフォルトは 0.1）
-(setq helm-input-idle-delay 0.2)
+(setq helm-input-idle-delay 0.1)
 
 ;; ミニバッファで C-k 入力時にカーソル以降を削除する
 (setq helm-delete-minibuffer-contents-from-point t)
@@ -51,4 +51,3 @@
 
 ;; helm-themes
 (require 'helm-themes)
-
