@@ -59,7 +59,16 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
-;; rspec-modeを導入する
+;; rspec-mode
 ;;
 (require 'rspec-mode)
 (add-hook 'dired-mode-hook 'rspec-dired-mode)
+
+;; 2013-07-26 下記設定をしても，Launcherから起動したときはうまくいきません
+(defadvice rspec-compile (around rspec-compile-around)
+  "Use BASH shell for running the specs because of ZSH issues."
+  (let ((shell-file-name "/bin/bash"))
+    ad-do-it))
+(ad-activate 'rspec-compile)
+
+;; END
