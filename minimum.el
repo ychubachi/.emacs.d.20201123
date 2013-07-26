@@ -33,9 +33,10 @@
 
 (global-set-key "\C-h" 'delete-backward-char)
 (global-set-key (kbd "C-c C-h") 'help-command)
-(global-set-key (kbd "C-.") 'undo)
 (global-set-key (kbd "C-z") 'shell)
-(global-set-key (kbd "C-'") 'other-window)
+
+(global-set-key (kbd "C-.") 'other-window)
+(global-set-key (kbd "C-,") 'undo)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;

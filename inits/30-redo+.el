@@ -6,4 +6,4 @@
     (package-install package)))
 
 (require 'redo+)
-(global-set-key (kbd "C-,") 'redo)
+(global-set-key (kbd "C-'") 'redo)
