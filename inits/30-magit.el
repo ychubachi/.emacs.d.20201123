@@ -7,4 +7,4 @@
 
 ;; Magit
 (require 'magit)
-(global-set-key (kbd "M-v") 'magit-status) ;; override
+(global-set-key (kbd "C-`") 'magit-status)
