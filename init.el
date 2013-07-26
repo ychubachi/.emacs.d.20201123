@@ -6,6 +6,9 @@
 ;; My minimum settings
 (load "~/.emacs.d/minimum.el")
 
+;; My minimum settings
+(load "~/.emacs.d/function.el")
+
 ;; Setup for packages
 (load "~/.emacs.d/package.el")
 

@@ -1,9 +1,8 @@
-;; Global definitions for Emacs
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
 ;; 自作関数
 ;;
+
 ;; full screen
 (defun my/fullscreen ()
   (interactive)
@@ -14,7 +13,7 @@
 (defun my/open-inits-folder()
   "自分の設定フォルダを開きます．"
   (interactive)
-  (dired "~/.emacs.d/inits"))
+  (dired "~/.emacs.d/"))
 (global-set-key (kbd "C-`") 'my/open-inits-folder)
 
 
