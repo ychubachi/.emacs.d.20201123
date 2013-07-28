@@ -37,12 +37,3 @@
 
 (global-set-key (kbd "C-.") 'other-window)
 (global-set-key (kbd "C-,") 'undo)
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;
-;; load-pathの設定
-;;
-
-;; サブディレクトリのみ追加します
-(let ((default-directory "~/.emacs.d/lisp/"))
-  (normal-top-level-add-subdirs-to-load-path))
