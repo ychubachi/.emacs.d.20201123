@@ -16,8 +16,13 @@
 ;; 初期設定
 (require 'helm-config)
 (helm-mode 1)
+
+; helm-miniを起動するキーを設定する
 (global-set-key (kbd "C-c h") 'helm-mini)
-(global-set-key (kbd "C-x C-f") 'helm-find-files)
+
+; helmを使わないコマンドを設定する
+; - http://qiita.com/akisute3@github/items/7c8ea3970e4cbb7baa97
+(add-to-list 'helm-completing-read-handlers-alist '(kill-buffer . nil))
 
 ;; 候補を作って描写するまでのタイムラグ設定する（デフォルトは 0.1）
 (setq helm-idle-delay 0.2)
