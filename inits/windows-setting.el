@@ -1,3 +1,9 @@
+(setq file-name-coding-system 'cp932)
+
+;; Ctrl-gとかでベルを鳴らさないようにします。
+(setq visible-bell t)
+(setq ring-bell-function 'ignore)
+
 ;;;** 標準IMEの設定
 (setq default-input-method "W32-IME")
 
@@ -22,3 +28,9 @@
 
 ;;;** Ctrl-Oでトグルするようにする
 (global-set-key (kbd "C-o") 'toggle-input-method)
+
+;; ;; cp932エンコード時の表示を「P」とする
+;; (coding-system-put 'cp932 :mnemonic ?P)
+;; (coding-system-put 'cp932-dos :mnemonic ?P)
+;; (coding-system-put 'cp932-unix :mnemonic ?P)
+;; (coding-system-put 'cp932-mac :mnemonic ?P)

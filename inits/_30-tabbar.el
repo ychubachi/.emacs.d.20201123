@@ -4,6 +4,12 @@
 ;;
 ;; [Emacsにタブ機能を追加するtabbar.elの導入 - 12FF5B8](http://hico-horiuchi.hateblo.jp/entry/20121208/1354975316)
 
+;; パッケージのインストール
+(setq package-list '(tabbar))
+(dolist (package package-list)
+  (when (not (package-installed-p package))
+    (package-install package)))
+
 (require 'tabbar)
 (tabbar-mode)
 (global-set-key "\M-]" 'tabbar-forward)  ; 次のタブ

@@ -1,5 +1,11 @@
+;;; PACKAGE1.el --- <description>
+;;; Commentary:
+;;; Code:
+
+;; ================================================================
 ;; パッケージのインストール
-(setq package-list '(PACKAGE1 PACKAGE1))
-(dolist (package package-list)
+;; ================================================================
+(dolist (package '(PACKAGE1 PACKAGE1))
   (when (not (package-installed-p package))
     (package-install package)))
+;;; PACKAGE1.el ends here

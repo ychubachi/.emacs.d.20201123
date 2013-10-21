@@ -1,8 +1,10 @@
-;; パッケージのインストール
-(setq package-list '(mew w3m))
-(dolist (package package-list)
-  (when (not (package-installed-p package))
-    (package-install package)))
+;;; 30-mew.el --- mew
+;;; Commentary:
+;;; Code:
+
+; (prelude-require-packages '(mew w3m))
+
+(require 'mew)
 
 ; hook
 (setq mew-draft-mode-hook (function (lambda () (longlines-mode 1))))
@@ -17,7 +19,7 @@
 (setq mew-imap-auth  t)
 (setq mew-imap-ssl t)
 (setq mew-imap-ssl-port "993")
-(setq mew-smtp-auth t)
+;; (setq mew-smtp-auth t)
 (setq mew-smtp-ssl t)
 (setq mew-smtp-ssl-port "465")
 (setq mew-smtp-user "yoshihide.chubachi@gmail.com")
@@ -37,4 +39,6 @@
   (file-error nil))
 
 ; pdf viewer
-(setq mew-prog-pdf '("evince" nil t)) 
+(setq mew-prog-pdf '("evince" nil t))
+
+;;; 30-mew.el ends here
