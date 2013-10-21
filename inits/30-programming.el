@@ -4,10 +4,16 @@
 ;;; Code:
 
 ;; ================================================================
+;; パッケージのインストール
+;; ================================================================
+(dolist (package '(auto-complete multiple-cursors yasnippet))
+  (when (not (package-installed-p package))
+    (package-install package)))
+
+;; ================================================================
 ;; 自動補間
 ;; ================================================================
 
-(prelude-require-package 'auto-complete)
 (require 'auto-complete-config)
 (ac-config-default)
 (define-key ac-complete-mode-map "\C-n" 'ac-next)
@@ -17,7 +23,6 @@
 ;; 複数のカーソルを扱う
 ;; ================================================================
 
-(prelude-require-package 'multiple-cursors)
 (require 'multiple-cursors)
 
 ;; ================================================================
@@ -25,7 +30,6 @@
 ;; - http://fukuyama.co/yasnippet
 ;; ================================================================
 
-(prelude-require-package 'yasnippet)
 (require 'yasnippet)
 (yas-global-mode 1)
 (setq yas-snippet-dirs '("~/.emacs.d/snippets"))

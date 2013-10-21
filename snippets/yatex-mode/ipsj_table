@@ -1,0 +1,18 @@
+# -*- mode: snippet -*-
+# name: ipsj_table
+# key: ipsj_table
+# --
+\begin{table}[tb]
+\caption{$1 表の例}
+\ecaption{$2 An Example of Table.}
+\label{tab:$3 example}
+\hbox to\hsize{\hfil
+$0
+\begin{tabular}{l|lll}\hline\hline
+& column1 & column2 & column3 \\\\\\hline
+row1 &	item 1,1 & item 2,1 & ---\\\\
+row2 &	---      & item 2,2 & item 3,2 \\\\
+row3 &	item 1,3 & item 2,3 & item 3,3 \\\\
+row4 &	item 1,4 & item 2,4 & item 3,4 \\\\\\hline
+\end{tabular}\hfil}
+\end{table}

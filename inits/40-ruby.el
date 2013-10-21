@@ -13,9 +13,28 @@
 ;;; Code:
 
 ;; ================================================================
+;; パッケージのインストール
+;; ================================================================
+(dolist (package '(flymake-ruby
+		   flymake-haml
+		   flymake-sass
+		   flymake-coffee
+		   smart-compile))
+  (when (not (package-installed-p package))
+    (package-install package)))
+
+(autoload 'ruby-mode "ruby-mode"
+  "Mode for editing ruby source files" t)
+(require 'ruby-mode)
+
+;; ================================================================
 ;; Ruby DSLs
 ;; ================================================================
 
+(add-to-list 'auto-mode-alist '("Capfile" . ruby-mode))  
+(add-to-list 'auto-mode-alist '("Gemfile" . ruby-mode))  
+(add-to-list 'auto-mode-alist '("Guardfile" . ruby-mode))  
+(add-to-list 'auto-mode-alist '("Vagrantfile" . ruby-mode))
 (add-to-list 'auto-mode-alist '("Berksfile" . ruby-mode))
 
 ;; ================================================================
@@ -66,10 +85,6 @@
 ;; ================================================================
 ;; flymake関係
 ;; ================================================================
-(prelude-require-package 'flymake-ruby)
-(prelude-require-package 'flymake-haml)
-(prelude-require-package 'flymake-sass)
-(prelude-require-package 'flymake-coffee)
 
 (require 'flymake-ruby)
 (add-hook 'ruby-mode-hook 'flymake-ruby-load)
@@ -100,7 +115,6 @@
 ;; 賢いコンパイル
 ;; ================================================================
 
-(prelude-require-package 'smart-compile)
 (require 'smart-compile)
 
 (define-key ruby-mode-map (kbd "C-c c") 'smart-compile)

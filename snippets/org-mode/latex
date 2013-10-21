@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: latex
+# key: latex
+# --
+#+TITLE: ${1:Title}
+#+AUTHOR: ${2:Author}
+#+LATEX_CLASS: ltjsarticle

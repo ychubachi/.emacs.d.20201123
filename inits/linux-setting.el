@@ -12,6 +12,13 @@
 ;;; Code:
 
 ;; ================================================================
+;; パッケージのインストール
+;; ================================================================
+(dolist (package '(migemo))
+  (when (not (package-installed-p package))
+    (package-install package)))
+
+;; ================================================================
 ;; Settings for IBUS
 ;; ================================================================
 
@@ -51,7 +58,7 @@
 ;; mmm あいうえお｜｜｜｜｜
 ;; iii ｜｜｜｜｜｜｜｜｜｜
 
-(set-default-font "Ricty:pixelsize=14:spacing=0")
+(set-default-font "Ricty:pixelsize=16:spacing=0")
 
 ;; ================================================================
 ;; dbus for YaTeX
@@ -95,7 +102,6 @@
 ;; # 参考
 ;; * https://github.com/emacs-jp/migemo
 
-(prelude-require-package 'migemo)
 (require 'migemo)
 
 (setq migemo-command "cmigemo")

@@ -2,12 +2,19 @@
 ;;; Commentary:
 ;;; Code:
 
+
+;; ================================================================
+;; パッケージのインストール
+;; ================================================================
+(dolist (package '(shell-pop))
+  (when (not (package-installed-p package))
+    (package-install package)))
+
 ;; ================================================================
 ;; shell-pop
 ;; - 詳細設定はM-x customize-group RET sholl-pop RET
 ;; ================================================================
 
-(prelude-require-package 'shell-pop)
 (require 'shell-pop)
 (define-key global-map (kbd "C-z") 'shell-pop)
 

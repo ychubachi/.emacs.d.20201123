@@ -6,6 +6,13 @@
 ;;; Code:
 
 ;; ================================================================
+;; パッケージのインストール
+;; ================================================================
+(dolist (package '(region-bindings-mode key-chord))
+  (when (not (package-installed-p package))
+    (package-install package)))
+
+;; ================================================================
 ;; 自作マクロ
 ;; ================================================================
 
@@ -43,7 +50,6 @@
 ;; リージョンがある間のキーバインディングを変更する
 ;; ================================================================
 
-(prelude-require-package 'region-bindings-mode)
 (require 'region-bindings-mode)
 (region-bindings-mode-enable)
 (define-key region-bindings-mode-map "a" 'mc/mark-all-like-this)
