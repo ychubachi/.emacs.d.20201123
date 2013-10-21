@@ -1,12 +1,13 @@
 ;;; 30-org-mode.el -- Org mode
 ;;; Commentary:
+
+;; org-modeはsubmoduleとしてインストールします
+
 ;;; Code:
 
-;; (prelude-require-package 'org)
-
-;; (dolist (package '(org))
-;;   (when (not (package-installed-p package))
-;;     (package-install package)))
+;; ================================================================
+;; Key bindings
+;; ================================================================
 
 (global-set-key "\C-cl" 'org-store-link)
 (global-set-key "\C-cc" 'org-capture)
