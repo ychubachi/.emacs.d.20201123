@@ -1,7 +1,6 @@
 ;;; 40-yatex.el --- YaTeX
 ;;; Commentary:
 ;;; Code:
-(global-set-key (kbd "C-c C-t") nil)
 
 ;; ================================================================
 ;; YaTeX - TeX Wiki

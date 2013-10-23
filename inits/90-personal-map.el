@@ -13,17 +13,24 @@
     (package-install package)))
 
 ;; ================================================================
-;; 自作マクロ
+;; グローバルマップの設定
 ;; ================================================================
+(global-set-key (kbd "C-x g") 'magit-status)
 
+(global-set-key (kbd "C-c l") 'org-store-link)
+(global-set-key (kbd "C-c c") 'org-capture)
+(global-set-key (kbd "C-c a") 'org-agenda)
+(global-set-key (kbd "C-c b") 'org-iswitchb)
+
+(global-set-key (kbd "C-z") 'shell-pop)
+
+;; ================================================================
+;; 個人用キーマップの設定
+;; ================================================================
 (defun my/other-window-backward ()
   "Move to other window backward."
   (interactive)
   (other-window -1))
-
-;; ================================================================
-;; 個人用キーマップを設定する
-;; ================================================================
 
 (define-prefix-command 'personal-map)
 (global-set-key (kbd "C-.") 'personal-map)
