@@ -46,6 +46,10 @@
       ((eq system-type 'darwin)
        (define-key 'personal-map (kbd "p") 'skim-forward-search)))
 
+;; undo-tree
+(define-key 'personal-map (kbd "u") 'undo-tree-undo)
+(define-key 'personal-map (kbd "r") 'undo-tree-redo)
+
 ;; ================================================================
 ;; リージョンがある間のキーバインディングを変更する
 ;; ================================================================
