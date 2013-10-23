@@ -61,6 +61,9 @@
 ;; ================================================================
 ;; key-chordの設定をする
 ;; ================================================================
+(require 'key-chord)
+(key-chord-mode 1)
+
 (key-chord-define-global "gc"     'my/other-window-backward)
 (key-chord-define-global "cr"     'other-window)
 
