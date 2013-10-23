@@ -2,9 +2,19 @@
 ;;; Commentary:
 ;;; Code:
 
-; (prelude-require-packages '(mew w3m))
+;; ================================================================
+;; パッケージのインストール
+;; ================================================================
+(dolist (package '(mew))
+  (when (not (package-installed-p package))
+    (package-install package)))
 
-(require 'mew)
+(autoload 'mew "mew" nil t)
+(autoload 'mew-send "mew" nil t)
+
+;; ================================================================
+;; Mewの設定
+;; ================================================================
 
 ; hook
 (setq mew-draft-mode-hook (function (lambda () (longlines-mode 1))))
@@ -19,7 +29,7 @@
 (setq mew-imap-auth  t)
 (setq mew-imap-ssl t)
 (setq mew-imap-ssl-port "993")
-;; (setq mew-smtp-auth t)
+(setq mew-smtp-auth t)
 (setq mew-smtp-ssl t)
 (setq mew-smtp-ssl-port "465")
 (setq mew-smtp-user "yoshihide.chubachi@gmail.com")
