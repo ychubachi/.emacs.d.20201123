@@ -102,7 +102,7 @@
 ;; - init-loaderのインストール
 ;; ================================================================
 (when (not (package-installed-p 'init-loader))
-  (package-install package-name))
+  (package-install 'init-loader))
 (require 'init-loader)
 (init-loader-load "~/.emacs.d/inits")
 ; (setq init-loader-show-log-after-init nil)
