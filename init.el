@@ -40,94 +40,80 @@
 (setq auto-save-file-name-transforms
       `((".*" ,(expand-file-name "~/.emacs.d/backup/") t)))
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;
-;; キーバインディング
-;;
-
-(global-set-key "\C-h" 'delete-backward-char)
-(global-set-key (kbd "C-c C-h") 'help-command)
-(global-set-key (kbd "C-z") 'shell)
-
-(global-set-key (kbd "C-.") 'other-window)
-(global-set-key (kbd "C-,") 'undo)
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;
+;; ================================================================
 ;; 自作関数
-;;
+;; ================================================================
 
-;; full screen
 (defun my/fullscreen ()
   (interactive)
-  (set-frame-parameter nil 'fullscreen
-		       (if (frame-parameter nil 'fullscreen) nil 'fullboth)))
-(global-set-key [f11] 'my/fullscreen)
+  (set-frame-parameter
+   nil
+   'fullscreen
+   (if (frame-parameter nil 'fullscreen)
+       nil
+     'fullboth)))
 
 (defun my/open-init-folder()
   "設定フォルダを開きます．"
   (interactive)
   (dired "~/.emacs.d/"))
-(global-set-key (kbd "<f1>") 'my/open-init-folder)
 
 (defun my/open-note()
   "備忘録を開きます．"
   (interactive)
   (find-file "~/Dropbox/Note/index.org"))
-(global-set-key (kbd "<f2>") 'my/open-note)
   
 (defun my/open-todo()
   "備忘録を開きます．"
   (interactive)
   (find-file "~/Dropbox/Todo/todo.txt"))
-(global-set-key (kbd "<f3>") 'my/open-todo)
 
 (defun my/open-project-folder()
   "プロジェクトフォルダを開きます．"
   (interactive)
   (dired "~/git/"))
+
+;; ================================================================
+;; キーバインディング
+;; ================================================================
+
+(global-set-key "\C-h" 'delete-backward-char)
+(global-set-key (kbd "C-c C-h") 'help-command)
+(global-set-key (kbd "C-z") 'shell)
+
+(global-set-key [f11] 'my/fullscreen)
+(global-set-key (kbd "<f1>") 'my/open-init-folder)
+(global-set-key (kbd "<f2>") 'my/open-note)
+(global-set-key (kbd "<f3>") 'my/open-todo)
 (global-set-key (kbd "<f4>") 'my/open-project-folder)
 
-
-
-
-
-
 ;; ================================================================
-;; packageの初期設定
+;; パッケージの初期設定
+;; - パッケージをインストールするディレクトリの設定
+;; - ダウンロードするリポジトリの設定
+;; - 必要に応じてアーカイブ
 ;; ================================================================
 (require 'package)
-
-;; ディレクトリの設定
 (setq package-user-dir "~/.emacs.d/packages/")
-
-;; リポジトリの設定
-(setq package-archives '(("elpa" . "http://tromey.com/elpa/")
-                         ("gnu" . "http://elpa.gnu.org/packages/")
-                         ("marmalade" . "http://marmalade-repo.org/packages/")
-			 ("melpa" . "http://melpa.milkbox.net/packages/")))
-
-;; 全てのパッケージをアーカイブ
+(setq package-archives '(("gnu" .
+			  "http://elpa.gnu.org/packages/")
+                         ("marmalade" .
+			  "http://marmalade-repo.org/packages/")
+			 ("melpa" .
+			  "http://melpa.milkbox.net/packages/")))
 (package-initialize)
 (when (not package-archive-contents)
   (package-refresh-contents))
 
 ;; ================================================================
 ;; init-loaderの設定
+;; - init-loaderのインストール
 ;; ================================================================
-
-;; init-loaderのインストール
-(setq package-name 'init-loader)
-
-;; パッケージがなければインストール
-(when (not (package-installed-p package-name))
+(when (not (package-installed-p 'init-loader))
   (package-install package-name))
-
-;; init-loaderの初期化
 (require 'init-loader)
 (init-loader-load "~/.emacs.d/inits")
-
-;(setq init-loader-show-log-after-init nil)
+; (setq init-loader-show-log-after-init nil)
 
 ;; ================================================================
 ;; Custom file
