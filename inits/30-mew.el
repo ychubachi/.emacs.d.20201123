@@ -16,9 +16,6 @@
 ;; Mewの設定
 ;; ================================================================
 
-; hook
-(setq mew-draft-mode-hook (function (lambda () (longlines-mode 1))))
-
 ; Stunnel
 (setq mew-prog-ssl "/usr/bin/stunnel4")
 
