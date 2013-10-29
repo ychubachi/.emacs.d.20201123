@@ -9,4 +9,5 @@ packages/
 backup/
 tmp/
 url/
-eshell/
+eshell/.mc-lists.el
+eshell
