@@ -68,24 +68,24 @@
   (loop for (key func) in key-and-func
         do (global-set-key key func)))
 
-;; ================================================================
-;; helm-migemo - ローマ字検索
-;; ================================================================
+;; ;; ================================================================
+;; ;; helm-migemo - ローマ字検索
+;; ;; ================================================================
 
-(require 'helm-migemo)
-(setq helm-use-migemo t)
+;; (require 'helm-migemo)
+;; (setq helm-use-migemo t)
 
-(defadvice helm-c-apropos
-  (around ad-helm-apropos activate)
-  "候補が表示されないときがあるので migemoらないように設定."
-  (let ((helm-use-migemo nil))
-    ad-do-it))
+;; (defadvice helm-c-apropos
+;;   (around ad-helm-apropos activate)
+;;   "候補が表示されないときがあるので migemoらないように設定."
+;;   (let ((helm-use-migemo nil))
+;;     ad-do-it))
 
-(defadvice helm-M-x
-  (around ad-helm-M-x activate)
-  "候補が表示されないときがあるので migemoらないように設定."
-  (let ((helm-use-migemo nil))
-    ad-do-it))
+;; (defadvice helm-M-x
+;;   (around ad-helm-M-x activate)
+;;   "候補が表示されないときがあるので migemoらないように設定."
+;;   (let ((helm-use-migemo nil))
+;;     ad-do-it))
 
 ;; ================================================================
 ;; その他
