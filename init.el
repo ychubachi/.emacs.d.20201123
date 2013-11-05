@@ -12,6 +12,8 @@
 (let ((default-directory "~/.emacs.d/lisp/"))
   (normal-top-level-add-subdirs-to-load-path))
 
+(add-to-list 'load-path "~/.emacs.d/lisp/org-mode/lisp")
+
 ;; ================================================================
 ;; 日本語の設定
 ;; ================================================================
