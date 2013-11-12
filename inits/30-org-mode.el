@@ -14,7 +14,6 @@
 ;; LaTeX export
 ;; ================================================================
 (require 'ox-latex)
-(require 'ox-beamer)
 
 (add-to-list 'auto-mode-alist '("\\.org$" . org-mode))
 (setq org-latex-default-class "jsarticle")
@@ -28,6 +27,7 @@
        (setq org-latex-pdf-process '("latexmk -e '$latex=q/platex %S/' -e '$bibtex=q/pbibtex %B/' -e '$makeindex=q/mendex -o %D %S/' -e '$dvipdf=q/dvipdfmx -o %D %S/' -norc -gg -pdfdvi %f"))
        (setq org-file-apps '(("pdf" . "/usr/bin/open -a Skim %s")))))
 
+;; jsarticle
 (add-to-list 'org-latex-classes
              '("jsarticle"
 	       "\\ifdefined\\ucs
@@ -42,6 +42,29 @@
 \\usepackage{hyperref}
 \\usepackage{pxjahyper}
 \\hypersetup{setpagesize=false,colorlinks=true}"
+               ("\\section{%s}" . "\\section*{%s}")
+               ("\\subsection{%s}" . "\\subsection*{%s}")
+               ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+               ("\\paragraph{%s}" . "\\paragraph*{%s}")
+               ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
+
+;; beamer
+(require 'ox-beamer)
+
+(add-to-list 'org-latex-classes
+             '("beamer"
+               "\\documentclass[dvipdfmx]{beamer}
+[NO-DEFAULT-PACKAGES]
+\\usepackage{bxdpx-beamer}
+\\usepackage{pxjahyper}
+\\usepackage{minijs}
+\\renewcommand{\\kanjifamilydefault}{\\gtdefault}
+\\AtBeginSection[]
+{
+  \\begin{frame}<beamer>{Outline}
+  \\tableofcontents[currentsection,currentsubsection]
+  \\end{frame}
+}"
                ("\\section{%s}" . "\\section*{%s}")
                ("\\subsection{%s}" . "\\subsection*{%s}")
                ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
