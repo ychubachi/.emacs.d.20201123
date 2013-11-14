@@ -18,38 +18,13 @@
   (when (not (package-installed-p package))
     (package-install package)))
 
-;; ================================================================
-;; Settings for IBUS
-;; ================================================================
+;; ;; ================================================================
+;; ;; Settings for mozc
+;; ;; ================================================================
 
-(require 'ibus)
-
-;; Turn on ibus-mode automatically after loading .emacs
-(add-hook 'after-init-hook 'ibus-mode-on)
-
-;; Use C-SPC for Set Mark command
-(ibus-define-common-key ?\C-\s nil)
-
-;; Use C-/ for Undo command
-(ibus-define-common-key ?\C-/ nil)
-
-;; Change cursor color depending on IBus status
-(setq ibus-cursor-color '("green" "red" "blue"))
-
-;; Set the window position
-(setq ibus-prediction-window-position t)
-
-;; Toggle input status
-(global-set-key (kbd "C-o") 'ibus-toggle)
-;; (define-key 'personal-map (kbd "C-o") 'ibus-toggle)
-
-;; Use henkan key to enable IBus
-(global-set-key [henkan] 'ibus-enable)
-(define-key 'personal-map (kbd "C-e") 'ibus-enable)
-
-;; Use muhenkan key to disable IBus
-(global-set-key [muhenkan] 'ibus-disable)
-(define-key 'personal-map (kbd "C-d") 'ibus-disable)
+(require 'mozc)
+(setq default-input-method "japanese-mozc")
+(global-set-key (kbd "C-o") 'toggle-input-method)
 
 ;; ================================================================
 ;; Font設定
