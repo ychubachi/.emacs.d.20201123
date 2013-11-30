@@ -34,12 +34,13 @@
     (package-install package)))
 
 (require 'helm-config)
-;; (helm-mode 1)
+(helm-mode 1)
+
 (require 'helm-command)
 (require 'helm-descbinds)
 
-(setq helm-idle-delay             0.3
-      helm-input-idle-delay       0.3
+(setq helm-idle-delay             0.1
+      helm-input-idle-delay       0.1
       helm-candidate-number-limit 200)
 
 ;; ================================================================
