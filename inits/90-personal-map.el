@@ -15,14 +15,38 @@
 ;; ================================================================
 ;; グローバルマップの設定
 ;; ================================================================
+
+;;; shell-pop
+(global-set-key (kbd "C-z") 'shell-pop)
+
+;;; magit
 (global-set-key (kbd "C-x g") 'magit-status)
 
+;; ================================================================
+;; グローバルマップの設定(org-mode)
+;; ================================================================
 (global-set-key (kbd "C-c l") 'org-store-link)
 (global-set-key (kbd "C-c c") 'org-capture)
 (global-set-key (kbd "C-c a") 'org-agenda)
 (global-set-key (kbd "C-c b") 'org-iswitchb)
 
-(global-set-key (kbd "C-z") 'shell-pop)
+;; ================================================================
+;; グローバルマップの設定(helm)
+;; ================================================================
+(let ((key-and-func
+       `(
+         (,(kbd "M-x")     helm-M-x)
+         (,(kbd "M-y")     helm-show-kill-ring)
+         (,(kbd "C-x C-f") helm-find-files)
+;;         (,(kbd "C-r")   helm-for-files)
+;;         (,(kbd "C-^")   helm-c-apropos)
+;;         (,(kbd "C-;")   helm-resume)
+;;         (,(kbd "M-s")   helm-occur)
+;;         (,(kbd "M-z")   helm-do-grep)
+;;         (,(kbd "C-S-h") helm-descbinds)
+         )))
+  (loop for (key func) in key-and-func
+        do (global-set-key key func)))
 
 ;; ================================================================
 ;; 個人用キーマップの設定
@@ -53,10 +77,6 @@
       ((eq system-type 'darwin)
        (define-key 'personal-map (kbd "p") 'skim-forward-search)))
 
-;; undo-tree
-(define-key 'personal-map (kbd "u") 'undo-tree-undo)
-(define-key 'personal-map (kbd "r") 'undo-tree-redo)
-
 ;; ================================================================
 ;; リージョンがある間のキーバインディングを変更する
 ;; ================================================================
@@ -75,7 +95,7 @@
 (require 'key-chord)
 (key-chord-mode 1)
 
-(key-chord-define-global "gc"     'my/other-window-backward)
-(key-chord-define-global "cr"     'other-window)
+(key-chord-define-global "gc" 'my/other-window-backward)
+(key-chord-define-global "cr" 'other-window)
 
 ;;; 90-personal-map.el ends here

@@ -54,21 +54,6 @@
 ;; ミニバッファで C-k 入力時にカーソル以降を削除する
 (setq helm-delete-minibuffer-contents-from-point t)
 
-(let ((key-and-func
-       `(
-         (,(kbd "M-x")     helm-M-x)
-         (,(kbd "M-y")     helm-show-kill-ring)
-         (,(kbd "C-x C-f") helm-find-files)
-;;         (,(kbd "C-r")   helm-for-files)
-;;         (,(kbd "C-^")   helm-c-apropos)
-;;         (,(kbd "C-;")   helm-resume)
-;;         (,(kbd "M-s")   helm-occur)
-;;         (,(kbd "M-z")   helm-do-grep)
-;;         (,(kbd "C-S-h") helm-descbinds)
-         )))
-  (loop for (key func) in key-and-func
-        do (global-set-key key func)))
-
 ;; ================================================================
 ;; helm-migemo - ローマ字検索
 ;; ================================================================
