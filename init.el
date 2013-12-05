@@ -35,53 +35,6 @@
       `((".*" ,(expand-file-name "~/.emacs.d/backup/") t)))
 
 ;; ================================================================
-;; 自作関数
-;; ================================================================
-
-(defun my/fullscreen ()
-  (interactive)
-  (set-frame-parameter
-   nil
-   'fullscreen
-   (if (frame-parameter nil 'fullscreen)
-       nil
-     'fullboth)))
-
-(defun my/open-init-folder()
-  "設定フォルダを開きます．"
-  (interactive)
-  (dired "~/.emacs.d/"))
-
-(defun my/open-note()
-  "備忘録を開きます．"
-  (interactive)
-  (find-file "~/Dropbox/Note/index.org"))
-  
-(defun my/open-todo()
-  "備忘録を開きます．"
-  (interactive)
-  (find-file "~/Dropbox/Todo/todo.txt"))
-
-(defun my/open-project-folder()
-  "プロジェクトフォルダを開きます．"
-  (interactive)
-  (dired "~/git/"))
-
-;; ================================================================
-;; キーバインディング
-;; ================================================================
-
-(global-set-key "\C-h" 'delete-backward-char)
-(global-set-key (kbd "C-c C-h") 'help-command)
-(global-set-key (kbd "C-z") 'shell)
-
-(global-set-key [f11] 'my/fullscreen)
-(global-set-key (kbd "<f1>") 'my/open-init-folder)
-(global-set-key (kbd "<f2>") 'my/open-note)
-(global-set-key (kbd "<f3>") 'my/open-todo)
-(global-set-key (kbd "<f4>") 'my/open-project-folder)
-
-;; ================================================================
 ;; パッケージの初期設定
 ;; - パッケージをインストールするディレクトリの設定
 ;; - ダウンロードするリポジトリの設定

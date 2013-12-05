@@ -13,6 +13,52 @@
     (package-install package)))
 
 ;; ================================================================
+;; キーバインディング
+;; ================================================================
+
+(global-set-key "\C-h" 'delete-backward-char)
+(global-set-key (kbd "C-c C-h") 'help-command)
+
+;; ================================================================
+;; 自作関数
+;; ================================================================
+
+(defun my/fullscreen ()
+  (interactive)
+  (set-frame-parameter
+   nil
+   'fullscreen
+   (if (frame-parameter nil 'fullscreen)
+       nil
+     'fullboth)))
+
+(defun my/open-init-folder()
+  "設定フォルダを開きます．"
+  (interactive)
+  (dired "~/.emacs.d/inits"))
+
+(defun my/open-note()
+  "備忘録を開きます．"
+  (interactive)
+  (find-file "~/Dropbox/Note/index.org"))
+  
+(defun my/open-todo()
+  "備忘録を開きます．"
+  (interactive)
+  (find-file "~/Dropbox/Todo/todo.txt"))
+
+(defun my/open-project-folder()
+  "プロジェクトフォルダを開きます．"
+  (interactive)
+  (dired "~/git/"))
+
+(global-set-key [f11] 'my/fullscreen)
+(global-set-key (kbd "<f1>") 'my/open-init-folder)
+(global-set-key (kbd "<f2>") 'my/open-note)
+(global-set-key (kbd "<f3>") 'my/open-todo)
+(global-set-key (kbd "<f4>") 'my/open-project-folder)
+
+;; ================================================================
 ;; グローバルマップの設定
 ;; ================================================================
 
@@ -88,6 +134,7 @@
 (define-key region-bindings-mode-map "n" 'mc/mark-next-like-this)
 (define-key region-bindings-mode-map "m" 'mc/mark-more-like-this-extended)
 (define-key region-bindings-mode-map "e" 'mc/edit-lines)
+(setq region-bindings-mode-disabled-modes '(mew-summary-mode))
 
 ;; ================================================================
 ;; key-chordの設定をする

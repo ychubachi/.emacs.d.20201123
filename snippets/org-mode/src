@@ -2,5 +2,7 @@
 # name: src
 # key: src
 # --
-#+begin_src $1
-$0#+end_src
+#+NAME: ${1:name}
+#+BEGIN_SRC ${2:language}
+$0
+#+END_SRC
