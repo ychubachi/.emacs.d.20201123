@@ -45,7 +45,7 @@
 (defun my/open-todo()
   "備忘録を開きます．"
   (interactive)
-  (find-file "~/Dropbox/Todo/todo.txt"))
+  (find-file "~/Dropbox/Note/todo.org"))
 
 (defun my/open-project-folder()
   "プロジェクトフォルダを開きます．"
