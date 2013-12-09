@@ -4,4 +4,5 @@
 # --
 #+TITLE: ${1:Title}
 #+AUTHOR: ${2:Author}
-#+LATEX_CLASS: ltjsarticle
+#+LATEX_CLASS: jsarticle
+#+OPTIONS: toc:nil
