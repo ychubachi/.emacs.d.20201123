@@ -14,3 +14,4 @@ eshell
 /.mc-lists.el
 /.org-id-locations
 /session.*
+/bookmarks

@@ -21,7 +21,14 @@
  '(mouse-drag-copy-region t)
  '(org-agenda-files (quote ("~/Dropbox/Note/index.org" "~/Dropbox/Note/todo.org")))
  '(org-babel-load-languages (quote ((dot . t) (java . t) (ruby . t) (sh . t))))
+ '(org-capture-templates (quote (("t" "Todo" entry (file+headline "~/Dropbox/Note/todo.org" "Tasks") "* TODO %?
+  %i
+  %a") ("j" "Journal" entry (file+datetree "~/Dropbox/Note/journal.org") "* %?
+Entered on %U
+  %i
+  %a"))))
  '(org-confirm-babel-evaluate nil)
+ '(org-default-notes-file "~/Dropbox/Note/notes.org")
  '(org-directory "~/Dropbox/Note")
  '(org-mobile-directory "~/Dropbox/MobileOrg")
  '(org-mobile-inbox-for-pull "~/Dropbox/Note/from-mobile.org")
