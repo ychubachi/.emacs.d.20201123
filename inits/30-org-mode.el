@@ -71,4 +71,10 @@
                ("\\paragraph{%s}" . "\\paragraph*{%s}")
                ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
 
+;; ================================================================
+;; Use bash
+;; ================================================================
+
+(setq org-babel-sh-command "bash")
+
 ;;; 30-org-mode.el ends here
