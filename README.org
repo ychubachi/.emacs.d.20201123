@@ -1,4 +1,4 @@
-# Keybind
+* Keybind
 
 ```
 grep -nH -e global-set-key *
@@ -47,7 +47,7 @@ grep -nH -e define-key *
 ```
 
 
-# cloneするときのコマンド
+* cloneするときのコマンド
 
 ```shell
 $ cd ~
@@ -57,7 +57,7 @@ $ git submodule init
 $ git submolude update
 ```
 
-# 新しくsubmoduleを追加するときの方法
+* 新しくsubmoduleを追加するときの方法
 
 package.elで追加できないものを追加するときは，gitでcloneします．
 
