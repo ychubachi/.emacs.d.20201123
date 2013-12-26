@@ -1,13 +1,12 @@
 * setup.org
 
 ** Package
+   パッケージの初期設定
+   - パッケージをインストールするディレクトリの設定
+   - ダウンロードするリポジトリの設定
+   - 必要に応じてアーカイブ
+
 #+begin_src emacs-lisp
-  ;; ================================================================
-  ;; パッケージの初期設定
-  ;; - パッケージをインストールするディレクトリの設定
-  ;; - ダウンロードするリポジトリの設定
-  ;; - 必要に応じてアーカイブ
-  ;; ================================================================
   (require 'package)
   (setq package-user-dir "~/.emacs.d/packages/")
   (setq package-archives '(("gnu" .
@@ -27,22 +26,20 @@
 
 ** Load Path
 #+begin_src emacs-lisp
-  ;; ================================================================
-  ;; load pathの設定
-  ;; ================================================================
   (let ((default-directory "~/.emacs.d/site-lisp/"))
     (normal-top-level-add-subdirs-to-load-path))
   
-  ;; ================================================================
-  ;; 日本語の設定
-  ;; ================================================================
+#+end_src
+
+** 日本語の設定
+#+begin_src emacs-lisp
   (set-language-environment "japanese")
   (prefer-coding-system 'utf-8)
   
-  ;; ================================================================
-  ;; Backupの設定
-  ;; ================================================================
-  
+#+end_src
+
+** Backupの設定
+#+begin_src emacs-lisp
   ;; create backup file in ~/.emacs.d/backup
   (setq make-backup-files t)
   (setq backup-directory-alist
@@ -52,20 +49,20 @@
   ;; create auto-save file in ~/.emacs.d/backup
   (setq auto-save-file-name-transforms
         `((".*" ,(expand-file-name "~/.emacs.d/backup/") t)))
-  
-  ;; ================================================================
-  ;; init-loaderの設定
-  ;; - init-loaderのインストール
-  ;; ================================================================
+#+end_src
+
+** init-loaderの設定
+   init-loaderのインストール
+#+begin_src emacs-lisp
   (when (not (package-installed-p 'init-loader))
     (package-install 'init-loader))
   (require 'init-loader)
   (init-loader-load "~/.emacs.d/inits")
   ; (setq init-loader-show-log-after-init nil)
-  
-  ;; ================================================================
-  ;; Custom file
-  ;; ================================================================
+#+end_src
+
+** Custom file
+#+begin_src emacs-lisp
   (setq custom-file "~/.emacs.d/custom.el")
   (if (file-exists-p (expand-file-name "~/.emacs.d/custom.el"))
       (load (expand-file-name custom-file) t nil nil))
