@@ -1,6 +1,6 @@
 * setup.org
 
-** Initialize package
+** Package
 #+begin_src emacs-lisp
   ;; ================================================================
   ;; パッケージの初期設定
@@ -24,9 +24,9 @@
   (when (not package-archive-contents)
     (package-refresh-contents))
 #+end_src
-#+begin_src emacs-lisp
-  ;; second block
 
+** Load Path
+#+begin_src emacs-lisp
   ;; ================================================================
   ;; load pathの設定
   ;; ================================================================
