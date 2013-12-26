@@ -161,24 +161,6 @@
   - ダウンロードするリポジトリの設定
   - 必要に応じてアーカイブ
 
-#+begin_src emacs-lisp
-  (require 'package)
-  (setq package-user-dir "~/.emacs.d/packages/")
-  (setq package-archives '(("gnu" .
-                            "http://elpa.gnu.org/packages/")
-                           ("marmalade" .
-                            "http://marmalade-repo.org/packages/")
-                           ("melpa" .
-                            "http://melpa.milkbox.net/packages/")
-                           ("org" .
-                            "http://orgmode.org/elpa/")
-                           ))
-  
-  (package-initialize)
-  (when (not package-archive-contents)
-    (package-refresh-contents))
-#+end_src
-
 * Custom fileの読み込み
 #+begin_src emacs-lisp
   (setq custom-file "~/.emacs.d/custom.el")

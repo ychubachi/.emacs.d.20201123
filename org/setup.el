@@ -123,22 +123,6 @@
          :tags-as-categories nil)
         ))
 
-(require 'package)
-(setq package-user-dir "~/.emacs.d/packages/")
-(setq package-archives '(("gnu" .
-                          "http://elpa.gnu.org/packages/")
-                         ("marmalade" .
-                          "http://marmalade-repo.org/packages/")
-                         ("melpa" .
-                          "http://melpa.milkbox.net/packages/")
-                         ("org" .
-                          "http://orgmode.org/elpa/")
-                         ))
-
-(package-initialize)
-(when (not package-archive-contents)
-  (package-refresh-contents))
-
 (setq custom-file "~/.emacs.d/custom.el")
 (if (file-exists-p (expand-file-name "~/.emacs.d/custom.el"))
     (load (expand-file-name custom-file) t nil nil))

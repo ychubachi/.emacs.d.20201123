@@ -1,4 +1,13 @@
+* init.el
+** 使い方
 
+   C-c C-v t でinit.elを生成
+
+- [[http://orgmode.org/elpa.html][Org Emacs lisp Package Archive]]
+
+** ヘッダ
+
+#+begin_src emacs-lisp :tangle init.el
 ;; init.el --- packageの初期化とorgファイルからのel生成
 ;;
 ;; This file loads Org-mode and then loads the rest of our Emacs initialization from Emacs lisp
@@ -7,14 +16,14 @@
 (require 'package)
 ;; (setq package-user-dir "~/.emacs.d/packages/")
 (setq package-archives '(("org" .
-                          "http://orgmode.org/elpa/")
-                         ("gnu" .
-                          "http://elpa.gnu.org/packages/")
-                         ("marmalade" .
-                          "http://marmalade-repo.org/packages/")
-                         ("melpa" .
-                          "http://melpa.milkbox.net/packages/")
-                         ))
+			  "http://orgmode.org/elpa/")
+			 ("gnu" .
+			  "http://elpa.gnu.org/packages/")
+			 ("marmalade" .
+			  "http://marmalade-repo.org/packages/")
+			 ("melpa" .
+			  "http://melpa.milkbox.net/packages/")
+			 ))
   
 (package-initialize)
 (when (not package-archive-contents)
@@ -32,9 +41,9 @@
 (setq dotfiles-dir
       (concat
        (file-name-directory ; ファイル名のデレクトリ部分
-        (or
-         (buffer-file-name)
-         load-file-name))
+	(or
+	 (buffer-file-name)
+	 load-file-name))
        "org/"
        ))
 
@@ -44,3 +53,4 @@
       (directory-files dotfiles-dir t "\\.org$"))
 
 ;;; init.el ends here
+#+end_src
