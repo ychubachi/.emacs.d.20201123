@@ -7,6 +7,31 @@
 ;;; Code:
 
 ;; ================================================================
+;; パッケージの初期設定
+;; - パッケージをインストールするディレクトリの設定
+;; - ダウンロードするリポジトリの設定
+;; - 必要に応じてアーカイブ
+;; ================================================================
+(require 'package)
+(setq package-user-dir "~/.emacs.d/packages/")
+(setq package-archives '(("gnu" .
+			  "http://elpa.gnu.org/packages/")
+                         ("marmalade" .
+			  "http://marmalade-repo.org/packages/")
+			 ("melpa" .
+			  "http://melpa.milkbox.net/packages/")))
+(package-initialize)
+(when (not package-archive-contents)
+  (package-refresh-contents))
+
+;; ================================================================
+;; org-mode
+;; ================================================================
+(dolist (package '(org-mode))
+  (when (not (package-installed-p package))
+    (package-install package)))
+
+;; ================================================================
 ;; load pathの設定
 ;; ================================================================
 (let ((default-directory "~/.emacs.d/lisp/"))
@@ -33,24 +58,6 @@
 ;; create auto-save file in ~/.emacs.d/backup
 (setq auto-save-file-name-transforms
       `((".*" ,(expand-file-name "~/.emacs.d/backup/") t)))
-
-;; ================================================================
-;; パッケージの初期設定
-;; - パッケージをインストールするディレクトリの設定
-;; - ダウンロードするリポジトリの設定
-;; - 必要に応じてアーカイブ
-;; ================================================================
-(require 'package)
-(setq package-user-dir "~/.emacs.d/packages/")
-(setq package-archives '(("gnu" .
-			  "http://elpa.gnu.org/packages/")
-                         ("marmalade" .
-			  "http://marmalade-repo.org/packages/")
-			 ("melpa" .
-			  "http://melpa.milkbox.net/packages/")))
-(package-initialize)
-(when (not package-archive-contents)
-  (package-refresh-contents))
 
 ;; ================================================================
 ;; init-loaderの設定
