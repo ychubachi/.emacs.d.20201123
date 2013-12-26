@@ -1,79 +1,26 @@
-;;; init.el --- A default init file.
-;;; Commentary:
+;; init.el --- Where all the magic begins
+;;
+;; This file loads Org-mode and then loads the rest of our Emacs initialization from Emacs lisp
+;; embedded in literate Org-mode files.
 
-;; Author:	Y.Chubachi （中鉢 欣秀）
-;; Created:	2013-06-04
+;; Load up Org Mode and (now included) Org Babel for elisp embedded in Org Mode files
+(setq dotfiles-dir (file-name-directory (or (buffer-file-name) load-file-name)))
 
-;;; Code:
+(let* ((org-dir (expand-file-name
+                 "lisp" (expand-file-name
+                         "org" (expand-file-name
+                                "src" dotfiles-dir))))
+       (org-contrib-dir (expand-file-name
+                         "lisp" (expand-file-name
+                                 "contrib" (expand-file-name
+                                            ".." org-dir))))
+       (load-path (append (list org-dir org-contrib-dir)
+                          (or load-path nil))))
+  ;; load up Org-mode and Org-babel
+  (require 'org-install)
+  (require 'ob-tangle))
 
-;; ================================================================
-;; パッケージの初期設定
-;; - パッケージをインストールするディレクトリの設定
-;; - ダウンロードするリポジトリの設定
-;; - 必要に応じてアーカイブ
-;; ================================================================
-(require 'package)
-(setq package-user-dir "~/.emacs.d/packages/")
-(setq package-archives '(("gnu" .
-			  "http://elpa.gnu.org/packages/")
-                         ("marmalade" .
-			  "http://marmalade-repo.org/packages/")
-			 ("melpa" .
-			  "http://melpa.milkbox.net/packages/")
-			 ("org" .
-			  "http://orgmode.org/elpa/")
-			 ))
+;; load up all literate org-mode files in this directory
+(mapc #'org-babel-load-file (directory-files dotfiles-dir t "\\.org$"))
 
-(package-initialize)
-(when (not package-archive-contents)
-  (package-refresh-contents))
-
-;; ================================================================
-;; org-mode
-;; ================================================================
-(dolist (package '(org org-plus-contrib))
-  (when (not (package-installed-p package))
-    (package-install package)))
-
-;; ================================================================
-;; load pathの設定
-;; ================================================================
-(let ((default-directory "~/.emacs.d/site-lisp/"))
-  (normal-top-level-add-subdirs-to-load-path))
-
-;; ================================================================
-;; 日本語の設定
-;; ================================================================
-(set-language-environment "japanese")
-(prefer-coding-system 'utf-8)
-
-;; ================================================================
-;; Backupの設定
-;; ================================================================
-
-;; create backup file in ~/.emacs.d/backup
-(setq make-backup-files t)
-(setq backup-directory-alist
-  (cons (cons "\\.*$" (expand-file-name "~/.emacs.d/backup"))
-    backup-directory-alist))
-
-;; create auto-save file in ~/.emacs.d/backup
-(setq auto-save-file-name-transforms
-      `((".*" ,(expand-file-name "~/.emacs.d/backup/") t)))
-
-;; ================================================================
-;; init-loaderの設定
-;; - init-loaderのインストール
-;; ================================================================
-(when (not (package-installed-p 'init-loader))
-  (package-install 'init-loader))
-(require 'init-loader)
-(init-loader-load "~/.emacs.d/inits")
-; (setq init-loader-show-log-after-init nil)
-
-;; ================================================================
-;; Custom file
-;; ================================================================
-(setq custom-file "~/.emacs.d/custom.el")
-(if (file-exists-p (expand-file-name "~/.emacs.d/custom.el"))
-    (load (expand-file-name custom-file) t nil nil))
+;;; init.el ends here
