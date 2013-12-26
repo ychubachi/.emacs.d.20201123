@@ -19,7 +19,11 @@
                          ("marmalade" .
 			  "http://marmalade-repo.org/packages/")
 			 ("melpa" .
-			  "http://melpa.milkbox.net/packages/")))
+			  "http://melpa.milkbox.net/packages/")
+			 ("org" .
+			  "http://orgmode.org/elpa/")
+			 ))
+
 (package-initialize)
 (when (not package-archive-contents)
   (package-refresh-contents))
@@ -27,17 +31,15 @@
 ;; ================================================================
 ;; org-mode
 ;; ================================================================
-(dolist (package '(org-mode))
+(dolist (package '(org org-plus-contrib))
   (when (not (package-installed-p package))
     (package-install package)))
 
 ;; ================================================================
 ;; load pathの設定
 ;; ================================================================
-(let ((default-directory "~/.emacs.d/lisp/"))
+(let ((default-directory "~/.emacs.d/site-lisp/"))
   (normal-top-level-add-subdirs-to-load-path))
-
-(add-to-list 'load-path "~/.emacs.d/lisp/org-mode/lisp")
 
 ;; ================================================================
 ;; 日本語の設定
