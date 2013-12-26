@@ -32,7 +32,6 @@ Entered on %U
  '(org-directory "~/Dropbox/Note")
  '(org-mobile-directory "~/Dropbox/MobileOrg")
  '(org-mobile-inbox-for-pull "~/Dropbox/Note/from-mobile.org")
- '(org-publish-project-alist (quote (("chubachi.net" :base-directory "~/Ubuntu One/WebSites/chubachi.net/org/" :publishing-directory "~/Ubuntu One/WebSites/chubachi.net/html" :publishing-function org-html-publish-to-html :section-numbers nil :with-toc nil))))
  '(org-startup-with-inline-images t)
  '(org-todo-keywords (quote ((sequence "TODO" "WAITING" "DONE"))))
  '(outline-minor-mode-prefix "")

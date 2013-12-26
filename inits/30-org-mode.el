@@ -71,4 +71,56 @@
                ("\\paragraph{%s}" . "\\paragraph*{%s}")
                ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
 
+;; ================================================================
+;; Publishing
+;; ================================================================
+
+(setq org-publish-project-alist
+      '(
+	("chubachi.net-notes"
+	 :base-directory "~/Ubuntu One/WebSites/chubachi.net/org/"
+	 :base-extension "org"
+	 :publishing-directory "~/Ubuntu One/WebSites/chubachi.net/www/"
+	 :publishing-function org-html-publish-to-html
+	 ;; :headline-levels 3
+	 ;; :section-numbers nil
+	 ;; :with-toc nil
+	 ;; :html-head "<link rel=\"stylesheet\"
+         ;;               href=\"../other/mystyle.css\" type=\"text/css\"/>"
+	 ;; :html-preamble t
+	 :recursive t
+	 )
+	("chubachi.net-static"
+	 :base-directory "~/Ubuntu One/WebSites/chubachi.net/org/"
+	 :base-extension "css\\|js\\|png\\|jpg\\|gif\\|pdf\\|mp3\\|ogg\\|swf"
+	 :publishing-directory "~/Ubuntu One/WebSites/chubachi.net/www/"
+	 :recursive t
+	 :publishing-function org-publish-attachment
+	 )
+	("chubachi.net"
+	 :components ("chubachi.net-notes" "chubachi.net-static"))
+      ))
+
+;; ================================================================
+;; org2blog
+;; ================================================================
+(dolist (package '(xml-rpc metaweblog))
+  (when (not (package-installed-p package))
+    (package-install package)))
+(require 'xml-rpc)
+(require 'metaweblog)
+
+(setq load-path (cons "~/.emacs.d/lisp/org2blog/" load-path))
+(require 'org2blog-autoloads)
+
+(setq org2blog/wp-blog-alist
+      '(("cocreative"
+         :url "http://www.co-creative.biz/xmlrpc.php"
+         :username "yc"
+         :default-title "Hello World"
+         :default-categories ("org2blog" "emacs")
+         :tags-as-categories nil)
+	))
+
+
 ;;; 30-org-mode.el ends here
