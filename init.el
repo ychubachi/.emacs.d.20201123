@@ -4,15 +4,15 @@
 ;; embedded in literate Org-mode files.
 
 (require 'package)
-(setq package-user-dir "~/.emacs.d/packages/")
-(setq package-archives '(("gnu" .
+;; (setq package-user-dir "~/.emacs.d/packages/")
+(setq package-archives '(("org" .
+			  "http://orgmode.org/elpa/")
+			 ("gnu" .
 			  "http://elpa.gnu.org/packages/")
 			 ("marmalade" .
 			  "http://marmalade-repo.org/packages/")
 			 ("melpa" .
 			  "http://melpa.milkbox.net/packages/")
-			 ("org" .
-			  "http://orgmode.org/elpa/")
 			 ))
   
 (package-initialize)
@@ -28,7 +28,13 @@
 (require 'ob-tangle)
 
 ;; load up all literate org-mode files in this directory
-(setq dotfiles-dir (file-name-directory (or (buffer-file-name) load-file-name)))
-(mapc #'org-babel-load-file (directory-files dotfiles-dir t "\\.org$"))
+(setq dotfiles-dir
+      (file-name-directory ; 
+       (or
+	(buffer-file-name)
+	load-file-name)))
+
+(mapc #'org-babel-load-file
+      (directory-files dotfiles-dir t "\\.org$"))
 
 ;;; init.el ends here

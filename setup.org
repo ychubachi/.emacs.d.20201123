@@ -188,10 +188,10 @@
 * init-loaderの設定
    init-loaderのインストール
 #+begin_src emacs-lisp
-;  (when (not (package-installed-p 'init-loader))
-;    (package-install 'init-loader))
-;  (require 'init-loader)
-;  (init-loader-load "~/.emacs.d/inits")
-;  ; (setq init-loader-show-log-after-init nil)
+  (when (not (package-installed-p 'init-loader))
+    (package-install 'init-loader))
+  (require 'init-loader)
+  (init-loader-load "~/.emacs.d/inits")
+  ; (setq init-loader-show-log-after-init nil)
 #+end_src
 

@@ -6,6 +6,7 @@ tutorial
 .smex-items
 ac-comphist.dat
 packages/
+elpa/
 backup/
 tmp/
 url/
