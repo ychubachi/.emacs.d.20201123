@@ -15,11 +15,13 @@
 (setq auto-save-file-name-transforms
       `((".*" ,(expand-file-name "~/.emacs.d/backup/") t)))
 
-(add-to-list 'load-path "~/.emacs.d/git/org-mode/lisp")
-(add-to-list 'load-path "~/.emacs.d/git/org-mode/contrib/lisp" t)
-(add-to-list 'auto-mode-alist '("\\.org\\'" . org-mode))
+(global-auto-revert-mode 1)
 
-;;  (require 'ox-md)
+(global-linum-mode t)
+(set-face-attribute 'linum nil :foreground "yellow" :height 0.8)
+(setq linum-format "%4d")
+
+(require 'ox-md)
 
 (require 'ox-latex)
 

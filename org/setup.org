@@ -26,14 +26,24 @@
         `((".*" ,(expand-file-name "~/.emacs.d/backup/") t)))
 #+end_src
 
+** auto-revert
+   Emacsの外でファイルが更新されたら，自動的にバッファを再読込する．
+
+#+begin_src emacs-lisp
+  (global-auto-revert-mode 1)
+#+end_src
+
+** 行番号表示
+#+begin_src emacs-lisp
+(global-linum-mode t)
+(set-face-attribute 'linum nil :foreground "yellow" :height 0.8)
+(setq linum-format "%4d")
+#+end_src
+
 * Org
 ** Markdown export
 #+begin_src emacs-lisp
-(add-to-list 'load-path "~/.emacs.d/git/org-mode/lisp")
-(add-to-list 'load-path "~/.emacs.d/git/org-mode/contrib/lisp" t)
-(add-to-list 'auto-mode-alist '("\\.org\\'" . org-mode))
-
-;;  (require 'ox-md)
+  (require 'ox-md)
 #+end_src
 
 ** LaTeX export
