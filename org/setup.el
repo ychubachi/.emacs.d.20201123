@@ -127,6 +127,10 @@
          :tags-as-categories nil)
         ))
 
+(dolist (package '(mediawiki))
+  (when (not (package-installed-p package))
+    (package-install package)))
+
 ;; ================================================================
 ;; パッケージのインストール
 ;; ================================================================

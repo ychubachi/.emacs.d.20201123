@@ -181,6 +181,16 @@
 #+RESULTS:
 | cocreative | :url | http://www.co-creative.biz/xmlrpc.php | :username | yc | :default-title | Hello World | :default-categories | (org2blog emacs) | :tags-as-categories | nil |
 
+
+* MediaWiki
+  - [[http://www.emacswiki.org/emacs/MediaWikiMode][EmacsWiki: Media Wiki Mode]]
+    
+#+begin_src emacs-lisp
+  (dolist (package '(mediawiki))
+    (when (not (package-installed-p package))
+      (package-install package)))
+#+end_src
+
 * パッケージの初期設定
   - パッケージをインストールするディレクトリの設定
   - ダウンロードするリポジトリの設定
