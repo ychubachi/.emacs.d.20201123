@@ -47,6 +47,56 @@
   (require 'cl)
 #+end_src
 
+** 見た目
+
+#+begin_src emacs-lisp
+  (setq inhibit-splash-screen t)
+  (setq inhibit-startup-screen t)
+  
+  (tool-bar-mode 0)
+  (scroll-bar-mode 0)
+  (menu-bar-mode 0)
+  
+  (setq frame-title-format
+        (format "%%f - Emacs@%s" (system-name)))
+#+end_src
+
+** 文書執筆関係
+
+#+begin_src emacs-lisp
+;; ================================================================
+;; パッケージのインストール
+;; ================================================================
+(dolist (package '(smartrep graphviz-dot-mode))
+  (when (not (package-installed-p package))
+    (package-install package)))
+
+;; ================================================================
+;; markdownモードでアウトラインを有効にする
+;; ================================================================
+(add-hook 'markdown-mode-hook
+          '(lambda () (outline-minor-mode t)))
+
+;; ================================================================
+;; 連続操作を素敵にするsmartrep.el作った - sheephead
+;; http://sheephead.homelinux.org/2011/12/19/6930/
+;; ================================================================
+
+(require 'smartrep)
+(eval-after-load "org"
+  '(progn
+     (smartrep-define-key
+      org-mode-map "C-c" '(("C-n" . (lambda ()
+                                      (outline-next-visible-heading 1)))
+                           ("C-p" . (lambda ()
+                                      (outline-previous-visible-heading 1)))))))
+
+;; ================================================================
+;; graphviz-dot-mode
+;; ================================================================
+(add-to-list 'auto-mode-alist '("\\.dot$" . graphviz-dot-mode))
+#+end_src
+
 * Org
 ** Markdown export
 #+begin_src emacs-lisp
