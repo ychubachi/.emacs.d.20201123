@@ -35,6 +35,17 @@
         `((".*" ,(expand-file-name "~/.emacs.d/backup/") t)))
 #+end_src
 
+** DELキーをBSにする
+
+#+begin_src emacs-lisp
+  ;; ================================================================
+  ;; キーバインディング
+  ;; ================================================================
+  
+  (global-set-key "\C-h" 'delete-backward-char)
+  (global-set-key (kbd "C-c C-h") 'help-command)
+#+end_src
+
 ** auto-revert
    Emacsの外でファイルが更新されたら，自動的にバッファを再読込する．
 
@@ -209,14 +220,22 @@
 #+begin_src emacs-lisp
 (setq org-babel-sh-command "bash")
 #+end_src
-** WordPressに記事を投稿できるようにする（org2blog）
-   :PROPERTIES:
-   :POST_DATE: [2013-12-26 木 22:33]
-   :ID:       ad095d7e-5d6b-4db8-9fcf-d15e577dd737
-   :POSTID:   13
-   :BLOG:     cocreative
-   :END:
+* WordPressに記事を投稿できるようにする（org2blog）
+  :PROPERTIES:
+  :ID:       o2b:83d5ddbc-5e84-446c-826a-a2702eb6b997
+  :POST_DATE: [2013-12-28 土 19:16]
+  :POSTID:   18
+  :BLOG:     blog.chubachi.net
+  :END:
 
+   - 使い方は [[https://github.com/punchagan/org2blog][punchagan/org2blog]] を参照．
+   - ソースコードを表示させるには
+     [[http://wordpress.org/plugins/syntaxhighlighter/][WordPress › SyntaxHighlighter Evolved « WordPress Plugins]]
+     をインストールしておく．
+   - emacs lispは使えない．残念．
+
+   |----------------+--------------------------|
+   | 機能           | コマンド                         |
    |----------------+--------------------------|
    | ログイン       | org2blog/wp-login        |
    | 新規投稿       | org2blog/wp-new-entry    |
@@ -228,11 +247,9 @@
    |----------------+--------------------------|
    | 下位層を投稿   | org2blog/wp-post-subtree |
    |----------------+--------------------------|
-
-   - 使い方は [[https://github.com/punchagan/org2blog][punchagan/org2blog]] を参照．
    
 #+begin_src emacs-lisp
-(dolist (package '(org2blog xml-rpc metaweblog))
+(dolist (package '(org2blog xml-rpc metaweblog htmlize))
   (when (not (package-installed-p package))
     (package-install package)))
 
@@ -263,11 +280,6 @@
   (require 'mediawiki)
 #+end_src
 
-* パッケージの初期設定
-  - パッケージをインストールするディレクトリの設定
-  - ダウンロードするリポジトリの設定
-  - 必要に応じてアーカイブ
-
 * キーバインディング
 #+begin_src emacs-lisp
   ;; ================================================================
@@ -276,13 +288,6 @@
   (dolist (package '(region-bindings-mode key-chord))
     (when (not (package-installed-p package))
       (package-install package)))
-  
-  ;; ================================================================
-  ;; キーバインディング
-  ;; ================================================================
-  
-  (global-set-key "\C-h" 'delete-backward-char)
-  (global-set-key (kbd "C-c C-h") 'help-command)
   
   ;; ================================================================
   ;; 自作関数
@@ -302,16 +307,22 @@
     (interactive)
     (find-file "~/.emacs.d/org/setup.org"))
   
-  (defun my/open-note()
+  (defun my/open-journal()
     "備忘録を開きます．"
     (interactive)
-    (find-file "~/Dropbox/Note/index.org"))
+    (find-file "~/Dropbox/Note/journal.org"))
     
   (defun my/open-todo()
     "備忘録を開きます．"
     (interactive)
     (find-file "~/Dropbox/Note/todo.org"))
   
+  
+  (defun my/open-note()
+    "備忘録を開きます．"
+    (interactive)
+    (find-file "~/Dropbox/Note/index.org"))
+
   (defun my/open-project-folder()
     "プロジェクトフォルダを開きます．"
     (interactive)
@@ -319,9 +330,10 @@
   
   (global-set-key [f11] 'my/fullscreen)
   (global-set-key (kbd "<f1>") 'my/open-init-folder)
-  (global-set-key (kbd "<f2>") 'my/open-note)
+  (global-set-key (kbd "<f2>") 'my/open-journal)
   (global-set-key (kbd "<f3>") 'my/open-todo)
-  (global-set-key (kbd "<f4>") 'my/open-project-folder)
+  (global-set-key (kbd "<f4>") 'my/open-note)
+  (global-set-key (kbd "<f5>") 'my/open-project-folder)
   
   ;; ================================================================
   ;; グローバルマップの設定
@@ -410,6 +422,9 @@
   (key-chord-define-global "gc" 'my/other-window-backward)
   (key-chord-define-global "cr" 'other-window)
 #+end_src
+
+#+RESULTS:
+: other-window
 
 * init-loaderの設定
    init-loaderのインストール

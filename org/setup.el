@@ -156,7 +156,7 @@
 
 (setq org-babel-sh-command "bash")
 
-(dolist (package '(org2blog xml-rpc metaweblog))
+(dolist (package '(org2blog xml-rpc metaweblog htmlize))
   (when (not (package-installed-p package))
     (package-install package)))
 

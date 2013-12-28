@@ -35,6 +35,7 @@ Entered on %U
  '(org-mobile-inbox-for-pull "~/Dropbox/Note/from-mobile.org")
  '(org-startup-with-inline-images t)
  '(org-todo-keywords (quote ((sequence "TODO" "WAITING" "DONE"))))
+ '(org2blog/wp-use-sourcecode-shortcode t)
  '(outline-minor-mode-prefix "")
  '(prelude-clean-whitespace-on-save t)
  '(prelude-flyspell nil)

@@ -1,4 +1,4 @@
-* init.el
+* TODO init.el
 ** 使い方
 
    C-c C-v t でinit.elを生成
@@ -6,6 +6,11 @@
 - [[http://orgmode.org/elpa.html][Org Emacs lisp Package Archive]]
 
 ** ヘッダ
+   
+** パッケージの初期設定
+  - パッケージをインストールするディレクトリの設定
+  - ダウンロードするリポジトリの設定
+  - 必要に応じてアーカイブ
 
 #+begin_src emacs-lisp :tangle init.el
 ;; init.el --- packageの初期化とorgファイルからのel生成
