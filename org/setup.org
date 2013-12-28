@@ -3,18 +3,23 @@
 #+DATE: [2013-12-28 土 15:02]
 * setup.org
   Emacsを設定するためのelです．
-* custom.elの読み込み
+* Basic
+** custom.elの読み込み
 #+begin_src emacs-lisp
   (setq custom-file "~/.emacs.d/custom.el")
   (if (file-exists-p (expand-file-name "~/.emacs.d/custom.el"))
       (load (expand-file-name custom-file) t nil nil))
 #+end_src
-* Basic
 ** Load Path
 #+begin_src emacs-lisp
   (let ((default-directory "~/.emacs.d/site-lisp/"))
     (normal-top-level-add-subdirs-to-load-path))
+  (let ((default-directory "~/.emacs.d/git/"))
+    (normal-top-level-add-subdirs-to-load-path))
 #+end_src
+
+#+RESULTS:
+
 ** 日本語文字コードの設定
 
   mmm あいうえお｜｜｜｜｜
@@ -130,6 +135,11 @@
   (require 'ox-md)
 #+end_src
 
+** mediawiki export
+#+begin_src emacs-lisp
+  (require 'ox-mediawiki)
+#+end_src
+
 ** LaTeX export
 #+begin_src emacs-lisp
 (require 'ox-latex)
@@ -193,7 +203,7 @@
                ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
 #+end_src
 
-** Publishing
+** WebにHTMLでPublishする
 #+begin_src emacs-lisp
 (setq org-publish-project-alist
       '(
@@ -227,7 +237,7 @@
 #+begin_src emacs-lisp
 (setq org-babel-sh-command "bash")
 #+end_src
-* WordPressに記事を投稿できるようにする（org2blog）
+** WordPressに記事を投稿できるようにする（org2blog）
   :PROPERTIES:
   :ID:       o2b:83d5ddbc-5e84-446c-826a-a2702eb6b997
   :POST_DATE: [2013-12-28 土 19:16]
@@ -276,7 +286,6 @@
 
 #+RESULTS:
 | blog.chubachi.net | :url | http://blog.chubachi.net/xmlrpc.php | :username | yc | :default-title | Emacs title | :default-categories | (org2blog emacs) | :tags-as-categories | nil |
-
 * MediaWiki
   - [[http://www.emacswiki.org/emacs/MediaWikiMode][EmacsWiki: Media Wiki Mode]]
     

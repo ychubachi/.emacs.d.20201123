@@ -1,0 +1,3 @@
+[submodule "git/orgmode-mediawiki"]
+	path = git/orgmode-mediawiki
+	url = git@github.com:craftkiller/orgmode-mediawiki.git

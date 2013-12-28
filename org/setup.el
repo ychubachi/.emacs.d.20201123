@@ -5,10 +5,11 @@
 
 (let ((default-directory "~/.emacs.d/site-lisp/"))
   (normal-top-level-add-subdirs-to-load-path))
+(let ((default-directory "~/.emacs.d/git/"))
+  (normal-top-level-add-subdirs-to-load-path))
 
 (set-language-environment "japanese")
 (prefer-coding-system 'utf-8)
-(add-to-list 'default-frame-alist '(font . "ricty-13.5"))
 
 ;; create backup file in ~/.emacs.d/backup
 (setq make-backup-files t)
@@ -78,6 +79,8 @@
 (add-to-list 'auto-mode-alist '("\\.dot$" . graphviz-dot-mode))
 
 (require 'ox-md)
+
+(require 'ox-mediawiki)
 
 (require 'ox-latex)
 
