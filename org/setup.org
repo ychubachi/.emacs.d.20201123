@@ -15,11 +15,18 @@
   (let ((default-directory "~/.emacs.d/site-lisp/"))
     (normal-top-level-add-subdirs-to-load-path))
 #+end_src
-** 日本語の設定
+** 日本語文字コードの設定
+
+  mmm あいうえお｜｜｜｜｜
+  iii ｜｜｜｜｜｜｜｜｜｜
+
+  - [[http://d.hatena.ne.jp/kitokitoki/20110502/p2][emacs での Ricty の導入手順 - わからん]]
+  - [[http://d.hatena.ne.jp/tunefs/20060710/p1][set-default-font vs default-frame-alist - Crossroad (tunefsの日記)]]
+  - フォントはcustom.el参照
+    
 #+begin_src emacs-lisp
   (set-language-environment "japanese")
   (prefer-coding-system 'utf-8)
-  
 #+end_src
 
 ** Backupの設定
@@ -232,10 +239,10 @@
    - ソースコードを表示させるには
      [[http://wordpress.org/plugins/syntaxhighlighter/][WordPress › SyntaxHighlighter Evolved « WordPress Plugins]]
      をインストールしておく．
-   - emacs lispは使えない．残念．
+   - emacs lispには対応していない．残念．
 
    |----------------+--------------------------|
-   | 機能           | コマンド                         |
+   | 機能           | コマンド                 |
    |----------------+--------------------------|
    | ログイン       | org2blog/wp-login        |
    | 新規投稿       | org2blog/wp-new-entry    |
@@ -317,10 +324,6 @@
     (interactive)
     (find-file "~/Dropbox/Note/todo.org"))
   
-<<<<<<< HEAD
-=======
-  
->>>>>>> b19e34629e8619f9f5c68a7072e6737d934fbaea
   (defun my/open-note()
     "備忘録を開きます．"
     (interactive)

@@ -8,6 +8,7 @@
 
 (set-language-environment "japanese")
 (prefer-coding-system 'utf-8)
+(add-to-list 'default-frame-alist '(font . "ricty-13.5"))
 
 ;; create backup file in ~/.emacs.d/backup
 (setq make-backup-files t)
@@ -18,6 +19,13 @@
 ;; create auto-save file in ~/.emacs.d/backup
 (setq auto-save-file-name-transforms
       `((".*" ,(expand-file-name "~/.emacs.d/backup/") t)))
+
+;; ================================================================
+;; キーバインディング
+;; ================================================================
+
+(global-set-key "\C-h" 'delete-backward-char)
+(global-set-key (kbd "C-c C-h") 'help-command)
 
 (global-auto-revert-mode 1)
 
@@ -186,13 +194,6 @@
     (package-install package)))
 
 ;; ================================================================
-;; キーバインディング
-;; ================================================================
-
-(global-set-key "\C-h" 'delete-backward-char)
-(global-set-key (kbd "C-c C-h") 'help-command)
-
-;; ================================================================
 ;; 自作関数
 ;; ================================================================
 
@@ -210,15 +211,20 @@
   (interactive)
   (find-file "~/.emacs.d/org/setup.org"))
 
-(defun my/open-note()
+(defun my/open-journal()
   "備忘録を開きます．"
   (interactive)
-  (find-file "~/Dropbox/Note/index.org"))
+  (find-file "~/Dropbox/Note/journal.org"))
   
 (defun my/open-todo()
   "備忘録を開きます．"
   (interactive)
   (find-file "~/Dropbox/Note/todo.org"))
+
+(defun my/open-note()
+  "備忘録を開きます．"
+  (interactive)
+  (find-file "~/Dropbox/Note/index.org"))
 
 (defun my/open-project-folder()
   "プロジェクトフォルダを開きます．"
@@ -227,9 +233,10 @@
 
 (global-set-key [f11] 'my/fullscreen)
 (global-set-key (kbd "<f1>") 'my/open-init-folder)
-(global-set-key (kbd "<f2>") 'my/open-note)
+(global-set-key (kbd "<f2>") 'my/open-journal)
 (global-set-key (kbd "<f3>") 'my/open-todo)
-(global-set-key (kbd "<f4>") 'my/open-project-folder)
+(global-set-key (kbd "<f4>") 'my/open-note)
+(global-set-key (kbd "<f5>") 'my/open-project-folder)
 
 ;; ================================================================
 ;; グローバルマップの設定
