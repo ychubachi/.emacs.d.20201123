@@ -1,5 +1,14 @@
+#+BLOG: blog.chubachi.net
+#+POSTID: 12
+#+DATE: [2013-12-28 土 15:02]
 * setup.org
   Emacsを設定するためのelです．
+* custom.elの読み込み
+#+begin_src emacs-lisp
+  (setq custom-file "~/.emacs.d/custom.el")
+  (if (file-exists-p (expand-file-name "~/.emacs.d/custom.el"))
+      (load (expand-file-name custom-file) t nil nil))
+#+end_src
 * Basic
 ** Load Path
 #+begin_src emacs-lisp
@@ -195,11 +204,12 @@
       ))
 #+end_src
 
-** Use bash
+** Shellのコードの実行にbashを使う
+   - デフォルトのシェルがzshなので，設定しておく．
 #+begin_src emacs-lisp
 (setq org-babel-sh-command "bash")
 #+end_src
-** org2blog
+** WordPressに記事を投稿できるようにする（org2blog）
    :PROPERTIES:
    :POST_DATE: [2013-12-26 木 22:33]
    :ID:       ad095d7e-5d6b-4db8-9fcf-d15e577dd737
@@ -207,7 +217,19 @@
    :BLOG:     cocreative
    :END:
 
-   使い方は [[https://github.com/punchagan/org2blog][punchagan/org2blog]] を参照．
+   |----------------+--------------------------|
+   | ログイン       | org2blog/wp-login        |
+   | 新規投稿       | org2blog/wp-new-entry    |
+   |----------------+--------------------------|
+   | 草稿として投稿 | C-c d                    |
+   | 公開           | C-c p                    |
+   | 草稿（ページ） | C-c D                    |
+   | 公開（ページ） | C-c P                    |
+   |----------------+--------------------------|
+   | 下位層を投稿   | org2blog/wp-post-subtree |
+   |----------------+--------------------------|
+
+   - 使い方は [[https://github.com/punchagan/org2blog][punchagan/org2blog]] を参照．
    
 #+begin_src emacs-lisp
 (dolist (package '(org2blog xml-rpc metaweblog))
@@ -219,18 +241,17 @@
 (require 'org2blog-autoloads)
 
 (setq org2blog/wp-blog-alist
-      '(("co-creative.biz"
-         :url "http://www.co-creative.biz/xmlrpc.php"
+      '(("blog.chubachi.net"
+         :url "http://blog.chubachi.net/xmlrpc.php"
          :username "yc"
-         :default-title "Hello World"
+         :default-title "Emacs title"
          :default-categories ("org2blog" "emacs")
          :tags-as-categories nil)
 	))
 #+end_src
 
 #+RESULTS:
-| cocreative | :url | http://www.co-creative.biz/xmlrpc.php | :username | yc | :default-title | Hello World | :default-categories | (org2blog emacs) | :tags-as-categories | nil |
-
+| blog.chubachi.net | :url | http://blog.chubachi.net/xmlrpc.php | :username | yc | :default-title | Emacs title | :default-categories | (org2blog emacs) | :tags-as-categories | nil |
 
 * MediaWiki
   - [[http://www.emacswiki.org/emacs/MediaWikiMode][EmacsWiki: Media Wiki Mode]]
@@ -239,6 +260,7 @@
   (dolist (package '(mediawiki))
     (when (not (package-installed-p package))
       (package-install package)))
+  (require 'mediawiki)
 #+end_src
 
 * パッケージの初期設定
@@ -389,12 +411,6 @@
   (key-chord-define-global "cr" 'other-window)
 #+end_src
 
-* Custom fileの読み込み
-#+begin_src emacs-lisp
-  (setq custom-file "~/.emacs.d/custom.el")
-  (if (file-exists-p (expand-file-name "~/.emacs.d/custom.el"))
-      (load (expand-file-name custom-file) t nil nil))
-#+end_src
 * init-loaderの設定
    init-loaderのインストール
 #+begin_src emacs-lisp

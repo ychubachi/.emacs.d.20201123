@@ -18,6 +18,7 @@
  '(display-time-mode t)
  '(fci-rule-color "#383838")
  '(graphviz-dot-preview-extension "pdf")
+ '(mediawiki-site-alist (quote (("YC's MediaWiki" "http://wiki.chubachi.net/" "yc" "" "メインページ"))))
  '(mouse-drag-copy-region t)
  '(org-agenda-files (quote ("~/Dropbox/Note/index.org" "~/Dropbox/Note/todo.org")))
  '(org-babel-load-languages (quote ((dot . t) (java . t) (ruby . t) (sh . t))))

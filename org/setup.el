@@ -1,4 +1,8 @@
 
+(setq custom-file "~/.emacs.d/custom.el")
+(if (file-exists-p (expand-file-name "~/.emacs.d/custom.el"))
+    (load (expand-file-name custom-file) t nil nil))
+
 (let ((default-directory "~/.emacs.d/site-lisp/"))
   (normal-top-level-add-subdirs-to-load-path))
 
@@ -161,10 +165,10 @@
 (require 'org2blog-autoloads)
 
 (setq org2blog/wp-blog-alist
-      '(("co-creative.biz"
-         :url "http://www.co-creative.biz/xmlrpc.php"
+      '(("blog.chubachi.net"
+         :url "http://blog.chubachi.net/xmlrpc.php"
          :username "yc"
-         :default-title "Hello World"
+         :default-title "Emacs title"
          :default-categories ("org2blog" "emacs")
          :tags-as-categories nil)
         ))
@@ -172,6 +176,7 @@
 (dolist (package '(mediawiki))
   (when (not (package-installed-p package))
     (package-install package)))
+(require 'mediawiki)
 
 ;; ================================================================
 ;; パッケージのインストール
@@ -312,10 +317,6 @@
 
 (key-chord-define-global "gc" 'my/other-window-backward)
 (key-chord-define-global "cr" 'other-window)
-
-(setq custom-file "~/.emacs.d/custom.el")
-(if (file-exists-p (expand-file-name "~/.emacs.d/custom.el"))
-    (load (expand-file-name custom-file) t nil nil))
 
 (when (not (package-installed-p 'init-loader))
   (package-install 'init-loader))
