@@ -1,5 +1,5 @@
-#+BLOG: blog.chubachi.net
-#+POSTID: 12
+#+STARTUP: fninline
+
 #+DATE: [2013-12-28 土 15:02]
 * setup.org
   Emacsを設定するためのelです．
@@ -251,19 +251,19 @@
      をインストールしておく．
    - emacs lispには対応していない．残念．
 
-   |----------------+--------------------------|
-   | 機能           | コマンド                 |
-   |----------------+--------------------------|
-   | ログイン       | org2blog/wp-login        |
-   | 新規投稿       | org2blog/wp-new-entry    |
-   |----------------+--------------------------|
-   | 草稿として投稿 | C-c d                    |
-   | 公開           | C-c p                    |
-   | 草稿（ページ） | C-c D                    |
-   | 公開（ページ） | C-c P                    |
-   |----------------+--------------------------|
-   | 下位層を投稿   | org2blog/wp-post-subtree |
-   |----------------+--------------------------|
+   |--------------------------+--------------------------|
+   | 機能                     | コマンド                 |
+   |--------------------------+--------------------------|
+   | ログイン                 | org2blog/wp-login        |
+   | 新規投稿                 | org2blog/wp-new-entry    |
+   |--------------------------+--------------------------|
+   | 草稿として投稿           | C-c d                    |
+   | 公開                     | C-c p                    |
+   | 草稿として草稿（ページ） | C-c D                    |
+   | 公開（ページ）           | C-c P                    |
+   |--------------------------+--------------------------|
+   | 下位層を投稿             | org2blog/wp-post-subtree |
+   |--------------------------+--------------------------|
    
 #+begin_src emacs-lisp
 (dolist (package '(org2blog xml-rpc metaweblog htmlize))
@@ -286,6 +286,7 @@
 
 #+RESULTS:
 | blog.chubachi.net | :url | http://blog.chubachi.net/xmlrpc.php | :username | yc | :default-title | Emacs title | :default-categories | (org2blog emacs) | :tags-as-categories | nil |
+
 * MediaWiki
   - [[http://www.emacswiki.org/emacs/MediaWikiMode][EmacsWiki: Media Wiki Mode]]
     
@@ -450,4 +451,3 @@
   (init-loader-load "~/.emacs.d/inits")
   ; (setq init-loader-show-log-after-init nil)
 #+end_src
-
