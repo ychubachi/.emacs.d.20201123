@@ -317,6 +317,10 @@
     (interactive)
     (find-file "~/Dropbox/Note/todo.org"))
   
+<<<<<<< HEAD
+=======
+  
+>>>>>>> b19e34629e8619f9f5c68a7072e6737d934fbaea
   (defun my/open-note()
     "備忘録を開きます．"
     (interactive)
