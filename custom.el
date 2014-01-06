@@ -38,6 +38,7 @@ Entered on %U
  '(org-directory "~/Dropbox/Note")
  '(org-mobile-directory "~/Dropbox/MobileOrg")
  '(org-mobile-inbox-for-pull "~/Dropbox/Note/from-mobile.org")
+ '(org-src-fontify-natively t)
  '(org-startup-with-inline-images t)
  '(org-todo-keywords (quote ((sequence "TODO" "WAITING" "DONE"))))
  '(org2blog/wp-use-sourcecode-shortcode t)
