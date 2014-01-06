@@ -39,7 +39,7 @@
       `((".*" ,(expand-file-name "~/.emacs.d/backup/") t)))
 
 ;; ================================================================
-;; ã‚­ãƒ¼ãƒã‚¤ãƒ³ãƒ‡ã‚£ãƒ³ã‚°
+;; ƒL[ƒoƒCƒ“ƒfƒBƒ“ƒO
 ;; ================================================================
 
 (global-set-key "\C-h" 'delete-backward-char)
@@ -64,20 +64,20 @@
       (format "%%f - Emacs@%s" (system-name)))
 
 ;; ================================================================
-;; ãƒ‘ãƒƒã‚±ãƒ¼ã‚¸ã®ã‚¤ãƒ³ã‚¹ãƒˆãƒ¼ãƒ«
+;; ƒpƒbƒP[ƒW‚ÌƒCƒ“ƒXƒg[ƒ‹
 ;; ================================================================
 (dolist (package '(smartrep graphviz-dot-mode))
   (when (not (package-installed-p package))
     (package-install package)))
 
 ;; ================================================================
-;; markdownãƒ¢ãƒ¼ãƒ‰ã§ã‚¢ã‚¦ãƒˆãƒ©ã‚¤ãƒ³ã‚’æœ‰åŠ¹ã«ã™ã‚‹
+;; markdownƒ‚[ƒh‚ÅƒAƒEƒgƒ‰ƒCƒ“‚ğ—LŒø‚É‚·‚é
 ;; ================================================================
 (add-hook 'markdown-mode-hook
           '(lambda () (outline-minor-mode t)))
 
 ;; ================================================================
-;; é€£ç¶šæ“ä½œã‚’ç´ æ•µã«ã™ã‚‹smartrep.elä½œã£ãŸ - sheephead
+;; ˜A‘±‘€ì‚ğ‘f“G‚É‚·‚ésmartrep.elì‚Á‚½ - sheephead
 ;; http://sheephead.homelinux.org/2011/12/19/6930/
 ;; ================================================================
 
@@ -94,6 +94,51 @@
 ;; graphviz-dot-mode
 ;; ================================================================
 (add-to-list 'auto-mode-alist '("\\.dot$" . graphviz-dot-mode))
+
+;; ================================================================
+;; ©ìŠÖ”
+;; ================================================================
+
+(defun my/fullscreen ()
+  (interactive)
+  (set-frame-parameter
+   nil
+   'fullscreen
+   (if (frame-parameter nil 'fullscreen)
+       nil
+     'fullboth)))
+
+(defun my/open-init-folder()
+  "İ’èƒtƒHƒ‹ƒ_‚ğŠJ‚«‚Ü‚·D"
+  (interactive)
+  (find-file "~/.emacs.d/org/setup.org"))
+
+(defun my/open-journal()
+  "”õ–Y˜^‚ğŠJ‚«‚Ü‚·D"
+  (interactive)
+  (find-file "~/Dropbox/Note/journal.org"))
+  
+(defun my/open-todo()
+  "”õ–Y˜^‚ğŠJ‚«‚Ü‚·D"
+  (interactive)
+  (find-file "~/Dropbox/Note/todo.org"))
+
+(defun my/open-note()
+  "”õ–Y˜^‚ğŠJ‚«‚Ü‚·D"
+  (interactive)
+  (find-file "~/Dropbox/Note/index.org"))
+
+(defun my/open-project-folder()
+  "ƒvƒƒWƒFƒNƒgƒtƒHƒ‹ƒ_‚ğŠJ‚«‚Ü‚·D"
+  (interactive)
+  (dired "~/git/"))
+
+(global-set-key [f11] 'my/fullscreen)
+(global-set-key (kbd "<f1>") 'my/open-init-folder)
+(global-set-key (kbd "<f2>") 'my/open-journal)
+(global-set-key (kbd "<f3>") 'my/open-todo)
+(global-set-key (kbd "<f4>") 'my/open-note)
+(global-set-key (kbd "<f5>") 'my/open-project-folder)
 
 (require 'ox-md)
 
@@ -207,59 +252,15 @@
 (require 'mediawiki)
 
 ;; ================================================================
-;; ãƒ‘ãƒƒã‚±ãƒ¼ã‚¸ã®ã‚¤ãƒ³ã‚¹ãƒˆãƒ¼ãƒ«
+;; ƒpƒbƒP[ƒW‚ÌƒCƒ“ƒXƒg[ƒ‹
 ;; ================================================================
 (dolist (package '(region-bindings-mode key-chord))
   (when (not (package-installed-p package))
     (package-install package)))
 
-;; ================================================================
-;; è‡ªä½œé–¢æ•°
-;; ================================================================
-
-(defun my/fullscreen ()
-  (interactive)
-  (set-frame-parameter
-   nil
-   'fullscreen
-   (if (frame-parameter nil 'fullscreen)
-       nil
-     'fullboth)))
-
-(defun my/open-init-folder()
-  "è¨­å®šãƒ•ã‚©ãƒ«ãƒ€ã‚’é–‹ãã¾ã™ï¼"
-  (interactive)
-  (find-file "~/.emacs.d/org/setup.org"))
-
-(defun my/open-journal()
-  "å‚™å¿˜éŒ²ã‚’é–‹ãã¾ã™ï¼"
-  (interactive)
-  (find-file "~/Dropbox/Note/journal.org"))
-  
-(defun my/open-todo()
-  "å‚™å¿˜éŒ²ã‚’é–‹ãã¾ã™ï¼"
-  (interactive)
-  (find-file "~/Dropbox/Note/todo.org"))
-
-(defun my/open-note()
-  "å‚™å¿˜éŒ²ã‚’é–‹ãã¾ã™ï¼"
-  (interactive)
-  (find-file "~/Dropbox/Note/index.org"))
-
-(defun my/open-project-folder()
-  "ãƒ—ãƒ­ã‚¸ã‚§ã‚¯ãƒˆãƒ•ã‚©ãƒ«ãƒ€ã‚’é–‹ãã¾ã™ï¼"
-  (interactive)
-  (dired "~/git/"))
-
-(global-set-key [f11] 'my/fullscreen)
-(global-set-key (kbd "<f1>") 'my/open-init-folder)
-(global-set-key (kbd "<f2>") 'my/open-journal)
-(global-set-key (kbd "<f3>") 'my/open-todo)
-(global-set-key (kbd "<f4>") 'my/open-note)
-(global-set-key (kbd "<f5>") 'my/open-project-folder)
 
 ;; ================================================================
-;; ã‚°ãƒ­ãƒ¼ãƒãƒ«ãƒãƒƒãƒ—ã®è¨­å®š
+;; ƒOƒ[ƒoƒ‹ƒ}ƒbƒv‚Ìİ’è
 ;; ================================================================
 
 ;;; shell-pop
@@ -269,7 +270,7 @@
 (global-set-key (kbd "C-x g") 'magit-status)
 
 ;; ================================================================
-;; ã‚°ãƒ­ãƒ¼ãƒãƒ«ãƒãƒƒãƒ—ã®è¨­å®š(org-mode)
+;; ƒOƒ[ƒoƒ‹ƒ}ƒbƒv‚Ìİ’è(org-mode)
 ;; ================================================================
 (global-set-key (kbd "C-c l") 'org-store-link)
 (global-set-key (kbd "C-c c") 'org-capture)
@@ -277,7 +278,7 @@
 (global-set-key (kbd "C-c b") 'org-iswitchb)
 
 ;; ================================================================
-;; ã‚°ãƒ­ãƒ¼ãƒãƒ«ãƒãƒƒãƒ—ã®è¨­å®š(helm)
+;; ƒOƒ[ƒoƒ‹ƒ}ƒbƒv‚Ìİ’è(helm)
 ;; ================================================================
 (let ((key-and-func
        `(
@@ -295,7 +296,7 @@
         do (global-set-key key func)))
 
 ;; ================================================================
-;; å€‹äººç”¨ã‚­ãƒ¼ãƒãƒƒãƒ—ã®è¨­å®š
+;; ŒÂl—pƒL[ƒ}ƒbƒv‚Ìİ’è
 ;; ================================================================
 (defun my/other-window-backward ()
   "Move to other window backward."
@@ -324,7 +325,7 @@
        (define-key 'personal-map (kbd "p") 'skim-forward-search)))
 
 ;; ================================================================
-;; ãƒªãƒ¼ã‚¸ãƒ§ãƒ³ãŒã‚ã‚‹é–“ã®ã‚­ãƒ¼ãƒã‚¤ãƒ³ãƒ‡ã‚£ãƒ³ã‚°ã‚’å¤‰æ›´ã™ã‚‹
+;; ƒŠ[ƒWƒ‡ƒ“‚ª‚ ‚éŠÔ‚ÌƒL[ƒoƒCƒ“ƒfƒBƒ“ƒO‚ğ•ÏX‚·‚é
 ;; ================================================================
 
 (require 'region-bindings-mode)
@@ -337,7 +338,7 @@
 (setq region-bindings-mode-disabled-modes '(mew-summary-mode))
 
 ;; ================================================================
-;; key-chordã®è¨­å®šã‚’ã™ã‚‹
+;; key-chord‚Ìİ’è‚ğ‚·‚é
 ;; ================================================================
 (require 'key-chord)
 (key-chord-mode 1)
