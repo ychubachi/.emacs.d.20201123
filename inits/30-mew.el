@@ -43,7 +43,7 @@
 ; w3m
 (condition-case nil
     (require 'mew-w3m)
-  (file-error nil))
+  (error (message "mew-w3m: Plase install w3m")))
 
 ; pdf viewer
 (setq mew-prog-pdf '("evince" nil t))
