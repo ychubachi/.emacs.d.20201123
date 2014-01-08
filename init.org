@@ -1,25 +1,27 @@
-* TODO init.el
+* init.el
+
 ** 使い方
 
    C-c C-v t でinit.elを生成
 
 - [[http://orgmode.org/elpa.html][Org Emacs lisp Package Archive]]
 
-** ヘッダ
-   
-** パッケージの初期設定
-  - パッケージをインストールするディレクトリの設定
-  - ダウンロードするリポジトリの設定
-  - 必要に応じてアーカイブ
+** ヘッダコメント
 
 #+begin_src emacs-lisp :tangle init.el
 ;; init.el --- packageの初期化とorgファイルからのel生成
 ;;
 ;; This file loads Org-mode and then loads the rest of our Emacs initialization from Emacs lisp
 ;; embedded in literate Org-mode files.
-
+#+end_src
+   
+** パッケージの初期設定
+  - パッケージをインストールするディレクトリの設定
+  - ダウンロードするリポジトリの設定
+  - 必要に応じてアーカイブ
+** TODO ここではorgだけを設定するようにしたい
+#+begin_src emacs-lisp :tangle init.el
 (require 'package)
-;; (setq package-user-dir "~/.emacs.d/packages/")
 (setq package-archives '(("org" .
 			  "http://orgmode.org/elpa/")
 			 ("gnu" .

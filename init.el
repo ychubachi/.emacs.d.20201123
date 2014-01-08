@@ -5,7 +5,6 @@
 ;; embedded in literate Org-mode files.
 
 (require 'package)
-;; (setq package-user-dir "~/.emacs.d/packages/")
 (setq package-archives '(("org" .
                           "http://orgmode.org/elpa/")
                          ("gnu" .
