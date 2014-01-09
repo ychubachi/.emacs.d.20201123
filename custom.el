@@ -43,6 +43,7 @@ Entered on %U
  '(org-todo-keywords (quote ((sequence "TODO" "WAITING" "DONE"))))
  '(org2blog/wp-use-sourcecode-shortcode t)
  '(outline-minor-mode-prefix "")
+ '(package-archives (quote (("org" . "http://orgmode.org/elpa/") ("gnu" . "http://elpa.gnu.org/packages/") ("marmalade" . "http://marmalade-repo.org/packages/") ("melpa" . "http://melpa.milkbox.net/packages/"))))
  '(prelude-clean-whitespace-on-save t)
  '(prelude-flyspell nil)
  '(prelude-guru nil)
