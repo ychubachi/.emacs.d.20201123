@@ -1,11 +1,10 @@
 
 (setq custom-file "~/.emacs.d/custom.el")
-(if (file-exists-p (expand-file-name "~/.emacs.d/custom.el"))
-    (load (expand-file-name custom-file) t nil nil))
+(load custom-file)
 
-(let ((default-directory "~/.emacs.d/site-lisp/"))
-  (normal-top-level-add-subdirs-to-load-path))
 (let ((default-directory "~/.emacs.d/git/"))
+  (normal-top-level-add-subdirs-to-load-path))
+(let ((default-directory "~/.emacs.d/site-lisp/"))
   (normal-top-level-add-subdirs-to-load-path))
 
 (set-language-environment "japanese")
@@ -39,7 +38,7 @@
       `((".*" ,(expand-file-name "~/.emacs.d/backup/") t)))
 
 ;; ================================================================
-;; ƒL[ƒoƒCƒ“ƒfƒBƒ“ƒO
+;; ã‚­ãƒ¼ãƒã‚¤ãƒ³ãƒ‡ã‚£ãƒ³ã‚°
 ;; ================================================================
 
 (global-set-key "\C-h" 'delete-backward-char)
@@ -64,20 +63,20 @@
       (format "%%f - Emacs@%s" (system-name)))
 
 ;; ================================================================
-;; ƒpƒbƒP[ƒW‚ÌƒCƒ“ƒXƒg[ƒ‹
+;; ãƒ‘ãƒƒã‚±ãƒ¼ã‚¸ã®ã‚¤ãƒ³ã‚¹ãƒˆãƒ¼ãƒ«
 ;; ================================================================
 (dolist (package '(smartrep graphviz-dot-mode))
   (when (not (package-installed-p package))
     (package-install package)))
 
 ;; ================================================================
-;; markdownƒ‚[ƒh‚ÅƒAƒEƒgƒ‰ƒCƒ“‚ğ—LŒø‚É‚·‚é
+;; markdownãƒ¢ãƒ¼ãƒ‰ã§ã‚¢ã‚¦ãƒˆãƒ©ã‚¤ãƒ³ã‚’æœ‰åŠ¹ã«ã™ã‚‹
 ;; ================================================================
 (add-hook 'markdown-mode-hook
           '(lambda () (outline-minor-mode t)))
 
 ;; ================================================================
-;; ˜A‘±‘€ì‚ğ‘f“G‚É‚·‚ésmartrep.elì‚Á‚½ - sheephead
+;; é€£ç¶šæ“ä½œã‚’ç´ æ•µã«ã™ã‚‹smartrep.elä½œã£ãŸ - sheephead
 ;; http://sheephead.homelinux.org/2011/12/19/6930/
 ;; ================================================================
 
@@ -96,7 +95,7 @@
 (add-to-list 'auto-mode-alist '("\\.dot$" . graphviz-dot-mode))
 
 ;; ================================================================
-;; ©ìŠÖ”
+;; è‡ªä½œé–¢æ•°
 ;; ================================================================
 
 (defun my/fullscreen ()
@@ -109,27 +108,27 @@
      'fullboth)))
 
 (defun my/open-init-folder()
-  "İ’èƒtƒHƒ‹ƒ_‚ğŠJ‚«‚Ü‚·D"
+  "è¨­å®šãƒ•ã‚©ãƒ«ãƒ€ã‚’é–‹ãã¾ã™ï¼"
   (interactive)
   (find-file "~/.emacs.d/org/setup.org"))
 
 (defun my/open-journal()
-  "”õ–Y˜^‚ğŠJ‚«‚Ü‚·D"
+  "å‚™å¿˜éŒ²ã‚’é–‹ãã¾ã™ï¼"
   (interactive)
   (find-file "~/Dropbox/Note/journal.org"))
   
 (defun my/open-todo()
-  "”õ–Y˜^‚ğŠJ‚«‚Ü‚·D"
+  "å‚™å¿˜éŒ²ã‚’é–‹ãã¾ã™ï¼"
   (interactive)
   (find-file "~/Dropbox/Note/todo.org"))
 
 (defun my/open-note()
-  "”õ–Y˜^‚ğŠJ‚«‚Ü‚·D"
+  "å‚™å¿˜éŒ²ã‚’é–‹ãã¾ã™ï¼"
   (interactive)
   (find-file "~/Dropbox/Note/index.org"))
 
 (defun my/open-project-folder()
-  "ƒvƒƒWƒFƒNƒgƒtƒHƒ‹ƒ_‚ğŠJ‚«‚Ü‚·D"
+  "ãƒ—ãƒ­ã‚¸ã‚§ã‚¯ãƒˆãƒ•ã‚©ãƒ«ãƒ€ã‚’é–‹ãã¾ã™ï¼"
   (interactive)
   (dired "~/git/"))
 
@@ -252,7 +251,7 @@
 (require 'mediawiki)
 
 ;; ================================================================
-;; ƒpƒbƒP[ƒW‚ÌƒCƒ“ƒXƒg[ƒ‹
+;; ãƒ‘ãƒƒã‚±ãƒ¼ã‚¸ã®ã‚¤ãƒ³ã‚¹ãƒˆãƒ¼ãƒ«
 ;; ================================================================
 (dolist (package '(region-bindings-mode key-chord))
   (when (not (package-installed-p package))
@@ -260,7 +259,7 @@
 
 
 ;; ================================================================
-;; ƒOƒ[ƒoƒ‹ƒ}ƒbƒv‚Ìİ’è
+;; ã‚°ãƒ­ãƒ¼ãƒãƒ«ãƒãƒƒãƒ—ã®è¨­å®š
 ;; ================================================================
 
 ;;; shell-pop
@@ -270,7 +269,7 @@
 (global-set-key (kbd "C-x g") 'magit-status)
 
 ;; ================================================================
-;; ƒOƒ[ƒoƒ‹ƒ}ƒbƒv‚Ìİ’è(org-mode)
+;; ã‚°ãƒ­ãƒ¼ãƒãƒ«ãƒãƒƒãƒ—ã®è¨­å®š(org-mode)
 ;; ================================================================
 (global-set-key (kbd "C-c l") 'org-store-link)
 (global-set-key (kbd "C-c c") 'org-capture)
@@ -278,7 +277,7 @@
 (global-set-key (kbd "C-c b") 'org-iswitchb)
 
 ;; ================================================================
-;; ƒOƒ[ƒoƒ‹ƒ}ƒbƒv‚Ìİ’è(helm)
+;; ã‚°ãƒ­ãƒ¼ãƒãƒ«ãƒãƒƒãƒ—ã®è¨­å®š(helm)
 ;; ================================================================
 (let ((key-and-func
        `(
@@ -296,7 +295,7 @@
         do (global-set-key key func)))
 
 ;; ================================================================
-;; ŒÂl—pƒL[ƒ}ƒbƒv‚Ìİ’è
+;; å€‹äººç”¨ã‚­ãƒ¼ãƒãƒƒãƒ—ã®è¨­å®š
 ;; ================================================================
 (defun my/other-window-backward ()
   "Move to other window backward."
@@ -325,7 +324,7 @@
        (define-key 'personal-map (kbd "p") 'skim-forward-search)))
 
 ;; ================================================================
-;; ƒŠ[ƒWƒ‡ƒ“‚ª‚ ‚éŠÔ‚ÌƒL[ƒoƒCƒ“ƒfƒBƒ“ƒO‚ğ•ÏX‚·‚é
+;; ãƒªãƒ¼ã‚¸ãƒ§ãƒ³ãŒã‚ã‚‹é–“ã®ã‚­ãƒ¼ãƒã‚¤ãƒ³ãƒ‡ã‚£ãƒ³ã‚°ã‚’å¤‰æ›´ã™ã‚‹
 ;; ================================================================
 
 (require 'region-bindings-mode)
@@ -338,7 +337,7 @@
 (setq region-bindings-mode-disabled-modes '(mew-summary-mode))
 
 ;; ================================================================
-;; key-chord‚Ìİ’è‚ğ‚·‚é
+;; key-chordã®è¨­å®šã‚’ã™ã‚‹
 ;; ================================================================
 (require 'key-chord)
 (key-chord-mode 1)
