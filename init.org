@@ -1,63 +1,562 @@
-* init.el
-
+# -*- org -*-
+#+STARTUP: content
+#+PROPERTY: header-args:emacs-lisp :tangle init.el
+* 説明
 ** 使い方
-
-   C-c C-v t でinit.elを生成
+  - Emacsを設定するためのelです．
+  - [[https://github.com/ychubachi/.emacs.d/blob/master/org/setup.org][.emacs.d/org/setup.org at master · ychubachi/.emacs.d]]
+  - 日本のEmacsユーザ向け．
+  - C-c C-v t でinit.elを生成
+    - [[http://orgmode.org/manual/Header-arguments-in-Org-mode-properties.html#Header-arguments-in-Org-mode-properties][Header arguments in Org mode properties - The Org Manual]]
 
 - [[http://orgmode.org/elpa.html][Org Emacs lisp Package Archive]]
 
+* 設定
 ** ヘッダコメント
 
-#+begin_src emacs-lisp :tangle init.el
-;; init.el --- packageの初期化とorgファイルからのel生成
-;;
-;; This file loads Org-mode and then loads the rest of our Emacs initialization from Emacs lisp
-;; embedded in literate Org-mode files.
+#+begin_src emacs-lisp
+;; init.el --- Emacsの初期設定
+#+end_src
+
+** カスタマイズ設定ファイル
+   - 概要
+     - カスタマイズ設定を保存するファイルを指定して，読み込みます．
+     - custom.elファイルが存在しないとエラーになります．
+   - 参考
+     - [[http://www.gnu.org/software/emacs/manual/html_node/emacs/Saving-Customizations.html][Saving Customizations - GNU Emacs Manual]]
+       
+#+begin_src emacs-lisp
+  (setq custom-file "~/.emacs.d/custom.el")
+  (load custom-file)
 #+end_src
    
-** パッケージの初期設定
-  - パッケージをインストールするディレクトリの設定
-  - ダウンロードするリポジトリの設定
-  - 必要に応じてアーカイブ
-** TODO ここではorgだけを設定するようにしたい
-#+begin_src emacs-lisp :tangle init.el
-(require 'package)
-(setq package-archives '(("org" .
-			  "http://orgmode.org/elpa/")
-			 ("gnu" .
-			  "http://elpa.gnu.org/packages/")
-			 ("marmalade" .
-			  "http://marmalade-repo.org/packages/")
-			 ("melpa" .
-			  "http://melpa.milkbox.net/packages/")
-			 ))
-  
-(package-initialize)
-(when (not package-archive-contents)
-  (package-refresh-contents))
+** パッケージ
+*** パッケージの初期設定
+  - ダウンロードするリポジトリの設定はcustom.elにあります．
+    
+#+begin_src emacs-lisp
+  (require 'package)
+  (package-initialize)
+#+end_src
 
-;; Load up Org Mode and (now included) Org Babel for elisp embedded in Org Mode files
-(dolist (package '(org org-plus-contrib))
+*** パッケージ一覧の更新
+  - 必要に応じてリフレッシュ
+  - 参考
+    - [[http://stackoverflow.com/questions/14836958/updating-packages-in-emacs][elpa - Updating packages in Emacs - Stack Overflow]]
+
+#+begin_src emacs-lisp
+  (when (not package-archive-contents)
+    (package-refresh-contents))
+#+end_src  
+
+** org-modeの設定
+**** orgパッケージのインストール
+#+begin_src emacs-lisp
+  (dolist (package '(org org-plus-contrib))
+    (when (not (package-installed-p package))
+      (package-install package)))
+  
+  (require 'org-install)
+  (require 'ob-tangle)
+
+#+end_src
+** TODO 設定の生成  
+#+begin_src emacs-lisp
+  ;; ;; load up all literate org-mode files in this directory
+  ;; (setq dotfiles-dir
+  ;;       (concat
+  ;;        (file-name-directory ; ファイル名のデレクトリ部分
+  ;;         (or
+  ;;          (buffer-file-name)
+  ;;          load-file-name))
+  ;;        "org/"
+  ;;        ))
+  
+  ;; (message dotfiles-dir)
+  
+  ;; (mapc #'org-babel-load-file
+  ;;       (directory-files dotfiles-dir t "\\.org$"))
+  
+#+end_src
+* 標準設定
+  - 外部のパッケージに依存しない，標準的な設定を行います．
+
+** Load Path
+   
+#+begin_src emacs-lisp
+  (let ((default-directory "~/.emacs.d/git/"))
+    (normal-top-level-add-subdirs-to-load-path))
+  (let ((default-directory "~/.emacs.d/site-lisp/"))
+    (normal-top-level-add-subdirs-to-load-path))
+#+end_src
+
+#+RESULTS:
+
+** 日本語文字コードの設定
+    
+#+begin_src emacs-lisp
+  (set-language-environment "japanese")
+  (prefer-coding-system 'utf-8)
+#+end_src
+
+** 日本語文字フォントの設定
+
+  mmm あいうえお｜｜｜｜｜
+  iii ｜｜｜｜｜｜｜｜｜｜
+
+  - [[http://d.hatena.ne.jp/kitokitoki/20110502/p2][emacs での Ricty の導入手順 - わからん]]
+  - [[http://d.hatena.ne.jp/tunefs/20060710/p1][set-default-font vs default-frame-alist - Crossroad (tunefsの日記)]]
+
+  - Rictyで斜体が豆腐になるのを回避します．
+  - [[http://gongo.hatenablog.com/entry/2011/12/08/232953][Cocoa Emacs で斜体文字が豆腐になって悲しかったのが直って幸福が実現した - Thanks Driven Life]]
+
+#+begin_src emacs-lisp
+  ;; (when (x-list-fonts "Ricty")
+  ;;   (let* ((size 14)
+  ;;          (asciifont "Ricty")
+  ;;          (jpfont "Ricty")
+  ;;          (h (* size 10))
+  ;;          (fontspec)
+  ;;          (jp-fontspec))
+  ;;     (set-face-attribute 'default nil :family asciifont :height h)
+  ;;     (setq fontspec (font-spec :family asciifont))
+  ;;     (setq jp-fontspec (font-spec :family jpfont))
+  ;;     (set-fontset-font nil 'japanese-jisx0208 jp-fontspec)
+  ;;     (set-fontset-font nil 'japanese-jisx0212 jp-fontspec)
+  ;;     (set-fontset-font nil 'japanese-jisx0213-1 jp-fontspec)
+  ;;     (set-fontset-font nil 'japanese-jisx0213-2 jp-fontspec)
+  ;;     (set-fontset-font nil '(#x0080 . #x024F) fontspec)
+  ;;     (set-fontset-font nil '(#x0370 . #x03FF) fontspec)))
+#+end_src
+
+#+RESULTS:
+
+** Backupの設定
+#+begin_src emacs-lisp
+  ;; create backup file in ~/.emacs.d/backup
+  (setq make-backup-files t)
+  (setq backup-directory-alist
+    (cons (cons "\\.*$" (expand-file-name "~/.emacs.d/backup"))
+      backup-directory-alist))
+  
+  ;; create auto-save file in ~/.emacs.d/backup
+  (setq auto-save-file-name-transforms
+        `((".*" ,(expand-file-name "~/.emacs.d/backup/") t)))
+#+end_src
+
+** DELキーをBSにする
+
+#+begin_src emacs-lisp
+  ;; ================================================================
+  ;; キーバインディング
+  ;; ================================================================
+  
+  (global-set-key "\C-h" 'delete-backward-char)
+  (global-set-key (kbd "C-c C-h") 'help-command)
+#+end_src
+
+** auto-revert
+   Emacsの外でファイルが更新されたら，自動的にバッファを再読込する．
+
+#+begin_src emacs-lisp
+  (global-auto-revert-mode 1)
+#+end_src
+
+** 行番号表示
+#+begin_src emacs-lisp
+(global-linum-mode t)
+(set-face-attribute 'linum nil :foreground "yellow" :height 0.8)
+(setq linum-format "%4d")
+#+end_src
+
+** ライブラリの読み込み
+   - clはcommon lisp
+     
+#+begin_src emacs-lisp
+  (require 'cl)
+#+end_src
+
+** 見た目
+
+#+begin_src emacs-lisp
+  (setq inhibit-splash-screen t)
+  (setq inhibit-startup-screen t)
+  
+  (tool-bar-mode 0)
+  (scroll-bar-mode 0)
+  (menu-bar-mode 0)
+  
+  (setq frame-title-format
+        (format "%%f - Emacs@%s" (system-name)))
+#+end_src
+
+** 文書執筆関係
+
+#+begin_src emacs-lisp
+;; ================================================================
+;; パッケージのインストール
+;; ================================================================
+(dolist (package '(smartrep graphviz-dot-mode))
   (when (not (package-installed-p package))
     (package-install package)))
 
-(require 'org-install)
-(require 'ob-tangle)
+;; ================================================================
+;; markdownモードでアウトラインを有効にする
+;; ================================================================
+(add-hook 'markdown-mode-hook
+          '(lambda () (outline-minor-mode t)))
 
-;; load up all literate org-mode files in this directory
-(setq dotfiles-dir
-      (concat
-       (file-name-directory ; ファイル名のデレクトリ部分
-	(or
-	 (buffer-file-name)
-	 load-file-name))
-       "org/"
-       ))
+;; ================================================================
+;; 連続操作を素敵にするsmartrep.el作った - sheephead
+;; http://sheephead.homelinux.org/2011/12/19/6930/
+;; ================================================================
 
-(message dotfiles-dir)
+(require 'smartrep)
+(eval-after-load "org"
+  '(progn
+     (smartrep-define-key
+      org-mode-map "C-c" '(("C-n" . (lambda ()
+                                      (outline-next-visible-heading 1)))
+                           ("C-p" . (lambda ()
+                                      (outline-previous-visible-heading 1)))))))
 
-(mapc #'org-babel-load-file
-      (directory-files dotfiles-dir t "\\.org$"))
-
-;;; init.el ends here
+;; ================================================================
+;; graphviz-dot-mode
+;; ================================================================
+(add-to-list 'auto-mode-alist '("\\.dot$" . graphviz-dot-mode))
 #+end_src
+
+** キーバインディング
+
+#+begin_src emacs-lisp
+  ;; ================================================================
+  ;; 自作関数
+  ;; ================================================================
+  
+  (defun my/fullscreen ()
+    (interactive)
+    (set-frame-parameter
+     nil
+     'fullscreen
+     (if (frame-parameter nil 'fullscreen)
+         nil
+       'fullboth)))
+  
+  (defun my/open-init-folder()
+    "設定フォルダを開きます．"
+    (interactive)
+    (find-file "~/.emacs.d/init.org"))
+  
+  (defun my/open-journal()
+    "備忘録を開きます．"
+    (interactive)
+    (find-file "~/Dropbox/Note/journal.org"))
+    
+  (defun my/open-todo()
+    "備忘録を開きます．"
+    (interactive)
+    (find-file "~/Dropbox/Note/todo.org"))
+  
+  (defun my/open-note()
+    "備忘録を開きます．"
+    (interactive)
+    (find-file "~/Dropbox/Note/index.org"))
+
+  (defun my/open-project-folder()
+    "プロジェクトフォルダを開きます．"
+    (interactive)
+    (dired "~/git/"))
+  
+  (global-set-key [f11] 'my/fullscreen)
+  (global-set-key (kbd "<f1>") 'my/open-init-folder)
+  (global-set-key (kbd "<f2>") 'my/open-journal)
+  (global-set-key (kbd "<f3>") 'my/open-todo)
+  (global-set-key (kbd "<f4>") 'my/open-note)
+  (global-set-key (kbd "<f5>") 'my/open-project-folder)
+#+end_src
+
+* Org
+** Markdown export
+#+begin_src emacs-lisp
+  (require 'ox-md)
+#+end_src
+
+** mediawiki export
+#+begin_src emacs-lisp
+  (require 'ox-mediawiki)
+#+end_src
+
+** LaTeX export
+#+begin_src emacs-lisp
+(require 'ox-latex)
+
+(add-to-list 'auto-mode-alist '("\\.org$" . org-mode))
+(setq org-latex-default-class "jsarticle")
+
+(setq org-export-in-background nil)
+
+(cond ((eq system-type 'gnu/linux)
+       (setq org-latex-pdf-process '("latexmk -e '$latex=q/platex %S/' -e '$bibtex=q/pbibtex %B/' -e '$makeindex=q/mendex -o %D %S/' -e '$dvipdf=q/dvipdfmx -o %D %S/' -norc -gg -pdfdvi %f"))
+       (setq org-file-apps '(("pdf" . "evince %s"))))
+      ((eq system-type 'darwin)
+       (setq org-latex-pdf-process '("latexmk -e '$latex=q/platex %S/' -e '$bibtex=q/pbibtex %B/' -e '$makeindex=q/mendex -o %D %S/' -e '$dvipdf=q/dvipdfmx -o %D %S/' -norc -gg -pdfdvi %f"))
+       (setq org-file-apps '(("pdf" . "/usr/bin/open -a Skim %s")))))
+
+;; jsarticle
+(add-to-list 'org-latex-classes
+             '("jsarticle"
+	       "\\ifdefined\\ucs
+  \\documentclass[uplatex,12pt,a4paper,papersize,dvipdfmx]{jsarticle}
+\\else
+  \\documentclass[12pt,a4paper,papersize,dvipdfmx]{jsarticle}
+\\fi
+[NO-DEFAULT-PACKAGES]
+\\usepackage{amsmath}
+\\usepackage{newtxtext,newtxmath}
+\\usepackage{graphicx}
+\\usepackage{hyperref}
+\\usepackage{pxjahyper}
+\\hypersetup{setpagesize=false,colorlinks=true}"
+               ("\\section{%s}" . "\\section*{%s}")
+               ("\\subsection{%s}" . "\\subsection*{%s}")
+               ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+               ("\\paragraph{%s}" . "\\paragraph*{%s}")
+               ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
+#+end_src
+
+** LeTex (beamer) export
+#+begin_src emacs-lisp
+(require 'ox-beamer)
+
+(add-to-list 'org-latex-classes
+             '("beamer"
+               "\\documentclass[dvipdfmx]{beamer}
+[NO-DEFAULT-PACKAGES]
+\\usepackage{bxdpx-beamer}
+\\usepackage{pxjahyper}
+\\usepackage{minijs}
+\\renewcommand{\\kanjifamilydefault}{\\gtdefault}
+\\AtBeginSection[]
+{
+  \\begin{frame}<beamer>{Outline}
+  \\tableofcontents[currentsection,currentsubsection]
+  \\end{frame}
+}"
+               ("\\section{%s}" . "\\section*{%s}")
+               ("\\subsection{%s}" . "\\subsection*{%s}")
+               ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+               ("\\paragraph{%s}" . "\\paragraph*{%s}")
+               ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
+#+end_src
+
+** WebにHTMLでPublishする
+#+begin_src emacs-lisp
+(setq org-publish-project-alist
+      '(
+	("chubachi.net-notes"
+	 :base-directory "~/Ubuntu One/WebSites/chubachi.net/org/"
+	 :base-extension "org"
+	 :publishing-directory "~/Ubuntu One/WebSites/chubachi.net/www/"
+	 :publishing-function org-html-publish-to-html
+	 ;; :headline-levels 3
+	 ;; :section-numbers nil
+	 ;; :with-toc nil
+	 ;; :html-head "<link rel=\"stylesheet\"
+         ;;               href=\"../other/mystyle.css\" type=\"text/css\"/>"
+	 ;; :html-preamble t
+	 :recursive t
+	 )
+	("chubachi.net-static"
+	 :base-directory "~/Ubuntu One/WebSites/chubachi.net/org/"
+	 :base-extension "css\\|js\\|png\\|jpg\\|gif\\|pdf\\|mp3\\|ogg\\|swf"
+	 :publishing-directory "~/Ubuntu One/WebSites/chubachi.net/www/"
+	 :recursive t
+	 :publishing-function org-publish-attachment
+	 )
+	("chubachi.net"
+	 :components ("chubachi.net-notes" "chubachi.net-static"))
+      ))
+#+end_src
+
+** Shellのコードの実行にbashを使う
+   - デフォルトのシェルがzshなので，設定しておく．
+#+begin_src emacs-lisp
+(setq org-babel-sh-command "bash")
+#+end_src
+** WordPressに記事を投稿できるようにする（org2blog）
+  :PROPERTIES:
+  :ID:       o2b:83d5ddbc-5e84-446c-826a-a2702eb6b997
+  :POST_DATE: [2013-12-28 土 19:16]
+  :POSTID:   18
+  :BLOG:     blog.chubachi.net
+  :END:
+
+   - 使い方は [[https://github.com/punchagan/org2blog][punchagan/org2blog]] を参照．
+   - ソースコードを表示させるには
+     [[http://wordpress.org/plugins/syntaxhighlighter/][WordPress › SyntaxHighlighter Evolved « WordPress Plugins]]
+     をインストールしておく．
+   - emacs lispには対応していない．残念．
+
+   |--------------------------+--------------------------|
+   | 機能                     | コマンド                 |
+   |--------------------------+--------------------------|
+   | ログイン                 | org2blog/wp-login        |
+   | 新規投稿                 | org2blog/wp-new-entry    |
+   |--------------------------+--------------------------|
+   | 草稿として投稿           | C-c d                    |
+   | 公開                     | C-c p                    |
+   | 草稿として草稿（ページ） | C-c D                    |
+   | 公開（ページ）           | C-c P                    |
+   |--------------------------+--------------------------|
+   | 下位層を投稿             | org2blog/wp-post-subtree |
+   |--------------------------+--------------------------|
+   
+#+begin_src emacs-lisp
+(dolist (package '(org2blog xml-rpc metaweblog htmlize))
+  (when (not (package-installed-p package))
+    (package-install package)))
+
+(require 'xml-rpc)
+(require 'metaweblog)
+(require 'org2blog-autoloads)
+
+(setq org2blog/wp-blog-alist
+      '(("blog.chubachi.net"
+         :url "http://blog.chubachi.net/xmlrpc.php"
+         :username "yc"
+         :default-title "Emacs title"
+         :default-categories ("org2blog" "emacs")
+         :tags-as-categories nil)
+	))
+#+end_src
+
+#+RESULTS:
+| blog.chubachi.net | :url | http://blog.chubachi.net/xmlrpc.php | :username | yc | :default-title | Emacs title | :default-categories | (org2blog emacs) | :tags-as-categories | nil |
+
+* MediaWiki
+  - [[http://www.emacswiki.org/emacs/MediaWikiMode][EmacsWiki: Media Wiki Mode]]
+    
+#+begin_src emacs-lisp
+  (dolist (package '(mediawiki))
+    (when (not (package-installed-p package))
+      (package-install package)))
+  (require 'mediawiki)
+#+end_src
+
+* キーバインディング
+#+begin_src emacs-lisp
+  ;; ================================================================
+  ;; パッケージのインストール
+  ;; ================================================================
+  (dolist (package '(region-bindings-mode key-chord))
+    (when (not (package-installed-p package))
+      (package-install package)))
+  
+
+  ;; ================================================================
+  ;; グローバルマップの設定
+  ;; ================================================================
+  
+  ;;; shell-pop
+  (global-set-key (kbd "C-z") 'shell-pop)
+  
+  ;;; magit
+  (global-set-key (kbd "C-x g") 'magit-status)
+  
+  ;; ================================================================
+  ;; グローバルマップの設定(org-mode)
+  ;; ================================================================
+  (global-set-key (kbd "C-c l") 'org-store-link)
+  (global-set-key (kbd "C-c c") 'org-capture)
+  (global-set-key (kbd "C-c a") 'org-agenda)
+  (global-set-key (kbd "C-c b") 'org-iswitchb)
+  
+  ;; ================================================================
+  ;; グローバルマップの設定(helm)
+  ;; ================================================================
+  (let ((key-and-func
+         `(
+           (,(kbd "M-x")     helm-M-x)
+           (,(kbd "M-y")     helm-show-kill-ring)
+           (,(kbd "C-x C-f") helm-find-files)
+  ;;         (,(kbd "C-r")   helm-for-files)
+  ;;         (,(kbd "C-^")   helm-c-apropos)
+  ;;         (,(kbd "C-;")   helm-resume)
+  ;;         (,(kbd "M-s")   helm-occur)
+  ;;         (,(kbd "M-z")   helm-do-grep)
+  ;;         (,(kbd "C-S-h") helm-descbinds)
+           )))
+    (loop for (key func) in key-and-func
+          do (global-set-key key func)))
+  
+  ;; ================================================================
+  ;; 個人用キーマップの設定
+  ;; ================================================================
+  (defun my/other-window-backward ()
+    "Move to other window backward."
+    (interactive)
+    (other-window -1))
+  
+  (define-prefix-command 'personal-map)
+  (global-set-key (kbd "C-.") 'personal-map)
+  
+  (define-key 'personal-map (kbd "C-n") 'other-window)
+  (define-key 'personal-map (kbd "C-p") 'my/other-window-backward)
+  
+  (define-key 'personal-map (kbd "m") 'imenu)
+  (define-key 'personal-map (kbd "h") 'helm-mini)
+  
+  (define-key 'personal-map (kbd "i") 'yas-insert-snippet)
+  (define-key 'personal-map (kbd "n") 'yas-new-snippet)
+  (define-key 'personal-map (kbd "v") 'yas-visit-snippet-file)
+  
+  (define-key 'personal-map (kbd "y") 'helm-c-yas-complete)
+  (define-key 'personal-map (kbd "s") 'helm-c-yas-create-snippet-on-region)
+  
+  (cond ((eq system-type 'gnu/linux)
+         (define-key 'personal-map (kbd "p") 'evince-forward-search))
+        ((eq system-type 'darwin)
+         (define-key 'personal-map (kbd "p") 'skim-forward-search)))
+  
+  ;; ================================================================
+  ;; リージョンがある間のキーバインディングを変更する
+  ;; ================================================================
+  
+  (require 'region-bindings-mode)
+  (region-bindings-mode-enable)
+  (define-key region-bindings-mode-map "a" 'mc/mark-all-like-this)
+  (define-key region-bindings-mode-map "p" 'mc/mark-previous-like-this)
+  (define-key region-bindings-mode-map "n" 'mc/mark-next-like-this)
+  (define-key region-bindings-mode-map "m" 'mc/mark-more-like-this-extended)
+  (define-key region-bindings-mode-map "e" 'mc/edit-lines)
+  (setq region-bindings-mode-disabled-modes '(mew-summary-mode))
+  
+  ;; ================================================================
+  ;; key-chordの設定をする
+  ;; ================================================================
+  (require 'key-chord)
+  (key-chord-mode 1)
+  
+  (key-chord-define-global "gc" 'my/other-window-backward)
+  (key-chord-define-global "cr" 'other-window)
+#+end_src
+
+#+RESULTS:
+: other-window
+
+* init-loaderの設定
+   init-loaderのインストール
+#+begin_src emacs-lisp
+  (when (not (package-installed-p 'init-loader))
+    (package-install 'init-loader))
+  (require 'init-loader)
+  (init-loader-load "~/.emacs.d/inits")
+  ; (setq init-loader-show-log-after-init nil)
+#+end_src
+
+* HOGE
+** フッタコメント
+#+begin_src emacs-lisp
+  ;;; init.el ends here
+#+end_src
+
