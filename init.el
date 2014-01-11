@@ -25,22 +25,21 @@
 (set-language-environment "japanese")
 (prefer-coding-system 'utf-8)
 
-;; (when (x-list-fonts "Ricty")
-;;   (let* ((size 14)
-;;          (asciifont "Ricty")
-;;          (jpfont "Ricty")
-;;          (h (* size 10))
-;;          (fontspec)
-;;          (jp-fontspec))
-;;     (set-face-attribute 'default nil :family asciifont :height h)
-;;     (setq fontspec (font-spec :family asciifont))
-;;     (setq jp-fontspec (font-spec :family jpfont))
-;;     (set-fontset-font nil 'japanese-jisx0208 jp-fontspec)
-;;     (set-fontset-font nil 'japanese-jisx0212 jp-fontspec)
-;;     (set-fontset-font nil 'japanese-jisx0213-1 jp-fontspec)
-;;     (set-fontset-font nil 'japanese-jisx0213-2 jp-fontspec)
-;;     (set-fontset-font nil '(#x0080 . #x024F) fontspec)
-;;     (set-fontset-font nil '(#x0370 . #x03FF) fontspec)))
+(let* ((size 14)
+       (h (* size 10))
+       (font-ascii "Ricty")
+       (font-jp    "Ricty")
+       (font-spec-ascii (font-spec :family font-ascii))
+       (font-spec-jp    (font-spec :family font-jp)))
+  (set-face-attribute 'default nil :family font-ascii :height h)
+  (set-fontset-font nil 'japanese-jisx0208        font-spec-jp)
+  (set-fontset-font nil 'japanese-jisx0212        font-spec-jp)
+  (set-fontset-font nil 'japanese-jisx0213.2004-1 font-spec-jp)
+  (set-fontset-font nil 'japanese-jisx0213-1      font-spec-jp)
+  (set-fontset-font nil 'japanese-jisx0213-2      font-spec-jp)
+  (set-fontset-font nil 'katakana-jisx0201        font-spec-jp)
+  (set-fontset-font nil '(#x0080 . #x024F)        font-spec-ascii) 
+  (set-fontset-font nil '(#x0370 . #x03FF)        font-spec-ascii))
 
 ;; create backup file in ~/.emacs.d/backup
 (setq make-backup-files t)
@@ -153,6 +152,8 @@
 (global-set-key (kbd "<f3>") 'my/open-todo)
 (global-set-key (kbd "<f4>") 'my/open-note)
 (global-set-key (kbd "<f5>") 'my/open-project-folder)
+
+
 
 (require 'ox-md)
 
