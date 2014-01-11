@@ -60,24 +60,6 @@
   (require 'ob-tangle)
 
 #+end_src
-** TODO 設定の生成  
-#+begin_src emacs-lisp
-  ;; ;; load up all literate org-mode files in this directory
-  ;; (setq dotfiles-dir
-  ;;       (concat
-  ;;        (file-name-directory ; ファイル名のデレクトリ部分
-  ;;         (or
-  ;;          (buffer-file-name)
-  ;;          load-file-name))
-  ;;        "org/"
-  ;;        ))
-  
-  ;; (message dotfiles-dir)
-  
-  ;; (mapc #'org-babel-load-file
-  ;;       (directory-files dotfiles-dir t "\\.org$"))
-  
-#+end_src
 * 標準設定
   - 外部のパッケージに依存しない，標準的な設定を行います．
 

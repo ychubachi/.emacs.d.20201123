@@ -17,21 +17,6 @@
 (require 'org-install)
 (require 'ob-tangle)
 
-;; ;; load up all literate org-mode files in this directory
-;; (setq dotfiles-dir
-;;       (concat
-;;        (file-name-directory ; ファイル名のデレクトリ部分
-;;         (or
-;;          (buffer-file-name)
-;;          load-file-name))
-;;        "org/"
-;;        ))
-
-;; (message dotfiles-dir)
-
-;; (mapc #'org-babel-load-file
-;;       (directory-files dotfiles-dir t "\\.org$"))
-
 (let ((default-directory "~/.emacs.d/git/"))
   (normal-top-level-add-subdirs-to-load-path))
 (let ((default-directory "~/.emacs.d/site-lisp/"))
