@@ -59,26 +59,8 @@
   
   (require 'org-install)
   (require 'ob-tangle)
-
 #+end_src
-** TODO 設定の生成  
-#+begin_src emacs-lisp
-  ;; ;; load up all literate org-mode files in this directory
-  ;; (setq dotfiles-dir
-  ;;       (concat
-  ;;        (file-name-directory ; ファイル名のデレクトリ部分
-  ;;         (or
-  ;;          (buffer-file-name)
-  ;;          load-file-name))
-  ;;        "org/"
-  ;;        ))
-  
-  ;; (message dotfiles-dir)
-  
-  ;; (mapc #'org-babel-load-file
-  ;;       (directory-files dotfiles-dir t "\\.org$"))
-  
-#+end_src
+** TODO [[https://github.com/purcell/exec-path-from-shell][purcell/exec-path-from-shell]]
 * 標準設定
   - 外部のパッケージに依存しない，標準的な設定を行います．
 
@@ -102,32 +84,37 @@
 
 ** 日本語文字フォントの設定
 
-  mmm あいうえお｜｜｜｜｜
-  iii ｜｜｜｜｜｜｜｜｜｜
+- 表示例
+|----------------+------------------------|
+| ホスト名(標準) | www2243up.sakura.ne.jp |
+| IPアドレス     |          153.121.41.17 |
+| ネットマスク   |          255.255.254.0 |
+| ゲートウェイ   |           153.121.40.1 |
+| ネームサーバ1  |         210.188.224.10 |
+| ネームサーバ2  |         210.188.224.11 |
+|----------------+------------------------|
 
+  - [[http://blog.sanojimaru.com/post/19807398882/cocoa-emacs-ricty][cocoa emacsでプログラミング用フォントRictyを使う]]
   - [[http://d.hatena.ne.jp/kitokitoki/20110502/p2][emacs での Ricty の導入手順 - わからん]]
   - [[http://d.hatena.ne.jp/tunefs/20060710/p1][set-default-font vs default-frame-alist - Crossroad (tunefsの日記)]]
-
-  - Rictyで斜体が豆腐になるのを回避します．
-  - [[http://gongo.hatenablog.com/entry/2011/12/08/232953][Cocoa Emacs で斜体文字が豆腐になって悲しかったのが直って幸福が実現した - Thanks Driven Life]]
+  - jisx0208などの意味は調べていない
 
 #+begin_src emacs-lisp
-  ;; (when (x-list-fonts "Ricty")
-  ;;   (let* ((size 14)
-  ;;          (asciifont "Ricty")
-  ;;          (jpfont "Ricty")
-  ;;          (h (* size 10))
-  ;;          (fontspec)
-  ;;          (jp-fontspec))
-  ;;     (set-face-attribute 'default nil :family asciifont :height h)
-  ;;     (setq fontspec (font-spec :family asciifont))
-  ;;     (setq jp-fontspec (font-spec :family jpfont))
-  ;;     (set-fontset-font nil 'japanese-jisx0208 jp-fontspec)
-  ;;     (set-fontset-font nil 'japanese-jisx0212 jp-fontspec)
-  ;;     (set-fontset-font nil 'japanese-jisx0213-1 jp-fontspec)
-  ;;     (set-fontset-font nil 'japanese-jisx0213-2 jp-fontspec)
-  ;;     (set-fontset-font nil '(#x0080 . #x024F) fontspec)
-  ;;     (set-fontset-font nil '(#x0370 . #x03FF) fontspec)))
+(let* ((size 14)
+       (h (* size 10))
+       (font-ascii "Ricty")
+       (font-jp    "Ricty")
+       (font-spec-ascii (font-spec :family font-ascii))
+       (font-spec-jp    (font-spec :family font-jp)))
+  (set-face-attribute 'default nil :family font-ascii :height h)
+  (set-fontset-font nil 'japanese-jisx0208        font-spec-jp)
+  (set-fontset-font nil 'japanese-jisx0212        font-spec-jp)
+  (set-fontset-font nil 'japanese-jisx0213.2004-1 font-spec-jp)
+  (set-fontset-font nil 'japanese-jisx0213-1      font-spec-jp)
+  (set-fontset-font nil 'japanese-jisx0213-2      font-spec-jp)
+  (set-fontset-font nil 'katakana-jisx0201        font-spec-jp)
+  (set-fontset-font nil '(#x0080 . #x024F)        font-spec-ascii) 
+  (set-fontset-font nil '(#x0370 . #x03FF)        font-spec-ascii))
 #+end_src
 
 #+RESULTS:
@@ -275,6 +262,13 @@
   (global-set-key (kbd "<f4>") 'my/open-note)
   (global-set-key (kbd "<f5>") 'my/open-project-folder)
 #+end_src
+
+* パッケージ
+** exec-path-from-shell
+
+#+begin_src emacs-lisp
+#+end_src
+
 
 * Org
 ** Markdown export
