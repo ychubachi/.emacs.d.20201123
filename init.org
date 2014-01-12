@@ -33,6 +33,7 @@
 ** パッケージ
 *** パッケージの初期設定
   - ダウンロードするリポジトリの設定はcustom.elにあります．
+  - TODO: M-x customize-variable RET mediawiki-site-alist RET
     
 #+begin_src emacs-lisp
   (require 'package)
