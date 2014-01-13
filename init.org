@@ -4,7 +4,7 @@
 * 説明
 ** 使い方
   - Emacsを設定するためのelです．
-  - [[https://github.com/ychubachi/.emacs.d/blob/master/org/setup.org][.emacs.d/org/setup.org at master · ychubachi/.emacs.d]]
+    - [[https://github.com/ychubachi/.emacs.d/blob/master/init.org][.emacs.d/init.org at master · ychubachi/.emacs.d]]
   - 日本のEmacsユーザ向け．
   - C-c C-v t でinit.elを生成
     - [[http://orgmode.org/manual/Header-arguments-in-Org-mode-properties.html#Header-arguments-in-Org-mode-properties][Header arguments in Org mode properties - The Org Manual]]
