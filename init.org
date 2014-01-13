@@ -553,7 +553,590 @@
   ; (setq init-loader-show-log-after-init nil)
 #+end_src
 
-* HOGE
+* Helm
+
+#+begin_src emacs-lisp
+;; Home · emacs-helm/helm Wiki
+;; - https://github.com/emacs-helm/helm/wiki
+
+;; AnythingからHelmに移行しました - memo
+;; - http://sleepboy-zzz.blogspot.jp/2012/09/anythinghelm.html
+
+;; NTEmacs @ ウィキ - helm を使うための設定 - @ｳｨｷﾓﾊﾞｲﾙ
+;; - http://www49.atwiki.jp/ntemacs/m/pages/32.html
+
+;; Emacs - helm-mode 有効時でも helm-find-files は無効にする - Qiita [キータ]
+;; - http://qiita.com/akisute3@github/items/7c8ea3970e4cbb7baa97
+
+;; NOTE: 逆引用符は`,'の引数を評価し、 リスト構造にその値を入れます。
+;;
+;; GNU Emacs Lispリファレンス・マニュアル: 12. マクロ
+;; - http://www.fan.gr.jp/~ring/doc/elisp_19/elisp-jp_14.html#IDX592
+
+;;; Code:
+
+(eval-when-compile (require 'cl))
+
+;; ================================================================
+;; パッケージのインストール
+;; ================================================================
+(dolist (package '(helm-descbinds
+		   helm-migemo
+		   helm-themes
+		   imenu-anywhere
+		   yasnippet helm-c-yasnippet))
+  (when (not (package-installed-p package))
+    (package-install package)))
+
+(require 'helm-config)
+(helm-mode 1)
+
+(require 'helm-command)
+(require 'helm-descbinds)
+
+(setq helm-idle-delay             0.1
+      helm-input-idle-delay       0.1
+      helm-candidate-number-limit 200)
+
+;; ================================================================
+;; Keybindings
+;; ================================================================
+
+;; C-h でバックスペースと同じように文字を削除できるようにする
+(define-key helm-map (kbd "C-h") 'delete-backward-char)
+(define-key helm-find-files-map (kbd "C-h") 'delete-backward-char)
+
+;; ミニバッファで C-k 入力時にカーソル以降を削除する
+(setq helm-delete-minibuffer-contents-from-point t)
+
+;; ================================================================
+;; helm-migemo - ローマ字検索
+;; ================================================================
+
+(require 'helm-migemo)
+(setq helm-use-migemo t)
+
+(defadvice helm-c-apropos
+  (around ad-helm-apropos activate)
+  "候補が表示されないときがあるので migemoらないように設定."
+  (let ((helm-use-migemo nil))
+    ad-do-it))
+
+(defadvice helm-M-x
+  (around ad-helm-M-x activate)
+  "候補が表示されないときがあるので migemoらないように設定."
+  (let ((helm-use-migemo nil))
+    ad-do-it))
+
+;; ================================================================
+;; その他
+;; ================================================================
+(require 'helm-imenu)
+(setq imenu-auto-rescan t)
+(setq imenu-after-jump-hook (lambda () (recenter 10))) ; 選択後の表示位置を調整
+
+(require 'helm-themes)
+
+(require 'helm-c-yasnippet)
+
+;; ================================================================
+;; package listをhelmで選択
+;; (This package is installed in vendor directory.)
+;; ================================================================
+(require 'helm-package)
+#+end_src
+
+* Magit
+#+begin_src emacs-lisp
+(dolist (package '(magit))
+  (when (not (package-installed-p package))
+    (package-install package)))
+
+(require 'magit)
+#+end_src
+* Mew
+
+#+begin_src emacs-lisp
+;; ================================================================
+;; パッケージのインストール
+;; ================================================================
+(dolist (package '(mew))
+  (when (not (package-installed-p package))
+    (package-install package)))
+
+(autoload 'mew "mew" nil t)
+(autoload 'mew-send "mew" nil t)
+
+;; ================================================================
+;; Mewの設定
+;; ================================================================
+
+; Stunnel
+(setq mew-prog-ssl "/usr/bin/stunnel4")
+
+; IMAP for Gmail
+(setq mew-proto "%")
+(setq mew-imap-server "imap.gmail.com")
+(setq mew-imap-user "yoshihide.chubachi@gmail.com")
+(setq mew-imap-auth  t)
+(setq mew-imap-ssl t)
+(setq mew-imap-ssl-port "993")
+(setq mew-smtp-auth t)
+(setq mew-smtp-ssl t)
+(setq mew-smtp-ssl-port "465")
+(setq mew-smtp-user "yoshihide.chubachi@gmail.com")
+(setq mew-smtp-server "smtp.gmail.com")
+(setq mew-fcc "%[Gmail]/送信済みメール") ; 送信メイルを保存する
+(setq mew-imap-trash-folder "%[Gmail]/すべてのメール")
+
+(setq mew-use-cached-passwd t)
+;(setq mew-use-master-passwd t)
+
+(setq mew-ssl-verify-level 0)
+;(setq mew-use-unread-mark t)
+
+; w3m
+(condition-case nil
+    (require 'mew-w3m)
+  (error (message "mew-w3m: Plase install w3m")))
+
+; pdf viewer
+(setq mew-prog-pdf '("evince" nil t))
+#+end_src
+* Migemo
+ローマ字で日本語をインクリメンタルサーチ
+
+- 注意
+  - cmigemoコマンドがインストールされていること．
+  - locate migemo-dictで辞書の場所調べ，設定してください．
+- 参考
+  - https://github.com/emacs-jp/migemo
+
+#+begin_src emacs-lisp
+(require 'migemo)
+
+(setq migemo-command "cmigemo")
+(setq migemo-options '("-q" "--emacs"))
+
+(cond ((eq system-type 'gnu/linux)
+       (setq migemo-dictionary "/usr/share/cmigemo/utf-8/migemo-dict"))
+      ((eq system-type 'darwin)
+       (setq migemo-dictionary "/usr/local/share/migemo/utf-8/migemo-dict")))
+
+(setq migemo-user-dictionary nil)
+(setq migemo-regex-dictionary nil)
+(setq migemo-coding-system 'utf-8-unix)
+
+(load-library "migemo")
+(migemo-init)
+#+end_src
+
+* Programming
+#+begin_src emacs-lisp
+;; ================================================================
+;; パッケージのインストール
+;; ================================================================
+(dolist (package '(auto-complete multiple-cursors yasnippet))
+  (when (not (package-installed-p package))
+    (package-install package)))
+
+;; ================================================================
+;; 自動補間
+;; ================================================================
+
+(require 'auto-complete-config)
+(ac-config-default)
+(define-key ac-complete-mode-map "\C-n" 'ac-next)
+(define-key ac-complete-mode-map "\C-p" 'ac-previous)
+
+;; ================================================================
+;; 複数のカーソルを扱う
+;; ================================================================
+
+(require 'multiple-cursors)
+
+;; ================================================================
+;; yasnippet
+;; - http://fukuyama.co/yasnippet
+;; ================================================================
+
+(require 'yasnippet)
+(yas-global-mode 1)
+(setq yas-snippet-dirs '("~/.emacs.d/snippets"))
+
+;; ================================================================
+;; Emacs Lisp
+;; ================================================================
+
+(add-hook 'emacs-lisp-mode-hook 'outline-minor-mode)
+#+end_src
+
+* Shell-pop
+
+shell-pop
+- 詳細設定はM-x customize-group RET sholl-pop RET
+
+#+begin_src emacs-lisp
+(dolist (package '(shell-pop))
+  (when (not (package-installed-p package))
+    (package-install package)))
+
+(require 'shell-pop)
+#+end_src
+
+* Undo Tree
+#+begin_src emacs-lisp
+(dolist (package '(undo-tree))
+  (when (not (package-installed-p package))
+    (package-install package)))
+
+(require 'undo-tree)
+(global-undo-tree-mode t)
+#+end_src
+* w3m
+#+begin_src emacs-lisp
+(dolist (package '(w3m))
+  (when (not (package-installed-p package))
+    (condition-case nil
+	(package-install package)
+      (error (message "Please Install w3m command")))))
+#+end_src
+* Ruby
+#+begin_src emacs-lisp
+;; S式から正規表現を作成する - by shigemk2
+;; - http://d.hatena.ne.jp/shigemk2/20120419/1334762456
+
+;; EmacsでRubyの開発環境をめちゃガチャパワーアップしたまとめ | Futurismo
+;; http://hmi-me.ciao.jp/wordpress/archives/1295
+
+;;; Code:
+
+;; ================================================================
+;; パッケージのインストール
+;; ================================================================
+(dolist (package '(flymake-ruby
+		   flymake-haml
+		   flymake-sass
+		   flymake-coffee
+		   smart-compile))
+  (when (not (package-installed-p package))
+    (package-install package)))
+
+(autoload 'ruby-mode "ruby-mode"
+  "Mode for editing ruby source files" t)
+(require 'ruby-mode)
+
+;; ================================================================
+;; Ruby DSLs
+;; ================================================================
+
+(add-to-list 'auto-mode-alist '("Capfile" . ruby-mode))  
+(add-to-list 'auto-mode-alist '("Gemfile" . ruby-mode))  
+(add-to-list 'auto-mode-alist '("Guardfile" . ruby-mode))  
+(add-to-list 'auto-mode-alist '("Vagrantfile" . ruby-mode))
+(add-to-list 'auto-mode-alist '("Berksfile" . ruby-mode))
+
+;; ================================================================
+;; outline-minnor-mode
+;; ================================================================
+
+(require 'outline)
+(add-hook 'ruby-mode-hook
+          (function
+           (lambda ()
+             (defun ruby-outline-level ()
+               (or (and (match-string 1)
+                        (or (cdr (assoc (match-string 1) outline-heading-alist))
+                            (- (match-end 1) (match-beginning 1))))
+                   (cdr (assoc (match-string 0) outline-heading-alist))
+                   (- (match-end 0) (match-beginning 0))))
+
+             (set (make-local-variable 'outline-level) 'ruby-outline-level)
+
+             (set (make-local-variable 'outline-regexp)
+                  (rx (group (* " "))
+                      bow
+                      (or "begin" "case" "class" "def" "else" "elsif"
+                          "ensure" "if" "module" "rescue" "when" "unless"
+                          "private")
+                      eow))
+             (outline-minor-mode))))
+
+(add-hook 'rspec-mode-hook
+          (function
+           (lambda ()
+             (defun rspec-outline-level ()
+               (or (and (match-string 1)
+                        (or (cdr (assoc (match-string 1) outline-heading-alist))
+                            (- (match-end 1) (match-beginning 1))))
+                   (cdr (assoc (match-string 0) outline-heading-alist))
+                   (- (match-end 0) (match-beginning 0))))
+
+             (set (make-local-variable 'outline-level) 'rspec-outline-level)
+
+             (set (make-local-variable 'outline-regexp)
+                  (rx (group (* " "))
+                      bow
+                      (or "context" "describe" "it" "subject")
+                      eow))
+             (outline-minor-mode))))
+
+;; ================================================================
+;; flymake関係
+;; ================================================================
+
+(require 'flymake-ruby)
+(add-hook 'ruby-mode-hook 'flymake-ruby-load)
+
+(require 'flymake-haml)
+(add-hook 'haml-mode-hook 'flymake-haml-load)
+
+(require 'flymake-sass)
+(add-hook 'sass-mode-hook 'flymake-sass-load)
+
+(require 'flymake-coffee)
+(add-hook 'coffee-mode-hook 'flymake-coffee-load)
+
+;; ================================================================
+;; Use the right Ruby with Emacs and rbenv - Fist of Senn
+;; - http://blog.senny.ch/blog/2013/02/11/use-the-right-ruby-with-emacs-and-rbenv/
+;; ================================================================
+;; (prelude-require-package 'rbenv)
+
+;; ;; Setting rbenv path
+;; (setenv "PATH" (concat (getenv "HOME") "/.rbenv/shims:"
+;;                        (getenv "HOME") "/.rbenv/bin:"
+;;                        (getenv "PATH")))
+;; (setq exec-path (cons (concat (getenv "HOME") "/.rbenv/shims")
+;;                       (cons (concat (getenv "HOME") "/.rbenv/bin") exec-path)))
+
+;; ================================================================
+;; 賢いコンパイル
+;; ================================================================
+
+(require 'smart-compile)
+
+(define-key ruby-mode-map (kbd "C-c c") 'smart-compile)
+(define-key ruby-mode-map (kbd "C-c C-c") (kbd "C-c c C-m"))
+
+;; ================================================================
+;; Emacsで保存時にFirefoxのタブを探してリロード - Qiita [キータ]
+;; - http://qiita.com/hakomo/items/9a99115f8911b55957bb
+;; ================================================================
+(require 'moz)
+
+(defun my/reload-firefox ()
+  "Reload firefox."
+  (interactive)
+  (comint-send-string (inferior-moz-process) "BrowserReload();"))
+
+(defun my/run-rake-yard ()
+  "Run rake yard."
+  (interactive)
+  (shell-command "rake yard"))
+
+(define-key ruby-mode-map (kbd "C-c y") (lambda ()
+                                          (interactive)
+                                          (my/run-rake-yard)
+                                          (my/reload-firefox)))
+#+end_src
+
+* YaTeX
+
+#+begin_src emacs-lisp
+;; ================================================================
+;; YaTeX - TeX Wiki
+;; - http://oku.edu.mie-u.ac.jp/~okumura/texwiki/?YaTeX#nec42ee2
+;; ================================================================
+(autoload 'yatex-mode "yatex" "Yet Another LaTeX mode" t)
+(setq auto-mode-alist
+      (append '(("\\.tex$" . yatex-mode)
+                ("\\.ltx$" . yatex-mode)
+                ("\\.cls$" . yatex-mode)
+                ("\\.sty$" . yatex-mode)
+                ("\\.clo$" . yatex-mode)
+                ("\\.bbl$" . yatex-mode)) auto-mode-alist))
+(setq YaTeX-inhibit-prefix-letter t)
+(setq YaTeX-kanji-code nil)
+(setq YaTeX-use-LaTeX2e t)
+(setq YaTeX-use-AMS-LaTeX t)
+
+;; ================================================================
+;; RefTeX with YaTeX
+;; ================================================================
+(add-hook 'yatex-mode-hook 'turn-on-reftex)
+(add-hook 'yatex-mode-hook
+          '(lambda ()
+             (reftex-mode 1)
+             (define-key reftex-mode-map (concat YaTeX-prefix ">") 'YaTeX-comment-region)
+             (define-key reftex-mode-map (concat YaTeX-prefix "<") 'YaTeX-uncomment-region)))
+
+;; ================================================================
+;; Outline minor mode for YaTeX
+;; See http://www.math.s.chiba-u.ac.jp/~matsu/emacs/emacs20/outline.html
+;; ================================================================
+(add-hook 'yatex-mode-hook
+          '(lambda () (outline-minor-mode t)))
+
+(make-variable-buffer-local 'outline-regexp)
+(add-hook
+ 'yatex-mode-hook
+ (function
+  (lambda ()
+    (progn
+      (setq outline-level 'latex-outline-level)
+      (setq outline-regexp
+            (concat "[ \t]*\\\\\\(documentstyle\\|documentclass\\|"
+                    "chapter\\|section\\|subsection\\|subsubsection\\)"
+                    "\\*?[ \t]*[[{]")
+     )))))
+
+(make-variable-buffer-local 'outline-level)
+(setq-default outline-level 'outline-level)
+(defun latex-outline-level ()
+  (save-excursion
+    (looking-at outline-regexp)
+    (let ((title (buffer-substring (match-beginning 1) (match-end 1))))
+      (cond ((equal (substring title 0 4) "docu") 15)
+            ((equal (substring title 0 4) "chap") 0)
+            ((equal (substring title 0 4) "appe") 0)
+            (t (length title))))))
+
+;; ================================================================
+;; BibTeX
+;; ================================================================
+(add-hook 'bibtex-mode-hook
+          '(lambda ()
+             (outline-minor-mode)))
+
+;; ================================================================
+;; IPA Fonts
+;; ================================================================
+(setq YaTeX-dvipdf-command "dvipdfmx -f ptex-ipa")
+
+;; ================================================================
+;; auto-fill-mode
+;; ================================================================
+(add-hook 'yatex-mode-hook
+          '(lambda ()
+             (auto-fill-mode 1)))
+#+end_src
+
+* Clean Mode Line
+#+begin_src emacs-lisp
+;;; 80-clean-mode-line.el --- <description>
+;;; Commentary:
+
+;; mode-lineのモード情報をコンパクトに表示する- Life is very short
+;; - http://d.hatena.ne.jp/syohex/20130131/1359646452
+
+;;; Code:
+
+(defvar mode-line-cleaner-alist
+  '( ;; For minor-mode, first char is 'space'
+    (yas-minor-mode . " Ys")
+    (paredit-mode . " Pe")
+    (eldoc-mode . "")
+    (abbrev-mode . "")
+    (undo-tree-mode . " Ut")
+    (elisp-slime-nav-mode . " EN")
+    (helm-gtags-mode . " HG")
+    (flymake-mode . " Fm")
+    (outline-minor-mode . " Ol")
+    (ibus-mode . " IB")
+    ;; Major modes
+    (lisp-interaction-mode . "Li")
+    (python-mode . "Py")
+    (ruby-mode   . "Rb")
+    (emacs-lisp-mode . "El")
+    (markdown-mode . "Md")))
+
+(defun clean-mode-line ()
+  (interactive)
+  (loop for (mode . mode-str) in mode-line-cleaner-alist
+        do
+        (let ((old-mode-str (cdr (assq mode minor-mode-alist))))
+          (when old-mode-str
+            (setcar old-mode-str mode-str))
+          ;; major mode
+          (when (eq mode major-mode)
+            (setq mode-name mode-str)))))
+
+(add-hook 'after-change-major-mode-hook 'clean-mode-line)
+
+;;; 80-clean-mode-line.el ends here
+#+end_src
+
+* TODO Buffer Move
+#+begin_src emacs-lisp
+  ;; ;; パッケージのインストール
+  ;; (setq package-list '(buffer-move))
+  ;; (dolist (package package-list)
+  ;;   (when (not (package-installed-p package))
+  ;;     (package-install package)))
+  
+  ;; ; buffer-move : have to add your own keys
+  ;; (global-set-key (kbd "<C-S-up>")     'buf-move-up)
+  ;; (global-set-key (kbd "<C-S-down>")   'buf-move-down)
+  ;; (global-set-key (kbd "<C-S-left>")   'buf-move-left)
+  ;; (global-set-key (kbd "<C-S-right>")  'buf-move-right)
+#+end_src
+
+* TODO tab bar
+#+begin_src emacs-lisp
+  ;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+  ;; ;;
+  ;; ;; tabbar.el
+  ;; ;;
+  ;; ;; [Emacsにタブ機能を追加するtabbar.elの導入 - 12FF5B8](http://hico-horiuchi.hateblo.jp/entry/20121208/1354975316)
+  
+  ;; ;; パッケージのインストール
+  ;; (setq package-list '(tabbar))
+  ;; (dolist (package package-list)
+  ;;   (when (not (package-installed-p package))
+  ;;     (package-install package)))
+  
+  ;; (require 'tabbar)
+  ;; (tabbar-mode)
+  ;; (global-set-key "\M-]" 'tabbar-forward)  ; 次のタブ
+  ;; (global-set-key "\M-[" 'tabbar-backward) ; 前のタブ
+  ;; ;; タブ上でマウスホイールを使わない
+  ;; (tabbar-mwheel-mode nil)
+  ;; ;; グループを使わない
+  ;; (setq tabbar-buffer-groups-function nil)
+  ;; ;; 左側のボタンを消す
+  ;; (dolist (btn '(tabbar-buffer-home-button
+  ;;                tabbar-scroll-left-button
+  ;;                tabbar-scroll-right-button))
+  ;;   (set btn (cons (cons "" nil)
+  ;;                  (cons "" nil))))
+#+end_src
+
+* TODO rcode tools
+
+#+begin_src emacs-lisp
+  ;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+  ;; ;; NOT IN PACKAGE
+  ;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+  
+  ;; (add-to-list 'load-path "~/.rbenv/versions/2.0.0-p195/lib/ruby/gems/2.0.0/gems/rcodetools-0.8.5.0")
+  
+  ;; ;; rcodetools
+  ;; (require 'rcodetools)
+  ;; (setq rct-find-tag-if-available nil)
+  ;; (defun ruby-mode-hook-rcodetools ()
+  ;;   (define-key ruby-mode-map (kbd "<C-return>") 'rct-complete-symbol)
+  ;;   (define-key ruby-mode-map "\M-\C-i" 'rct-complete-symbol)
+  ;;   (define-key ruby-mode-map "\C-c\C-t" 'ruby-toggle-buffer)
+  ;;   (define-key ruby-mode-map "\C-c\C-d" 'xmp)
+  ;;   (define-key ruby-mode-map "\C-c\C-f" 'rct-ri))
+  ;; (add-hook 'ruby-mode-hook 'ruby-mode-hook-rcodetools)
+  
+  ;; (setq rct-get-all-methods-command "PAGER=cat fri -l")
+  ;; ;; See docs
+#+end_src
+
+* 後始末
 ** フッタコメント
 #+begin_src emacs-lisp
   ;;; init.el ends here
