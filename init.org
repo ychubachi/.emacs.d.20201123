@@ -98,9 +98,12 @@
   - [[http://blog.sanojimaru.com/post/19807398882/cocoa-emacs-ricty][cocoa emacsでプログラミング用フォントRictyを使う]]
   - [[http://d.hatena.ne.jp/kitokitoki/20110502/p2][emacs での Ricty の導入手順 - わからん]]
   - [[http://d.hatena.ne.jp/tunefs/20060710/p1][set-default-font vs default-frame-alist - Crossroad (tunefsの日記)]]
-  - jisx0208などの意味は調べていない
-  - TODO: 下記をLinuxのdaemonで実行すると落ちてしまう．
+  - フォントはcustomize.elで指定しています
+    - M-x custmoize-variable RET default-frame-alist RET
 
+  - TODO: 下記をLinuxのdaemonで実行すると落ちてしまう．
+    - jisx0208などの意味は調べていない
+    - font-specが動かないのでは？
 #+begin_src emacs-lisp
   ;; (let* ((size 14)
   ;;        (h (* size 10))
