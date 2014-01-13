@@ -8,8 +8,9 @@
   - 日本のEmacsユーザ向け．
   - C-c C-v t でinit.elを生成
     - [[http://orgmode.org/manual/Header-arguments-in-Org-mode-properties.html#Header-arguments-in-Org-mode-properties][Header arguments in Org mode properties - The Org Manual]]
+  - daemonについて
 
-- [[http://orgmode.org/elpa.html][Org Emacs lisp Package Archive]]
+  - [[http://orgmode.org/elpa.html][Org Emacs lisp Package Archive]]
 
 * 設定
 ** ヘッダコメント
@@ -98,23 +99,24 @@
   - [[http://d.hatena.ne.jp/kitokitoki/20110502/p2][emacs での Ricty の導入手順 - わからん]]
   - [[http://d.hatena.ne.jp/tunefs/20060710/p1][set-default-font vs default-frame-alist - Crossroad (tunefsの日記)]]
   - jisx0208などの意味は調べていない
+  - TODO: 下記をLinuxのdaemonで実行すると落ちてしまう．
 
 #+begin_src emacs-lisp
-(let* ((size 14)
-       (h (* size 10))
-       (font-ascii "Ricty")
-       (font-jp    "Ricty")
-       (font-spec-ascii (font-spec :family font-ascii))
-       (font-spec-jp    (font-spec :family font-jp)))
-  (set-face-attribute 'default nil :family font-ascii :height h)
-  (set-fontset-font nil 'japanese-jisx0208        font-spec-jp)
-  (set-fontset-font nil 'japanese-jisx0212        font-spec-jp)
-  (set-fontset-font nil 'japanese-jisx0213.2004-1 font-spec-jp)
-  (set-fontset-font nil 'japanese-jisx0213-1      font-spec-jp)
-  (set-fontset-font nil 'japanese-jisx0213-2      font-spec-jp)
-  (set-fontset-font nil 'katakana-jisx0201        font-spec-jp)
-  (set-fontset-font nil '(#x0080 . #x024F)        font-spec-ascii) 
-  (set-fontset-font nil '(#x0370 . #x03FF)        font-spec-ascii))
+  ;; (let* ((size 14)
+  ;;        (h (* size 10))
+  ;;        (font-ascii "Ricty")
+  ;;        (font-jp    "Ricty")
+  ;;        (font-spec-ascii (font-spec :family font-ascii))
+  ;;        (font-spec-jp    (font-spec :family font-jp)))
+  ;;   (set-face-attribute 'default nil :family font-ascii :height h)
+  ;;   (set-fontset-font nil 'japanese-jisx0208        font-spec-jp)
+  ;;   (set-fontset-font nil 'japanese-jisx0212        font-spec-jp)
+  ;;   (set-fontset-font nil 'japanese-jisx0213.2004-1 font-spec-jp)
+  ;;   (set-fontset-font nil 'japanese-jisx0213-1      font-spec-jp)
+  ;;   (set-fontset-font nil 'japanese-jisx0213-2      font-spec-jp)
+  ;;   (set-fontset-font nil 'katakana-jisx0201        font-spec-jp)
+  ;;   (set-fontset-font nil '(#x0080 . #x024F)        font-spec-ascii) 
+  ;;   (set-fontset-font nil '(#x0370 . #x03FF)        font-spec-ascii))
 #+end_src
 
 #+RESULTS:
@@ -268,7 +270,6 @@
 
 #+begin_src emacs-lisp
 #+end_src
-
 
 * Org
 ** Markdown export
