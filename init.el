@@ -64,8 +64,6 @@
 (set-face-attribute 'linum nil :foreground "yellow" :height 0.8)
 (setq linum-format "%4d")
 
-(require 'cl)
-
 (setq inhibit-splash-screen t)
 (setq inhibit-startup-screen t)
 

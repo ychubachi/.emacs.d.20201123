@@ -170,13 +170,6 @@
 (setq linum-format "%4d")
 #+end_src
 
-** ライブラリの読み込み
-   - clはcommon lisp
-     
-#+begin_src emacs-lisp
-  (require 'cl)
-#+end_src
-
 ** 見た目
 
 #+begin_src emacs-lisp
