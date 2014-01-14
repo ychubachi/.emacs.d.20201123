@@ -16,6 +16,11 @@
     - [[http://www.gnu.org/software/emacs/manual/html_node/elisp/Closures.html#Closures][Closures - GNU Emacs Lisp Reference Manual]]
 
   - [[http://orgmode.org/elpa.html][Org Emacs lisp Package Archive]]
+  - git
+** 準備
+  - git submodule init
+  - git submodule update
+  - Rictyのインストール
 ** TODOs
 *** TODO org-insert-heading-respect-contentをC-jにする
     C-jはorg-return-indentにバインドされている
