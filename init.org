@@ -14,8 +14,6 @@
     - [[http://www.gnu.org/software/emacs/news/NEWS.24.3]]
     - [[http://www.gnu.org/software/emacs/manual/html_node/elisp/Lexical-Binding.html][Lexical Binding - GNU Emacs Lisp Reference Manual]]
     - [[http://www.gnu.org/software/emacs/manual/html_node/elisp/Closures.html#Closures][Closures - GNU Emacs Lisp Reference Manual]]
-
-  - [[http://orgmode.org/elpa.html][Org Emacs lisp Package Archive]]
   - git
 ** 準備
   - git submodule init
@@ -25,6 +23,7 @@
 *** TODO org-insert-heading-respect-contentをC-jにする
     C-jはorg-return-indentにバインドされている
 *** TODO elispのunit testについて調べる
+*** TODO [[https://github.com/purcell/exec-path-from-shell][purcell/exec-path-from-shell]]
 * 設定
 ** ヘッダコメント
 
