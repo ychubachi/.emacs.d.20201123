@@ -162,12 +162,6 @@
     (package-install package)))
 
 ;; ================================================================
-;; markdownモードでアウトラインを有効にする
-;; ================================================================
-(add-hook 'markdown-mode-hook
-          '(lambda () (outline-minor-mode t)))
-
-;; ================================================================
 ;; 連続操作を素敵にするsmartrep.el作った - sheephead
 ;; http://sheephead.homelinux.org/2011/12/19/6930/
 ;; ================================================================
@@ -441,6 +435,28 @@
 
 #+RESULTS:
 | blog.chubachi.net | :url | http://blog.chubachi.net/xmlrpc.php | :username | yc | :default-title | Emacs title | :default-categories | (org2blog emacs) | :tags-as-categories | nil |
+
+* markdown
+  - [[http://jblevins.org/projects/markdown-mode/][Emacs Markdown Mode]]
+
+#+begin_src emacs-lisp
+  (dolist (package '(markdown-mode))
+    (when (not (package-installed-p package))
+      (package-install package)))
+  
+  (autoload 'markdown-mode "markdown-mode"
+     "Major mode for editing Markdown files" t)
+  (add-to-list 'auto-mode-alist '("\\.text\\'" . markdown-mode))
+  (add-to-list 'auto-mode-alist '("\\.markdown\\'" . markdown-mode))
+  (add-to-list 'auto-mode-alist '("\\.md\\'" . markdown-mode))
+#+end_src
+
+  - markdownモードでアウトラインを有効にする
+
+#+begin_src emacs-lisp
+  (add-hook 'markdown-mode-hook
+            '(lambda () (outline-minor-mode t)))
+#+end_src
 
 * MediaWiki
   - [[http://www.emacswiki.org/emacs/MediaWikiMode][EmacsWiki: Media Wiki Mode]]
