@@ -31,6 +31,14 @@
 ;; init.el --- Emacsの初期設定
 #+end_src
 
+** デバッガの有効化
+
+デバッグを有効にします．エラーが発生したらデバッガが起動します．
+
+#+begin_src emacs-lisp
+(setq debug-on-error t)
+#+end_src
+
 ** カスタマイズ設定ファイル
    - 概要
      - カスタマイズ設定を保存するファイルを指定して，読み込みます．
@@ -46,50 +54,29 @@
       (load (expand-file-name custom-file)))
 #+end_src
    
-** パッケージ
-*** パッケージの初期設定
-  - ダウンロードするリポジトリの設定はcustom.elにあります．
-  - TODO: M-x customize-variable RET mediawiki-site-alist RET
-    
+** 完了表示
+  - after-init-hookはパッケージの初期化が完了したら呼ばれるフックです．
+
 #+begin_src emacs-lisp
-  (require 'package)
-  (package-initialize)
+  (add-hook 'after-init-hook
+            (lambda ()
+              (message "Emacsの設定が完了しました．")))
 #+end_src
 
-*** パッケージ一覧の更新
-  - 必要に応じてリフレッシュ
-  - 参考
-    - [[http://stackoverflow.com/questions/14836958/updating-packages-in-emacs][elpa - Updating packages in Emacs - Stack Overflow]]
-
-#+begin_src emacs-lisp
-  (when (not package-archive-contents)
-    (package-refresh-contents))
-#+end_src  
-
-** org-modeの設定
-**** orgパッケージのインストール
-#+begin_src emacs-lisp
-  (dolist (package '(org org-plus-contrib))
-    (when (not (package-installed-p package))
-      (package-install package)))
-  
-  (require 'org-install)
-  (require 'ob-tangle)
-#+end_src
-** TODO [[https://github.com/purcell/exec-path-from-shell][purcell/exec-path-from-shell]]
 * 標準設定
   - 外部のパッケージに依存しない，標準的な設定を行います．
-
 ** Load Path
-   
+  - git submodule   
 #+begin_src emacs-lisp
   (let ((default-directory "~/.emacs.d/git/"))
     (normal-top-level-add-subdirs-to-load-path))
+#+end_src
+
+   - sourcecode
+#+begin_src emacs-lisp
   (let ((default-directory "~/.emacs.d/site-lisp/"))
     (normal-top-level-add-subdirs-to-load-path))
 #+end_src
-
-#+RESULTS:
 
 ** 日本語文字コードの設定
     
@@ -148,36 +135,6 @@
   
   (setq frame-title-format
         (format "%%f - Emacs@%s" (system-name)))
-#+end_src
-
-** 文書執筆関係
-
-#+begin_src emacs-lisp
-;; ================================================================
-;; パッケージのインストール
-;; ================================================================
-(dolist (package '(smartrep graphviz-dot-mode))
-  (when (not (package-installed-p package))
-    (package-install package)))
-
-;; ================================================================
-;; 連続操作を素敵にするsmartrep.el作った - sheephead
-;; http://sheephead.homelinux.org/2011/12/19/6930/
-;; ================================================================
-
-(require 'smartrep)
-(eval-after-load "org"
-  '(progn
-     (smartrep-define-key
-      org-mode-map "C-c" '(("C-n" . (lambda ()
-                                      (outline-next-visible-heading 1)))
-                           ("C-p" . (lambda ()
-                                      (outline-previous-visible-heading 1)))))))
-
-;; ================================================================
-;; graphviz-dot-mode
-;; ================================================================
-(add-to-list 'auto-mode-alist '("\\.dot$" . graphviz-dot-mode))
 #+end_src
 
 ** キーバインディング
@@ -271,12 +228,46 @@
 #+RESULTS:
 
 * パッケージ
-** exec-path-from-shell
+** パッケージの初期設定
+  - パッケージをダウンロードするリポジトリを設定します．
+  - [[http://emacs-jp.github.io/packages/package-management/package-el.html][package.el - Emacs JP]]
 
 #+begin_src emacs-lisp
+  (require 'package)
+  (setq package-archives
+        '(("org" .       "http://orgmode.org/elpa/")
+          ("gnu" .       "http://elpa.gnu.org/packages/")
+          ("marmalade" . "http://marmalade-repo.org/packages/")
+          ("melpa" .     "http://melpa.milkbox.net/packages/")))
+  (message "package-initializeを呼びます．")
+  (package-initialize)
+  (message "package-initializeから戻りました．")
 #+end_src
 
+** パッケージ一覧の更新
+  - 必要に応じてリフレッシュ
+  - 参考
+    - [[http://stackoverflow.com/questions/14836958/updating-packages-in-emacs][elpa - Updating packages in Emacs - Stack Overflow]]
+
+#+begin_src emacs-lisp
+  (when (not package-archive-contents)
+    (package-refresh-contents))
+#+end_src  
+
 * Org
+** org-modeの設定
+
+- マニュアル
+  - [[http://orgmode.org/org.html][The Org Manual]]
+  - [[http://orgmode.org/elpa.html][Org Emacs lisp Package Archive]]
+
+orgパッケージのインストール
+
+#+begin_src emacs-lisp
+  (dolist (package '(org org-plus-contrib))
+    (when (not (package-installed-p package))
+      (package-install package)))
+#+end_src
 ** Markdown export
 #+begin_src emacs-lisp
   (require 'ox-md)
@@ -435,6 +426,25 @@
 #+RESULTS:
 | blog.chubachi.net | :url | http://blog.chubachi.net/xmlrpc.php | :username | yc | :default-title | Emacs title | :default-categories | (org2blog emacs) | :tags-as-categories | nil |
 
+* smartrep.el
+- [[http://sheephead.homelinux.org/2011/12/19/6930/][連続操作を素敵にするsmartrep.el作った - sheephead]]
+
+#+begin_src emacs-lisp
+  (dolist (package '(smartrep))
+    (when (not (package-installed-p package))
+      (package-install package)))
+  (require 'smartrep)
+  
+  (eval-after-load "org"
+    '(progn
+       (smartrep-define-key
+           org-mode-map
+           "C-c" '(("C-n" . (lambda ()
+                              (outline-next-visible-heading 1)))
+                   ("C-p" . (lambda ()
+                              (outline-previous-visible-heading 1)))))))
+#+end_src
+
 * markdown
   - [[http://jblevins.org/projects/markdown-mode/][Emacs Markdown Mode]]
 
@@ -465,6 +475,16 @@
     (when (not (package-installed-p package))
       (package-install package)))
   (require 'mediawiki)
+#+end_src
+
+* graphviz
+
+#+begin_src emacs-lisp
+(dolist (package '(graphviz-dot-mode))
+  (when (not (package-installed-p package))
+    (package-install package)))
+
+(add-to-list 'auto-mode-alist '("\\.dot$" . graphviz-dot-mode))
 #+end_src
 
 * キーバインディング
@@ -1164,6 +1184,7 @@ shell-pop
 * 後始末
 ** フッタコメント
 #+begin_src emacs-lisp
+  (message "init.elは完了しました")
   ;;; init.el ends here
 #+end_src
 

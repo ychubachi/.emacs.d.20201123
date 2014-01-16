@@ -1,45 +1,24 @@
 
 ;; init.el --- Emacsの初期設定
 
+(setq debug-on-error t)
+
 (setq custom-file "~/.emacs.d/custom.el")
-(load custom-file)
+(if (file-exists-p (expand-file-name custom-file))
+    (load (expand-file-name custom-file)))
 
-(require 'package)
-(package-initialize)
-
-(when (not package-archive-contents)
-  (package-refresh-contents))
-
-(dolist (package '(org org-plus-contrib))
-  (when (not (package-installed-p package))
-    (package-install package)))
-
-(require 'org-install)
-(require 'ob-tangle)
+(add-hook 'after-init-hook
+          (lambda ()
+            (message "Emacsの設定が完了しました．")))
 
 (let ((default-directory "~/.emacs.d/git/"))
   (normal-top-level-add-subdirs-to-load-path))
+
 (let ((default-directory "~/.emacs.d/site-lisp/"))
   (normal-top-level-add-subdirs-to-load-path))
 
 (set-language-environment "japanese")
 (prefer-coding-system 'utf-8)
-
-;; (let* ((size 14)
-;;        (h (* size 10))
-;;        (font-ascii "Ricty")
-;;        (font-jp    "Ricty")
-;;        (font-spec-ascii (font-spec :family font-ascii))
-;;        (font-spec-jp    (font-spec :family font-jp)))
-;;   (set-face-attribute 'default nil :family font-ascii :height h)
-;;   (set-fontset-font nil 'japanese-jisx0208        font-spec-jp)
-;;   (set-fontset-font nil 'japanese-jisx0212        font-spec-jp)
-;;   (set-fontset-font nil 'japanese-jisx0213.2004-1 font-spec-jp)
-;;   (set-fontset-font nil 'japanese-jisx0213-1      font-spec-jp)
-;;   (set-fontset-font nil 'japanese-jisx0213-2      font-spec-jp)
-;;   (set-fontset-font nil 'katakana-jisx0201        font-spec-jp)
-;;   (set-fontset-font nil '(#x0080 . #x024F)        font-spec-ascii) 
-;;   (set-fontset-font nil '(#x0370 . #x03FF)        font-spec-ascii))
 
 ;; create backup file in ~/.emacs.d/backup
 (setq make-backup-files t)
@@ -73,38 +52,6 @@
 
 (setq frame-title-format
       (format "%%f - Emacs@%s" (system-name)))
-
-;; ================================================================
-;; パッケージのインストール
-;; ================================================================
-(dolist (package '(smartrep graphviz-dot-mode))
-  (when (not (package-installed-p package))
-    (package-install package)))
-
-;; ================================================================
-;; markdownモードでアウトラインを有効にする
-;; ================================================================
-(add-hook 'markdown-mode-hook
-          '(lambda () (outline-minor-mode t)))
-
-;; ================================================================
-;; 連続操作を素敵にするsmartrep.el作った - sheephead
-;; http://sheephead.homelinux.org/2011/12/19/6930/
-;; ================================================================
-
-(require 'smartrep)
-(eval-after-load "org"
-  '(progn
-     (smartrep-define-key
-      org-mode-map "C-c" '(("C-n" . (lambda ()
-                                      (outline-next-visible-heading 1)))
-                           ("C-p" . (lambda ()
-                                      (outline-previous-visible-heading 1)))))))
-
-;; ================================================================
-;; graphviz-dot-mode
-;; ================================================================
-(add-to-list 'auto-mode-alist '("\\.dot$" . graphviz-dot-mode))
 
 ;; ================================================================
 ;; 自作関数
@@ -151,7 +98,38 @@
 (global-set-key (kbd "<f4>") 'my/open-note)
 (global-set-key (kbd "<f5>") 'my/open-project-folder)
 
+;; (let* ((size 14)
+;;        (h (* size 10))
+;;        (font-ascii "Ricty")
+;;        (font-jp    "Ricty")
+;;        (font-spec-ascii (font-spec :family font-ascii))
+;;        (font-spec-jp    (font-spec :family font-jp)))
+;;   (set-face-attribute 'default nil :family font-ascii :height h)
+;;   (set-fontset-font nil 'japanese-jisx0208        font-spec-jp)
+;;   (set-fontset-font nil 'japanese-jisx0212        font-spec-jp)
+;;   (set-fontset-font nil 'japanese-jisx0213.2004-1 font-spec-jp)
+;;   (set-fontset-font nil 'japanese-jisx0213-1      font-spec-jp)
+;;   (set-fontset-font nil 'japanese-jisx0213-2      font-spec-jp)
+;;   (set-fontset-font nil 'katakana-jisx0201        font-spec-jp)
+;;   (set-fontset-font nil '(#x0080 . #x024F)        font-spec-ascii) 
+;;   (set-fontset-font nil '(#x0370 . #x03FF)        font-spec-ascii))
 
+(require 'package)
+(setq package-archives
+      '(("org" .       "http://orgmode.org/elpa/")
+        ("gnu" .       "http://elpa.gnu.org/packages/")
+        ("marmalade" . "http://marmalade-repo.org/packages/")
+        ("melpa" .     "http://melpa.milkbox.net/packages/")))
+(message "package-initializeを呼びます．")
+(package-initialize)
+(message "package-initializeから戻りました．")
+
+(when (not package-archive-contents)
+  (package-refresh-contents))
+
+(dolist (package '(org org-plus-contrib))
+  (when (not (package-installed-p package))
+    (package-install package)))
 
 (require 'ox-md)
 
@@ -159,17 +137,17 @@
 
 (require 'ox-latex)
 
-(add-to-list 'auto-mode-alist '("\\.org$" . org-mode))
 (setq org-latex-default-class "jsarticle")
 
 (setq org-export-in-background nil)
 
-(cond ((eq system-type 'gnu/linux)
-       (setq org-latex-pdf-process '("latexmk -e '$latex=q/platex %S/' -e '$bibtex=q/pbibtex %B/' -e '$makeindex=q/mendex -o %D %S/' -e '$dvipdf=q/dvipdfmx -o %D %S/' -norc -gg -pdfdvi %f"))
-       )
-      ((eq system-type 'darwin)
-       (setq org-latex-pdf-process '("latexmk -e '$latex=q/platex %S/' -e '$bibtex=q/pbibtex %B/' -e '$makeindex=q/mendex -o %D %S/' -e '$dvipdf=q/dvipdfmx -o %D %S/' -norc -gg -pdfdvi %f"))
-       ))
+(cond
+ ((eq system-type 'gnu/linux)
+  (setq org-latex-pdf-process '("latexmk -e '$latex=q/platex %S/' -e '$bibtex=q/pbibtex %B/' -e '$makeindex=q/mendex -o %D %S/' -e '$dvipdf=q/dvipdfmx -o %D %S/' -norc -gg -pdfdvi %f"))
+  )
+ ((eq system-type 'darwin)
+  (setq org-latex-pdf-process '("latexmk -e '$latex=q/platex %S/' -e '$bibtex=q/pbibtex %B/' -e '$makeindex=q/mendex -o %D %S/' -e '$dvipdf=q/dvipdfmx -o %D %S/' -norc -gg -pdfdvi %f"))
+  ))
 
 ;; jsarticle
 (add-to-list 'org-latex-classes
@@ -259,10 +237,43 @@
          :tags-as-categories nil)
         ))
 
+(dolist (package '(smartrep))
+  (when (not (package-installed-p package))
+    (package-install package)))
+(require 'smartrep)
+
+(eval-after-load "org"
+  '(progn
+     (smartrep-define-key
+         org-mode-map
+         "C-c" '(("C-n" . (lambda ()
+                            (outline-next-visible-heading 1)))
+                 ("C-p" . (lambda ()
+                            (outline-previous-visible-heading 1)))))))
+
+(dolist (package '(markdown-mode))
+  (when (not (package-installed-p package))
+    (package-install package)))
+
+(autoload 'markdown-mode "markdown-mode"
+   "Major mode for editing Markdown files" t)
+(add-to-list 'auto-mode-alist '("\\.text\\'" . markdown-mode))
+(add-to-list 'auto-mode-alist '("\\.markdown\\'" . markdown-mode))
+(add-to-list 'auto-mode-alist '("\\.md\\'" . markdown-mode))
+
+(add-hook 'markdown-mode-hook
+          '(lambda () (outline-minor-mode t)))
+
 (dolist (package '(mediawiki))
   (when (not (package-installed-p package))
     (package-install package)))
 (require 'mediawiki)
+
+(dolist (package '(graphviz-dot-mode))
+  (when (not (package-installed-p package))
+    (package-install package)))
+
+(add-to-list 'auto-mode-alist '("\\.dot$" . graphviz-dot-mode))
 
 ;; ================================================================
 ;; パッケージのインストール
@@ -894,4 +905,5 @@
 ;; (setq rct-get-all-methods-command "PAGER=cat fri -l")
 ;; ;; See docs
 
+(message "init.elは完了しました")
 ;;; init.el ends here
