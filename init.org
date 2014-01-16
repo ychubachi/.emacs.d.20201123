@@ -287,41 +287,44 @@
 #+end_src
 
 ** LaTeX export
+
+- (add-to-list 'auto-mode-alist '("\\.org$" . org-mode))
+  
 #+begin_src emacs-lisp
-(require 'ox-latex)
-
-(add-to-list 'auto-mode-alist '("\\.org$" . org-mode))
-(setq org-latex-default-class "jsarticle")
-
-(setq org-export-in-background nil)
-
-(cond ((eq system-type 'gnu/linux)
-       (setq org-latex-pdf-process '("latexmk -e '$latex=q/platex %S/' -e '$bibtex=q/pbibtex %B/' -e '$makeindex=q/mendex -o %D %S/' -e '$dvipdf=q/dvipdfmx -o %D %S/' -norc -gg -pdfdvi %f"))
-       (setq org-file-apps '(("pdf" . "evince %s"))))
-      ((eq system-type 'darwin)
-       (setq org-latex-pdf-process '("latexmk -e '$latex=q/platex %S/' -e '$bibtex=q/pbibtex %B/' -e '$makeindex=q/mendex -o %D %S/' -e '$dvipdf=q/dvipdfmx -o %D %S/' -norc -gg -pdfdvi %f"))
-       (setq org-file-apps '(("pdf" . "/usr/bin/open -a Skim %s")))))
-
-;; jsarticle
-(add-to-list 'org-latex-classes
-             '("jsarticle"
-	       "\\ifdefined\\ucs
-  \\documentclass[uplatex,12pt,a4paper,papersize,dvipdfmx]{jsarticle}
-\\else
-  \\documentclass[12pt,a4paper,papersize,dvipdfmx]{jsarticle}
-\\fi
-[NO-DEFAULT-PACKAGES]
-\\usepackage{amsmath}
-\\usepackage{newtxtext,newtxmath}
-\\usepackage{graphicx}
-\\usepackage{hyperref}
-\\usepackage{pxjahyper}
-\\hypersetup{setpagesize=false,colorlinks=true}"
-               ("\\section{%s}" . "\\section*{%s}")
-               ("\\subsection{%s}" . "\\subsection*{%s}")
-               ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
-               ("\\paragraph{%s}" . "\\paragraph*{%s}")
-               ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
+  (require 'ox-latex)
+  
+  (setq org-latex-default-class "jsarticle")
+  
+  (setq org-export-in-background nil)
+  
+  (cond
+   ((eq system-type 'gnu/linux)
+    (setq org-latex-pdf-process '("latexmk -e '$latex=q/platex %S/' -e '$bibtex=q/pbibtex %B/' -e '$makeindex=q/mendex -o %D %S/' -e '$dvipdf=q/dvipdfmx -o %D %S/' -norc -gg -pdfdvi %f"))
+    )
+   ((eq system-type 'darwin)
+    (setq org-latex-pdf-process '("latexmk -e '$latex=q/platex %S/' -e '$bibtex=q/pbibtex %B/' -e '$makeindex=q/mendex -o %D %S/' -e '$dvipdf=q/dvipdfmx -o %D %S/' -norc -gg -pdfdvi %f"))
+    ))
+  
+  ;; jsarticle
+  (add-to-list 'org-latex-classes
+               '("jsarticle"
+                 "\\ifdefined\\ucs
+    \\documentclass[uplatex,12pt,a4paper,papersize,dvipdfmx]{jsarticle}
+  \\else
+    \\documentclass[12pt,a4paper,papersize,dvipdfmx]{jsarticle}
+  \\fi
+  [NO-DEFAULT-PACKAGES]
+  \\usepackage{amsmath}
+  \\usepackage{newtxtext,newtxmath}
+  \\usepackage{graphicx}
+  \\usepackage{hyperref}
+  \\usepackage{pxjahyper}
+  \\hypersetup{setpagesize=false,colorlinks=true}"
+                 ("\\section{%s}" . "\\section*{%s}")
+                 ("\\subsection{%s}" . "\\subsection*{%s}")
+                 ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+                 ("\\paragraph{%s}" . "\\paragraph*{%s}")
+                 ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
 #+end_src
 
 ** LeTex (beamer) export
