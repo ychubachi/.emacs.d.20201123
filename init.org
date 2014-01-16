@@ -1,5 +1,5 @@
 # -*- org -*-
-#+STARTUP: content
+#+STARTUP: overview
 #+PROPERTY: header-args:emacs-lisp :tangle init.el
 * 説明
 ** 使い方
