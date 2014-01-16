@@ -24,7 +24,8 @@
     C-jはorg-return-indentにバインドされている
 *** TODO elispのunit testについて調べる
 *** TODO [[https://github.com/purcell/exec-path-from-shell][purcell/exec-path-from-shell]]
-* 設定
+* 標準設定
+  - 外部のパッケージに依存しない，標準的な設定を行います．
 ** ヘッダコメント
 
 #+begin_src emacs-lisp
@@ -63,8 +64,6 @@
               (message "Emacsの設定が完了しました．")))
 #+end_src
 
-* 標準設定
-  - 外部のパッケージに依存しない，標準的な設定を行います．
 ** Load Path
   - git submodule   
 #+begin_src emacs-lisp
@@ -186,7 +185,7 @@
   (global-set-key (kbd "<f5>") 'my/open-project-folder)
 #+end_src
 
-** 日本語文字フォントの設定
+* 日本語文字フォントの設定
 
 - 表示例
 |----------------+------------------------|
