@@ -36,12 +36,15 @@
    - 概要
      - カスタマイズ設定を保存するファイルを指定して，読み込みます．
      - custom.elファイルが存在しないとエラーになります．
+     - このコード自体はcustom.elに依存させない
+        - custom.elには個人用の設定を書く
    - 参考
      - [[http://www.gnu.org/software/emacs/manual/html_node/emacs/Saving-Customizations.html][Saving Customizations - GNU Emacs Manual]]
        
 #+begin_src emacs-lisp
   (setq custom-file "~/.emacs.d/custom.el")
-  (load custom-file)
+  (if (file-exists-p (expand-file-name custom-file))
+      (load (expand-file-name custom-file)))
 #+end_src
    
 ** パッケージ
@@ -95,47 +98,6 @@
   (set-language-environment "japanese")
   (prefer-coding-system 'utf-8)
 #+end_src
-
-** 日本語文字フォントの設定
-
-- 表示例
-|----------------+------------------------|
-| ホスト名(標準) | www2243up.sakura.ne.jp |
-| IPアドレス     |          153.121.41.17 |
-| ネットマスク   |          255.255.254.0 |
-| ゲートウェイ   |           153.121.40.1 |
-| ネームサーバ1  |         210.188.224.10 |
-| ネームサーバ2  |         210.188.224.11 |
-|----------------+------------------------|
-
-  - [[http://blog.sanojimaru.com/post/19807398882/cocoa-emacs-ricty][cocoa emacsでプログラミング用フォントRictyを使う]]
-  - [[http://d.hatena.ne.jp/kitokitoki/20110502/p2][emacs での Ricty の導入手順 - わからん]]
-  - [[http://d.hatena.ne.jp/tunefs/20060710/p1][set-default-font vs default-frame-alist - Crossroad (tunefsの日記)]]
-  - フォントはcustomize.elで指定しています
-    - M-x custmoize-variable RET default-frame-alist RET
-
-  - TODO: 下記をLinuxのdaemonで実行すると落ちてしまう．
-    - jisx0208などの意味は調べていない
-    - font-specが動かないのでは？
-#+begin_src emacs-lisp
-  ;; (let* ((size 14)
-  ;;        (h (* size 10))
-  ;;        (font-ascii "Ricty")
-  ;;        (font-jp    "Ricty")
-  ;;        (font-spec-ascii (font-spec :family font-ascii))
-  ;;        (font-spec-jp    (font-spec :family font-jp)))
-  ;;   (set-face-attribute 'default nil :family font-ascii :height h)
-  ;;   (set-fontset-font nil 'japanese-jisx0208        font-spec-jp)
-  ;;   (set-fontset-font nil 'japanese-jisx0212        font-spec-jp)
-  ;;   (set-fontset-font nil 'japanese-jisx0213.2004-1 font-spec-jp)
-  ;;   (set-fontset-font nil 'japanese-jisx0213-1      font-spec-jp)
-  ;;   (set-fontset-font nil 'japanese-jisx0213-2      font-spec-jp)
-  ;;   (set-fontset-font nil 'katakana-jisx0201        font-spec-jp)
-  ;;   (set-fontset-font nil '(#x0080 . #x024F)        font-spec-ascii) 
-  ;;   (set-fontset-font nil '(#x0370 . #x03FF)        font-spec-ascii))
-#+end_src
-
-#+RESULTS:
 
 ** Backupの設定
 #+begin_src emacs-lisp
@@ -273,6 +235,47 @@
   (global-set-key (kbd "<f4>") 'my/open-note)
   (global-set-key (kbd "<f5>") 'my/open-project-folder)
 #+end_src
+
+** 日本語文字フォントの設定
+
+- 表示例
+|----------------+------------------------|
+| ホスト名(標準) | www2243up.sakura.ne.jp |
+| IPアドレス     |          153.121.41.17 |
+| ネットマスク   |          255.255.254.0 |
+| ゲートウェイ   |           153.121.40.1 |
+| ネームサーバ1  |         210.188.224.10 |
+| ネームサーバ2  |         210.188.224.11 |
+|----------------+------------------------|
+
+  - [[http://blog.sanojimaru.com/post/19807398882/cocoa-emacs-ricty][cocoa emacsでプログラミング用フォントRictyを使う]]
+  - [[http://d.hatena.ne.jp/kitokitoki/20110502/p2][emacs での Ricty の導入手順 - わからん]]
+  - [[http://d.hatena.ne.jp/tunefs/20060710/p1][set-default-font vs default-frame-alist - Crossroad (tunefsの日記)]]
+  - フォントはcustomize.elで指定しています
+    - M-x custmoize-variable RET default-frame-alist RET
+
+  - TODO: 下記をLinuxのdaemonで実行すると落ちてしまう．
+    - jisx0208などの意味は調べていない
+    - font-specが動かないのでは？
+#+begin_src emacs-lisp
+  ;; (let* ((size 14)
+  ;;        (h (* size 10))
+  ;;        (font-ascii "Ricty")
+  ;;        (font-jp    "Ricty")
+  ;;        (font-spec-ascii (font-spec :family font-ascii))
+  ;;        (font-spec-jp    (font-spec :family font-jp)))
+  ;;   (set-face-attribute 'default nil :family font-ascii :height h)
+  ;;   (set-fontset-font nil 'japanese-jisx0208        font-spec-jp)
+  ;;   (set-fontset-font nil 'japanese-jisx0212        font-spec-jp)
+  ;;   (set-fontset-font nil 'japanese-jisx0213.2004-1 font-spec-jp)
+  ;;   (set-fontset-font nil 'japanese-jisx0213-1      font-spec-jp)
+  ;;   (set-fontset-font nil 'japanese-jisx0213-2      font-spec-jp)
+  ;;   (set-fontset-font nil 'katakana-jisx0201        font-spec-jp)
+  ;;   (set-fontset-font nil '(#x0080 . #x024F)        font-spec-ascii) 
+  ;;   (set-fontset-font nil '(#x0370 . #x03FF)        font-spec-ascii))
+#+end_src
+
+#+RESULTS:
 
 * パッケージ
 ** exec-path-from-shell
