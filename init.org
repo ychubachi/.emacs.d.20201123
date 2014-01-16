@@ -292,8 +292,6 @@
 #+end_src
 
 ** LaTeX export
-
-- (add-to-list 'auto-mode-alist '("\\.org$" . org-mode))
   
 #+begin_src emacs-lisp
   (require 'ox-latex)
