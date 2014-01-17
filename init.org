@@ -18,14 +18,18 @@
 ** 準備
   - git submodule init
   - git submodule update
-  - Rictyのインストール
-  - .aspell.confの設定
+*** フォント
+  - Ricty のインストール
+*** aspell コマンドのインストール
+  - git-commit-mode-hook でflyspellが自動的にonになる．
+  - .aspell.conf の設定
     - [[http://sky-y.hatenablog.jp/entry/20091229/1262106336][YaTeX + aspell - 雲行きそらゆきココロイキ]]
 ** TODOs
 *** TODO org-insert-heading-respect-contentをC-jにする
     C-jはorg-return-indentにバインドされている
 *** TODO elispのunit testについて調べる
 *** TODO [[https://github.com/purcell/exec-path-from-shell][purcell/exec-path-from-shell]]
+*** TODO flyspell-modeでC-.がかちあう
 * 標準設定
   - 外部のパッケージに依存しない，標準的な設定を行います．
 ** ヘッダコメント
