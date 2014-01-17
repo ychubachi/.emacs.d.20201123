@@ -1,24 +1,19 @@
 
 ;; init.el --- Emacsの初期設定
 
-(setq debug-on-error t)
-
-(setq custom-file "~/.emacs.d/custom.el")
-(if (file-exists-p (expand-file-name custom-file))
-    (load (expand-file-name custom-file)))
+(message "Emacsの設定を開始します．")
 
 (add-hook 'after-init-hook
           (lambda ()
             (message "Emacsの設定が完了しました．")))
+
+(setq debug-on-error t)
 
 (let ((default-directory "~/.emacs.d/git/"))
   (normal-top-level-add-subdirs-to-load-path))
 
 (let ((default-directory "~/.emacs.d/site-lisp/"))
   (normal-top-level-add-subdirs-to-load-path))
-
-(set-language-environment "japanese")
-(prefer-coding-system 'utf-8)
 
 ;; create backup file in ~/.emacs.d/backup
 (setq make-backup-files t)
@@ -43,15 +38,11 @@
 (set-face-attribute 'linum nil :foreground "yellow" :height 0.8)
 (setq linum-format "%4d")
 
-(setq inhibit-splash-screen t)
-(setq inhibit-startup-screen t)
-
-(tool-bar-mode 0)
-(scroll-bar-mode 0)
-(menu-bar-mode 0)
-
 (setq frame-title-format
       (format "%%f - Emacs@%s" (system-name)))
+
+(set-language-environment "japanese")
+(prefer-coding-system 'utf-8)
 
 ;; ================================================================
 ;; 自作関数
@@ -905,5 +896,10 @@
 ;; (setq rct-get-all-methods-command "PAGER=cat fri -l")
 ;; ;; See docs
 
+(setq custom-file "~/.emacs.d/custom.el")
+(if (file-exists-p (expand-file-name custom-file))
+    (load (expand-file-name custom-file)))
+
 (message "init.elは完了しました")
+
 ;;; init.el ends here

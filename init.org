@@ -32,30 +32,13 @@
 ;; init.el --- Emacsの初期設定
 #+end_src
 
-** デバッガの有効化
-
-デバッグを有効にします．エラーが発生したらデバッガが起動します．
+** 開始の通知
 
 #+begin_src emacs-lisp
-(setq debug-on-error t)
+(message "Emacsの設定を開始します．")
 #+end_src
 
-** カスタマイズ設定ファイル
-   - 概要
-     - カスタマイズ設定を保存するファイルを指定して，読み込みます．
-     - custom.elファイルが存在しないとエラーになります．
-     - このコード自体はcustom.elに依存させない
-        - custom.elには個人用の設定を書く
-   - 参考
-     - [[http://www.gnu.org/software/emacs/manual/html_node/emacs/Saving-Customizations.html][Saving Customizations - GNU Emacs Manual]]
-       
-#+begin_src emacs-lisp
-  (setq custom-file "~/.emacs.d/custom.el")
-  (if (file-exists-p (expand-file-name custom-file))
-      (load (expand-file-name custom-file)))
-#+end_src
-   
-** 完了表示
+** 完了の通知
   - after-init-hookはパッケージの初期化が完了したら呼ばれるフックです．
 
 #+begin_src emacs-lisp
@@ -64,24 +47,25 @@
               (message "Emacsの設定が完了しました．")))
 #+end_src
 
+** デバッガの有効化
+
+デバッグを有効にします．エラーが発生したらデバッガが起動します．
+
+#+begin_src emacs-lisp
+(setq debug-on-error t)
+#+end_src
+
 ** Load Path
-  - git submodule   
+*** gitのsubmoduleとして管理するライブラリ
 #+begin_src emacs-lisp
   (let ((default-directory "~/.emacs.d/git/"))
     (normal-top-level-add-subdirs-to-load-path))
 #+end_src
 
-   - sourcecode
+*** ソースコードで管理するライブラリ
 #+begin_src emacs-lisp
   (let ((default-directory "~/.emacs.d/site-lisp/"))
     (normal-top-level-add-subdirs-to-load-path))
-#+end_src
-
-** 日本語文字コードの設定
-    
-#+begin_src emacs-lisp
-  (set-language-environment "japanese")
-  (prefer-coding-system 'utf-8)
 #+end_src
 
 ** Backupの設定
@@ -108,7 +92,7 @@
   (global-set-key (kbd "C-c C-h") 'help-command)
 #+end_src
 
-** auto-revert
+** ファイルの自動再読み込み
    Emacsの外でファイルが更新されたら，自動的にバッファを再読込する．
 
 #+begin_src emacs-lisp
@@ -122,18 +106,24 @@
 (setq linum-format "%4d")
 #+end_src
 
-** 見た目
+** フレームの表題
+
+| 変数名          | 内容                         |
+|-----------------+------------------------------|
+| menu-bar-mode   | メニューバーの表示           |
+| tool-bar-mode   | ツールバーを表示             |
+| scroll-bar-mode | スクロールバーの表示（位置） |
 
 #+begin_src emacs-lisp
-  (setq inhibit-splash-screen t)
-  (setq inhibit-startup-screen t)
-  
-  (tool-bar-mode 0)
-  (scroll-bar-mode 0)
-  (menu-bar-mode 0)
-  
   (setq frame-title-format
         (format "%%f - Emacs@%s" (system-name)))
+#+end_src
+
+** 日本語文字コードの設定
+    
+#+begin_src emacs-lisp
+  (set-language-environment "japanese")
+  (prefer-coding-system 'utf-8)
 #+end_src
 
 ** キーバインディング
@@ -1180,10 +1170,29 @@ shell-pop
   ;; ;; See docs
 #+end_src
 
+* TODO カスタマイズ
+   - TODO
+     - 最後に読むことでここまでの設定を上書きできることを確認する
+   - 概要
+     - カスタマイズ設定を保存するファイルを指定して，読み込みます．
+     - このコード自体はcustom.elに依存させない
+       - custom.elには個人用の設定を書く
+   - 参考
+     - [[http://www.gnu.org/software/emacs/manual/html_node/emacs/Saving-Customizations.html][Saving Customizations - GNU Emacs Manual]]
+       
+#+begin_src emacs-lisp
+  (setq custom-file "~/.emacs.d/custom.el")
+  (if (file-exists-p (expand-file-name custom-file))
+      (load (expand-file-name custom-file)))
+#+end_src
+   
 * 後始末
-** フッタコメント
+** 完了表示
 #+begin_src emacs-lisp
   (message "init.elは完了しました")
+#+end_src
+** フッタコメント
+#+begin_src emacs-lisp
   ;;; init.el ends here
 #+end_src
 
