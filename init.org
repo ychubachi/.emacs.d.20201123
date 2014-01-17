@@ -19,6 +19,8 @@
   - git submodule init
   - git submodule update
   - Rictyのインストール
+  - .aspell.confの設定
+    - [[http://sky-y.hatenablog.jp/entry/20091229/1262106336][YaTeX + aspell - 雲行きそらゆきココロイキ]]
 ** TODOs
 *** TODO org-insert-heading-respect-contentをC-jにする
     C-jはorg-return-indentにバインドされている
