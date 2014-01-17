@@ -7,6 +7,9 @@
           (lambda ()
             (message "Emacsの設定が完了しました．")))
 
+(set-language-environment "japanese")
+(prefer-coding-system 'utf-8)
+
 (setq debug-on-error t)
 
 (let ((default-directory "~/.emacs.d/git/"))
@@ -40,9 +43,6 @@
 
 (setq frame-title-format
       (format "%%f - Emacs@%s" (system-name)))
-
-(set-language-environment "japanese")
-(prefer-coding-system 'utf-8)
 
 ;; ================================================================
 ;; 自作関数
