@@ -35,7 +35,7 @@
 ;; ================================================================
 
 (global-set-key "\C-h" 'delete-backward-char)
-(global-set-key (kbd "C-c C-h") 'hel-command)
+(global-set-key (kbd "C-c C-h") 'help-command)
 
 (global-auto-revert-mode 1)
 

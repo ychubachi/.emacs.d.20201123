@@ -118,7 +118,7 @@
   ;; ================================================================
   
   (global-set-key "\C-h" 'delete-backward-char)
-  (global-set-key (kbd "C-c C-h") 'hel-command)
+  (global-set-key (kbd "C-c C-h") 'help-command)
 #+end_src
 
 ** ファイルの自動再読み込み
@@ -321,7 +321,6 @@
 #+end_src
 
 *** LaTeX export
-
 **** パッケージの読み込み
 
 #+begin_src emacs-lisp
@@ -329,7 +328,7 @@
 #+end_src
 
 **** TODO PDFを生成するコマンド
-
+ - 同じなのでまとめてよいか？
 #+begin_src emacs-lisp
   (cond
    ((eq system-type 'gnu/linux)
