@@ -5,6 +5,8 @@
 ** 使い方
   - Emacsを設定するためのelです．
     - [[https://github.com/ychubachi/.emacs.d/blob/master/init.org][.emacs.d/init.org at master · ychubachi/.emacs.d]]
+  - preludeを意識しています
+    - [[http://batsov.com/prelude/][Prelude by bbatsov]]
   - 日本のEmacsユーザ向け．
   - C-c C-v t でinit.elを生成
     - [[http://orgmode.org/manual/Header-arguments-in-Org-mode-properties.html#Header-arguments-in-Org-mode-properties][Header arguments in Org mode properties - The Org Manual]]
@@ -16,14 +18,22 @@
     - [[http://www.gnu.org/software/emacs/manual/html_node/elisp/Closures.html#Closures][Closures - GNU Emacs Lisp Reference Manual]]
   - git
 ** 準備
+*** git submodule
   - git submodule init
   - git submodule update
-  - Rictyのインストール
+*** フォント
+  - Ricty のインストール
+*** aspell コマンドのインストール
+  - git-commit-mode-hook でflyspellが自動的にonになる．
+  - .aspell.conf の設定
+    - [[http://sky-y.hatenablog.jp/entry/20091229/1262106336][YaTeX + aspell - 雲行きそらゆきココロイキ]]
 ** TODOs
 *** TODO org-insert-heading-respect-contentをC-jにする
     C-jはorg-return-indentにバインドされている
-*** TODO elispのunit testについて調べる
+*** TODO [[http://www.emacswiki.org/emacs/UnitTesting][EmacsWiki: Unit Testing]]
 *** TODO [[https://github.com/purcell/exec-path-from-shell][purcell/exec-path-from-shell]]
+*** TODO flyspell-modeでC-.がかちあう
+*** TODO [[http://shibayu36.hatenablog.com/entry/2012/12/29/001418][年末emacs設定大掃除をして、これは捨てられないと思った設定書いてく - $shibayu36->blog;]]
 * 標準設定
   - 外部のパッケージに依存しない，標準的な設定を行います．
 ** ヘッダコメント
@@ -44,44 +54,16 @@
 デバッグを有効にします．エラーが発生したらデバッガが起動します．
 
 #+begin_src emacs-lisp
-(setq debug-on-error t)
+(message "%% Emacsの設定を開始します %%")
 #+end_src
 
-** カスタマイズ設定ファイル
-   - 概要
-     - カスタマイズ設定を保存するファイルを指定して，読み込みます．
-     - custom.elファイルが存在しないとエラーになります．
-     - このコード自体はcustom.elに依存させない
-        - custom.elには個人用の設定を書く
-   - 参考
-     - [[http://www.gnu.org/software/emacs/manual/html_node/emacs/Saving-Customizations.html][Saving Customizations - GNU Emacs Manual]]
-       
-#+begin_src emacs-lisp
-  (setq custom-file "~/.emacs.d/custom.el")
-  (if (file-exists-p (expand-file-name custom-file))
-      (load (expand-file-name custom-file)))
-#+end_src
-   
-** 完了表示
+** 完了の通知
   - after-init-hookはパッケージの初期化が完了したら呼ばれるフックです．
 
 #+begin_src emacs-lisp
   (add-hook 'after-init-hook
             (lambda ()
-              (message "Emacsの設定が完了しました．")))
-#+end_src
-
-** Load Path
-  - git submodule   
-#+begin_src emacs-lisp
-  (let ((default-directory "~/.emacs.d/git/"))
-    (normal-top-level-add-subdirs-to-load-path))
-#+end_src
-
-   - sourcecode
-#+begin_src emacs-lisp
-  (let ((default-directory "~/.emacs.d/site-lisp/"))
-    (normal-top-level-add-subdirs-to-load-path))
+              (message "%% Emacsの設定が完了しました %%")))
 #+end_src
 
 ** 日本語文字コードの設定
@@ -89,6 +71,27 @@
 #+begin_src emacs-lisp
   (set-language-environment "japanese")
   (prefer-coding-system 'utf-8)
+#+end_src
+
+** デバッガの有効化
+
+デバッグを有効にします．エラーが発生したらデバッガが起動します．
+
+#+begin_src emacs-lisp
+(setq debug-on-error t)
+#+end_src
+
+** ロードパス
+*** gitのsubmoduleとして管理するライブラリ
+#+begin_src emacs-lisp
+  (let ((default-directory "~/.emacs.d/git/"))
+    (normal-top-level-add-subdirs-to-load-path))
+#+end_src
+
+*** ソースコードで管理するライブラリ
+#+begin_src emacs-lisp
+  (let ((default-directory "~/.emacs.d/site-lisp/"))
+    (normal-top-level-add-subdirs-to-load-path))
 #+end_src
 
 ** Backupの設定
@@ -112,10 +115,10 @@
   ;; ================================================================
   
   (global-set-key "\C-h" 'delete-backward-char)
-  (global-set-key (kbd "C-c C-h") 'help-command)
+  (global-set-key (kbd "C-c C-h") 'hel-command)
 #+end_src
 
-** auto-revert
+** ファイルの自動再読み込み
    Emacsの外でファイルが更新されたら，自動的にバッファを再読込する．
 
 #+begin_src emacs-lisp
@@ -129,21 +132,27 @@
 (setq linum-format "%4d")
 #+end_src
 
-** 見た目
+** フレームの表題
+
+| 変数名          | 内容                         |
+|-----------------+------------------------------|
+| menu-bar-mode   | メニューバーの表示           |
+| tool-bar-mode   | ツールバーを表示             |
+| scroll-bar-mode | スクロールバーの表示（位置） |
 
 #+begin_src emacs-lisp
-  (setq inhibit-splash-screen t)
-  (setq inhibit-startup-screen t)
-  
-  (tool-bar-mode 0)
-  (scroll-bar-mode 0)
-  (menu-bar-mode 0)
-  
   (setq frame-title-format
         (format "%%f - Emacs@%s" (system-name)))
 #+end_src
 
-** キーバインディング
+** 不要な行末の空白を削除
+
+;; 保存前に自動でクリーンアップ
+#+begin_src emacs-lisp
+(setq whitespace-action '(auto-cleanup))
+#+end_src
+
+* キーバインディング
 
 #+begin_src emacs-lisp
   ;; ================================================================
@@ -249,9 +258,7 @@
           ("gnu" .       "http://elpa.gnu.org/packages/")
           ("marmalade" . "http://marmalade-repo.org/packages/")
           ("melpa" .     "http://melpa.milkbox.net/packages/")))
-  (message "package-initializeを呼びます．")
   (package-initialize)
-  (message "package-initializeから戻りました．")
 #+end_src
 
 ** パッケージ一覧の更新
@@ -264,39 +271,63 @@
     (package-refresh-contents))
 #+end_src  
 
+* yasnippet
+  - [[http://fukuyama.co/yasnippet][yasnippet 8.0の導入からスニペットの書き方、anything/helm/auto-completeとの連携 - Web学び]]
+
+#+begin_src emacs-lisp
+  (dolist (package '(yasnippet))
+    (when (not (package-installed-p package))
+      (package-install package)))
+  (require 'yasnippet)
+  (yas-global-mode 1)
+  (setq yas-snippet-dirs '("~/.emacs.d/snippets"))
+#+end_src
+
 * Org
-** org-modeの設定
+** Orgについて
 
 - マニュアル
   - [[http://orgmode.org/org.html][The Org Manual]]
   - [[http://orgmode.org/elpa.html][Org Emacs lisp Package Archive]]
 
-orgパッケージのインストール
+** カスタマイズ
+
+| 説明                           | 変数名                   | 推奨 |
+|--------------------------------+--------------------------+------|
+| バックグランドでのエキスポート | org-export-in-background | nil  |
+
+** パッケージのインストール
 
 #+begin_src emacs-lisp
   (dolist (package '(org org-plus-contrib))
     (when (not (package-installed-p package))
       (package-install package)))
 #+end_src
-** Markdown export
+
+** エキスポート
+*** Markdown export
+
 #+begin_src emacs-lisp
   (require 'ox-md)
 #+end_src
 
-** mediawiki export
+*** mediawiki export
+
 #+begin_src emacs-lisp
   (require 'ox-mediawiki)
 #+end_src
 
-** LaTeX export
-  
+*** LaTeX export
+
+**** パッケージの読み込み
+
 #+begin_src emacs-lisp
   (require 'ox-latex)
-  
-  (setq org-latex-default-class "jsarticle")
-  
-  (setq org-export-in-background nil)
-  
+#+end_src
+
+**** TODO PDFを生成するコマンド
+
+#+begin_src emacs-lisp
   (cond
    ((eq system-type 'gnu/linux)
     (setq org-latex-pdf-process '("latexmk -e '$latex=q/platex %S/' -e '$bibtex=q/pbibtex %B/' -e '$makeindex=q/mendex -o %D %S/' -e '$dvipdf=q/dvipdfmx -o %D %S/' -norc -gg -pdfdvi %f"))
@@ -304,8 +335,12 @@ orgパッケージのインストール
    ((eq system-type 'darwin)
     (setq org-latex-pdf-process '("latexmk -e '$latex=q/platex %S/' -e '$bibtex=q/pbibtex %B/' -e '$makeindex=q/mendex -o %D %S/' -e '$dvipdf=q/dvipdfmx -o %D %S/' -norc -gg -pdfdvi %f"))
     ))
-  
-  ;; jsarticle
+#+end_src
+
+**** 文書クラスの設定
+
+#+begin_src emacs-lisp
+  (setq org-latex-default-class "jsarticle")
   (add-to-list 'org-latex-classes
                '("jsarticle"
                  "\\ifdefined\\ucs
@@ -327,10 +362,15 @@ orgパッケージのインストール
                  ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
 #+end_src
 
-** LeTex (beamer) export
+*** LeTex (beamer) export
+**** 機能の読み込み
 #+begin_src emacs-lisp
 (require 'ox-beamer)
+#+end_src
 
+**** 文書クラスの設定
+
+#+begin_src emacs-lisp
 (add-to-list 'org-latex-classes
              '("beamer"
                "\\documentclass[dvipdfmx]{beamer}
@@ -352,7 +392,9 @@ orgパッケージのインストール
                ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
 #+end_src
 
-** WebにHTMLでPublishする
+** TODO WebにHTMLでPublishする
+   - customzationに移動する？
+
 #+begin_src emacs-lisp
 (setq org-publish-project-alist
       '(
@@ -383,9 +425,11 @@ orgパッケージのインストール
 
 ** Shellのコードの実行にbashを使う
    - デフォルトのシェルがzshなので，設定しておく．
+
 #+begin_src emacs-lisp
 (setq org-babel-sh-command "bash")
 #+end_src
+
 ** WordPressに記事を投稿できるようにする（org2blog）
   :PROPERTIES:
   :ID:       o2b:83d5ddbc-5e84-446c-826a-a2702eb6b997
@@ -418,11 +462,17 @@ orgパッケージのインストール
 (dolist (package '(org2blog xml-rpc metaweblog htmlize))
   (when (not (package-installed-p package))
     (package-install package)))
-
+#+end_src
+   
+#+begin_src emacs-lisp
 (require 'xml-rpc)
 (require 'metaweblog)
 (require 'org2blog-autoloads)
+#+end_src
 
+*** TODO custom.elに移動する？
+
+#+begin_src emacs-lisp
 (setq org2blog/wp-blog-alist
       '(("blog.chubachi.net"
          :url "http://blog.chubachi.net/xmlrpc.php"
@@ -433,8 +483,110 @@ orgパッケージのインストール
 	))
 #+end_src
 
-#+RESULTS:
-| blog.chubachi.net | :url | http://blog.chubachi.net/xmlrpc.php | :username | yc | :default-title | Emacs title | :default-categories | (org2blog emacs) | :tags-as-categories | nil |
+* Helm
+** 参考
+   - [[http://d.hatena.ne.jp/a_bicky/20140104/1388822688][Helm をストレスなく使うための個人的な設定 - あらびき日記]]
+   - [[https://github.com/emacs-helm/helm/wiki][Home · emacs-helm/helm Wiki]]
+   - [[http://sleepboy-zzz.blogspot.jp/2012/09/anythinghelm.html][memo: AnythingからHelmに移行しました]]
+   - [[http://www49.atwiki.jp/ntemacs/m/pages/32.html][NTEmacs @ ウィキ - helm を使うための設定 - @ｳｨｷﾓﾊﾞｲﾙ]]
+   - [[http://qiita.com/akisute3@github/items/7c8ea3970e4cbb7baa97][Emacs - helm-mode 有効時でも helm-find-files は無効にする - Qiita {キータ}]]
+   - [[http://www.fan.gr.jp/~ring/doc/elisp_19/elisp-jp_14.html#IDX592][GNU Emacs Lispリファレンス・マニュアル: 12. マクロ]]
+     - 逆引用符は`,'の引数を評価し、 リスト構造にその値を入れます。
+
+** パッケージ
+
+#+begin_src emacs-lisp
+(dolist (package '(helm))
+  (when (not (package-installed-p package))
+    (package-install package)))
+(require 'helm-config)
+#+end_src
+
+** helm-modeを有効にする
+- [[https://github.com/emacs-helm/helm/wiki#18-helm-mode][Home · emacs-helm/helm Wiki]]
+
+Customize with: helm-completing-read-handlers-alist
+See C-h v helm-completing-read-handlers-alist for more infos.
+
+#+begin_src emacs-lisp
+(helm-mode 1)
+#+end_src
+
+** C-h
+C-h でバックスペースと同じように文字を削除できるようにする
+
+#+begin_src emacs-lisp
+(define-key helm-map (kbd "C-h") 'delete-backward-char)
+(define-key helm-find-files-map (kbd "C-h") 'delete-backward-char)
+#+end_src
+
+** C-k
+ミニバッファで C-k 入力時にカーソル以降を削除する
+
+#+begin_src emacs-lisp
+(setq helm-delete-minibuffer-contents-from-point t)
+#+end_src
+
+** 他のパッケージ
+
+#+begin_src emacs-lisp
+(dolist (package '(helm-descbinds
+		   helm-migemo
+		   helm-themes
+		   imenu-anywhere
+		   helm-c-yasnippet))
+  (when (not (package-installed-p package))
+    (package-install package)))
+#+end_src
+
+** 設定
+
+** ???
+
+#+begin_src emacs-lisp
+(require 'helm-command)
+(require 'helm-descbinds)
+
+(setq helm-idle-delay             0.1
+      helm-input-idle-delay       0.1
+      helm-candidate-number-limit 200)
+#+end_src
+
+** helm-migemo - ローマ字検索
+
+#+begin_src emacs-lisp
+(require 'helm-migemo)
+(setq helm-use-migemo t)
+
+(defadvice helm-c-apropos
+  (around ad-helm-apropos activate)
+  "候補が表示されないときがあるので migemoらないように設定."
+  (let ((helm-use-migemo nil))
+    ad-do-it))
+
+(defadvice helm-M-x
+  (around ad-helm-M-x activate)
+  "候補が表示されないときがあるので migemoらないように設定."
+  (let ((helm-use-migemo nil))
+    ad-do-it))
+
+;; ================================================================
+;; その他
+;; ================================================================
+(require 'helm-imenu)
+(setq imenu-auto-rescan t)
+(setq imenu-after-jump-hook (lambda () (recenter 10))) ; 選択後の表示位置を調整
+
+(require 'helm-themes)
+
+(require 'helm-c-yasnippet)
+
+;; ================================================================
+;; package listをhelmで選択
+;; (This package is installed in vendor directory.)
+;; ================================================================
+(require 'helm-package)
+#+end_src
 
 * smartrep.el
 - [[http://sheephead.homelinux.org/2011/12/19/6930/][連続操作を素敵にするsmartrep.el作った - sheephead]]
@@ -455,7 +607,8 @@ orgパッケージのインストール
                               (outline-previous-visible-heading 1)))))))
 #+end_src
 
-* markdown
+* メジャーモード
+** markdown
   - [[http://jblevins.org/projects/markdown-mode/][Emacs Markdown Mode]]
 
 #+begin_src emacs-lisp
@@ -477,7 +630,7 @@ orgパッケージのインストール
             '(lambda () (outline-minor-mode t)))
 #+end_src
 
-* MediaWiki
+** MediaWiki
   - [[http://www.emacswiki.org/emacs/MediaWikiMode][EmacsWiki: Media Wiki Mode]]
     
 #+begin_src emacs-lisp
@@ -487,7 +640,7 @@ orgパッケージのインストール
   (require 'mediawiki)
 #+end_src
 
-* graphviz
+** graphviz
 
 #+begin_src emacs-lisp
 (dolist (package '(graphviz-dot-mode))
@@ -608,99 +761,6 @@ orgパッケージのインストール
   ; (setq init-loader-show-log-after-init nil)
 #+end_src
 
-* Helm
-
-#+begin_src emacs-lisp
-;; Home · emacs-helm/helm Wiki
-;; - https://github.com/emacs-helm/helm/wiki
-
-;; AnythingからHelmに移行しました - memo
-;; - http://sleepboy-zzz.blogspot.jp/2012/09/anythinghelm.html
-
-;; NTEmacs @ ウィキ - helm を使うための設定 - @ｳｨｷﾓﾊﾞｲﾙ
-;; - http://www49.atwiki.jp/ntemacs/m/pages/32.html
-
-;; Emacs - helm-mode 有効時でも helm-find-files は無効にする - Qiita [キータ]
-;; - http://qiita.com/akisute3@github/items/7c8ea3970e4cbb7baa97
-
-;; NOTE: 逆引用符は`,'の引数を評価し、 リスト構造にその値を入れます。
-;;
-;; GNU Emacs Lispリファレンス・マニュアル: 12. マクロ
-;; - http://www.fan.gr.jp/~ring/doc/elisp_19/elisp-jp_14.html#IDX592
-
-;;; Code:
-
-(eval-when-compile (require 'cl))
-
-;; ================================================================
-;; パッケージのインストール
-;; ================================================================
-(dolist (package '(helm-descbinds
-		   helm-migemo
-		   helm-themes
-		   imenu-anywhere
-		   yasnippet helm-c-yasnippet))
-  (when (not (package-installed-p package))
-    (package-install package)))
-
-(require 'helm-config)
-(helm-mode 1)
-
-(require 'helm-command)
-(require 'helm-descbinds)
-
-(setq helm-idle-delay             0.1
-      helm-input-idle-delay       0.1
-      helm-candidate-number-limit 200)
-
-;; ================================================================
-;; Keybindings
-;; ================================================================
-
-;; C-h でバックスペースと同じように文字を削除できるようにする
-(define-key helm-map (kbd "C-h") 'delete-backward-char)
-(define-key helm-find-files-map (kbd "C-h") 'delete-backward-char)
-
-;; ミニバッファで C-k 入力時にカーソル以降を削除する
-(setq helm-delete-minibuffer-contents-from-point t)
-
-;; ================================================================
-;; helm-migemo - ローマ字検索
-;; ================================================================
-
-(require 'helm-migemo)
-(setq helm-use-migemo t)
-
-(defadvice helm-c-apropos
-  (around ad-helm-apropos activate)
-  "候補が表示されないときがあるので migemoらないように設定."
-  (let ((helm-use-migemo nil))
-    ad-do-it))
-
-(defadvice helm-M-x
-  (around ad-helm-M-x activate)
-  "候補が表示されないときがあるので migemoらないように設定."
-  (let ((helm-use-migemo nil))
-    ad-do-it))
-
-;; ================================================================
-;; その他
-;; ================================================================
-(require 'helm-imenu)
-(setq imenu-auto-rescan t)
-(setq imenu-after-jump-hook (lambda () (recenter 10))) ; 選択後の表示位置を調整
-
-(require 'helm-themes)
-
-(require 'helm-c-yasnippet)
-
-;; ================================================================
-;; package listをhelmで選択
-;; (This package is installed in vendor directory.)
-;; ================================================================
-(require 'helm-package)
-#+end_src
-
 * Magit
 #+begin_src emacs-lisp
 (dolist (package '(magit))
@@ -768,22 +828,23 @@ orgパッケージのインストール
   - https://github.com/emacs-jp/migemo
 
 #+begin_src emacs-lisp
-(require 'migemo)
-
-(setq migemo-command "cmigemo")
-(setq migemo-options '("-q" "--emacs"))
-
-(cond ((eq system-type 'gnu/linux)
-       (setq migemo-dictionary "/usr/share/cmigemo/utf-8/migemo-dict"))
-      ((eq system-type 'darwin)
-       (setq migemo-dictionary "/usr/local/share/migemo/utf-8/migemo-dict")))
-
-(setq migemo-user-dictionary nil)
-(setq migemo-regex-dictionary nil)
-(setq migemo-coding-system 'utf-8-unix)
-
-(load-library "migemo")
-(migemo-init)
+  (require 'migemo)
+  
+  (setq migemo-command "cmigemo")
+  (setq migemo-options '("-q" "--emacs"))
+  
+  (cond
+   ((eq system-type 'gnu/linux)
+    (setq migemo-dictionary "/usr/share/cmigemo/utf-8/migemo-dict"))
+   ((eq system-type 'darwin)
+    (setq migemo-dictionary "/usr/local/share/migemo/utf-8/migemo-dict")))
+  
+  (setq migemo-user-dictionary nil)
+  (setq migemo-regex-dictionary nil)
+  (setq migemo-coding-system 'utf-8-unix)
+  
+  (load-library "migemo")
+  (migemo-init)
 #+end_src
 
 * Programming
@@ -809,16 +870,9 @@ orgパッケージのインストール
 ;; ================================================================
 
 (require 'multiple-cursors)
+#+end_src
 
-;; ================================================================
-;; yasnippet
-;; - http://fukuyama.co/yasnippet
-;; ================================================================
-
-(require 'yasnippet)
-(yas-global-mode 1)
-(setq yas-snippet-dirs '("~/.emacs.d/snippets"))
-
+#+begin_src emacs-lisp
 ;; ================================================================
 ;; Emacs Lisp
 ;; ================================================================
@@ -1191,10 +1245,29 @@ shell-pop
   ;; ;; See docs
 #+end_src
 
+* TODO カスタマイズ
+   - TODO
+     - 最後に読むことでここまでの設定を上書きできることを確認する
+   - 概要
+     - カスタマイズ設定を保存するファイルを指定して，読み込みます．
+     - このコード自体はcustom.elに依存させない
+       - custom.elには個人用の設定を書く
+   - 参考
+     - [[http://www.gnu.org/software/emacs/manual/html_node/emacs/Saving-Customizations.html][Saving Customizations - GNU Emacs Manual]]
+       
+#+begin_src emacs-lisp
+  (setq custom-file "~/.emacs.d/custom.el")
+  (if (file-exists-p (expand-file-name custom-file))
+      (load (expand-file-name custom-file)))
+#+end_src
+   
 * 後始末
-** フッタコメント
+** 完了表示
 #+begin_src emacs-lisp
   (message "init.elは完了しました")
+#+end_src
+** フッタコメント
+#+begin_src emacs-lisp
   ;;; init.el ends here
 #+end_src
 

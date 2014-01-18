@@ -1,24 +1,24 @@
 
 ;; init.el --- Emacsの初期設定
 
-(setq debug-on-error t)
+(message "Emacsの設定を開始します．")
 
-(setq custom-file "~/.emacs.d/custom.el")
-(if (file-exists-p (expand-file-name custom-file))
-    (load (expand-file-name custom-file)))
+(message "%% Emacsの設定を開始します %%")
 
 (add-hook 'after-init-hook
           (lambda ()
-            (message "Emacsの設定が完了しました．")))
+            (message "%% Emacsの設定が完了しました %%")))
+
+(set-language-environment "japanese")
+(prefer-coding-system 'utf-8)
+
+(setq debug-on-error t)
 
 (let ((default-directory "~/.emacs.d/git/"))
   (normal-top-level-add-subdirs-to-load-path))
 
 (let ((default-directory "~/.emacs.d/site-lisp/"))
   (normal-top-level-add-subdirs-to-load-path))
-
-(set-language-environment "japanese")
-(prefer-coding-system 'utf-8)
 
 ;; create backup file in ~/.emacs.d/backup
 (setq make-backup-files t)
@@ -35,7 +35,7 @@
 ;; ================================================================
 
 (global-set-key "\C-h" 'delete-backward-char)
-(global-set-key (kbd "C-c C-h") 'help-command)
+(global-set-key (kbd "C-c C-h") 'hel-command)
 
 (global-auto-revert-mode 1)
 
@@ -43,15 +43,10 @@
 (set-face-attribute 'linum nil :foreground "yellow" :height 0.8)
 (setq linum-format "%4d")
 
-(setq inhibit-splash-screen t)
-(setq inhibit-startup-screen t)
-
-(tool-bar-mode 0)
-(scroll-bar-mode 0)
-(menu-bar-mode 0)
-
 (setq frame-title-format
       (format "%%f - Emacs@%s" (system-name)))
+
+(setq whitespace-action '(auto-cleanup))
 
 ;; ================================================================
 ;; 自作関数
@@ -120,12 +115,17 @@
         ("gnu" .       "http://elpa.gnu.org/packages/")
         ("marmalade" . "http://marmalade-repo.org/packages/")
         ("melpa" .     "http://melpa.milkbox.net/packages/")))
-(message "package-initializeを呼びます．")
 (package-initialize)
-(message "package-initializeから戻りました．")
 
 (when (not package-archive-contents)
   (package-refresh-contents))
+
+(dolist (package '(yasnippet))
+  (when (not (package-installed-p package))
+    (package-install package)))
+(require 'yasnippet)
+(yas-global-mode 1)
+(setq yas-snippet-dirs '("~/.emacs.d/snippets"))
 
 (dolist (package '(org org-plus-contrib))
   (when (not (package-installed-p package))
@@ -137,10 +137,6 @@
 
 (require 'ox-latex)
 
-(setq org-latex-default-class "jsarticle")
-
-(setq org-export-in-background nil)
-
 (cond
  ((eq system-type 'gnu/linux)
   (setq org-latex-pdf-process '("latexmk -e '$latex=q/platex %S/' -e '$bibtex=q/pbibtex %B/' -e '$makeindex=q/mendex -o %D %S/' -e '$dvipdf=q/dvipdfmx -o %D %S/' -norc -gg -pdfdvi %f"))
@@ -149,7 +145,7 @@
   (setq org-latex-pdf-process '("latexmk -e '$latex=q/platex %S/' -e '$bibtex=q/pbibtex %B/' -e '$makeindex=q/mendex -o %D %S/' -e '$dvipdf=q/dvipdfmx -o %D %S/' -norc -gg -pdfdvi %f"))
   ))
 
-;; jsarticle
+(setq org-latex-default-class "jsarticle")
 (add-to-list 'org-latex-classes
              '("jsarticle"
                "\\ifdefined\\ucs
@@ -236,6 +232,65 @@
          :default-categories ("org2blog" "emacs")
          :tags-as-categories nil)
         ))
+
+(dolist (package '(helm))
+  (when (not (package-installed-p package))
+    (package-install package)))
+(require 'helm-config)
+
+(helm-mode 1)
+
+(define-key helm-map (kbd "C-h") 'delete-backward-char)
+(define-key helm-find-files-map (kbd "C-h") 'delete-backward-char)
+
+(setq helm-delete-minibuffer-contents-from-point t)
+
+(dolist (package '(helm-descbinds
+                   helm-migemo
+                   helm-themes
+                   imenu-anywhere
+                   helm-c-yasnippet))
+  (when (not (package-installed-p package))
+    (package-install package)))
+
+(require 'helm-command)
+(require 'helm-descbinds)
+
+(setq helm-idle-delay             0.1
+      helm-input-idle-delay       0.1
+      helm-candidate-number-limit 200)
+
+(require 'helm-migemo)
+(setq helm-use-migemo t)
+
+(defadvice helm-c-apropos
+  (around ad-helm-apropos activate)
+  "候補が表示されないときがあるので migemoらないように設定."
+  (let ((helm-use-migemo nil))
+    ad-do-it))
+
+(defadvice helm-M-x
+  (around ad-helm-M-x activate)
+  "候補が表示されないときがあるので migemoらないように設定."
+  (let ((helm-use-migemo nil))
+    ad-do-it))
+
+;; ================================================================
+;; その他
+;; ================================================================
+(require 'helm-imenu)
+(setq imenu-auto-rescan t)
+(setq imenu-after-jump-hook (lambda () (recenter 10))) ; 選択後の表示位置を調整
+
+(require 'helm-themes)
+
+(require 'helm-c-yasnippet)
+
+;; ================================================================
+;; package listをhelmで選択
+;; (This package is installed in vendor directory.)
+;; ================================================================
+(require 'helm-package)
 
 (dolist (package '(smartrep))
   (when (not (package-installed-p package))
@@ -376,95 +431,6 @@
 (init-loader-load "~/.emacs.d/inits")
 ; (setq init-loader-show-log-after-init nil)
 
-;; Home · emacs-helm/helm Wiki
-;; - https://github.com/emacs-helm/helm/wiki
-
-;; AnythingからHelmに移行しました - memo
-;; - http://sleepboy-zzz.blogspot.jp/2012/09/anythinghelm.html
-
-;; NTEmacs @ ウィキ - helm を使うための設定 - @ｳｨｷﾓﾊﾞｲﾙ
-;; - http://www49.atwiki.jp/ntemacs/m/pages/32.html
-
-;; Emacs - helm-mode 有効時でも helm-find-files は無効にする - Qiita [キータ]
-;; - http://qiita.com/akisute3@github/items/7c8ea3970e4cbb7baa97
-
-;; NOTE: 逆引用符は`,'の引数を評価し、 リスト構造にその値を入れます。
-;;
-;; GNU Emacs Lispリファレンス・マニュアル: 12. マクロ
-;; - http://www.fan.gr.jp/~ring/doc/elisp_19/elisp-jp_14.html#IDX592
-
-;;; Code:
-
-(eval-when-compile (require 'cl))
-
-;; ================================================================
-;; パッケージのインストール
-;; ================================================================
-(dolist (package '(helm-descbinds
-                   helm-migemo
-                   helm-themes
-                   imenu-anywhere
-                   yasnippet helm-c-yasnippet))
-  (when (not (package-installed-p package))
-    (package-install package)))
-
-(require 'helm-config)
-(helm-mode 1)
-
-(require 'helm-command)
-(require 'helm-descbinds)
-
-(setq helm-idle-delay             0.1
-      helm-input-idle-delay       0.1
-      helm-candidate-number-limit 200)
-
-;; ================================================================
-;; Keybindings
-;; ================================================================
-
-;; C-h でバックスペースと同じように文字を削除できるようにする
-(define-key helm-map (kbd "C-h") 'delete-backward-char)
-(define-key helm-find-files-map (kbd "C-h") 'delete-backward-char)
-
-;; ミニバッファで C-k 入力時にカーソル以降を削除する
-(setq helm-delete-minibuffer-contents-from-point t)
-
-;; ================================================================
-;; helm-migemo - ローマ字検索
-;; ================================================================
-
-(require 'helm-migemo)
-(setq helm-use-migemo t)
-
-(defadvice helm-c-apropos
-  (around ad-helm-apropos activate)
-  "候補が表示されないときがあるので migemoらないように設定."
-  (let ((helm-use-migemo nil))
-    ad-do-it))
-
-(defadvice helm-M-x
-  (around ad-helm-M-x activate)
-  "候補が表示されないときがあるので migemoらないように設定."
-  (let ((helm-use-migemo nil))
-    ad-do-it))
-
-;; ================================================================
-;; その他
-;; ================================================================
-(require 'helm-imenu)
-(setq imenu-auto-rescan t)
-(setq imenu-after-jump-hook (lambda () (recenter 10))) ; 選択後の表示位置を調整
-
-(require 'helm-themes)
-
-(require 'helm-c-yasnippet)
-
-;; ================================================================
-;; package listをhelmで選択
-;; (This package is installed in vendor directory.)
-;; ================================================================
-(require 'helm-package)
-
 (dolist (package '(magit))
   (when (not (package-installed-p package))
     (package-install package)))
@@ -522,10 +488,11 @@
 (setq migemo-command "cmigemo")
 (setq migemo-options '("-q" "--emacs"))
 
-(cond ((eq system-type 'gnu/linux)
-       (setq migemo-dictionary "/usr/share/cmigemo/utf-8/migemo-dict"))
-      ((eq system-type 'darwin)
-       (setq migemo-dictionary "/usr/local/share/migemo/utf-8/migemo-dict")))
+(cond
+ ((eq system-type 'gnu/linux)
+  (setq migemo-dictionary "/usr/share/cmigemo/utf-8/migemo-dict"))
+ ((eq system-type 'darwin)
+  (setq migemo-dictionary "/usr/local/share/migemo/utf-8/migemo-dict")))
 
 (setq migemo-user-dictionary nil)
 (setq migemo-regex-dictionary nil)
@@ -555,15 +522,6 @@
 ;; ================================================================
 
 (require 'multiple-cursors)
-
-;; ================================================================
-;; yasnippet
-;; - http://fukuyama.co/yasnippet
-;; ================================================================
-
-(require 'yasnippet)
-(yas-global-mode 1)
-(setq yas-snippet-dirs '("~/.emacs.d/snippets"))
 
 ;; ================================================================
 ;; Emacs Lisp
@@ -905,5 +863,10 @@
 ;; (setq rct-get-all-methods-command "PAGER=cat fri -l")
 ;; ;; See docs
 
+(setq custom-file "~/.emacs.d/custom.el")
+(if (file-exists-p (expand-file-name custom-file))
+    (load (expand-file-name custom-file)))
+
 (message "init.elは完了しました")
+
 ;;; init.el ends here
