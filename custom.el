@@ -37,6 +37,7 @@ Entered on %U
  '(org-confirm-babel-evaluate nil)
  '(org-default-notes-file "~/Dropbox/Note/notes.org")
  '(org-directory "~/Dropbox/Note")
+ '(org-export-in-background nil)
  '(org-mobile-directory "~/Dropbox/アプリ/MobileOrg")
  '(org-mobile-inbox-for-pull "~/Dropbox/Note/from-mobile.org")
  '(org-src-fontify-natively t)
