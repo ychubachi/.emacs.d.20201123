@@ -27,6 +27,10 @@
   - git-commit-mode-hook でflyspellが自動的にonになる．
   - .aspell.conf の設定
     - [[http://sky-y.hatenablog.jp/entry/20091229/1262106336][YaTeX + aspell - 雲行きそらゆきココロイキ]]
+      
+  Error enabling Flyspell mode:
+  (Error: No word lists can be found for the language "ja_JP".)
+
 ** TODOs
 *** TODO org-insert-heading-respect-contentをC-jにする
     C-jはorg-return-indentにバインドされている
