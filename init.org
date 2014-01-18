@@ -32,6 +32,13 @@
 ;; init.el --- Emacsの初期設定
 #+end_src
 
+** 開始の通知
+
+#+begin_src emacs-lisp
+(message "Emacsの設定を開始します．")
+#+end_src
+
+
 ** デバッガの有効化
 
 デバッグを有効にします．エラーが発生したらデバッガが起動します．
@@ -206,6 +213,10 @@
   - TODO: 下記をLinuxのdaemonで実行すると落ちてしまう．
     - jisx0208などの意味は調べていない
     - font-specが動かないのでは？
+      
+  - [[http://save.sys.t.u-tokyo.ac.jp/~yusa/fonts/ricty.html][プログラミング用フォント Ricty]]
+    - ここのemacs lisp を参考にするといいのでは？
+
 #+begin_src emacs-lisp
   ;; (let* ((size 14)
   ;;        (h (* size 10))
