@@ -27,20 +27,23 @@
  '(mediawiki-site-alist (quote (("YC's MediaWiki" "http://wiki.chubachi.net/" "yc" "" "メインページ"))))
  '(mouse-drag-copy-region t)
  '(org-agenda-custom-commands (quote (("x" "Unscheduled TODOs" tags-todo "-SCHEDULED>=\"<today>\"" nil) ("n" "Agenda and all TODO's" ((agenda "" nil) (alltodo "" nil)) nil))))
- '(org-agenda-files (quote ("~/Dropbox/Note/todo.org")))
+ '(org-agenda-files (quote ("todo.org" "journal.org" "notes.org")))
  '(org-babel-load-languages (quote ((emacs-lisp . t) (dot . t) (java . t) (ruby . t) (sh . t))))
- '(org-capture-templates (quote (("t" "Todo" entry (file+headline "~/Dropbox/Note/todo.org" "Tasks") "* TODO %?
+ '(org-capture-templates
+   (quote
+    (("t" "Todo" entry (file+headline "todo.org" "Tasks") "* TODO %?
   %i
-  %a") ("j" "Journal" entry (file+datetree "~/Dropbox/Note/journal.org") "* %?
-Entered on %U
+  %a")
+     ("j" "Journal" entry (file+datetree "journal.org") "* %?
+作成日 %U
   %i
   %a"))))
  '(org-confirm-babel-evaluate nil)
- '(org-default-notes-file "~/Dropbox/Note/notes.org")
- '(org-directory "~/Dropbox/Note")
+ '(org-directory "~/Dropbox/Org")
+ '(org-default-notes-file "notes.org")
  '(org-export-in-background nil)
  '(org-mobile-directory "~/Dropbox/アプリ/MobileOrg")
- '(org-mobile-inbox-for-pull "~/Dropbox/Note/from-mobile.org")
+ '(org-mobile-inbox-for-pull "from-mobile.org")
  '(org-src-fontify-natively t)
  '(org-startup-with-inline-images t)
  '(org-tag-alist (quote (("@HOME" . 104) ("@OFFICE" . 111) ("MAIL" . 109) ("WEB" . 119) ("PHONE" . 112))))

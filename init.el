@@ -69,17 +69,17 @@
 (defun my/open-journal()
   "備忘録を開きます．"
   (interactive)
-  (find-file "~/Dropbox/Note/journal.org"))
+  (find-file "~/Dropbox/Org/journal.org"))
   
 (defun my/open-todo()
   "備忘録を開きます．"
   (interactive)
-  (find-file "~/Dropbox/Note/todo.org"))
+  (find-file "~/Dropbox/Org/todo.org"))
 
 (defun my/open-note()
   "備忘録を開きます．"
   (interactive)
-  (find-file "~/Dropbox/Note/index.org"))
+  (find-file "~/Dropbox/Org/notes.org"))
 
 (defun my/open-project-folder()
   "プロジェクトフォルダを開きます．"
@@ -133,6 +133,8 @@
 (dolist (package '(org org-plus-contrib))
   (when (not (package-installed-p package))
     (package-install package)))
+
+(setq org-babel-sh-command "bash")
 
 (require 'ox-md)
 
@@ -216,8 +218,6 @@
         ("chubachi.net"
          :components ("chubachi.net-notes" "chubachi.net-static"))
       ))
-
-(setq org-babel-sh-command "bash")
 
 (dolist (package '(org2blog xml-rpc metaweblog htmlize))
   (when (not (package-installed-p package))
