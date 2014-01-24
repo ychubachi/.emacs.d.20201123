@@ -231,22 +231,30 @@
   - [[http://save.sys.t.u-tokyo.ac.jp/~yusa/fonts/ricty.html][プログラミング用フォント Ricty]]
     - ここのemacs lisp を参考にするといいのでは？
 
+** Mac用設定
+
+- let* は，同じスコープ内のローカル変数への参照を許す(letは許さない）
+- ifはthenを1つの式しか書けないのでcondを使う
+
 #+begin_src emacs-lisp
-  ;; (let* ((size 14)
-  ;;        (h (* size 10))
-  ;;        (font-ascii "Ricty")
-  ;;        (font-jp    "Ricty")
-  ;;        (font-spec-ascii (font-spec :family font-ascii))
-  ;;        (font-spec-jp    (font-spec :family font-jp)))
-  ;;   (set-face-attribute 'default nil :family font-ascii :height h)
-  ;;   (set-fontset-font nil 'japanese-jisx0208        font-spec-jp)
-  ;;   (set-fontset-font nil 'japanese-jisx0212        font-spec-jp)
-  ;;   (set-fontset-font nil 'japanese-jisx0213.2004-1 font-spec-jp)
-  ;;   (set-fontset-font nil 'japanese-jisx0213-1      font-spec-jp)
-  ;;   (set-fontset-font nil 'japanese-jisx0213-2      font-spec-jp)
-  ;;   (set-fontset-font nil 'katakana-jisx0201        font-spec-jp)
-  ;;   (set-fontset-font nil '(#x0080 . #x024F)        font-spec-ascii) 
-  ;;   (set-fontset-font nil '(#x0370 . #x03FF)        font-spec-ascii))
+  (cond
+   ((eq system-type 'darwin)
+    (let* ((size 14)
+           (h (* size 10))
+           (font-ascii "Ricty")
+           (font-jp    "Ricty")
+           (font-spec-ascii (font-spec :family font-ascii))
+           (font-spec-jp    (font-spec :family font-jp)))
+      (set-face-attribute 'default nil :family font-ascii :height h)
+      (set-fontset-font nil 'japanese-jisx0208        font-spec-jp)
+      (set-fontset-font nil 'japanese-jisx0212        font-spec-jp)
+      (set-fontset-font nil 'japanese-jisx0213.2004-1 font-spec-jp)
+      (set-fontset-font nil 'japanese-jisx0213-1      font-spec-jp)
+      (set-fontset-font nil 'japanese-jisx0213-2      font-spec-jp)
+      (set-fontset-font nil 'katakana-jisx0201        font-spec-jp)
+      (set-fontset-font nil '(#x0080 . #x024F)        font-spec-ascii) 
+      (set-fontset-font nil '(#x0370 . #x03FF)        font-spec-ascii))
+    ))
 #+end_src
 
 #+RESULTS:
@@ -295,11 +303,34 @@
   - [[http://orgmode.org/org.html][The Org Manual]]
   - [[http://orgmode.org/elpa.html][Org Emacs lisp Package Archive]]
 
-** カスタマイズ
+** TODO カスタマイズ
 
-| 説明                           | 変数名                   | 推奨 |
-|--------------------------------+--------------------------+------|
-| バックグランドでのエキスポート | org-export-in-background | nil  |
+| 説明                           | 変数名                                                                                                                                                                       | 推奨 |
+|--------------------------------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+------|
+| バックグランドでのエキスポート | org-export-in-background                                                                                                                                                     | nil  |
+|                                | org-agenda-custom-commands (quote (("x" "Unscheduled TODOs" tags-todo "-SCHEDULED>=\"<today>\"" nil) ("n" "Agenda and all TODO's" ((agenda "" nil) (alltodo "" nil)) nil)))) |      |
+|                                |                                                                                                                                                                              |      |
+ '(org-agenda-files (quote ("~/Dropbox/Note/todo.org")))
+ '(org-babel-load-languages (quote ((emacs-lisp . t) (dot . t) (java . t) (ruby . t) (sh . t))))
+ '(org-capture-templates (quote (("t" "Todo" entry (file+headline "~/Dropbox/Note/todo.org" "Tasks") "* TODO %?
+  %i
+  %a") ("j" "Journal" entry (file+datetree "~/Dropbox/Note/journal.org") "* %?
+Entered on %U
+  %i
+  %a"))))
+ '(org-confirm-babel-evaluate nil)
+ '(org-default-notes-file "~/Dropbox/Note/notes.org")
+ '(org-directory "~/Dropbox/Note")
+ '(org-export-in-background nil)
+ '(org-mobile-directory "~/Dropbox/アプリ/MobileOrg")
+ '(org-mobile-inbox-for-pull "~/Dropbox/Note/from-mobile.org")
+ '(org-src-fontify-natively t)
+ '(org-startup-with-inline-images t)
+ '(org-tag-alist (quote (("@HOME" . 104) ("@OFFICE" . 111) ("MAIL" . 109) ("WEB" . 119) ("PHONE" . 112))))
+ '(org-todo-keywords (quote ((sequence "TODO(t)" "WAIT(w)" "|" "DONE(d)" "SOMEDAY(s)" "CANCEL(c)"))))
+ '(org2blog/wp-use-sourcecode-shortcode t)
+
+
 
 ** パッケージのインストール
 
@@ -434,7 +465,7 @@
 (setq org-babel-sh-command "bash")
 #+end_src
 
-** WordPressに記事を投稿できるようにする（org2blog）
+** WordPressに記事を投稿（org2blog）
   :PROPERTIES:
   :ID:       o2b:83d5ddbc-5e84-446c-826a-a2702eb6b997
   :POST_DATE: [2013-12-28 土 19:16]
