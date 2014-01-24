@@ -870,6 +870,11 @@
 (if (file-exists-p (expand-file-name custom-file))
     (load (expand-file-name custom-file)))
 
+;バッファのフォントサイズを大きく
+(global-set-key (kbd "<prior>") 'text-scale-increase)
+;バッファのフォントサイズを小さく
+(global-set-key (kbd "<next>")  'text-scale-decrease)
+
 (message "init.elは完了しました")
 
 ;;; init.el ends here

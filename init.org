@@ -1296,6 +1296,18 @@ shell-pop
       (load (expand-file-name custom-file)))
 #+end_src
    
+* おためし
+** バッファのフォントサイズ
+#+begin_src emacs-lisp
+  ;バッファのフォントサイズを大きく
+  (global-set-key (kbd "<prior>") 'text-scale-increase)
+  ;バッファのフォントサイズを小さく
+  (global-set-key (kbd "<next>")  'text-scale-decrease)
+#+end_src
+
+#+RESULTS:
+: text-scale-decrease
+
 * 後始末
 ** 完了表示
 #+begin_src emacs-lisp
