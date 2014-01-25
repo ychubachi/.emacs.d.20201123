@@ -44,7 +44,7 @@
  '(org-mobile-inbox-for-pull "from-mobile.org")
  '(org-src-fontify-natively t)
  '(org-startup-with-inline-images t)
- '(org-tag-alist (quote (("@HOME" . 104) ("@OFFICE" . 111) ("MAIL" . 109) ("WEB" . 119) ("PHONE" . 112))))
+ '(org-tag-alist (quote (("@MAIL" . 109) ("@WEB" . 119) ("@PHONE" . 112) ("@OFFICE" . 111) ("@HOME" . 104))))
  '(org-todo-keywords (quote ((sequence "TODO(t)" "WAIT(w)" "|" "DONE(d)" "SOMEDAY(s)" "CANCEL(c)"))))
  '(org2blog/wp-use-sourcecode-shortcode t)
  '(outline-minor-mode-prefix "")
