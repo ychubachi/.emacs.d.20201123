@@ -30,18 +30,15 @@
  '(org-agenda-custom-commands (quote (("x" "Unscheduled TODOs" tags-todo "-SCHEDULED>=\"<today>\"" nil) ("n" "Agenda and all TODO's" ((agenda "" nil) (alltodo "" nil)) nil))))
  '(org-agenda-files (quote ("todo.org" "journal.org" "notes.org")))
  '(org-babel-load-languages (quote ((emacs-lisp . t) (dot . t) (java . t) (ruby . t) (sh . t))))
- '(org-capture-templates
-   (quote
-    (("t" "Todo" entry (file+headline "todo.org" "Tasks") "* TODO %?
+ '(org-capture-templates (quote (("t" "Todo" entry (file+headline "todo.org" "Tasks") "* TODO %?
   %i
-  %a")
-     ("j" "Journal" entry (file+datetree "journal.org") "* %?
+  %a") ("j" "Journal" entry (file+datetree "journal.org") "* %?
 作成日 %U
   %i
   %a"))))
  '(org-confirm-babel-evaluate nil)
- '(org-directory "~/Dropbox/Org")
  '(org-default-notes-file "notes.org")
+ '(org-directory "~/Dropbox/Org")
  '(org-export-in-background nil)
  '(org-mobile-directory "~/Dropbox/アプリ/MobileOrg")
  '(org-mobile-inbox-for-pull "from-mobile.org")
