@@ -51,13 +51,11 @@
 ** 開始の通知
 
 #+begin_src emacs-lisp
-(message "Emacsの設定を開始します．")
-#+end_src
-
-
-#+begin_src emacs-lisp
  (message "%% Emacsの設定を開始します %%")
 #+end_src
+
+#+RESULTS:
+: % Emacsの設定を開始します %
 
 ** 完了の通知
   - after-init-hookはパッケージの初期化が完了したら呼ばれるフックです．
