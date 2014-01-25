@@ -41,7 +41,7 @@
  '(org-directory "~/Dropbox/Org")
  '(org-export-in-background nil)
  '(org-mobile-directory "~/Dropbox/アプリ/MobileOrg")
- '(org-mobile-inbox-for-pull "from-mobile.org")
+ '(org-mobile-inbox-for-pull "~/Dropbox/Org/from-mobile.org")
  '(org-src-fontify-natively t)
  '(org-startup-with-inline-images t)
  '(org-tag-alist (quote (("@MAIL" . 109) ("@WEB" . 119) ("@PHONE" . 112) ("@OFFICE" . 111) ("@HOME" . 104))))
