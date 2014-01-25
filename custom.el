@@ -28,7 +28,7 @@
  '(mediawiki-site-alist (quote (("YC's MediaWiki" "http://wiki.chubachi.net/" "yc" "" "メインページ"))))
  '(mouse-drag-copy-region t)
  '(org-agenda-custom-commands (quote (("x" "Unscheduled TODOs" tags-todo "-SCHEDULED>=\"<today>\"" nil) ("n" "Agenda and all TODO's" ((agenda "" nil) (alltodo "" nil)) nil))))
- '(org-agenda-files (quote ("todo.org" "journal.org" "notes.org")))
+ '(org-agenda-files (quote ("~/Dropbox/Org/")))
  '(org-babel-load-languages (quote ((emacs-lisp . t) (dot . t) (java . t) (ruby . t) (sh . t))))
  '(org-capture-templates (quote (("t" "Todo" entry (file+headline "todo.org" "Tasks") "* TODO %?
   %i
