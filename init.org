@@ -97,9 +97,9 @@
 #+end_src
 
 ** Backupの設定
+
 #+begin_src emacs-lisp
   ;; create backup file in ~/.emacs.d/backup
-  (setq make-backup-files t)
   (setq backup-directory-alist
     (cons (cons "\\.*$" (expand-file-name "~/.emacs.d/backup"))
       backup-directory-alist))
