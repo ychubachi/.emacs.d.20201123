@@ -1,8 +1,6 @@
 
 ;; init.el --- Emacsの初期設定
 
-(message "Emacsの設定を開始します．")
-
 (message "%% Emacsの設定を開始します %%")
 
 (add-hook 'after-init-hook
@@ -12,8 +10,6 @@
 (set-language-environment "japanese")
 (prefer-coding-system 'utf-8)
 
-(setq debug-on-error t)
-
 (let ((default-directory "~/.emacs.d/git/"))
   (normal-top-level-add-subdirs-to-load-path))
 
@@ -21,7 +17,6 @@
   (normal-top-level-add-subdirs-to-load-path))
 
 ;; create backup file in ~/.emacs.d/backup
-(setq make-backup-files t)
 (setq backup-directory-alist
   (cons (cons "\\.*$" (expand-file-name "~/.emacs.d/backup"))
     backup-directory-alist))
@@ -93,24 +88,24 @@
 (global-set-key (kbd "<f4>") 'my/open-note)
 (global-set-key (kbd "<f5>") 'my/open-project-folder)
 
-(cond
- ((eq system-type 'darwin)
-  (let* ((size 14)
-         (h (* size 10))
-         (font-ascii "Ricty")
-         (font-jp    "Ricty")
-         (font-spec-ascii (font-spec :family font-ascii))
-         (font-spec-jp    (font-spec :family font-jp)))
-    (set-face-attribute 'default nil :family font-ascii :height h)
-    (set-fontset-font nil 'japanese-jisx0208        font-spec-jp)
-    (set-fontset-font nil 'japanese-jisx0212        font-spec-jp)
-    (set-fontset-font nil 'japanese-jisx0213.2004-1 font-spec-jp)
-    (set-fontset-font nil 'japanese-jisx0213-1      font-spec-jp)
-    (set-fontset-font nil 'japanese-jisx0213-2      font-spec-jp)
-    (set-fontset-font nil 'katakana-jisx0201        font-spec-jp)
-    (set-fontset-font nil '(#x0080 . #x024F)        font-spec-ascii) 
-    (set-fontset-font nil '(#x0370 . #x03FF)        font-spec-ascii))
-  ))
+;; (cond
+;;  ((eq system-type 'darwin)
+;;   (let* ((size 14)
+;;          (h (* size 10))
+;;          (font-ascii "Ricty")
+;;          (font-jp    "Ricty")
+;;          (font-spec-ascii (font-spec :family font-ascii))
+;;          (font-spec-jp    (font-spec :family font-jp)))
+;;     (set-face-attribute 'default nil :family font-ascii :height h)
+;;     (set-fontset-font nil 'japanese-jisx0208        font-spec-jp)
+;;     (set-fontset-font nil 'japanese-jisx0212        font-spec-jp)
+;;     (set-fontset-font nil 'japanese-jisx0213.2004-1 font-spec-jp)
+;;     (set-fontset-font nil 'japanese-jisx0213-1      font-spec-jp)
+;;     (set-fontset-font nil 'japanese-jisx0213-2      font-spec-jp)
+;;     (set-fontset-font nil 'katakana-jisx0201        font-spec-jp)
+;;     (set-fontset-font nil '(#x0080 . #x024F)        font-spec-ascii) 
+;;     (set-fontset-font nil '(#x0370 . #x03FF)        font-spec-ascii))
+;;   ))
 
 (require 'package)
 (setq package-archives
