@@ -1,4 +1,5 @@
 # -*- org -*-
+#+TITLE: init.org
 #+STARTUP: overview
 #+PROPERTY: header-args:emacs-lisp :tangle init.el
 * 説明
@@ -314,12 +315,12 @@
 
 - notes.orgは，トップページ扱い
 
-| 説明                             | 変数名                 | 推奨                             |
-|----------------------------------+------------------------+----------------------------------|
-| CaptureしたOrgファイルを置く場所 | org-directory          | "~/Dropbox/Org"                  |
-|                                  | org-default-notes-file | "notes.org"                      |
-| キャプチャ                       | org-capture-templates  | t: Todo j: Journal               |
-|                                  | org-agenda-files       | todo.org, journal.org, notes.org |
+| 説明                             | 変数名                 | 推奨               |
+|----------------------------------+------------------------+--------------------|
+| CaptureしたOrgファイルを置く場所 | org-directory          | "~/Dropbox/Org"    |
+| デフォルトのノーツ               | org-default-notes-file | "notes.org"        |
+| キャプチャ                       | org-capture-templates  | t: Todo j: Journal |
+| アジェンダファイルの指定         | org-agenda-files       | ("~/Dropbox/Org/") |
 
 - org-agenda-filesはTodoかくファイル -> MobileOrgにPushする
 
