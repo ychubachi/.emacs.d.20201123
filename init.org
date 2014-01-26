@@ -420,12 +420,12 @@ Entered on %U
 **** PDFを生成するコマンド
 
 #+begin_src emacs-lisp
-   (when (or
-          (eq system-type 'gnu/linux)
-          (eq system-type 'darwin))
-     (setq org-latex-pdf-process
-           '("latexmk -e '$latex=q/platex %S/' -e '$bibtex=q/pbibtex %B/' -e '$makeindex=q/mendex -o %D %S/' -e '$dvipdf=q/dvipdfmx -o %D %S/' -norc -gg -pdfdvi %f"))
-     ))
+  (when (or
+         (eq system-type 'gnu/linux)
+         (eq system-type 'darwin))
+    (setq org-latex-pdf-process
+          '("latexmk -e '$latex=q/platex %S/' -e '$bibtex=q/pbibtex %B/' -e '$makeindex=q/mendex -o %D %S/' -e '$dvipdf=q/dvipdfmx -o %D %S/' -norc -gg -pdfdvi %f"))
+    )
 #+end_src
 
 #+RESULTS:
