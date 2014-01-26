@@ -233,7 +233,7 @@
 - daemonで動かすとおちるかも
 
 #+begin_src emacs-lisp
-  ;; (cond
+  ;; (cond ; -> whenのほうが良いかも
   ;;  ((eq system-type 'darwin)
   ;;   (let* ((size 14)
   ;;          (h (* size 10))
