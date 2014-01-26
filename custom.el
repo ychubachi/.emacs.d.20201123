@@ -20,7 +20,6 @@
  '(custom-enabled-themes (quote (manoj-dark)))
  '(custom-safe-themes (quote ("fc6e906a0e6ead5747ab2e7c5838166f7350b958d82e410257aeeb2820e8a07a" default)))
  '(debug-on-error t)
- '(default-frame-alist (quote ((font . "ricty-13.5"))))
  '(display-time-mode t)
  '(fci-rule-color "#383838")
  '(graphviz-dot-preview-extension "pdf")

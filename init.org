@@ -18,6 +18,7 @@
     - [[http://www.gnu.org/software/emacs/manual/html_node/elisp/Lexical-Binding.html][Lexical Binding - GNU Emacs Lisp Reference Manual]]
     - [[http://www.gnu.org/software/emacs/manual/html_node/elisp/Closures.html#Closures][Closures - GNU Emacs Lisp Reference Manual]]
   - git
+  - custom.elを最後に読むので，ここでの設定を上書きできます．
 ** 準備
 *** git submodule
   - git submodule init
@@ -33,6 +34,7 @@
   (Error: No word lists can be found for the language "ja_JP".)
 
 ** TODOs
+*** TODO custom.elにある設定をこちらに移す（custom.elなしでもokにする）
 *** TODO org-insert-heading-respect-contentをC-jにする
     :PROPERTIES:
     :ID:       f9593ce6-203d-47a7-9342-fd602c193a0c
@@ -58,12 +60,6 @@
     :PROPERTIES:
     :ID:       7cd92222-91c7-4c46-9325-85e891c20216
     :END:
-*** TODO custom.elを最後に読むことでここでの設定を上書きできることを確認する
-    :PROPERTIES:
-    :ID:       99510b54-d390-4147-8a15-11d178ed468d
-    :END:
-*** DONE WindowsでCtrl-Oで<M-kanji>がないとおこられる
-*** DONE WindowsでF1がのどかとかち合う
 * 標準設定
   - 外部のパッケージに依存しない，標準的な設定を行います．
 ** ヘッダコメント
