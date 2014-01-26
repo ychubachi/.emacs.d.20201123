@@ -34,11 +34,34 @@
 
 ** TODOs
 *** TODO org-insert-heading-respect-contentをC-jにする
+    :PROPERTIES:
+    :ID:       f9593ce6-203d-47a7-9342-fd602c193a0c
+    :END:
     C-jはorg-return-indentにバインドされている
 *** TODO [[http://www.emacswiki.org/emacs/UnitTesting][EmacsWiki: Unit Testing]]
+    :PROPERTIES:
+    :ID:       5cb66ace-65c3-4e01-9c1c-f25ae7008668
+    :END:
 *** TODO [[https://github.com/purcell/exec-path-from-shell][purcell/exec-path-from-shell]]
+    :PROPERTIES:
+    :ID:       cd8617f9-5634-467f-9c14-ca657a802726
+    :END:
 *** TODO flyspell-modeでC-.がかちあう
+    :PROPERTIES:
+    :ID:       7af985a9-1630-4e8a-8202-3d434351c518
+    :END:
 *** TODO [[http://shibayu36.hatenablog.com/entry/2012/12/29/001418][年末emacs設定大掃除をして、これは捨てられないと思った設定書いてく - $shibayu36->blog;]]
+    :PROPERTIES:
+    :ID:       e010dd60-ee65-4042-9b16-9ae0f2681837
+    :END:
+*** TODO Qiitaに投稿できないか
+    :PROPERTIES:
+    :ID:       7cd92222-91c7-4c46-9325-85e891c20216
+    :END:
+*** TODO custom.elを最後に読むことでここでの設定を上書きできることを確認する
+    :PROPERTIES:
+    :ID:       99510b54-d390-4147-8a15-11d178ed468d
+    :END:
 *** DONE WindowsでCtrl-Oで<M-kanji>がないとおこられる
 *** DONE WindowsでF1がのどかとかち合う
 * 標準設定
@@ -202,38 +225,22 @@
 
 * 日本語文字フォントの設定
 ** 説明
+ｰ Fontに関する調査
+  - [[file:test.org::*Emacs%E3%81%AE%E3%83%95%E3%82%A9%E3%83%B3%E3%83%88%E3%81%AE%E3%81%8A%E8%A9%B1][Emacsのフォントのお話]]
 
-- 表示例
-|----------------+------------------------|
-| ホスト名(標準) | www2243up.sakura.ne.jp |
-| IPアドレス     |          153.121.41.17 |
-| ネットマスク   |          255.255.254.0 |
-| ゲートウェイ   |           153.121.40.1 |
-| ネームサーバ1  |         210.188.224.10 |
-| ネームサーバ2  |         210.188.224.11 |
-|----------------+------------------------|
-
-  - [[http://d.hatena.ne.jp/kitokitoki/20110502/p2][emacs での Ricty の導入手順 - わからん]]
-  - [[http://d.hatena.ne.jp/tunefs/20060710/p1][set-default-font vs default-frame-alist - Crossroad (tunefsの日記)]]
-  - フォントはcustomize.elで指定しています
-    - M-x custmoize-variable RET default-frame-alist RET
-
-  - TODO: 下記をLinuxのdaemonで実行すると落ちてしまう．
-    - jisx0208などの意味は調べていない
-    - font-specが動かないのでは？
-      
-  - [[http://save.sys.t.u-tokyo.ac.jp/~yusa/fonts/ricty.html][プログラミング用フォント Ricty]]
-    - ここのemacs lisp を参考にするといいのでは？
-
-** Mac用設定
+** TODO Macでフォントを正しく設定する
+   :PROPERTIES:
+   :ID:       16b070ee-507e-49fa-b84d-fa573911ebeb
+   :END:
 
 - let* は，同じスコープ内のローカル変数への参照を許す(letは許さない）
-- ifはthenを1つの式しか書けないのでcondを使う
+- ifはthenを1つの式しか書けないのでcondを使う．whenもある．
 - [[http://blog.sanojimaru.com/post/19807398882/cocoa-emacs-ricty][cocoa emacsでプログラミング用フォントRictyを使う]]
+  ｰ この記事，あやしいかも．
 - daemonで動かすとおちるかも
 
 #+begin_src emacs-lisp
-  ;; (cond ; -> whenのほうが良いかも
+  ;; (cond
   ;;  ((eq system-type 'darwin)
   ;;   (let* ((size 14)
   ;;          (h (* size 10))
@@ -294,33 +301,32 @@
 
 * Org
 ** Orgについて
-
-- マニュアル
+*** マニュアル
   - [[http://orgmode.org/org.html][The Org Manual]]
   - [[http://orgmode.org/elpa.html][Org Emacs lisp Package Archive]]
+*** Dropboxとの連携
 
-** TODO カスタマイズ
-*** Capture
-
+** カスタマイズ
+*** 思いついたらすぐ記録（Capture）
+- 準備
+  - mkdir ~/Dropbox/Org
 - org-directory のデフォルトは~/org
 - これをDropboxの下にする．Dropbox/Org
 - ディレクトリは自分で作ること．
 
 - org-default-notes-file のデフォルトは .notes
-
 - ただし，.notesを開いてもorgモードにならないので，エラーになる．
 - だから，ファイル名は指定する必要がある． -> notes.org
-
 - その他に，t: Todoとj: Journal（日記帳）を．
 
 - notes.orgは，トップページ扱い
 
-| 説明                             | 変数名                 | 推奨               |
-|----------------------------------+------------------------+--------------------|
-| CaptureしたOrgファイルを置く場所 | org-directory          | "~/Dropbox/Org"    |
-| デフォルトのノーツ               | org-default-notes-file | "notes.org"        |
-| キャプチャ                       | org-capture-templates  | t: Todo j: Journal |
-| アジェンダファイルの指定         | org-agenda-files       | ("~/Dropbox/Org/") |
+| 説明                       | 変数名                 | 推奨               |
+|----------------------------+------------------------+--------------------|
+| 備忘録用ファイルを置く場所 | org-directory          | "~/Dropbox/Org"    |
+| デフォルトのノーツ         | org-default-notes-file | "notes.org"        |
+| キャプチャ                 | org-capture-templates  | t: Todo j: Journal |
+| アジェンダファイルの指定   | org-agenda-files       | ("~/Dropbox/Org/") |
 
 - org-agenda-filesはTodoかくファイル -> MobileOrgにPushする
 
@@ -338,6 +344,9 @@
  '(org-babel-load-languages (quote ((emacs-lisp . t) (dot . t) (java . t) (ruby . t) (sh . t))))
  '(org-confirm-babel-evaluate nil)
 
+*** Org Column Title
+- Heightをフォントの高さに合わせる
+
 *** その他
 
 | 説明                           | 変数名                         | 推奨                          |
@@ -347,6 +356,7 @@
 | ToDoアイテムの状態             | org-todo-keywords              | TODO WAIT DONE SOMEDAY CANCEL |
 |                                |                                |                               |
 
+*** 未整理
 org-agenda-custom-commands (quote (("x" "Unscheduled TODOs" tags-todo "-SCHEDULED>=\"<today>\"" nil) ("n" "Agenda and all TODO's" ((agenda "" nil) (alltodo "" nil)) nil))))
  '(org-agenda-files (quote ("~/Dropbox/Note/todo.org")))
  '(org-capture-templates (quote (("t" "Todo" entry (file+headline "~/Dropbox/Note/todo.org" "Tasks") "* TODO %?
@@ -370,8 +380,11 @@ Entered on %U
 
 ** カスタマイズに対応していない設定
 *** Shellのコードの実行にbashを使う
+    :PROPERTIES:
+    :ID:       adc108a7-c5d7-49b7-b1fb-bfb681d748b0
+    :END:
    - デフォルトのシェルがzshなので，設定しておく．
-   - <2014-01-24 金>現在，customizationの対応ではない模様．
+   - 2014-01-24現在，customizationの対応ではない模様．
 
 #+begin_src emacs-lisp
 (setq org-babel-sh-command "bash")
@@ -397,19 +410,21 @@ Entered on %U
   (require 'ox-latex)
 #+end_src
 
-**** TODO PDFを生成するコマンド
- - 同じなのでまとめてよいか？
+**** PDFを生成するコマンド
+
 #+begin_src emacs-lisp
-  (cond
-   ((eq system-type 'gnu/linux)
-    (setq org-latex-pdf-process '("latexmk -e '$latex=q/platex %S/' -e '$bibtex=q/pbibtex %B/' -e '$makeindex=q/mendex -o %D %S/' -e '$dvipdf=q/dvipdfmx -o %D %S/' -norc -gg -pdfdvi %f"))
-    )
-   ((eq system-type 'darwin)
-    (setq org-latex-pdf-process '("latexmk -e '$latex=q/platex %S/' -e '$bibtex=q/pbibtex %B/' -e '$makeindex=q/mendex -o %D %S/' -e '$dvipdf=q/dvipdfmx -o %D %S/' -norc -gg -pdfdvi %f"))
-    ))
+   (when (or
+          (eq system-type 'gnu/linux)
+          (eq system-type 'darwin))
+     (setq org-latex-pdf-process
+           '("latexmk -e '$latex=q/platex %S/' -e '$bibtex=q/pbibtex %B/' -e '$makeindex=q/mendex -o %D %S/' -e '$dvipdf=q/dvipdfmx -o %D %S/' -norc -gg -pdfdvi %f"))
+     ))
 #+end_src
 
-**** 文書クラスの設定
+#+RESULTS:
+| latexmk -e '$latex=q/platex %S/' -e '$bibtex=q/pbibtex %B/' -e '$makeindex=q/mendex -o %D %S/' -e '$dvipdf=q/dvipdfmx -o %D %S/' -norc -gg -pdfdvi %f |
+
+**** 文書クラスの設定(jsarticle)
 
 #+begin_src emacs-lisp
   (setq org-latex-default-class "jsarticle")
@@ -434,13 +449,22 @@ Entered on %U
                  ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
 #+end_src
 
+#+RESULTS:
+| beamer    | \documentclass[dvipdfmx]{beamer}\n[NO-DEFAULT-PACKAGES]\n\usepackage{bxdpx-beamer}\n\usepackage{pxjahyper}\n\usepackage{minijs}\n\renewcommand{\kanjifamilydefault}{\gtdefault}\n\AtBeginSection[]\n{\n  \begin{frame}<beamer>{Outline}\n  \tableofcontents[currentsection,currentsubsection]\n  \end{frame}\n}                                                     | (\section{%s} . \section*{%s}) | (\subsection{%s} . \subsection*{%s}) | (\subsubsection{%s} . \subsubsection*{%s}) | (\paragraph{%s} . \paragraph*{%s})   | (\subparagraph{%s} . \subparagraph*{%s})   |
+| beamer    | \documentclass[presentation]{beamer}\n[DEFAULT-PACKAGES]\n[PACKAGES]\n[EXTRA]                                                                                                                                                                                                                                                                                       | (\section{%s} . \section*{%s}) | (\subsection{%s} . \subsection*{%s}) | (\subsubsection{%s} . \subsubsection*{%s}) |                                      |                                            |
+| jsarticle | \ifdefined\ucs\n  \documentclass[uplatex,12pt,a4paper,papersize,dvipdfmx]{jsarticle}\n\else\n  \documentclass[12pt,a4paper,papersize,dvipdfmx]{jsarticle}\n\fi\n[NO-DEFAULT-PACKAGES]\n\usepackage{amsmath}\n\usepackage{newtxtext,newtxmath}\n\usepackage{graphicx}\n\usepackage{hyperref}\n\usepackage{pxjahyper}\n\hypersetup{setpagesize=false,colorlinks=true} | (\section{%s} . \section*{%s}) | (\subsection{%s} . \subsection*{%s}) | (\subsubsection{%s} . \subsubsection*{%s}) | (\paragraph{%s} . \paragraph*{%s})   | (\subparagraph{%s} . \subparagraph*{%s})   |
+| article   | \documentclass[11pt]{article}                                                                                                                                                                                                                                                                                                                                       | (\section{%s} . \section*{%s}) | (\subsection{%s} . \subsection*{%s}) | (\subsubsection{%s} . \subsubsection*{%s}) | (\paragraph{%s} . \paragraph*{%s})   | (\subparagraph{%s} . \subparagraph*{%s})   |
+| report    | \documentclass[11pt]{report}                                                                                                                                                                                                                                                                                                                                        | (\part{%s} . \part*{%s})       | (\chapter{%s} . \chapter*{%s})       | (\section{%s} . \section*{%s})             | (\subsection{%s} . \subsection*{%s}) | (\subsubsection{%s} . \subsubsection*{%s}) |
+| book      | \documentclass[11pt]{book}                                                                                                                                                                                                                                                                                                                                          | (\part{%s} . \part*{%s})       | (\chapter{%s} . \chapter*{%s})       | (\section{%s} . \section*{%s})             | (\subsection{%s} . \subsection*{%s}) | (\subsubsection{%s} . \subsubsection*{%s}) |
+
 *** LeTex (beamer) export
-**** 機能の読み込み
+**** パッケージの読み込み
+
 #+begin_src emacs-lisp
 (require 'ox-beamer)
 #+end_src
 
-**** 文書クラスの設定
+**** 文書クラスの設定(beamer)
 
 #+begin_src emacs-lisp
 (add-to-list 'org-latex-classes
@@ -464,7 +488,18 @@ Entered on %U
                ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
 #+end_src
 
-** TODO WebにHTMLでPublishする
+#+RESULTS:
+| beamer    | \documentclass[dvipdfmx]{beamer}\n[NO-DEFAULT-PACKAGES]\n\usepackage{bxdpx-beamer}\n\usepackage{pxjahyper}\n\usepackage{minijs}\n\renewcommand{\kanjifamilydefault}{\gtdefault}\n\AtBeginSection[]\n{\n  \begin{frame}<beamer>{Outline}\n  \tableofcontents[currentsection,currentsubsection]\n  \end{frame}\n}                                                     | (\section{%s} . \section*{%s}) | (\subsection{%s} . \subsection*{%s}) | (\subsubsection{%s} . \subsubsection*{%s}) | (\paragraph{%s} . \paragraph*{%s})   | (\subparagraph{%s} . \subparagraph*{%s})   |
+| beamer    | \documentclass[presentation]{beamer}\n[DEFAULT-PACKAGES]\n[PACKAGES]\n[EXTRA]                                                                                                                                                                                                                                                                                       | (\section{%s} . \section*{%s}) | (\subsection{%s} . \subsection*{%s}) | (\subsubsection{%s} . \subsubsection*{%s}) |                                      |                                            |
+| jsarticle | \ifdefined\ucs\n  \documentclass[uplatex,12pt,a4paper,papersize,dvipdfmx]{jsarticle}\n\else\n  \documentclass[12pt,a4paper,papersize,dvipdfmx]{jsarticle}\n\fi\n[NO-DEFAULT-PACKAGES]\n\usepackage{amsmath}\n\usepackage{newtxtext,newtxmath}\n\usepackage{graphicx}\n\usepackage{hyperref}\n\usepackage{pxjahyper}\n\hypersetup{setpagesize=false,colorlinks=true} | (\section{%s} . \section*{%s}) | (\subsection{%s} . \subsection*{%s}) | (\subsubsection{%s} . \subsubsection*{%s}) | (\paragraph{%s} . \paragraph*{%s})   | (\subparagraph{%s} . \subparagraph*{%s})   |
+| article   | \documentclass[11pt]{article}                                                                                                                                                                                                                                                                                                                                       | (\section{%s} . \section*{%s}) | (\subsection{%s} . \subsection*{%s}) | (\subsubsection{%s} . \subsubsection*{%s}) | (\paragraph{%s} . \paragraph*{%s})   | (\subparagraph{%s} . \subparagraph*{%s})   |
+| report    | \documentclass[11pt]{report}                                                                                                                                                                                                                                                                                                                                        | (\part{%s} . \part*{%s})       | (\chapter{%s} . \chapter*{%s})       | (\section{%s} . \section*{%s})             | (\subsection{%s} . \subsection*{%s}) | (\subsubsection{%s} . \subsubsection*{%s}) |
+| book      | \documentclass[11pt]{book}                                                                                                                                                                                                                                                                                                                                          | (\part{%s} . \part*{%s})       | (\chapter{%s} . \chapter*{%s})       | (\section{%s} . \section*{%s})             | (\subsection{%s} . \subsection*{%s}) | (\subsubsection{%s} . \subsubsection*{%s}) |
+
+** WebにHTMLでPublishする 					       :個人設定:
+   :PROPERTIES:
+   :ID:       fcdb09c8-3a9a-4ea9-9482-10d445b6db9f
+   :END:
    - customzationに移動する？
 
 #+begin_src emacs-lisp
@@ -495,7 +530,7 @@ Entered on %U
       ))
 #+end_src
 
-** WordPressに記事を投稿（org2blog）
+** WordPressに記事を投稿（org2blog） 				       :個人設定:
   :PROPERTIES:
   :ID:       o2b:83d5ddbc-5e84-446c-826a-a2702eb6b997
   :POST_DATE: [2013-12-28 土 19:16]
@@ -535,8 +570,7 @@ Entered on %U
 (require 'org2blog-autoloads)
 #+end_src
 
-*** TODO custom.elに移動する？
-
+- org2blogを使うと，subtreeをwordpressに投稿できる．
 #+begin_src emacs-lisp
 (setq org2blog/wp-blog-alist
       '(("blog.chubachi.net"
@@ -1241,78 +1275,89 @@ shell-pop
 ;;; 80-clean-mode-line.el ends here
 #+end_src
 
-* TODO Buffer Move
-#+begin_src emacs-lisp
-  ;; ;; パッケージのインストール
-  ;; (setq package-list '(buffer-move))
-  ;; (dolist (package package-list)
-  ;;   (when (not (package-installed-p package))
-  ;;     (package-install package)))
+* TODO 対応するか検討中
+  :PROPERTIES:
+  :ID:       3117bdf4-368d-4fcb-aeaf-bb8e1c764fe8
+  :END:
+** Buffer Move
+  :PROPERTIES:
+  :ID:       09433d16-46c7-4fe8-8708-9382a1270dc0
+  :END:
+
+#+begin_src emacs-lisp :tangle no
+  ;; パッケージのインストール
+  (setq package-list '(buffer-move))
+  (dolist (package package-list)
+    (when (not (package-installed-p package))
+      (package-install package)))
   
-  ;; ; buffer-move : have to add your own keys
-  ;; (global-set-key (kbd "<C-S-up>")     'buf-move-up)
-  ;; (global-set-key (kbd "<C-S-down>")   'buf-move-down)
-  ;; (global-set-key (kbd "<C-S-left>")   'buf-move-left)
-  ;; (global-set-key (kbd "<C-S-right>")  'buf-move-right)
+  ; buffer-move : have to add your own keys
+  (global-set-key (kbd "<C-S-up>")     'buf-move-up)
+  (global-set-key (kbd "<C-S-down>")   'buf-move-down)
+  (global-set-key (kbd "<C-S-left>")   'buf-move-left)
+  (global-set-key (kbd "<C-S-right>")  'buf-move-right)
 #+end_src
 
-* TODO tab bar
-#+begin_src emacs-lisp
-  ;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-  ;; ;;
-  ;; ;; tabbar.el
-  ;; ;;
-  ;; ;; [Emacsにタブ機能を追加するtabbar.elの導入 - 12FF5B8](http://hico-horiuchi.hateblo.jp/entry/20121208/1354975316)
+** tab bar
+  :PROPERTIES:
+  :ID:       e4164ff6-d405-47f7-8ed7-838c9ffa215d
+  :END:
+#+begin_src emacs-lisp :tangle no
+  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+  ;;
+  ;; tabbar.el
+  ;;
+  ;; [Emacsにタブ機能を追加するtabbar.elの導入 - 12FF5B8](http://hico-horiuchi.hateblo.jp/entry/20121208/1354975316)
   
-  ;; ;; パッケージのインストール
-  ;; (setq package-list '(tabbar))
-  ;; (dolist (package package-list)
-  ;;   (when (not (package-installed-p package))
-  ;;     (package-install package)))
+  ;; パッケージのインストール
+  (setq package-list '(tabbar))
+  (dolist (package package-list)
+    (when (not (package-installed-p package))
+      (package-install package)))
   
-  ;; (require 'tabbar)
-  ;; (tabbar-mode)
-  ;; (global-set-key "\M-]" 'tabbar-forward)  ; 次のタブ
-  ;; (global-set-key "\M-[" 'tabbar-backward) ; 前のタブ
-  ;; ;; タブ上でマウスホイールを使わない
-  ;; (tabbar-mwheel-mode nil)
-  ;; ;; グループを使わない
-  ;; (setq tabbar-buffer-groups-function nil)
-  ;; ;; 左側のボタンを消す
-  ;; (dolist (btn '(tabbar-buffer-home-button
-  ;;                tabbar-scroll-left-button
-  ;;                tabbar-scroll-right-button))
-  ;;   (set btn (cons (cons "" nil)
-  ;;                  (cons "" nil))))
+  (require 'tabbar)
+  (tabbar-mode)
+  (global-set-key "\M-]" 'tabbar-forward)  ; 次のタブ
+  (global-set-key "\M-[" 'tabbar-backward) ; 前のタブ
+  ;; タブ上でマウスホイールを使わない
+  (tabbar-mwheel-mode nil)
+  ;; グループを使わない
+  (setq tabbar-buffer-groups-function nil)
+  ;; 左側のボタンを消す
+  (dolist (btn '(tabbar-buffer-home-button
+                 tabbar-scroll-left-button
+                 tabbar-scroll-right-button))
+    (set btn (cons (cons "" nil)
+                   (cons "" nil))))
 #+end_src
 
-* TODO rcode tools
+** rcode tools
+  :PROPERTIES:
+  :ID:       21e85321-7b0d-479f-aa36-66c3d9515adc
+  :END:
 
-#+begin_src emacs-lisp
-  ;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-  ;; ;; NOT IN PACKAGE
-  ;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+#+begin_src emacs-lisp :tangle no
+  (add-to-list 'load-path "~/.rbenv/versions/2.0.0-p195/lib/ruby/gems/2.0.0/gems/rcodetools-0.8.5.0")
   
-  ;; (add-to-list 'load-path "~/.rbenv/versions/2.0.0-p195/lib/ruby/gems/2.0.0/gems/rcodetools-0.8.5.0")
+  ;; rcodetools
+  (require 'rcodetools)
+  (setq rct-find-tag-if-available nil)
+  (defun ruby-mode-hook-rcodetools ()
+    (define-key ruby-mode-map (kbd "<C-return>") 'rct-complete-symbol)
+    (define-key ruby-mode-map "\M-\C-i" 'rct-complete-symbol)
+    (define-key ruby-mode-map "\C-c\C-t" 'ruby-toggle-buffer)
+    (define-key ruby-mode-map "\C-c\C-d" 'xmp)
+    (define-key ruby-mode-map "\C-c\C-f" 'rct-ri))
+  (add-hook 'ruby-mode-hook 'ruby-mode-hook-rcodetools)
   
-  ;; ;; rcodetools
-  ;; (require 'rcodetools)
-  ;; (setq rct-find-tag-if-available nil)
-  ;; (defun ruby-mode-hook-rcodetools ()
-  ;;   (define-key ruby-mode-map (kbd "<C-return>") 'rct-complete-symbol)
-  ;;   (define-key ruby-mode-map "\M-\C-i" 'rct-complete-symbol)
-  ;;   (define-key ruby-mode-map "\C-c\C-t" 'ruby-toggle-buffer)
-  ;;   (define-key ruby-mode-map "\C-c\C-d" 'xmp)
-  ;;   (define-key ruby-mode-map "\C-c\C-f" 'rct-ri))
-  ;; (add-hook 'ruby-mode-hook 'ruby-mode-hook-rcodetools)
-  
-  ;; (setq rct-get-all-methods-command "PAGER=cat fri -l")
-  ;; ;; See docs
+  (setq rct-get-all-methods-command "PAGER=cat fri -l")
+  ;; See docs
 #+end_src
 
-* TODO custom.el
-   - TODO
-     - 最後に読むことでここまでの設定を上書きできることを確認する
+* custom.el
+  :PROPERTIES:
+  :ID:       07980add-dd56-4ba9-b0e1-136a3a097141
+  :END:
    - 概要
      - カスタマイズ設定を保存するファイルを指定して，読み込みます．
      - このコード自体はcustom.elに依存させない

@@ -3,10 +3,33 @@
 - org-modeを快適に使うためには，フォントの設定が重要．
 - 全角・半角が入り乱れても，表の縦横が揃う
 
+- [[http://www.gnu.org/software/emacs/manual/html_node/emacs/Fonts.html][Fonts - GNU Emacs Manual]]
+
 - [[http://www.emacswiki.org/emacs/SetFonts][EmacsWiki: Set Fonts]]
   - マニュアル
 - [[http://ergoemacs.org/emacs/emacs_list_and_set_font.html][Emacs: How to List ＆ Set Font]]
   - 要領よくまとまっていてわかりやすい
+- 表示例
+|----------------+------------------------|
+| ホスト名(標準) | www2243up.sakura.ne.jp |
+| IPアドレス     |          153.121.41.17 |
+| ネットマスク   |          255.255.254.0 |
+| ゲートウェイ   |           153.121.40.1 |
+| ネームサーバ1  |         210.188.224.10 |
+| ネームサーバ2  |         210.188.224.11 |
+|----------------+------------------------|
+
+  - [[http://d.hatena.ne.jp/kitokitoki/20110502/p2][emacs での Ricty の導入手順 - わからん]]
+  - [[http://d.hatena.ne.jp/tunefs/20060710/p1][set-default-font vs default-frame-alist - Crossroad (tunefsの日記)]]
+  - フォントはcustomize.elで指定しています
+    - M-x custmoize-variable RET default-frame-alist RET
+
+  - TODO: 下記をLinuxのdaemonで実行すると落ちてしまう．
+    - jisx0208などの意味は調べていない
+    - font-specが動かないのでは？
+      
+  - [[http://save.sys.t.u-tokyo.ac.jp/~yusa/fonts/ricty.html][プログラミング用フォント Ricty]]
+    - ここのemacs lisp を参考にするといいのでは？
 
 ** フォントファミリーの一覧
 - 下記ソースブロックでC-c C-cしてください．
