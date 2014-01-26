@@ -224,6 +224,17 @@
 ｰ Fontに関する調査
   - [[file:test.org::*Emacs%E3%81%AE%E3%83%95%E3%82%A9%E3%83%B3%E3%83%88%E3%81%AE%E3%81%8A%E8%A9%B1][Emacsのフォントのお話]]
 
+** Rictyの設定							     :custom:
+
+- この値はcustomize可能です．
+
+#+begin_src emacs-lisp
+  (add-to-list 'default-frame-alist '(font . "ricty-13.5"))
+#+end_src
+
+#+RESULTS:
+| (font . ricty-13.5) |
+
 ** TODO Macでフォントを正しく設定する
    :PROPERTIES:
    :ID:       16b070ee-507e-49fa-b84d-fa573911ebeb
