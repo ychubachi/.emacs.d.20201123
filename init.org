@@ -2,6 +2,7 @@
 #+TITLE: init.org
 #+STARTUP: overview
 #+PROPERTY: header-args:emacs-lisp :tangle init.el
+
 * 説明
 ** 使い方
   - Emacsを設定するためのelです．
@@ -17,8 +18,16 @@
     - [[http://www.gnu.org/software/emacs/news/NEWS.24.3]]
     - [[http://www.gnu.org/software/emacs/manual/html_node/elisp/Lexical-Binding.html][Lexical Binding - GNU Emacs Lisp Reference Manual]]
     - [[http://www.gnu.org/software/emacs/manual/html_node/elisp/Closures.html#Closures][Closures - GNU Emacs Lisp Reference Manual]]
-  - git
-  - custom.elを最後に読むので，ここでの設定を上書きできます．
+
+  - init.elについて
+    - [[http://www.gnu.org/software/emacs/manual/html_node/emacs/Init-File.html#Init-File][Init File - GNU Emacs Manual]]
+    - [[http://www.gnu.org/software/emacs/manual/html_node/emacs/Init-Syntax.html#Init-Syntax][Init Syntax - GNU Emacs Manual]]
+      - init fileの文法．
+      - 特定の変数は自動的にbuffer localになる．
+	- この場合はset-defaultを使うこと．
+
+  - カスタマイズ
+    - custom.elを最後に読むので，ここでの設定を上書きできます．
 ** 準備
 *** git submodule
   - git submodule init
