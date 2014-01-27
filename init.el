@@ -127,6 +127,8 @@
 (yas-global-mode 1)
 (setq yas-snippet-dirs '("~/.emacs.d/snippets"))
 
+(setq org-deadline-warning-days 7)
+
 (dolist (package '(org org-plus-contrib))
   (when (not (package-installed-p package))
     (package-install package)))

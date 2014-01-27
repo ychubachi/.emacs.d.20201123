@@ -379,6 +379,15 @@
 | ToDoアイテムの状態             | org-todo-keywords              | TODO WAIT DONE SOMEDAY CANCEL |
 |                                |                                |                               |
 
+*** 期日の何日前に予定表（Agenda）に表示するか
+
+#+begin_src emacs-lisp
+  (setq org-deadline-warning-days 7)
+#+end_src
+
+#+RESULTS:
+: 7
+
 *** 未整理
 org-agenda-custom-commands (quote (("x" "Unscheduled TODOs" tags-todo "-SCHEDULED>=\"<today>\"" nil) ("n" "Agenda and all TODO's" ((agenda "" nil) (alltodo "" nil)) nil))))
  '(org-agenda-files (quote ("~/Dropbox/Note/todo.org")))
