@@ -30,6 +30,8 @@
 
   - カスタマイズ
     - custom.elを最後に読むので，ここでの設定を上書きできます．
+
+  - Dropboxと連携したorg-modeとMobileOrgのための設定
 ** 準備
 *** git submodule
   - git submodule init
@@ -74,8 +76,11 @@
     :PROPERTIES:
     :ID:       7cd92222-91c7-4c46-9325-85e891c20216
     :END:
-* 標準設定
-  - 外部のパッケージに依存しない，標準的な設定を行います．
+*** TODO org-modeで候補をインラインにできないか
+    :PROPERTIES:
+    :ID:       0d60c33f-5d9b-4447-bf76-8344bf44471c
+    :END:
+* 前処理
 ** ヘッダコメント
 
 #+begin_src emacs-lisp
@@ -100,6 +105,8 @@
               (message "%% Emacsの設定が完了しました %%")))
 #+end_src
 
+* 標準設定
+  - 外部のパッケージに依存しない，標準的な設定を行います．
 ** 日本語文字コードの設定
     
 #+begin_src emacs-lisp
@@ -107,11 +114,6 @@
   (prefer-coding-system 'utf-8)
 #+end_src
 
-** デバッガの有効化
-
-| 説明                     | 変数名         | 推奨 |
-|--------------------------+----------------+------|
-| エラー時にデバッガを起動 | debug-on-error | nil  |
 
 ** ロードパス
 *** gitのsubmoduleとして管理するライブラリ
@@ -1392,7 +1394,7 @@ shell-pop
 #+RESULTS:
 : text-scale-decrease
 
-* 後始末
+* カスタマイズ
 ** custom.el
   :PROPERTIES:
   :ID:       07980add-dd56-4ba9-b0e1-136a3a097141
@@ -1411,6 +1413,13 @@ shell-pop
       (load (expand-file-name custom-file)))
 #+end_src
    
+** デバッガの有効化
+
+| 説明                     | 変数名         | 推奨 |
+|--------------------------+----------------+------|
+| エラー時にデバッガを起動 | debug-on-error | nil  |
+
+* 後処理
 ** 完了表示
 
 #+begin_src emacs-lisp
