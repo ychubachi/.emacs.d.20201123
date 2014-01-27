@@ -5,11 +5,13 @@
 
 * 説明
 ** 使い方
+  - 日本のEmacsユーザ向け．
   - Emacsを設定するためのelです．
     - [[https://github.com/ychubachi/.emacs.d/blob/master/init.org][.emacs.d/init.org at master · ychubachi/.emacs.d]]
   - preludeを意識しています
     - [[http://batsov.com/prelude/][Prelude by bbatsov]]
-  - 日本のEmacsユーザ向け．
+  - oh-my-zshのようなplugins
+    - [[https://github.com/robbyrussell/oh-my-zsh][robbyrussell/oh-my-zsh]]
   - C-c C-v t でinit.elを生成
     - [[http://orgmode.org/manual/Header-arguments-in-Org-mode-properties.html#Header-arguments-in-Org-mode-properties][Header arguments in Org mode properties - The Org Manual]]
   - daemonについて
