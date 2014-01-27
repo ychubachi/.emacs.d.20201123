@@ -1,0 +1,285 @@
+* Emacsのフォントのお話
+** 概要
+- org-modeを快適に使うためには，フォントの設定が重要．
+- 全角・半角が入り乱れても，表の縦横が揃う
+
+- [[http://www.gnu.org/software/emacs/manual/html_node/emacs/Fonts.html][Fonts - GNU Emacs Manual]]
+
+- [[http://www.emacswiki.org/emacs/SetFonts][EmacsWiki: Set Fonts]]
+  - マニュアル
+- [[http://ergoemacs.org/emacs/emacs_list_and_set_font.html][Emacs: How to List ＆ Set Font]]
+  - 要領よくまとまっていてわかりやすい
+- 表示例
+|----------------+------------------------|
+| ホスト名(標準) | www2243up.sakura.ne.jp |
+| IPアドレス     |          153.121.41.17 |
+| ネットマスク   |          255.255.254.0 |
+| ゲートウェイ   |           153.121.40.1 |
+| ネームサーバ1  |         210.188.224.10 |
+| ネームサーバ2  |         210.188.224.11 |
+|----------------+------------------------|
+
+  - [[http://d.hatena.ne.jp/kitokitoki/20110502/p2][emacs での Ricty の導入手順 - わからん]]
+  - [[http://d.hatena.ne.jp/tunefs/20060710/p1][set-default-font vs default-frame-alist - Crossroad (tunefsの日記)]]
+  - フォントはcustomize.elで指定しています
+    - M-x custmoize-variable RET default-frame-alist RET
+
+  - TODO: 下記をLinuxのdaemonで実行すると落ちてしまう．
+    - jisx0208などの意味は調べていない
+    - font-specが動かないのでは？
+      
+  - [[http://save.sys.t.u-tokyo.ac.jp/~yusa/fonts/ricty.html][プログラミング用フォント Ricty]]
+    - ここのemacs lisp を参考にするといいのでは？
+
+** フォントファミリーの一覧
+- 下記ソースブロックでC-c C-cしてください．
+- :results list を指定し，表ではなく一覧で出力．
+- [[http://www.gnu.org/software/emacs/manual/html_node/eintr/Sorting.html][Sorting - Programming in Emacs Lisp]]
+- string< を述語に指定してsort
+
+#+begin_src emacs-lisp :tangle no :results list
+  (sort (font-family-list) 'string<)
+#+end_src
+
+#+RESULTS:
+- Abyssinica SIL
+- Bitstream Charter
+- Century Schoolbook L
+- Courier 10 Pitch
+- DejaVu Sans
+- DejaVu Sans
+- DejaVu Sans
+- DejaVu Sans Mono
+- DejaVu Serif
+- DejaVu Serif
+- Dingbats
+- FreeMono
+- FreeSans
+- FreeSerif
+- Garuda
+- Inconsolata
+- KacstArt
+- KacstBook
+- KacstDecorative
+- KacstDigital
+- KacstFarsi
+- KacstLetter
+- KacstNaskh
+- KacstOffice
+- KacstOne
+- KacstPen
+- KacstPoster
+- KacstQurn
+- KacstScreen
+- KacstTitle
+- KacstTitleL
+- Kedage
+- Khmer OS
+- Khmer OS System
+- Kinnari
+- LKLUG
+- Liberation Mono
+- Liberation Sans
+- Liberation Sans Narrow
+- Liberation Serif
+- Lohit Bengali
+- Lohit Gujarati
+- Lohit Hindi
+- Lohit Punjabi
+- Lohit Tamil
+- Loma
+- Mallige
+- Meera
+- MigMix 1M
+- MigMix 1P
+- MigMix 2M
+- MigMix 2P
+- Migu 1C
+- Migu 1M
+- Migu 1P
+- Migu 2M
+- Mukti Narrow
+- Mukti Narrow
+- NanumGothic
+- NanumMyeongjo
+- Nimbus Mono L
+- Nimbus Roman No9 L
+- Nimbus Sans L
+- Norasi
+- OpenSymbol
+- Padauk
+- Padauk Book
+- Phetsarath OT
+- Pothana2000
+- Purisa
+- Rachana
+- Rekha
+- Ricty
+- Saab
+- Sawasdee
+- Standard Symbols L
+- Symbol
+- Takao Pゴシック
+- Takao P明朝
+- TakaoExゴシック
+- TakaoEx明朝
+- Takaoゴシック
+- Takao明朝
+- Tibetan Machine Uni
+- Tlwg Typist
+- Tlwg Typo
+- TlwgMono
+- TlwgTypewriter
+- URW Bookman L
+- URW Chancery L
+- URW Gothic L
+- URW Palladio L
+- Ubuntu
+- Ubuntu
+- Ubuntu
+- Ubuntu Condensed
+- Ubuntu Mono
+- Umpush
+- Vemana2000
+- Waree
+- WenQuanYi Micro Hei
+- WenQuanYi Micro Hei Mono
+- bitstream charter
+- clean
+- clean
+- clearlyu
+- clearlyu
+- clearlyu alternate glyphs
+- clearlyu alternate glyphs
+- clearlyu arabic
+- clearlyu arabic
+- clearlyu arabic extra
+- clearlyu arabic extra
+- clearlyu devanagari
+- clearlyu devanagari
+- clearlyu devangari extra
+- clearlyu devangari extra
+- clearlyu ligature
+- clearlyu ligature
+- clearlyu pua
+- clearlyu pua
+- courier 10 pitch
+- fangsong ti
+- fangsong ti
+- fixed
+- fixed
+- fixed
+- fixed
+- fixed
+- gargi
+- gothic
+- gothic
+- mincho
+- mincho
+- mry_KacstQurn
+- newspaper
+- newspaper
+- nil
+- nil
+- open look cursor
+- open look cursor
+- open look glyph
+- open look glyph
+- ori1Uni
+- song ti
+- song ti
+- standard symbols l
+
+** フレームのフォントとサイズ
+
+- 下記を実行するとフレーム（ウインドウ）のフォントが変わります．
+- <フォント名>-<大きさ>
+
+- 大きさによって，表の縦横が揃わない場合がある
+
+|     |        |        |      |      |
+|-----+--------+--------+------+------|
+| abc | あああ | ☆○   |  123 | hoge |
+|     | abc    | あああ | ☆○ |  123 |
+
+- 縦横OK : Ubuntu
+
+#+begin_src emacs-lisp :results silent
+  (set-frame-font "ricty-12")
+#+end_src
+
+- NG : Ubuntu
+
+#+begin_src emacs-lisp :results silent
+  (set-frame-font "ricty-13")
+#+end_src
+
+- おすすめ（Ubuntu）
+
+#+begin_src emacs-lisp :results silent
+  (set-frame-font "Ricty-13.5")
+#+end_src
+
+- 大文字小文字は区別されない．
+
+#+begin_src emacs-lisp :results silent
+  (set-frame-font "rIctY-15")
+#+end_src
+
+#+begin_src emacs-lisp :results silent
+  (set-frame-font "Takao P明朝-14")
+#+end_src
+
+#+begin_src emacs-lisp :results silent
+  (set-frame-font "TakaoExゴシック-14")
+#+end_src
+
+#+begin_src emacs-lisp :results silent
+  (set-frame-font "MigMix 1M-13.5")
+#+end_src
+
+** 文字コード別のフォント
+あるフォントセットにおいて，文字コード別に使用するフォントを示します．
+出力結果は*Help*に出ます．C-x 3などでフレームを分割しておくと良い．
+
+#+begin_src emacs-lisp :tangle no :results output
+;;(describe-fontset "DejaVu Sans Mono")
+;;(describe-fontset "Ricty")
+;;(describe-fontset "mincho")
+;;(describe-fontset "-*-*-*-*-*-*-*-*-*-*-*-*-fontset-default")
+;;(describe-fontset "-*-fixed-medium-r-normal-*-16-*-*-*-*-*-fontset-standard")
+(describe-fontset "-unknown-Ubuntu Mono-normal-normal-normal-*-17-*-*-*-m-0-fontset-startup")
+#+end_src
+
+#+RESULTS:
+
+** フォントセット
+
+- S-down-mouse-1で切り替え可能．
+ああああ
+｝｝｝｝
+｜｜｜｜
+mmmm
+iiii
+llll
+
+ｰ standardはきたない
+- startupはきれいパン
+
+#+begin_src emacs-lisp :tangle no :results list
+(fontset-list)
+#+end_src
+
+#+RESULTS:
+- -unknown-Ubuntu Mono-normal-normal-normal-*-17-*-*-*-m-0-fontset-startup
+- -*-fixed-medium-r-normal-*-16-*-*-*-*-*-fontset-standard
+- -*-*-*-*-*-*-*-*-*-*-*-*-fontset-default
+
+** describe font
+#+begin_src emacs-lisp
+(describe-font "Roue")
+#+end_src
+
+#+RESULTS:
+: No matching font found
+

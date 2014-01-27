@@ -1,8 +1,6 @@
 
 ;; init.el --- Emacsの初期設定
 
-(message "Emacsの設定を開始します．")
-
 (message "%% Emacsの設定を開始します %%")
 
 (add-hook 'after-init-hook
@@ -12,8 +10,6 @@
 (set-language-environment "japanese")
 (prefer-coding-system 'utf-8)
 
-(setq debug-on-error t)
-
 (let ((default-directory "~/.emacs.d/git/"))
   (normal-top-level-add-subdirs-to-load-path))
 
@@ -21,7 +17,6 @@
   (normal-top-level-add-subdirs-to-load-path))
 
 ;; create backup file in ~/.emacs.d/backup
-(setq make-backup-files t)
 (setq backup-directory-alist
   (cons (cons "\\.*$" (expand-file-name "~/.emacs.d/backup"))
     backup-directory-alist))
@@ -69,17 +64,17 @@
 (defun my/open-journal()
   "備忘録を開きます．"
   (interactive)
-  (find-file "~/Dropbox/Note/journal.org"))
+  (find-file "~/Dropbox/Org/journal.org"))
   
 (defun my/open-todo()
   "備忘録を開きます．"
   (interactive)
-  (find-file "~/Dropbox/Note/todo.org"))
+  (find-file "~/Dropbox/Org/todo.org"))
 
 (defun my/open-note()
   "備忘録を開きます．"
   (interactive)
-  (find-file "~/Dropbox/Note/index.org"))
+  (find-file "~/Dropbox/Org/notes.org"))
 
 (defun my/open-project-folder()
   "プロジェクトフォルダを開きます．"
@@ -93,21 +88,26 @@
 (global-set-key (kbd "<f4>") 'my/open-note)
 (global-set-key (kbd "<f5>") 'my/open-project-folder)
 
-;; (let* ((size 14)
-;;        (h (* size 10))
-;;        (font-ascii "Ricty")
-;;        (font-jp    "Ricty")
-;;        (font-spec-ascii (font-spec :family font-ascii))
-;;        (font-spec-jp    (font-spec :family font-jp)))
-;;   (set-face-attribute 'default nil :family font-ascii :height h)
-;;   (set-fontset-font nil 'japanese-jisx0208        font-spec-jp)
-;;   (set-fontset-font nil 'japanese-jisx0212        font-spec-jp)
-;;   (set-fontset-font nil 'japanese-jisx0213.2004-1 font-spec-jp)
-;;   (set-fontset-font nil 'japanese-jisx0213-1      font-spec-jp)
-;;   (set-fontset-font nil 'japanese-jisx0213-2      font-spec-jp)
-;;   (set-fontset-font nil 'katakana-jisx0201        font-spec-jp)
-;;   (set-fontset-font nil '(#x0080 . #x024F)        font-spec-ascii) 
-;;   (set-fontset-font nil '(#x0370 . #x03FF)        font-spec-ascii))
+(add-to-list 'default-frame-alist '(font . "ricty-13.5"))
+
+;; (cond
+;;  ((eq system-type 'darwin)
+;;   (let* ((size 14)
+;;          (h (* size 10))
+;;          (font-ascii "Ricty")
+;;          (font-jp    "Ricty")
+;;          (font-spec-ascii (font-spec :family font-ascii))
+;;          (font-spec-jp    (font-spec :family font-jp)))
+;;     (set-face-attribute 'default nil :family font-ascii :height h)
+;;     (set-fontset-font nil 'japanese-jisx0208        font-spec-jp)
+;;     (set-fontset-font nil 'japanese-jisx0212        font-spec-jp)
+;;     (set-fontset-font nil 'japanese-jisx0213.2004-1 font-spec-jp)
+;;     (set-fontset-font nil 'japanese-jisx0213-1      font-spec-jp)
+;;     (set-fontset-font nil 'japanese-jisx0213-2      font-spec-jp)
+;;     (set-fontset-font nil 'katakana-jisx0201        font-spec-jp)
+;;     (set-fontset-font nil '(#x0080 . #x024F)        font-spec-ascii) 
+;;     (set-fontset-font nil '(#x0370 . #x03FF)        font-spec-ascii))
+;;   ))
 
 (require 'package)
 (setq package-archives
@@ -131,19 +131,20 @@
   (when (not (package-installed-p package))
     (package-install package)))
 
+(setq org-babel-sh-command "bash")
+
 (require 'ox-md)
 
 (require 'ox-mediawiki)
 
 (require 'ox-latex)
 
-(cond
- ((eq system-type 'gnu/linux)
-  (setq org-latex-pdf-process '("latexmk -e '$latex=q/platex %S/' -e '$bibtex=q/pbibtex %B/' -e '$makeindex=q/mendex -o %D %S/' -e '$dvipdf=q/dvipdfmx -o %D %S/' -norc -gg -pdfdvi %f"))
+(when (or
+       (eq system-type 'gnu/linux)
+       (eq system-type 'darwin))
+  (setq org-latex-pdf-process
+        '("latexmk -e '$latex=q/platex %S/' -e '$bibtex=q/pbibtex %B/' -e '$makeindex=q/mendex -o %D %S/' -e '$dvipdf=q/dvipdfmx -o %D %S/' -norc -gg -pdfdvi %f"))
   )
- ((eq system-type 'darwin)
-  (setq org-latex-pdf-process '("latexmk -e '$latex=q/platex %S/' -e '$bibtex=q/pbibtex %B/' -e '$makeindex=q/mendex -o %D %S/' -e '$dvipdf=q/dvipdfmx -o %D %S/' -norc -gg -pdfdvi %f"))
-  ))
 
 (setq org-latex-default-class "jsarticle")
 (add-to-list 'org-latex-classes
@@ -213,8 +214,6 @@
         ("chubachi.net"
          :components ("chubachi.net-notes" "chubachi.net-static"))
       ))
-
-(setq org-babel-sh-command "bash")
 
 (dolist (package '(org2blog xml-rpc metaweblog htmlize))
   (when (not (package-installed-p package))
@@ -804,73 +803,14 @@
 
 ;;; 80-clean-mode-line.el ends here
 
-;; ;; パッケージのインストール
-;; (setq package-list '(buffer-move))
-;; (dolist (package package-list)
-;;   (when (not (package-installed-p package))
-;;     (package-install package)))
-
-;; ; buffer-move : have to add your own keys
-;; (global-set-key (kbd "<C-S-up>")     'buf-move-up)
-;; (global-set-key (kbd "<C-S-down>")   'buf-move-down)
-;; (global-set-key (kbd "<C-S-left>")   'buf-move-left)
-;; (global-set-key (kbd "<C-S-right>")  'buf-move-right)
-
-;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; ;;
-;; ;; tabbar.el
-;; ;;
-;; ;; [Emacsにタブ機能を追加するtabbar.elの導入 - 12FF5B8](http://hico-horiuchi.hateblo.jp/entry/20121208/1354975316)
-
-;; ;; パッケージのインストール
-;; (setq package-list '(tabbar))
-;; (dolist (package package-list)
-;;   (when (not (package-installed-p package))
-;;     (package-install package)))
-
-;; (require 'tabbar)
-;; (tabbar-mode)
-;; (global-set-key "\M-]" 'tabbar-forward)  ; 次のタブ
-;; (global-set-key "\M-[" 'tabbar-backward) ; 前のタブ
-;; ;; タブ上でマウスホイールを使わない
-;; (tabbar-mwheel-mode nil)
-;; ;; グループを使わない
-;; (setq tabbar-buffer-groups-function nil)
-;; ;; 左側のボタンを消す
-;; (dolist (btn '(tabbar-buffer-home-button
-;;                tabbar-scroll-left-button
-;;                tabbar-scroll-right-button))
-;;   (set btn (cons (cons "" nil)
-;;                  (cons "" nil))))
-
-;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; ;; NOT IN PACKAGE
-;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-;; (add-to-list 'load-path "~/.rbenv/versions/2.0.0-p195/lib/ruby/gems/2.0.0/gems/rcodetools-0.8.5.0")
-
-;; ;; rcodetools
-;; (require 'rcodetools)
-;; (setq rct-find-tag-if-available nil)
-;; (defun ruby-mode-hook-rcodetools ()
-;;   (define-key ruby-mode-map (kbd "<C-return>") 'rct-complete-symbol)
-;;   (define-key ruby-mode-map "\M-\C-i" 'rct-complete-symbol)
-;;   (define-key ruby-mode-map "\C-c\C-t" 'ruby-toggle-buffer)
-;;   (define-key ruby-mode-map "\C-c\C-d" 'xmp)
-;;   (define-key ruby-mode-map "\C-c\C-f" 'rct-ri))
-;; (add-hook 'ruby-mode-hook 'ruby-mode-hook-rcodetools)
-
-;; (setq rct-get-all-methods-command "PAGER=cat fri -l")
-;; ;; See docs
-
-(setq custom-file "~/.emacs.d/custom.el")
-(if (file-exists-p (expand-file-name custom-file))
-    (load (expand-file-name custom-file)))
-
 ;バッファのフォントサイズを大きく
 (global-set-key (kbd "<prior>") 'text-scale-increase)
 ;バッファのフォントサイズを小さく
 (global-set-key (kbd "<next>")  'text-scale-decrease)
+
+(setq custom-file "~/.emacs.d/custom.el")
+(if (file-exists-p (expand-file-name custom-file))
+    (load (expand-file-name custom-file)))
 
 (defadvice kill-buffer (around my-kill-buffer-check activate)
   "Prompt when a buffer is about to be killed."

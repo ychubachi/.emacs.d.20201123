@@ -19,7 +19,7 @@
  '(compilation-ask-about-save nil)
  '(custom-enabled-themes (quote (manoj-dark)))
  '(custom-safe-themes (quote ("fc6e906a0e6ead5747ab2e7c5838166f7350b958d82e410257aeeb2820e8a07a" default)))
- '(default-frame-alist (quote ((font . "ricty-13.5") (alpha . 80) (left-fringe . 4) (right-fringe . 4) (vertical-scroll-bars))))
+ '(debug-on-error t)
  '(display-time-mode t)
  '(fci-rule-color "#383838")
  '(graphviz-dot-preview-extension "pdf")
@@ -27,23 +27,23 @@
  '(mediawiki-site-alist (quote (("YC's MediaWiki" "http://wiki.chubachi.net/" "yc" "" "メインページ"))))
  '(mouse-drag-copy-region t)
  '(org-agenda-custom-commands (quote (("x" "Unscheduled TODOs" tags-todo "-SCHEDULED>=\"<today>\"" nil) ("n" "Agenda and all TODO's" ((agenda "" nil) (alltodo "" nil)) nil))))
- '(org-agenda-files (quote ("~/Dropbox/Note/todo.org")))
+ '(org-agenda-files (quote ("~/.emacs.d/init.org" "/home/yc/Dropbox/Org/journal.org" "/home/yc/Dropbox/Org/notes.org" "/home/yc/Dropbox/Org/todo.org")))
  '(org-babel-load-languages (quote ((emacs-lisp . t) (dot . t) (java . t) (ruby . t) (sh . t))))
- '(org-capture-templates (quote (("t" "Todo" entry (file+headline "~/Dropbox/Note/todo.org" "Tasks") "* TODO %?
+ '(org-capture-templates (quote (("t" "Todo" entry (file+headline "todo.org" "Tasks") "* TODO %?
   %i
-  %a") ("j" "Journal" entry (file+datetree "~/Dropbox/Note/journal.org") "* %?
-Entered on %U
+  %a") ("j" "Journal" entry (file+datetree "journal.org") "* %?
+作成日 %U
   %i
   %a"))))
  '(org-confirm-babel-evaluate nil)
- '(org-default-notes-file "~/Dropbox/Note/notes.org")
- '(org-directory "~/Dropbox/Note")
+ '(org-default-notes-file "notes.org")
+ '(org-directory "~/Dropbox/Org")
  '(org-export-in-background nil)
  '(org-mobile-directory "~/Dropbox/アプリ/MobileOrg")
- '(org-mobile-inbox-for-pull "~/Dropbox/Note/from-mobile.org")
+ '(org-mobile-inbox-for-pull "~/Dropbox/Org/from-mobile.org")
  '(org-src-fontify-natively t)
  '(org-startup-with-inline-images t)
- '(org-tag-alist (quote (("@HOME" . 104) ("@OFFICE" . 111) ("MAIL" . 109) ("WEB" . 119) ("PHONE" . 112))))
+ '(org-tag-alist (quote (("@MAIL" . 109) ("@WEB" . 119) ("@PHONE" . 112) ("@OFFICE" . 111) ("@HOME" . 104))))
  '(org-todo-keywords (quote ((sequence "TODO(t)" "WAIT(w)" "|" "DONE(d)" "SOMEDAY(s)" "CANCEL(c)"))))
  '(org2blog/wp-use-sourcecode-shortcode t)
  '(outline-minor-mode-prefix "")
@@ -68,4 +68,5 @@ Entered on %U
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(font-lock-comment-face ((t (:foreground "chocolate1" :slant normal)))))
+ '(font-lock-comment-face ((t (:foreground "chocolate1" :slant normal))))
+ '(org-column-title ((t (:background "grey30" :underline t :weight bold :height 135)))))
