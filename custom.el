@@ -26,25 +26,10 @@
  '(inhibit-startup-screen nil)
  '(mediawiki-site-alist (quote (("YC's MediaWiki" "http://wiki.chubachi.net/" "yc" "" "メインページ"))))
  '(mouse-drag-copy-region t)
- '(org-agenda-custom-commands (quote (("x" "Unscheduled TODOs" tags-todo "-SCHEDULED>=\"<today>\"" nil) ("n" "Agenda and all TODO's" ((agenda "" nil) (alltodo "" nil)) nil))))
- '(org-agenda-files (quote ("~/.emacs.d/init.org" "/home/yc/Dropbox/Org/journal.org" "/home/yc/Dropbox/Org/notes.org" "/home/yc/Dropbox/Org/todo.org")))
- '(org-babel-load-languages (quote ((emacs-lisp . t) (dot . t) (java . t) (ruby . t) (sh . t))))
- '(org-capture-templates (quote (("t" "Todo" entry (file+headline "todo.org" "Tasks") "* TODO %?
-  %i
-  %a") ("j" "Journal" entry (file+datetree "journal.org") "* %?
-作成日 %U
-  %i
-  %a"))))
- '(org-confirm-babel-evaluate nil)
- '(org-default-notes-file "notes.org")
- '(org-directory "~/Dropbox/Org")
  '(org-export-in-background nil)
- '(org-mobile-directory "~/Dropbox/アプリ/MobileOrg")
- '(org-mobile-inbox-for-pull "~/Dropbox/Org/from-mobile.org")
  '(org-src-fontify-natively t)
  '(org-startup-with-inline-images t)
  '(org-tag-alist (quote (("@MAIL" . 109) ("@WEB" . 119) ("@PHONE" . 112) ("@OFFICE" . 111) ("@HOME" . 104))))
- '(org-todo-keywords (quote ((sequence "TODO(t)" "WAIT(w)" "|" "DONE(d)" "SOMEDAY(s)" "CANCEL(c)"))))
  '(org2blog/wp-use-sourcecode-shortcode t)
  '(outline-minor-mode-prefix "")
  '(package-archives (quote (("org" . "http://orgmode.org/elpa/") ("gnu" . "http://elpa.gnu.org/packages/") ("marmalade" . "http://marmalade-repo.org/packages/") ("melpa" . "http://melpa.milkbox.net/packages/"))))

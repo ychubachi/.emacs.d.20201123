@@ -353,19 +353,81 @@
 
 - org-agenda-filesはTodoかくファイル -> MobileOrgにPushする
 
+#+begin_src emacs-lisp
+   (setq org-directory "~/Dropbox/Org")
+   (setq org-default-notes-file "notes.org")
+   (setq org-agenda-files (quote ("~/Dropbox/Org/")))
+   (setq org-capture-templates
+         (quote
+          (("t" "Todo" entry (file+headline "todo.org" "Tasks") "* TODO %?
+    作成日: %U
+    %i
+    %a")
+           ("j" "Journal" entry (file+datetree "journal.org") "* %?
+    作成日: %U
+    %i
+    %a"))))
+#+end_src
+
+#+RESULTS:
+| ~/Dropbox/Org/ |
+
+
 *** Mobile Org関連
-| 説明                               | 変数名                    | 推奨                             |
-|------------------------------------+---------------------------+----------------------------------|
-| Mobile用Orgファイルを置く場所      | org-mobile-directory      | "~/Dropbox/アプリ/MobileOrg"     |
-| Mobileで追加した項目を置くファイル | org-mobile-inbox-for-pull | "from-mobile.org"                |
+**** Mobile用Orgファイルを置く場所
+
+#+begin_src emacs-lisp
+  (setq org-mobile-inbox-for-pull "~/Dropbox/Org/from-mobile.org")
+#+end_src
+
+#+RESULTS:
+: ~/Dropbox/Org/from-mobile.org
+
+**** Mobileで追加した項目を置くファイル
+
+#+begin_src emacs-lisp
+  (setq org-mobile-inbox-for-pull "~/Dropbox/Org/from-mobile.org")
+#+end_src
+
+#+RESULTS:
+: ~/Dropbox/Org/from-mobile.org
 
 *** Babel
 
 | 説明 | 変数名 | 推奨 |
 |------+--------+------|
 |      |        |      |
- '(org-babel-load-languages (quote ((emacs-lisp . t) (dot . t) (java . t) (ruby . t) (sh . t))))
- '(org-confirm-babel-evaluate nil)
+
+#+begin_src emacs-lisp
+  (setq org-babel-load-languages
+        (quote
+         ((emacs-lisp . t)
+          (dot . t)
+          (java . t)
+          (ruby . t)
+          (sh . t))))
+#+end_src
+
+#+RESULTS:
+
+#+begin_src emacs-lisp
+  (setq org-confirm-babel-evaluate nil)
+#+end_src
+
+#+RESULTS:
+
+*** 予定表生成追加命令
+
+#+begin_src emacs-lisp
+   (setq org-agenda-custom-commands
+         (quote
+          (("x" "Unscheduled TODOs" tags-todo "-SCHEDULED>=\"<today>\"" nil)
+           ("n" "Agenda and all TODO's" ((agenda "" nil) (alltodo "" nil)) nil))))
+#+end_src
+
+#+RESULTS:
+| x | Unscheduled TODOs     | tags-todo                      | -SCHEDULED>="<today>" | nil |
+| n | Agenda and all TODO's | ((agenda  nil) (alltodo  nil)) | nil                   |     |
 
 *** Org Column Title
 - Heightをフォントの高さに合わせる
@@ -378,6 +440,15 @@
 | 画像を表示                     | org-startup-with-inline-images | t                             |
 | ToDoアイテムの状態             | org-todo-keywords              | TODO WAIT DONE SOMEDAY CANCEL |
 |                                |                                |                               |
+
+*** TODOの種類
+
+#+begin_src emacs-lisp
+  (setq org-todo-keywords (quote ((sequence "TODO(t)" "WIP(p)" "WAIT(w)" "|" "DONE(d)" "SOMEDAY(s)" "CANCEL(c)"))))
+#+end_src
+
+#+RESULTS:
+| sequence | TODO(t) | WIP(p) | WAIT(w) |   |   | DONE(d) | SOMEDAY(s) | CANCEL(c) |
 
 *** 期日の何日前に予定表（Agenda）に表示するか
 

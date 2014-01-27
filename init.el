@@ -127,6 +127,41 @@
 (yas-global-mode 1)
 (setq yas-snippet-dirs '("~/.emacs.d/snippets"))
 
+(setq org-directory "~/Dropbox/Org")
+(setq org-default-notes-file "notes.org")
+(setq org-agenda-files (quote ("~/Dropbox/Org/")))
+(setq org-capture-templates
+      (quote
+       (("t" "Todo" entry (file+headline "todo.org" "Tasks") "* TODO %?
+ 作成日: %U
+ %i
+ %a")
+        ("j" "Journal" entry (file+datetree "journal.org") "* %?
+ 作成日: %U
+ %i
+ %a"))))
+
+(setq org-mobile-inbox-for-pull "~/Dropbox/Org/from-mobile.org")
+
+(setq org-mobile-inbox-for-pull "~/Dropbox/Org/from-mobile.org")
+
+(setq org-babel-load-languages
+      (quote
+       ((emacs-lisp . t)
+        (dot . t)
+        (java . t)
+        (ruby . t)
+        (sh . t))))
+
+(setq org-confirm-babel-evaluate nil)
+
+(setq org-agenda-custom-commands
+      (quote
+       (("x" "Unscheduled TODOs" tags-todo "-SCHEDULED>=\"<today>\"" nil)
+        ("n" "Agenda and all TODO's" ((agenda "" nil) (alltodo "" nil)) nil))))
+
+(setq org-todo-keywords (quote ((sequence "TODO(t)" "WIP(p)" "WAIT(w)" "|" "DONE(d)" "SOMEDAY(s)" "CANCEL(c)"))))
+
 (setq org-deadline-warning-days 7)
 
 (dolist (package '(org org-plus-contrib))
