@@ -7,6 +7,8 @@
           (lambda ()
             (message "%% Emacsの設定が完了しました %%")))
 
+(server-start)
+
 (set-language-environment "japanese")
 (prefer-coding-system 'utf-8)
 
@@ -268,6 +270,8 @@
          :default-categories ("org2blog" "emacs")
          :tags-as-categories nil)
         ))
+
+(require 'org-protocol)
 
 (dolist (package '(helm))
   (when (not (package-installed-p package))

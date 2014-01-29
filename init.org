@@ -106,6 +106,15 @@
               (message "%% Emacsの設定が完了しました %%")))
 #+end_src
 
+#+RESULTS:
+| x-wm-set-size-hint | init-loader-show-log | (lambda nil (message %% Emacsの設定が完了しました %%)) | 
+
+** Emacs serverの開始
+
+#+begin_src emacs-lisp
+  (server-start)
+#+end_src
+
 * 標準設定
   - 外部のパッケージに依存しない，標準的な設定を行います．
 ** 日本語文字コードの設定
@@ -373,7 +382,6 @@
 #+RESULTS:
 | ~/Dropbox/Org/ |
 
-
 *** Mobile Org関連
 **** Mobile用Orgファイルを置く場所
 
@@ -474,7 +482,7 @@ Entered on %U
  '(org-tag-alist (quote (("@HOME" . 104) ("@OFFICE" . 111) ("MAIL" . 109) ("WEB" . 119) ("PHONE" . 112))))
  '(org2blog/wp-use-sourcecode-shortcode t)
 
-** パッケージのインストール
+** TODO パッケージのインストール -> 不要？
 
 #+begin_src emacs-lisp
   (dolist (package '(org org-plus-contrib))
@@ -482,8 +490,7 @@ Entered on %U
       (package-install package)))
 #+end_src
 
-** カスタマイズに対応していない設定
-*** Shellのコードの実行にbashを使う
+** Shellのコードの実行にbashを使う
     :PROPERTIES:
     :ID:       adc108a7-c5d7-49b7-b1fb-bfb681d748b0
     :END:
@@ -527,7 +534,6 @@ Entered on %U
 
 #+RESULTS:
 | latexmk -e '$latex=q/platex %S/' -e '$bibtex=q/pbibtex %B/' -e '$makeindex=q/mendex -o %D %S/' -e '$dvipdf=q/dvipdfmx -o %D %S/' -norc -gg -pdfdvi %f |
-
 
 **** 文書クラスの設定(jsarticle)
 
@@ -686,6 +692,24 @@ Entered on %U
          :tags-as-categories nil)
 	))
 #+end_src
+
+** org-protocol
+*** 設定方法
+
+  - [[http://stackoverflow.com/questions/7464951/how-to-make-org-protocol-work][firefox - How to make org-protocol work? - Stack Overflow]]
+  - [[http://d.hatena.ne.jp/reppets/20111109/1320846292][Unityランチャーに自分でインストール/ビルドしたアプリケーションを登録する - reppets.log.1]]
+  - [[http://kb.mozillazine.org/Register_protocol#Linux][Register protocol - MozillaZine Knowledge Base]]
+  - [[http://orgmode.org/worg/org-contrib/org-protocol.html#sec-3-6]]
+    - 古い
+
+*** 有効化
+
+#+begin_src emacs-lisp
+  (require 'org-protocol)
+#+end_src
+
+#+RESULTS:
+: org-protocol
 
 * Helm
 ** 参考
