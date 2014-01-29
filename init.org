@@ -695,12 +695,20 @@ Entered on %U
 
 ** org-protocol
 *** 設定方法
-
+  - C-c C-lでOrg形式のリンク挿入
   - [[http://stackoverflow.com/questions/7464951/how-to-make-org-protocol-work][firefox - How to make org-protocol work? - Stack Overflow]]
+    - gistで公開してあげようかな
   - [[http://d.hatena.ne.jp/reppets/20111109/1320846292][Unityランチャーに自分でインストール/ビルドしたアプリケーションを登録する - reppets.log.1]]
   - [[http://kb.mozillazine.org/Register_protocol#Linux][Register protocol - MozillaZine Knowledge Base]]
   - [[http://orgmode.org/worg/org-contrib/org-protocol.html#sec-3-6]]
     - 古い
+
+[[http://orgmode.org/worg/org-contrib/org-protocol.html#sec-3-6][org-protocol.el – Intercept calls from emacsclient to trigger custom actions]]
+
+#+begin_src
+javascript:location.href='org-protocol://store-link://'+encodeURIComponent(location.href)
+javascript:location.href='org-protocol://capture://t/'+encodeURIComponent(location.href)+'/'+encodeURIComponent(document.title)+'/'+encodeURIComponent(window.getSelection())
+#+end_src
 
 *** 有効化
 
