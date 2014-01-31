@@ -100,10 +100,21 @@
 ** 完了の通知
   - after-init-hookはパッケージの初期化が完了したら呼ばれるフックです．
 
+  - 概要
+     - カスタマイズ設定を保存するファイルを指定して，読み込みます．
+     - このコード自体はcustom.elに依存させない
+       - custom.elには個人用の設定を書く
+     - このコードで設定した値は，custom.el内で上書きされます．
+  - 参考
+     - [[http://www.gnu.org/software/emacs/manual/html_node/emacs/Saving-Customizations.html][Saving Customizations - GNU Emacs Manual]]
+
 #+begin_src emacs-lisp
-  (add-hook 'after-init-hook
-            (lambda ()
-              (message "%% Emacsの設定が完了しました %%")))
+    (add-hook 'after-init-hook
+              (lambda ()
+                (setq custom-file "~/.emacs.d/custom.el")
+                (if (file-exists-p (expand-file-name custom-file))
+                    (load (expand-file-name custom-file)))
+                (message "%% Emacsの設定が完了しました %%")))
 #+end_src
 
 #+RESULTS:
@@ -1507,25 +1518,6 @@ shell-pop
 #+RESULTS:
 : text-scale-decrease
 
-* カスタマイズ
-** custom.el
-  :PROPERTIES:
-  :ID:       07980add-dd56-4ba9-b0e1-136a3a097141
-  :END:
-   - 概要
-     - カスタマイズ設定を保存するファイルを指定して，読み込みます．
-     - このコード自体はcustom.elに依存させない
-       - custom.elには個人用の設定を書く
-     - このコードで設定した値は，custom.el内で上書きされます．
-   - 参考
-     - [[http://www.gnu.org/software/emacs/manual/html_node/emacs/Saving-Customizations.html][Saving Customizations - GNU Emacs Manual]]
-       
-#+begin_src emacs-lisp
-  (setq custom-file "~/.emacs.d/custom.el")
-  (if (file-exists-p (expand-file-name custom-file))
-      (load (expand-file-name custom-file)))
-#+end_src
-   
 ** デバッガの有効化
 
 | 説明                     | 変数名         | 推奨 |
