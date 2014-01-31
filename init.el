@@ -5,6 +5,9 @@
 
 (add-hook 'after-init-hook
           (lambda ()
+            (setq custom-file "~/.emacs.d/custom.el")
+            (if (file-exists-p (expand-file-name custom-file))
+                (load (expand-file-name custom-file)))
             (message "%% Emacsの設定が完了しました %%")))
 
 (server-start)
@@ -121,6 +124,11 @@
 
 (when (not package-archive-contents)
   (package-refresh-contents))
+
+(dolist (package '(exec-path-from-shell))
+  (when (not (package-installed-p package))
+    (package-install package)))
+(exec-path-from-shell-initialize)
 
 (dolist (package '(yasnippet))
   (when (not (package-installed-p package))
@@ -523,23 +531,25 @@
 ; pdf viewer
 (setq mew-prog-pdf '("evince" nil t))
 
-(require 'migemo)
+;; (require 'migemo)
+(when (and (executable-find "cmigemo")
+           (require 'migemo nil t))
+  (setq migemo-options '("-q" "--emacs"))
 
-(setq migemo-command "cmigemo")
-(setq migemo-options '("-q" "--emacs"))
+  (setq migemo-user-dictionary nil)
+  (setq migemo-regex-dictionary nil)
+  (setq migemo-coding-system 'utf-8-unix)
+  (load-library "migemo")
+  (migemo-init)
 
-(cond
- ((eq system-type 'gnu/linux)
-  (setq migemo-dictionary "/usr/share/cmigemo/utf-8/migemo-dict"))
- ((eq system-type 'darwin)
-  (setq migemo-dictionary "/usr/local/share/migemo/utf-8/migemo-dict")))
+  (setq migemo-command "cmigemo")
 
-(setq migemo-user-dictionary nil)
-(setq migemo-regex-dictionary nil)
-(setq migemo-coding-system 'utf-8-unix)
-
-(load-library "migemo")
-(migemo-init)
+  (cond
+   ((eq system-type 'gnu/linux)
+    (setq migemo-dictionary "/usr/share/cmigemo/utf-8/migemo-dict"))
+   ((eq system-type 'darwin)
+    (setq migemo-dictionary "/usr/local/share/migemo/utf-8/migemo-dict")))
+  )
 
 ;; ================================================================
 ;; パッケージのインストール
@@ -848,10 +858,6 @@
 (global-set-key (kbd "<prior>") 'text-scale-increase)
 ;バッファのフォントサイズを小さく
 (global-set-key (kbd "<next>")  'text-scale-decrease)
-
-(setq custom-file "~/.emacs.d/custom.el")
-(if (file-exists-p (expand-file-name custom-file))
-    (load (expand-file-name custom-file)))
 
 (defadvice kill-buffer (around my-kill-buffer-check activate)
   "Prompt when a buffer is about to be killed."
