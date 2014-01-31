@@ -137,6 +137,25 @@
 (yas-global-mode 1)
 (setq yas-snippet-dirs '("~/.emacs.d/snippets"))
 
+(when (and (executable-find "cmigemo")
+           (require 'migemo nil t))
+  (setq migemo-options '("-q" "--emacs"))
+
+  (setq migemo-user-dictionary nil)
+  (setq migemo-regex-dictionary nil)
+  (setq migemo-coding-system 'utf-8-unix)
+  (load-library "migemo")
+  (migemo-init)
+
+  (setq migemo-command "cmigemo")
+
+  (cond
+   ((eq system-type 'gnu/linux)
+    (setq migemo-dictionary "/usr/share/cmigemo/utf-8/migemo-dict"))
+   ((eq system-type 'darwin)
+    (setq migemo-dictionary "/usr/local/share/migemo/utf-8/migemo-dict")))
+  )
+
 (setq org-directory "~/Dropbox/Org")
 (setq org-default-notes-file "notes.org")
 (setq org-agenda-files (quote ("~/Dropbox/Org/")))
@@ -308,24 +327,23 @@
       helm-input-idle-delay       0.1
       helm-candidate-number-limit 200)
 
-(require 'helm-migemo)
-(setq helm-use-migemo t)
+(when (executable-find "cmigemo")
+  (require 'helm-migemo)
+  (setq helm-use-migemo t)
 
-(defadvice helm-c-apropos
-  (around ad-helm-apropos activate)
-  "候補が表示されないときがあるので migemoらないように設定."
-  (let ((helm-use-migemo nil))
-    ad-do-it))
+  (defadvice helm-c-apropos
+    (around ad-helm-apropos activate)
+    "候補が表示されないときがあるので migemoらないように設定."
+    (let ((helm-use-migemo nil))
+      ad-do-it))
 
-(defadvice helm-M-x
-  (around ad-helm-M-x activate)
-  "候補が表示されないときがあるので migemoらないように設定."
-  (let ((helm-use-migemo nil))
-    ad-do-it))
+  (defadvice helm-M-x
+    (around ad-helm-M-x activate)
+    "候補が表示されないときがあるので migemoらないように設定."
+    (let ((helm-use-migemo nil))
+      ad-do-it))
+  )
 
-;; ================================================================
-;; その他
-;; ================================================================
 (require 'helm-imenu)
 (setq imenu-auto-rescan t)
 (setq imenu-after-jump-hook (lambda () (recenter 10))) ; 選択後の表示位置を調整
@@ -530,26 +548,6 @@
 
 ; pdf viewer
 (setq mew-prog-pdf '("evince" nil t))
-
-;; (require 'migemo)
-(when (and (executable-find "cmigemo")
-           (require 'migemo nil t))
-  (setq migemo-options '("-q" "--emacs"))
-
-  (setq migemo-user-dictionary nil)
-  (setq migemo-regex-dictionary nil)
-  (setq migemo-coding-system 'utf-8-unix)
-  (load-library "migemo")
-  (migemo-init)
-
-  (setq migemo-command "cmigemo")
-
-  (cond
-   ((eq system-type 'gnu/linux)
-    (setq migemo-dictionary "/usr/share/cmigemo/utf-8/migemo-dict"))
-   ((eq system-type 'darwin)
-    (setq migemo-dictionary "/usr/local/share/migemo/utf-8/migemo-dict")))
-  )
 
 ;; ================================================================
 ;; パッケージのインストール

@@ -353,6 +353,40 @@
   (setq yas-snippet-dirs '("~/.emacs.d/snippets"))
 #+end_src
 
+* migemo
+ローマ字で日本語をインクリメンタルサーチ
+
+- 注意
+  - cmigemoコマンドがインストールされていること．
+  - locate migemo-dictで辞書の場所調べ，設定してください．
+- 参考
+  - https://github.com/emacs-jp/migemo
+  - [[http://qiita.com/catatsuy/items/c5fa34ead92d496b8a51][migemoを使ってEmacsライフを快適に - Qiita {キータ}]]
+
+#+begin_src emacs-lisp
+  (when (and (executable-find "cmigemo")
+             (require 'migemo nil t))
+    (setq migemo-options '("-q" "--emacs"))
+  
+    (setq migemo-user-dictionary nil)
+    (setq migemo-regex-dictionary nil)
+    (setq migemo-coding-system 'utf-8-unix)
+    (load-library "migemo")
+    (migemo-init)
+  
+    (setq migemo-command "cmigemo")
+
+    (cond
+     ((eq system-type 'gnu/linux)
+      (setq migemo-dictionary "/usr/share/cmigemo/utf-8/migemo-dict"))
+     ((eq system-type 'darwin)
+      (setq migemo-dictionary "/usr/local/share/migemo/utf-8/migemo-dict")))
+    )
+#+end_src
+
+#+RESULTS:
+: /usr/share/cmigemo/utf-8/migemo-dict
+
 * Org
 ** Orgについて
 *** マニュアル
@@ -812,24 +846,27 @@ C-h でバックスペースと同じように文字を削除できるように�
 ** helm-migemo - ローマ字検索
 
 #+begin_src emacs-lisp
-(require 'helm-migemo)
-(setq helm-use-migemo t)
+  (when (executable-find "cmigemo")
+    (require 'helm-migemo)
+    (setq helm-use-migemo t)
+  
+    (defadvice helm-c-apropos
+      (around ad-helm-apropos activate)
+      "候補が表示されないときがあるので migemoらないように設定."
+      (let ((helm-use-migemo nil))
+        ad-do-it))
+  
+    (defadvice helm-M-x
+      (around ad-helm-M-x activate)
+      "候補が表示されないときがあるので migemoらないように設定."
+      (let ((helm-use-migemo nil))
+        ad-do-it))
+    )
+#+end_src
 
-(defadvice helm-c-apropos
-  (around ad-helm-apropos activate)
-  "候補が表示されないときがあるので migemoらないように設定."
-  (let ((helm-use-migemo nil))
-    ad-do-it))
+** その他
 
-(defadvice helm-M-x
-  (around ad-helm-M-x activate)
-  "候補が表示されないときがあるので migemoらないように設定."
-  (let ((helm-use-migemo nil))
-    ad-do-it))
-
-;; ================================================================
-;; その他
-;; ================================================================
+#+begin_src emacs-lisp
 (require 'helm-imenu)
 (setq imenu-auto-rescan t)
 (setq imenu-after-jump-hook (lambda () (recenter 10))) ; 選択後の表示位置を調整
@@ -1075,41 +1112,6 @@ C-h でバックスペースと同じように文字を削除できるように�
 ; pdf viewer
 (setq mew-prog-pdf '("evince" nil t))
 #+end_src
-* Migemo
-ローマ字で日本語をインクリメンタルサーチ
-
-- 注意
-  - cmigemoコマンドがインストールされていること．
-  - locate migemo-dictで辞書の場所調べ，設定してください．
-- 参考
-  - https://github.com/emacs-jp/migemo
-  - [[http://qiita.com/catatsuy/items/c5fa34ead92d496b8a51][migemoを使ってEmacsライフを快適に - Qiita {キータ}]]
-
-#+begin_src emacs-lisp
-  ;; (require 'migemo)
-  (when (and (executable-find "cmigemo")
-             (require 'migemo nil t))
-    (setq migemo-options '("-q" "--emacs"))
-  
-    (setq migemo-user-dictionary nil)
-    (setq migemo-regex-dictionary nil)
-    (setq migemo-coding-system 'utf-8-unix)
-    (load-library "migemo")
-    (migemo-init)
-  
-    (setq migemo-command "cmigemo")
-
-    (cond
-     ((eq system-type 'gnu/linux)
-      (setq migemo-dictionary "/usr/share/cmigemo/utf-8/migemo-dict"))
-     ((eq system-type 'darwin)
-      (setq migemo-dictionary "/usr/local/share/migemo/utf-8/migemo-dict")))
-    )
-#+end_src
-
-#+RESULTS:
-: /usr/share/cmigemo/utf-8/migemo-dict
-
 * Programming
 #+begin_src emacs-lisp
 ;; ================================================================
