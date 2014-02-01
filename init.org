@@ -354,6 +354,7 @@
 #+end_src
 
 * migemo
+** 概要
 ローマ字で日本語をインクリメンタルサーチ
 
 - 注意
@@ -362,6 +363,18 @@
 - 参考
   - https://github.com/emacs-jp/migemo
   - [[http://qiita.com/catatsuy/items/c5fa34ead92d496b8a51][migemoを使ってEmacsライフを快適に - Qiita {キータ}]]
+
+** 実行可否確認
+
+#+begin_src emacs-lisp
+  (unless (executable-find "cmigemo")
+    (warn "！！ 警告：cmigemoコマンドが呼び出せません　！！"))
+#+end_src
+
+#+RESULTS:
+: t
+
+** 設定
 
 #+begin_src emacs-lisp
   (when (and (executable-find "cmigemo")
