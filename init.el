@@ -137,6 +137,9 @@
 (yas-global-mode 1)
 (setq yas-snippet-dirs '("~/.emacs.d/snippets"))
 
+(unless (executable-find "cmigemo")
+  (warn "！！ 警告：cmigemoコマンドが呼び出せません　！！"))
+
 (when (and (executable-find "cmigemo")
            (require 'migemo nil t))
   (setq migemo-options '("-q" "--emacs"))
