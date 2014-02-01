@@ -409,7 +409,7 @@
   - [[http://orgmode.org/elpa.html][Org Emacs lisp Package Archive]]
 *** Dropboxとの連携
 
-** カスタマイズ
+** 各種設定
 *** 思いついたらすぐ記録（Capture）
 - 準備
   - mkdir ~/Dropbox/Org
@@ -431,26 +431,37 @@
 | キャプチャ                 | org-capture-templates  | t: Todo j: Journal |
 | アジェンダファイルの指定   | org-agenda-files       | ("~/Dropbox/Org/") |
 
-- org-agenda-filesはTodoかくファイル -> MobileOrgにPushする
+- org-agenda-files -> MobileOrgにPushする
 
 #+begin_src emacs-lisp
-   (setq org-directory "~/Dropbox/Org")
-   (setq org-default-notes-file "notes.org")
-   (setq org-agenda-files (quote ("~/Dropbox/Org/")))
-   (setq org-capture-templates
-         (quote
-          (("t" "Todo" entry (file+headline "todo.org" "Tasks") "* TODO %?
-    作成日: %U
-    %i
-    %a")
-           ("j" "Journal" entry (file+datetree "journal.org") "* %?
-    作成日: %U
-    %i
-    %a"))))
+  (setq org-directory "~/Dropbox/Org")
+  (setq org-default-notes-file "notes.org")
+  (setq org-agenda-files (quote ("~/Dropbox/Org/")))
+  (setq org-capture-templates
+        (quote
+         (("t" "Todo" entry (file+headline "todo.org" "Tasks")
+           "* TODO %?
+作成日: %U
+　引用: %i
+リンク: %a")
+          ("j" "Journal" entry (file+datetree "journal.org")
+           "* %?
+作成日: %U
+　引用: %i
+リンク: %a")
+          ("b" "Bookmark" entry (file+headline "bookmark.org" "Bookmarks")
+           "* TODO %a :bookmark:
+作成日: %U
+　引用: %i
+
+%?")
+          )))
 #+end_src
 
 #+RESULTS:
-| ~/Dropbox/Org/ |
+| t | Todo     | entry | (file+headline todo.org Tasks)         | * TODO %?\n作成日: %U\n　引用: %i\nリンク: %a      |
+| j | Journal  | entry | (file+datetree journal.org)            | * %?\n作成日: %U\n　引用: %i\nリンク: %a           |
+| b | Bookmark | entry | (file+headline bookmark.org Bookmarks) | * TODO %a :bookmark:\n作成日: %U\n　引用: %i\n\n%? |
 
 *** Mobile Org関連
 **** Mobile用Orgファイルを置く場所

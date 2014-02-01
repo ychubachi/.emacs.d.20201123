@@ -160,18 +160,27 @@
   )
 
 (setq org-directory "~/Dropbox/Org")
-(setq org-default-notes-file "notes.org")
-(setq org-agenda-files (quote ("~/Dropbox/Org/")))
-(setq org-capture-templates
-      (quote
-       (("t" "Todo" entry (file+headline "todo.org" "Tasks") "* TODO %?
- 作成日: %U
- %i
- %a")
-        ("j" "Journal" entry (file+datetree "journal.org") "* %?
- 作成日: %U
- %i
- %a"))))
+  (setq org-default-notes-file "notes.org")
+  (setq org-agenda-files (quote ("~/Dropbox/Org/")))
+  (setq org-capture-templates
+        (quote
+         (("t" "Todo" entry (file+headline "todo.org" "Tasks")
+           "* TODO %?
+作成日: %U
+　引用: %i
+リンク: %a")
+          ("j" "Journal" entry (file+datetree "journal.org")
+           "* %?
+作成日: %U
+　引用: %i
+リンク: %a")
+          ("b" "Bookmark" entry (file+headline "bookmark.org" "Bookmarks")
+           "* TODO %a :bookmark:
+作成日: %U
+　引用: %i
+
+%?")
+          )))
 
 (setq org-mobile-inbox-for-pull "~/Dropbox/Org/from-mobile.org")
 
