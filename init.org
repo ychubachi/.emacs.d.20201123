@@ -48,6 +48,12 @@
   (Error: No word lists can be found for the language "ja_JP".)
 
 ** TODOs
+*** TODO custem-sample.elを作る
+   :PROPERTIES:
+   :ID:       82dac097-153d-4efc-88eb-ac6616df3b5a
+   :END:
+   - ファイルがなければコピーする
+     - その際，問い合わせをする
 *** TODO custom.elにある設定をこちらに移す（custom.elなしでもokにする）
     :PROPERTIES:
     :ID:       5aad65c8-d606-4d34-808d-9afaa5e638c0
