@@ -182,8 +182,7 @@
 %?")
           )))
 
-(setq org-mobile-inbox-for-pull "~/Dropbox/Org/from-mobile.org")
-
+(setq org-mobile-directory "~/Dropbox/アプリ/MobileOrg")
 (setq org-mobile-inbox-for-pull "~/Dropbox/Org/from-mobile.org")
 
 (setq org-babel-load-languages
