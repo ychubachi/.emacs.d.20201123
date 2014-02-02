@@ -470,18 +470,12 @@
 | b | Bookmark | entry | (file+headline bookmark.org Bookmarks) | * TODO %a :bookmark:\n作成日: %U\n　引用: %i\n\n%? |
 
 *** Mobile Org関連
-**** Mobile用Orgファイルを置く場所
+
+- [[https://github.com/matburt/mobileorg-android/wiki][Home · matburt/mobileorg-android Wiki]]
+
 
 #+begin_src emacs-lisp
-  (setq org-mobile-inbox-for-pull "~/Dropbox/Org/from-mobile.org")
-#+end_src
-
-#+RESULTS:
-: ~/Dropbox/Org/from-mobile.org
-
-**** Mobileで追加した項目を置くファイル
-
-#+begin_src emacs-lisp
+  (setq org-mobile-directory "~/Dropbox/アプリ/MobileOrg")
   (setq org-mobile-inbox-for-pull "~/Dropbox/Org/from-mobile.org")
 #+end_src
 
