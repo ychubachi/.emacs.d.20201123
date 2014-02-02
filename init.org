@@ -1572,7 +1572,7 @@ shell-pop
 
 - [[http://stackoverflow.com/questions/331569/diff-save-or-kill-when-killing-buffers-in-emacs]["Diff, save or kill" when killing buffers in Emacs - Stack Overflow]]
 
-#+begin_src emacs-lisp tangle: no
+#+begin_src emacs-lisp :tangle no
 (defadvice kill-buffer (around my-kill-buffer-check activate)
   "Prompt when a buffer is about to be killed."
   (let* ((buffer-file-name (buffer-file-name))
