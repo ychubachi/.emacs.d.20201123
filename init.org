@@ -549,15 +549,18 @@
 #+RESULTS:
 : 7
 
+*** Linewrap
+
+- [[http://superuser.com/questions/299886/linewrap-in-org-mode-of-emacs][Linewrap in Org-mode of Emacs? - Super User]]
+
+#+begin_src emacs-lisp
+(define-key org-mode-map "\M-q" 'toggle-truncate-lines)
+#+end_src
+
+#+RESULTS:
+: toggle-truncate-lines
+
 *** 未整理
-org-agenda-custom-commands (quote (("x" "Unscheduled TODOs" tags-todo "-SCHEDULED>=\"<today>\"" nil) ("n" "Agenda and all TODO's" ((agenda "" nil) (alltodo "" nil)) nil))))
- '(org-agenda-files (quote ("~/Dropbox/Note/todo.org")))
- '(org-capture-templates (quote (("t" "Todo" entry (file+headline "~/Dropbox/Note/todo.org" "Tasks") "* TODO %?
-  %i
-  %a") ("j" "Journal" entry (file+datetree "~/Dropbox/Note/journal.org") "* %?
-Entered on %U
-  %i
-  %a"))))
  '(org-export-in-background nil)
  '(org-src-fontify-natively t)
  '(org-tag-alist (quote (("@HOME" . 104) ("@OFFICE" . 111) ("MAIL" . 109) ("WEB" . 119) ("PHONE" . 112))))
