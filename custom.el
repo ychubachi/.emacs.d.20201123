@@ -13,7 +13,6 @@
  '(auto-save-file-name-transforms (quote ((".*" "~/.emacs.d/data/backup/" t))))
  '(auto-save-list-file-prefix "~/data/auto-save-list/.saves-")
  '(backup-directory-alist (quote (("\\.*$" . "~/.emacs.d/data/backup"))))
- '(blink-cursor-mode t)
  '(bookmark-default-file "~/.emacs.d/data/bookmarks")
  '(column-number-mode t)
  '(compilation-ask-about-save nil)
