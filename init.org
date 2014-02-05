@@ -443,31 +443,43 @@
   (setq org-directory "~/Dropbox/Org")
   (setq org-default-notes-file "notes.org")
   (setq org-agenda-files (quote ("~/Dropbox/Org/")))
-  (setq org-capture-templates
-        (quote
-         (("t" "Todo" entry (file+headline "todo.org" "Tasks")
-           "* TODO %?
-作成日: %U
-　引用: %i
-リンク: %a")
-          ("j" "Journal" entry (file+datetree "journal.org")
-           "* %?
-作成日: %U
-　引用: %i
-リンク: %a")
-          ("b" "Bookmark" entry (file+headline "bookmark.org" "Bookmarks")
-           "* TODO %a :bookmark:
-作成日: %U
-　引用: %i
-
-%?")
-          )))
 #+end_src
 
 #+RESULTS:
-| t | Todo     | entry | (file+headline todo.org Tasks)         | * TODO %?\n作成日: %U\n　引用: %i\nリンク: %a      |
-| j | Journal  | entry | (file+datetree journal.org)            | * %?\n作成日: %U\n　引用: %i\nリンク: %a           |
-| b | Bookmark | entry | (file+headline bookmark.org Bookmarks) | * TODO %a :bookmark:\n作成日: %U\n　引用: %i\n\n%? |
+| ~/Dropbox/Org/ |
+
+*** キャプチャのテンプレート
+
+#+begin_src emacs-lisp
+    (setq org-capture-templates
+          (quote
+           (("t" "Todo" entry (file+headline "todo.org" "Tasks")
+             "* TODO [#B] %?
+  作成日: %U
+  　引用: %i
+  リンク: %a
+  ")
+            ("j" "Journal" entry (file+datetree "journal.org")
+             "* %?
+  作成日: %U
+  　引用: %i
+  リンク: %a
+  ")
+            ("b" "Bookmark" entry (file+headline "bookmark.org" "Bookmarks")
+             "* TODO [#B] %a :bookmark:
+  作成日: %U
+  　引用: %i
+  
+  %?
+  ")
+            )))
+#+end_src
+
+#+RESULTS:
+| t | Todo     | entry | (file+headline todo.org Tasks)         | * TODO [#B] %?\n作成日: %U\n　引用: %i\nリンク: %a\n      |
+| j | Journal  | entry | (file+datetree journal.org)            | * %?\n作成日: %U\n　引用: %i\nリンク: %a\n                |
+| b | Bookmark | entry | (file+headline bookmark.org Bookmarks) | * TODO [#B] %a :bookmark:\n作成日: %U\n　引用: %i\n\n%?\n |
+
 
 *** Mobile Org関連
 

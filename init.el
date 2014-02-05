@@ -160,26 +160,30 @@
   )
 
 (setq org-directory "~/Dropbox/Org")
-  (setq org-default-notes-file "notes.org")
-  (setq org-agenda-files (quote ("~/Dropbox/Org/")))
-  (setq org-capture-templates
+(setq org-default-notes-file "notes.org")
+(setq org-agenda-files (quote ("~/Dropbox/Org/")))
+
+(setq org-capture-templates
         (quote
          (("t" "Todo" entry (file+headline "todo.org" "Tasks")
-           "* TODO %?
+           "* TODO [#B] %?
 作成日: %U
 　引用: %i
-リンク: %a")
+リンク: %a
+")
           ("j" "Journal" entry (file+datetree "journal.org")
            "* %?
 作成日: %U
 　引用: %i
-リンク: %a")
+リンク: %a
+")
           ("b" "Bookmark" entry (file+headline "bookmark.org" "Bookmarks")
-           "* TODO %a :bookmark:
+           "* TODO [#B] %a :bookmark:
 作成日: %U
 　引用: %i
 
-%?")
+%?
+")
           )))
 
 (setq org-mobile-directory "~/Dropbox/アプリ/MobileOrg")
@@ -203,6 +207,8 @@
 (setq org-todo-keywords (quote ((sequence "TODO(t)" "WIP(p)" "WAIT(w)" "|" "DONE(d)" "SOMEDAY(s)" "CANCEL(c)"))))
 
 (setq org-deadline-warning-days 7)
+
+(define-key org-mode-map "\M-q" 'toggle-truncate-lines)
 
 (dolist (package '(org org-plus-contrib))
   (when (not (package-installed-p package))
