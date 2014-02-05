@@ -564,9 +564,11 @@
 *** Linewrap
 
 - [[http://superuser.com/questions/299886/linewrap-in-org-mode-of-emacs][Linewrap in Org-mode of Emacs? - Super User]]
+- (require 'org) がここで必要なのはなぜ？
 
 #+begin_src emacs-lisp
-(define-key org-mode-map "\M-q" 'toggle-truncate-lines)
+  (require 'org)
+  (define-key org-mode-map "\M-q" 'toggle-truncate-lines)
 #+end_src
 
 #+RESULTS:

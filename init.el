@@ -208,6 +208,7 @@
 
 (setq org-deadline-warning-days 7)
 
+(require 'org)
 (define-key org-mode-map "\M-q" 'toggle-truncate-lines)
 
 (dolist (package '(org org-plus-contrib))
