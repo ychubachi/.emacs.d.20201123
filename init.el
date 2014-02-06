@@ -458,9 +458,6 @@
   (loop for (key func) in key-and-func
         do (global-set-key key func)))
 
-;; ================================================================
-;; 個人用キーマップの設定
-;; ================================================================
 (defun my/other-window-backward ()
   "Move to other window backward."
   (interactive)
@@ -481,6 +478,8 @@
 
 (define-key 'personal-map (kbd "y") 'helm-c-yas-complete)
 (define-key 'personal-map (kbd "s") 'helm-c-yas-create-snippet-on-region)
+
+(define-key 'personal-map (kbd "b") 'org-beamer-export-to-pdf)
 
 (cond ((eq system-type 'gnu/linux)
        (define-key 'personal-map (kbd "p") 'evince-forward-search))
