@@ -752,6 +752,10 @@
                                           (my/run-rake-yard)
                                           (my/reload-firefox)))
 
+(dolist (package '(php-mode))
+  (when (not (package-installed-p package))
+    (package-install package)))
+
 ;; ================================================================
 ;; YaTeX - TeX Wiki
 ;; - http://oku.edu.mie-u.ac.jp/~okumura/texwiki/?YaTeX#nec42ee2

@@ -1369,6 +1369,16 @@ shell-pop
                                           (my/reload-firefox)))
 #+end_src
 
+* PHP
+
+#+begin_src emacs-lisp
+  (dolist (package '(php-mode))
+    (when (not (package-installed-p package))
+      (package-install package)))
+#+end_src
+
+#+RESULTS:
+
 * YaTeX
 
 #+begin_src emacs-lisp
