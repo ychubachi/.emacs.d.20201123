@@ -127,10 +127,16 @@
 #+RESULTS:
 | x-wm-set-size-hint | init-loader-show-log | (lambda nil (message %% Emacsの設定が完了しました %%)) | 
 
-** Emacs serverの開始
+** サーバー起動
+
+- Emacs serverの開始
+- Emacs 既に起動している場合は立ち上げない
+  - [[http://stackoverflow.com/questions/5570451/how-to-start-emacs-server-only-if-it-is-not-started][configuration - How to start emacs server only if it is not started? - Stack Overflow]]
 
 #+begin_src emacs-lisp
-  (server-start)
+  (load "server")
+  (unless (server-running-p)
+    (server-start))
 #+end_src
 
 * 標準設定

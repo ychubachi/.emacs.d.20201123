@@ -10,7 +10,9 @@
                 (load (expand-file-name custom-file)))
             (message "%% Emacsの設定が完了しました %%")))
 
-(server-start)
+(load "server")
+(unless (server-running-p)
+  (server-start))
 
 (set-language-environment "japanese")
 (prefer-coding-system 'utf-8)
