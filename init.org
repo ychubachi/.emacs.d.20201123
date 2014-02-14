@@ -994,6 +994,7 @@ C-h でバックスペースと同じように文字を削除できるように�
 #+end_src
 
 * キーバインディング
+** グローバル
 #+begin_src emacs-lisp
   ;; ================================================================
   ;; パッケージのインストール
@@ -1064,6 +1065,8 @@ C-h でバックスペースと同じように文字を削除できるように�
   
   (define-key 'personal-map (kbd "y") 'helm-c-yas-complete)
   (define-key 'personal-map (kbd "s") 'helm-c-yas-create-snippet-on-region)
+  
+  (define-key 'personal-map (kbd "b") 'org-beamer-export-to-pdf)
   
   (cond ((eq system-type 'gnu/linux)
          (define-key 'personal-map (kbd "p") 'evince-forward-search))
