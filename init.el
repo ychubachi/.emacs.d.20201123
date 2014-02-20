@@ -169,7 +169,7 @@
         (quote
          (("t" "Todo" entry (file+headline "todo.org" "Tasks")
            "* TODO [#B] %?
-作成日: %U
+SCHEDULED: %t
 　引用: %i
 リンク: %a
 ")
@@ -181,9 +181,8 @@
 ")
           ("b" "Bookmark" entry (file+headline "bookmark.org" "Bookmarks")
            "* TODO [#B] %a :bookmark:
-作成日: %U
+SCHEDULED: %t
 　引用: %i
-
 %?
 ")
           )))
