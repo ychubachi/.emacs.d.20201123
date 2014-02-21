@@ -485,7 +485,6 @@
 | j | Journal  | entry | (file+datetree journal.org)            | * %?\n作成日: %U\n　引用: %i\nリンク: %a\n                 |
 | b | Bookmark | entry | (file+headline bookmark.org Bookmarks) | * TODO [#B] %a :bookmark:\nSCHEDULED: %t\n　引用: %i\n%?\n |
 
-
 *** Mobile Org関連
 
 - [[https://github.com/matburt/mobileorg-android/wiki][Home · matburt/mobileorg-android Wiki]]
@@ -506,16 +505,21 @@
 |      |        |      |
 
 #+begin_src emacs-lisp
-  (setq org-babel-load-languages
-        (quote
-         ((emacs-lisp . t)
-          (dot . t)
-          (java . t)
-          (ruby . t)
-          (sh . t))))
+  (eval-after-load "org"
+    '(progn
+       (message "%% org-babel-load-languages %%")
+       (setq org-babel-load-languages
+             (quote
+              ((emacs-lisp . t)
+               (dot . t)
+               (java . t)
+               (ruby . t)
+               (sh . t))))
+       ))
 #+end_src
 
 #+RESULTS:
+| (emacs-lisp . t) | (dot . t) | (java . t) | (ruby . t) | (sh . t) |
 
 #+begin_src emacs-lisp
   (setq org-confirm-babel-evaluate nil)
@@ -941,6 +945,7 @@ C-h でバックスペースと同じように文字を削除できるように�
   
   (eval-after-load "org"
     '(progn
+       (message "%% smartrep-define-key %%")
        (smartrep-define-key
            org-mode-map
            "C-c" '(("C-n" . (lambda ()

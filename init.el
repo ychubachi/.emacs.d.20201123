@@ -190,13 +190,17 @@ SCHEDULED: %t
 (setq org-mobile-directory "~/Dropbox/アプリ/MobileOrg")
 (setq org-mobile-inbox-for-pull "~/Dropbox/Org/from-mobile.org")
 
-(setq org-babel-load-languages
-      (quote
-       ((emacs-lisp . t)
-        (dot . t)
-        (java . t)
-        (ruby . t)
-        (sh . t))))
+(eval-after-load "org"
+  '(progn
+     (message "%% org-babel-load-languages %%")
+     (setq org-babel-load-languages
+           (quote
+            ((emacs-lisp . t)
+             (dot . t)
+             (java . t)
+             (ruby . t)
+             (sh . t))))
+     ))
 
 (setq org-confirm-babel-evaluate nil)
 
@@ -384,6 +388,7 @@ SCHEDULED: %t
 
 (eval-after-load "org"
   '(progn
+     (message "%% smartrep-define-key %%")
      (smartrep-define-key
          org-mode-map
          "C-c" '(("C-n" . (lambda ()
