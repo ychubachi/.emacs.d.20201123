@@ -165,6 +165,8 @@
   (when (not (package-installed-p package))
     (package-install package)))
 
+(require 'org)
+
 (setq org-directory "~/Dropbox/Org")
 (setq org-default-notes-file "notes.org")
 (setq org-agenda-files (quote ("~/Dropbox/Org/")))
@@ -194,17 +196,13 @@ SCHEDULED: %t
 (setq org-mobile-directory "~/Dropbox/アプリ/MobileOrg")
 (setq org-mobile-inbox-for-pull "~/Dropbox/Org/from-mobile.org")
 
-(eval-after-load "org"
-  '(progn
-     (message "%% org-babel-load-languages %%")
-     (setq org-babel-load-languages
-           (quote
-            ((emacs-lisp . t)
-             (dot . t)
-             (java . t)
-             (ruby . t)
-             (sh . t))))
-     ))
+(setq org-babel-load-languages
+      (quote
+       ((emacs-lisp . t)
+        (dot . t)
+        (java . t)
+        (ruby . t)
+        (sh . t))))
 
 (setq org-confirm-babel-evaluate nil)
 
@@ -217,7 +215,6 @@ SCHEDULED: %t
 
 (setq org-deadline-warning-days 7)
 
-(require 'org)
 (define-key org-mode-map "\M-q" 'toggle-truncate-lines)
 
 (setq org-babel-sh-command "bash")
@@ -388,13 +385,13 @@ SCHEDULED: %t
 
 (eval-after-load "org"
   '(progn
-     (message "%% smartrep-define-key %%")
      (smartrep-define-key
          org-mode-map
          "C-c" '(("C-n" . (lambda ()
                             (outline-next-visible-heading 1)))
                  ("C-p" . (lambda ()
-                            (outline-previous-visible-heading 1)))))))
+                            (outline-previous-visible-heading 1)))))
+     ))
 
 (dolist (package '(markdown-mode))
   (when (not (package-installed-p package))

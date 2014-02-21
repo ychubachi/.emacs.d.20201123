@@ -427,10 +427,11 @@
   (dolist (package '(org org-plus-contrib))
     (when (not (package-installed-p package))
       (package-install package)))
+
+  (require 'org)
 #+end_src
 
-** 各種設定
-*** 思いついたらすぐ記録（Capture）
+** 思いついたらすぐ記録（Capture）
 - 準備
   - mkdir ~/Dropbox/Org
 - org-directory のデフォルトは~/org
@@ -462,7 +463,7 @@
 #+RESULTS:
 | ~/Dropbox/Org/ |
 
-*** キャプチャのテンプレート
+** キャプチャのテンプレート
 
 #+begin_src emacs-lisp
     (setq org-capture-templates
@@ -493,7 +494,7 @@
 | j | Journal  | entry | (file+datetree journal.org)            | * %?\n作成日: %U\n　引用: %i\nリンク: %a\n                 |
 | b | Bookmark | entry | (file+headline bookmark.org Bookmarks) | * TODO [#B] %a :bookmark:\nSCHEDULED: %t\n　引用: %i\n%?\n |
 
-*** Mobile Org関連
+** Mobile Org関連
 
 - [[https://github.com/matburt/mobileorg-android/wiki][Home · matburt/mobileorg-android Wiki]]
 
@@ -506,24 +507,20 @@
 #+RESULTS:
 : ~/Dropbox/Org/from-mobile.org
 
-*** Babel
+** Babel
 
 | 説明 | 変数名 | 推奨 |
 |------+--------+------|
 |      |        |      |
 
 #+begin_src emacs-lisp
-  (eval-after-load "org"
-    '(progn
-       (message "%% org-babel-load-languages %%")
-       (setq org-babel-load-languages
-             (quote
-              ((emacs-lisp . t)
-               (dot . t)
-               (java . t)
-               (ruby . t)
-               (sh . t))))
-       ))
+  (setq org-babel-load-languages
+        (quote
+         ((emacs-lisp . t)
+          (dot . t)
+          (java . t)
+          (ruby . t)
+          (sh . t))))
 #+end_src
 
 #+RESULTS:
@@ -535,7 +532,7 @@
 
 #+RESULTS:
 
-*** 予定表生成追加命令
+** 予定表生成追加命令
 
 #+begin_src emacs-lisp
    (setq org-agenda-custom-commands
@@ -548,10 +545,10 @@
 | x | Unscheduled TODOs     | tags-todo                      | -SCHEDULED>="<today>" | nil |
 | n | Agenda and all TODO's | ((agenda  nil) (alltodo  nil)) | nil                   |     |
 
-*** Org Column Title
+** Org Column Title
 - Heightをフォントの高さに合わせる
 
-*** その他
+** その他
 
 | 説明                           | 変数名                         | 推奨                          |
 |--------------------------------+--------------------------------+-------------------------------|
@@ -560,7 +557,7 @@
 | ToDoアイテムの状態             | org-todo-keywords              | TODO WAIT DONE SOMEDAY CANCEL |
 |                                |                                |                               |
 
-*** TODOの種類
+** TODOの種類
 
 #+begin_src emacs-lisp
   (setq org-todo-keywords (quote ((sequence "TODO(t)" "WIP(p)" "WAIT(w)" "|" "DONE(d)" "SOMEDAY(s)" "CANCEL(c)"))))
@@ -569,7 +566,7 @@
 #+RESULTS:
 | sequence | TODO(t) | WIP(p) | WAIT(w) |   |   | DONE(d) | SOMEDAY(s) | CANCEL(c) |
 
-*** 期日の何日前に予定表（Agenda）に表示するか
+** 期日の何日前に予定表（Agenda）に表示するか
 
 #+begin_src emacs-lisp
   (setq org-deadline-warning-days 7)
@@ -578,25 +575,22 @@
 #+RESULTS:
 : 7
 
-*** Linewrap
+** Linewrap
 
 - [[http://superuser.com/questions/299886/linewrap-in-org-mode-of-emacs][Linewrap in Org-mode of Emacs? - Super User]]
-- (require 'org) がここで必要なのはなぜ？
 
 #+begin_src emacs-lisp
-  (require 'org)
   (define-key org-mode-map "\M-q" 'toggle-truncate-lines)
 #+end_src
 
 #+RESULTS:
 : toggle-truncate-lines
 
-*** 未整理
+** TODO 未整理
  '(org-export-in-background nil)
  '(org-src-fontify-natively t)
  '(org-tag-alist (quote (("@HOME" . 104) ("@OFFICE" . 111) ("MAIL" . 109) ("WEB" . 119) ("PHONE" . 112))))
  '(org2blog/wp-use-sourcecode-shortcode t)
-
 
 ** Shellのコードの実行にbashを使う
     :PROPERTIES:
@@ -938,21 +932,30 @@ C-h でバックスペースと同じように文字を削除できるように�
 * smartrep.el
 - [[http://sheephead.homelinux.org/2011/12/19/6930/][連続操作を素敵にするsmartrep.el作った - sheephead]]
 
+** パッケージのインストール
+
 #+begin_src emacs-lisp
   (dolist (package '(smartrep))
     (when (not (package-installed-p package))
       (package-install package)))
   (require 'smartrep)
-  
+#+end_src
+
+** org-mode用設定
+
+- eval-after-loadにより，orgがロードされた後，
+  もしくは，既にロードされていれば即，実行する．
+
+#+begin_src emacs-lisp
   (eval-after-load "org"
     '(progn
-       (message "%% smartrep-define-key %%")
        (smartrep-define-key
            org-mode-map
            "C-c" '(("C-n" . (lambda ()
                               (outline-next-visible-heading 1)))
                    ("C-p" . (lambda ()
-                              (outline-previous-visible-heading 1)))))))
+                              (outline-previous-visible-heading 1)))))
+       ))
 #+end_src
 
 * メジャーモード
