@@ -161,6 +161,10 @@
     (setq migemo-dictionary "/usr/local/share/migemo/utf-8/migemo-dict")))
   )
 
+(dolist (package '(org org-plus-contrib))
+  (when (not (package-installed-p package))
+    (package-install package)))
+
 (setq org-directory "~/Dropbox/Org")
 (setq org-default-notes-file "notes.org")
 (setq org-agenda-files (quote ("~/Dropbox/Org/")))
@@ -215,10 +219,6 @@ SCHEDULED: %t
 
 (require 'org)
 (define-key org-mode-map "\M-q" 'toggle-truncate-lines)
-
-(dolist (package '(org org-plus-contrib))
-  (when (not (package-installed-p package))
-    (package-install package)))
 
 (setq org-babel-sh-command "bash")
 

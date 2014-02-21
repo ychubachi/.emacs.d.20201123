@@ -421,6 +421,14 @@
   - [[http://orgmode.org/elpa.html][Org Emacs lisp Package Archive]]
 *** Dropboxとの連携
 
+** orgパッケージのインストール
+
+#+begin_src emacs-lisp
+  (dolist (package '(org org-plus-contrib))
+    (when (not (package-installed-p package))
+      (package-install package)))
+#+end_src
+
 ** 各種設定
 *** 思いついたらすぐ記録（Capture）
 - 準備
@@ -589,13 +597,6 @@
  '(org-tag-alist (quote (("@HOME" . 104) ("@OFFICE" . 111) ("MAIL" . 109) ("WEB" . 119) ("PHONE" . 112))))
  '(org2blog/wp-use-sourcecode-shortcode t)
 
-** TODO パッケージのインストール -> 不要？
-
-#+begin_src emacs-lisp
-  (dolist (package '(org org-plus-contrib))
-    (when (not (package-installed-p package))
-      (package-install package)))
-#+end_src
 
 ** Shellのコードの実行にbashを使う
     :PROPERTIES:
