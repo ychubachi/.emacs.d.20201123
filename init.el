@@ -33,17 +33,13 @@
       `((".*" ,(expand-file-name "~/.emacs.d/backup/") t)))
 
 ;; ================================================================
-;; キーバインディング
+;; キーバインディグ
 ;; ================================================================
 
 (global-set-key "\C-h" 'delete-backward-char)
 (global-set-key (kbd "C-c C-h") 'help-command)
 
 (global-auto-revert-mode 1)
-
-(global-linum-mode t)
-(set-face-attribute 'linum nil :foreground "yellow" :height 0.8)
-(setq linum-format "%4d")
 
 (setq frame-title-format
       (format "%%f - Emacs@%s" (system-name)))

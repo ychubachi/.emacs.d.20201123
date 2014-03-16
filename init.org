@@ -193,8 +193,12 @@
   (global-auto-revert-mode 1)
 #+end_src
 
-** 行番号表示
-#+begin_src emacs-lisp
+** TODO 行番号表示
+
+- 行番号表示をするとorg-modeが遅くなるらしい
+  - [[http://stackoverflow.com/questions/5229705/emacs-org-mode-turn-off-line-numbers][Emacs Org-Mode: Turn off line numbers - Stack Overflow]]
+
+#+begin_src emacs-lisp :tangle no
 (global-linum-mode t)
 (set-face-attribute 'linum nil :foreground "yellow" :height 0.8)
 (setq linum-format "%4d")
