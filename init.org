@@ -178,10 +178,6 @@
 ** DELキーをBSにする
 
 #+begin_src emacs-lisp
-  ;; ================================================================
-  ;; キーバインディング
-  ;; ================================================================
-  
   (global-set-key "\C-h" 'delete-backward-char)
   (global-set-key (kbd "C-c C-h") 'help-command)
 #+end_src
