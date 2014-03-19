@@ -32,10 +32,6 @@
 (setq auto-save-file-name-transforms
       `((".*" ,(expand-file-name "~/.emacs.d/backup/") t)))
 
-;; ================================================================
-;; キーバインディグ
-;; ================================================================
-
 (global-set-key "\C-h" 'delete-backward-char)
 (global-set-key (kbd "C-c C-h") 'help-command)
 
@@ -44,6 +40,7 @@
 (setq frame-title-format
       (format "%%f - Emacs@%s" (system-name)))
 
+(require 'whitespace)
 (setq whitespace-action '(auto-cleanup))
 
 ;; ================================================================

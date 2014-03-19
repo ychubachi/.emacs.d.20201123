@@ -235,10 +235,17 @@
 
 ** 不要な行末の空白を削除
 
-;; 保存前に自動でクリーンアップ
+- 保存する前に，不要な空白を取り除きます．
+- 参考
+  - [[http://qiita.com/itiut@github/items/4d74da2412a29ef59c3a][Emacs - whitespace-modeを使って、ファイルの保存時に行末のスペースや末尾の改行を削除する - Qiita]]
+
 #+begin_src emacs-lisp
+(require 'whitespace)
 (setq whitespace-action '(auto-cleanup))
 #+end_src
+
+#+RESULTS:
+| auto-cleanup |
 
 * キーバインディング
 
