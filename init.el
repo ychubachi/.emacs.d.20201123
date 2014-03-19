@@ -274,6 +274,8 @@ SCHEDULED: %t
     (package-install package)))
 (require 'helm-config)
 
+(global-set-key (kbd "C-c h") 'helm-mini)
+
 (helm-mode 1)
 
 (define-key helm-map (kbd "C-h") 'delete-backward-char)
@@ -321,10 +323,6 @@ SCHEDULED: %t
 
 (require 'helm-c-yasnippet)
 
-;; ================================================================
-;; package listをhelmで選択
-;; (This package is installed in vendor directory.)
-;; ================================================================
 (require 'helm-package)
 
 (dolist (package '(smartrep))

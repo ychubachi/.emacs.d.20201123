@@ -815,6 +815,12 @@ javascript:location.href='org-protocol://capture://t/'+encodeURIComponent(locati
 (require 'helm-config)
 #+end_src
 
+** helm-miniを有効にする
+
+#+begin_src emacs-lisp
+  (global-set-key (kbd "C-c h") 'helm-mini)
+#+end_src
+
 ** helm-modeを有効にする
 - [[https://github.com/emacs-helm/helm/wiki#18-helm-mode][Home · emacs-helm/helm Wiki]]
 
@@ -822,7 +828,7 @@ Customize with: helm-completing-read-handlers-alist
 See C-h v helm-completing-read-handlers-alist for more infos.
 
 #+begin_src emacs-lisp
-(helm-mode 1)
+  (helm-mode 1)
 #+end_src
 
 ** C-h
@@ -851,8 +857,6 @@ C-h でバックスペースと同じように文字を削除できるように�
   (when (not (package-installed-p package))
     (package-install package)))
 #+end_src
-
-** 設定
 
 ** ???
 
@@ -896,11 +900,11 @@ C-h でバックスペースと同じように文字を削除できるように�
 (require 'helm-themes)
 
 (require 'helm-c-yasnippet)
+#+end_src
 
-;; ================================================================
-;; package listをhelmで選択
-;; (This package is installed in vendor directory.)
-;; ================================================================
+** package listをhelmで選択
+
+#+begin_src emacs-lisp
 (require 'helm-package)
 #+end_src
 
