@@ -109,7 +109,7 @@
 
   - 概要
      - カスタマイズ設定を保存するファイルを指定して，読み込みます．
-     - このコード自体はcustom.elに依存させない
+     - このコード自体（init.org）はcustom.elに依存させない
        - custom.elには個人用の設定を書く
      - このコードで設定した値は，custom.el内で上書きされます．
   - 参考
@@ -150,7 +150,7 @@
   (prefer-coding-system 'utf-8)
 #+end_src
 
-** ロードパス
+** ロードパスの設定
 
 - normal-top-level-add-subdirs-to-load-path は
   default-directory の全てのサブディレクトリを load-path に追加する
@@ -170,12 +170,7 @@
     (normal-top-level-add-subdirs-to-load-path))
 #+end_src
 
-** バックアップの設定
-
-
-   
-
-
+** バックアップ保存場所の設定
 
 - 全てのファイルのバックアップを~/.emacs.d/backup/以下に保存します．
 - この項目はcustom.elでも設定可能．
