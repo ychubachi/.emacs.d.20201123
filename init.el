@@ -44,51 +44,6 @@
 (add-hook 'before-save-hook
  'whitespace-cleanup)
 
-;; ================================================================
-;; 自作関数
-;; ================================================================
-
-(defun my/fullscreen ()
-  (interactive)
-  (set-frame-parameter
-   nil
-   'fullscreen
-   (if (frame-parameter nil 'fullscreen)
-       nil
-     'fullboth)))
-
-(defun my/open-init-folder()
-  "設定フォルダを開きます．"
-  (interactive)
-  (find-file "~/.emacs.d/init.org"))
-
-(defun my/open-journal()
-  "備忘録を開きます．"
-  (interactive)
-  (find-file "~/Dropbox/Org/journal.org"))
-  
-(defun my/open-todo()
-  "備忘録を開きます．"
-  (interactive)
-  (find-file "~/Dropbox/Org/todo.org"))
-
-(defun my/open-note()
-  "備忘録を開きます．"
-  (interactive)
-  (find-file "~/Dropbox/Org/notes.org"))
-
-(defun my/open-project-folder()
-  "プロジェクトフォルダを開きます．"
-  (interactive)
-  (dired "~/git/"))
-
-(global-set-key [f11] 'my/fullscreen)
-(global-set-key (kbd "<f1>") 'my/open-init-folder)
-(global-set-key (kbd "<f2>") 'my/open-journal)
-(global-set-key (kbd "<f3>") 'my/open-todo)
-(global-set-key (kbd "<f4>") 'my/open-note)
-(global-set-key (kbd "<f5>") 'my/open-project-folder)
-
 (add-to-list 'default-frame-alist '(font . "ricty-13.5"))
 
 ;; (cond
@@ -106,7 +61,7 @@
 ;;     (set-fontset-font nil 'japanese-jisx0213-1      font-spec-jp)
 ;;     (set-fontset-font nil 'japanese-jisx0213-2      font-spec-jp)
 ;;     (set-fontset-font nil 'katakana-jisx0201        font-spec-jp)
-;;     (set-fontset-font nil '(#x0080 . #x024F)        font-spec-ascii) 
+;;     (set-fontset-font nil '(#x0080 . #x024F)        font-spec-ascii)
 ;;     (set-fontset-font nil '(#x0370 . #x03FF)        font-spec-ascii))
 ;;   ))
 
@@ -411,6 +366,47 @@ SCHEDULED: %t
 
 (add-to-list 'auto-mode-alist '("\\.dot$" . graphviz-dot-mode))
 
+(defun my/fullscreen ()
+  (interactive)
+  (set-frame-parameter
+   nil
+   'fullscreen
+   (if (frame-parameter nil 'fullscreen)
+       nil
+     'fullboth)))
+
+(defun my/open-init-folder()
+  "設定フォルダを開きます．"
+  (interactive)
+  (find-file "~/.emacs.d/init.org"))
+
+(defun my/open-journal()
+  "備忘録を開きます．"
+  (interactive)
+  (find-file "~/Dropbox/Org/journal.org"))
+
+(defun my/open-todo()
+  "備忘録を開きます．"
+  (interactive)
+  (find-file "~/Dropbox/Org/todo.org"))
+
+(defun my/open-note()
+  "備忘録を開きます．"
+  (interactive)
+  (find-file "~/Dropbox/Org/notes.org"))
+
+(defun my/open-project-folder()
+  "プロジェクトフォルダを開きます．"
+  (interactive)
+  (dired "~/git/"))
+
+(global-set-key [f11] 'my/fullscreen)
+(global-set-key (kbd "<f1>") 'my/open-init-folder)
+(global-set-key (kbd "<f2>") 'my/open-journal)
+(global-set-key (kbd "<f3>") 'my/open-todo)
+(global-set-key (kbd "<f4>") 'my/open-note)
+(global-set-key (kbd "<f5>") 'my/open-project-folder)
+
 ;; ================================================================
 ;; パッケージのインストール
 ;; ================================================================
@@ -637,9 +633,9 @@ SCHEDULED: %t
 ;; Ruby DSLs
 ;; ================================================================
 
-(add-to-list 'auto-mode-alist '("Capfile" . ruby-mode))  
-(add-to-list 'auto-mode-alist '("Gemfile" . ruby-mode))  
-(add-to-list 'auto-mode-alist '("Guardfile" . ruby-mode))  
+(add-to-list 'auto-mode-alist '("Capfile" . ruby-mode))
+(add-to-list 'auto-mode-alist '("Gemfile" . ruby-mode))
+(add-to-list 'auto-mode-alist '("Guardfile" . ruby-mode))
 (add-to-list 'auto-mode-alist '("Vagrantfile" . ruby-mode))
 (add-to-list 'auto-mode-alist '("Berksfile" . ruby-mode))
 

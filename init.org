@@ -43,7 +43,7 @@
   - git-commit-mode-hook でflyspellが自動的にonになる．
   - .aspell.conf の設定
     - [[http://sky-y.hatenablog.jp/entry/20091229/1262106336][YaTeX + aspell - 雲行きそらゆきココロイキ]]
-      
+
   Error enabling Flyspell mode:
   (Error: No word lists can be found for the language "ja_JP".)
 
@@ -117,15 +117,15 @@
 
 #+begin_src emacs-lisp
     (add-hook 'after-init-hook
-              (lambda ()
-                (setq custom-file "~/.emacs.d/custom.el")
-                (if (file-exists-p (expand-file-name custom-file))
-                    (load (expand-file-name custom-file)))
-                (message "%% Emacsの設定が完了しました %%")))
+	      (lambda ()
+		(setq custom-file "~/.emacs.d/custom.el")
+		(if (file-exists-p (expand-file-name custom-file))
+		    (load (expand-file-name custom-file)))
+		(message "%% Emacsの設定が完了しました %%")))
 #+end_src
 
 #+RESULTS:
-| x-wm-set-size-hint | init-loader-show-log | (lambda nil (message %% Emacsの設定が完了しました %%)) | 
+| x-wm-set-size-hint | init-loader-show-log | (lambda nil (message %% Emacsの設定が完了しました %%)) |
 
 ** サーバー起動
 
@@ -144,7 +144,7 @@
 ** 日本語文字コードの設定
 
 - 言語環境を日本語に，コード体系をUTF-8にします．
-    
+
 #+begin_src emacs-lisp
   (set-language-environment "japanese")
   (prefer-coding-system 'utf-8)
@@ -183,11 +183,11 @@
 #+end_src
 
 - 自動保存を設定します．
-  
+
 #+begin_src emacs-lisp
   ;; create auto-save file in ~/.emacs.d/backup
   (setq auto-save-file-name-transforms
-        `((".*" ,(expand-file-name "~/.emacs.d/backup/") t)))
+	`((".*" ,(expand-file-name "~/.emacs.d/backup/") t)))
 #+end_src
 
 ** DELキーをBSにする
@@ -225,7 +225,7 @@
 
 #+begin_src emacs-lisp
   (setq frame-title-format
-        (format "%%f - Emacs@%s" (system-name)))
+	(format "%%f - Emacs@%s" (system-name)))
 #+end_src
 
 ** 不要な行末の空白を削除
@@ -243,55 +243,6 @@
 
 #+RESULTS:
 | auto-cleanup |
-
-* キーバインディング
-
-#+begin_src emacs-lisp
-  ;; ================================================================
-  ;; 自作関数
-  ;; ================================================================
-  
-  (defun my/fullscreen ()
-    (interactive)
-    (set-frame-parameter
-     nil
-     'fullscreen
-     (if (frame-parameter nil 'fullscreen)
-         nil
-       'fullboth)))
-  
-  (defun my/open-init-folder()
-    "設定フォルダを開きます．"
-    (interactive)
-    (find-file "~/.emacs.d/init.org"))
-  
-  (defun my/open-journal()
-    "備忘録を開きます．"
-    (interactive)
-    (find-file "~/Dropbox/Org/journal.org"))
-    
-  (defun my/open-todo()
-    "備忘録を開きます．"
-    (interactive)
-    (find-file "~/Dropbox/Org/todo.org"))
-  
-  (defun my/open-note()
-    "備忘録を開きます．"
-    (interactive)
-    (find-file "~/Dropbox/Org/notes.org"))
-
-  (defun my/open-project-folder()
-    "プロジェクトフォルダを開きます．"
-    (interactive)
-    (dired "~/git/"))
-  
-  (global-set-key [f11] 'my/fullscreen)
-  (global-set-key (kbd "<f1>") 'my/open-init-folder)
-  (global-set-key (kbd "<f2>") 'my/open-journal)
-  (global-set-key (kbd "<f3>") 'my/open-todo)
-  (global-set-key (kbd "<f4>") 'my/open-note)
-  (global-set-key (kbd "<f5>") 'my/open-project-folder)
-#+end_src
 
 * 日本語文字フォントの設定
 ** 説明
@@ -336,7 +287,7 @@
   ;;     (set-fontset-font nil 'japanese-jisx0213-1      font-spec-jp)
   ;;     (set-fontset-font nil 'japanese-jisx0213-2      font-spec-jp)
   ;;     (set-fontset-font nil 'katakana-jisx0201        font-spec-jp)
-  ;;     (set-fontset-font nil '(#x0080 . #x024F)        font-spec-ascii) 
+  ;;     (set-fontset-font nil '(#x0080 . #x024F)        font-spec-ascii)
   ;;     (set-fontset-font nil '(#x0370 . #x03FF)        font-spec-ascii))
   ;;   ))
 #+end_src
@@ -351,10 +302,10 @@
 #+begin_src emacs-lisp
   (require 'package)
   (setq package-archives
-        '(("org" .       "http://orgmode.org/elpa/")
-          ("gnu" .       "http://elpa.gnu.org/packages/")
-          ("marmalade" . "http://marmalade-repo.org/packages/")
-          ("melpa" .     "http://melpa.milkbox.net/packages/")))
+	'(("org" .       "http://orgmode.org/elpa/")
+	  ("gnu" .       "http://elpa.gnu.org/packages/")
+	  ("marmalade" . "http://marmalade-repo.org/packages/")
+	  ("melpa" .     "http://melpa.milkbox.net/packages/")))
   (package-initialize)
 #+end_src
 
@@ -366,7 +317,7 @@
 #+begin_src emacs-lisp
   (when (not package-archive-contents)
     (package-refresh-contents))
-#+end_src  
+#+end_src
 
 * ShellのPATH設定を引き継ぐ:exec-path-from-shell
 
@@ -375,7 +326,7 @@
 #+begin_src emacs-lisp
     (dolist (package '(exec-path-from-shell))
       (when (not (package-installed-p package))
-        (package-install package)))
+	(package-install package)))
     (exec-path-from-shell-initialize)
 #+end_src
 
@@ -416,15 +367,15 @@
 
 #+begin_src emacs-lisp
   (when (and (executable-find "cmigemo")
-             (require 'migemo nil t))
+	     (require 'migemo nil t))
     (setq migemo-options '("-q" "--emacs"))
-  
+
     (setq migemo-user-dictionary nil)
     (setq migemo-regex-dictionary nil)
     (setq migemo-coding-system 'utf-8-unix)
     (load-library "migemo")
     (migemo-init)
-  
+
     (setq migemo-command "cmigemo")
 
     (cond
@@ -491,26 +442,26 @@
 
 #+begin_src emacs-lisp
     (setq org-capture-templates
-          (quote
-           (("t" "Todo" entry (file+headline "todo.org" "Tasks")
-             "* TODO [#B] %?
+	  (quote
+	   (("t" "Todo" entry (file+headline "todo.org" "Tasks")
+	     "* TODO [#B] %?
   SCHEDULED: %t
   　引用: %i
   リンク: %a
   ")
-            ("j" "Journal" entry (file+datetree "journal.org")
-             "* %?
+	    ("j" "Journal" entry (file+datetree "journal.org")
+	     "* %?
   作成日: %U
   　引用: %i
   リンク: %a
   ")
-            ("b" "Bookmark" entry (file+headline "bookmark.org" "Bookmarks")
-             "* TODO [#B] %a :bookmark:
+	    ("b" "Bookmark" entry (file+headline "bookmark.org" "Bookmarks")
+	     "* TODO [#B] %a :bookmark:
   SCHEDULED: %t
   　引用: %i
   %?
   ")
-            )))
+	    )))
 #+end_src
 
 #+RESULTS:
@@ -539,12 +490,12 @@
 
 #+begin_src emacs-lisp
   (setq org-babel-load-languages
-        (quote
-         ((emacs-lisp . t)
-          (dot . t)
-          (java . t)
-          (ruby . t)
-          (sh . t))))
+	(quote
+	 ((emacs-lisp . t)
+	  (dot . t)
+	  (java . t)
+	  (ruby . t)
+	  (sh . t))))
 #+end_src
 
 #+RESULTS:
@@ -560,9 +511,9 @@
 
 #+begin_src emacs-lisp
    (setq org-agenda-custom-commands
-         (quote
-          (("x" "Unscheduled TODOs" tags-todo "-SCHEDULED>=\"<today>\"" nil)
-           ("n" "Agenda and all TODO's" ((agenda "" nil) (alltodo "" nil)) nil))))
+	 (quote
+	  (("x" "Unscheduled TODOs" tags-todo "-SCHEDULED>=\"<today>\"" nil)
+	   ("n" "Agenda and all TODO's" ((agenda "" nil) (alltodo "" nil)) nil))))
 #+end_src
 
 #+RESULTS:
@@ -651,10 +602,10 @@
 
 #+begin_src emacs-lisp
   (when (or
-         (eq system-type 'gnu/linux)
-         (eq system-type 'darwin))
+	 (eq system-type 'gnu/linux)
+	 (eq system-type 'darwin))
     (setq org-latex-pdf-process
-          '("latexmk -e '$latex=q/platex %S/' -e '$bibtex=q/pbibtex %B/' -e '$makeindex=q/mendex -o %D %S/' -e '$dvipdf=q/dvipdfmx -o %D %S/' -norc -gg -pdfdvi %f"))
+	  '("latexmk -e '$latex=q/platex %S/' -e '$bibtex=q/pbibtex %B/' -e '$makeindex=q/mendex -o %D %S/' -e '$dvipdf=q/dvipdfmx -o %D %S/' -norc -gg -pdfdvi %f"))
     )
 #+end_src
 
@@ -666,8 +617,8 @@
 #+begin_src emacs-lisp
   (setq org-latex-default-class "jsarticle")
   (add-to-list 'org-latex-classes
-               '("jsarticle"
-                 "\\ifdefined\\ucs
+	       '("jsarticle"
+		 "\\ifdefined\\ucs
     \\documentclass[uplatex,12pt,a4paper,papersize,dvipdfmx]{jsarticle}
   \\else
     \\documentclass[12pt,a4paper,papersize,dvipdfmx]{jsarticle}
@@ -679,11 +630,11 @@
   \\usepackage{hyperref}
   \\usepackage{pxjahyper}
   \\hypersetup{setpagesize=false,colorlinks=true}"
-                 ("\\section{%s}" . "\\section*{%s}")
-                 ("\\subsection{%s}" . "\\subsection*{%s}")
-                 ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
-                 ("\\paragraph{%s}" . "\\paragraph*{%s}")
-                 ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
+		 ("\\section{%s}" . "\\section*{%s}")
+		 ("\\subsection{%s}" . "\\subsection*{%s}")
+		 ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+		 ("\\paragraph{%s}" . "\\paragraph*{%s}")
+		 ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
 #+end_src
 
 #+RESULTS:
@@ -705,8 +656,8 @@
 
 #+begin_src emacs-lisp
 (add-to-list 'org-latex-classes
-             '("beamer"
-               "\\documentclass[dvipdfmx]{beamer}
+	     '("beamer"
+	       "\\documentclass[dvipdfmx]{beamer}
 [NO-DEFAULT-PACKAGES]
 \\usepackage{bxdpx-beamer}
 \\usepackage{pxjahyper}
@@ -718,11 +669,11 @@
   \\tableofcontents[currentsection,currentsubsection]
   \\end{frame}
 }"
-               ("\\section{%s}" . "\\section*{%s}")
-               ("\\subsection{%s}" . "\\subsection*{%s}")
-               ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
-               ("\\paragraph{%s}" . "\\paragraph*{%s}")
-               ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
+	       ("\\section{%s}" . "\\section*{%s}")
+	       ("\\subsection{%s}" . "\\subsection*{%s}")
+	       ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+	       ("\\paragraph{%s}" . "\\paragraph*{%s}")
+	       ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
 #+end_src
 
 #+RESULTS:
@@ -733,7 +684,7 @@
 | report    | \documentclass[11pt]{report}                                                                                                                                                                                                                                                                                                                                        | (\part{%s} . \part*{%s})       | (\chapter{%s} . \chapter*{%s})       | (\section{%s} . \section*{%s})             | (\subsection{%s} . \subsection*{%s}) | (\subsubsection{%s} . \subsubsection*{%s}) |
 | book      | \documentclass[11pt]{book}                                                                                                                                                                                                                                                                                                                                          | (\part{%s} . \part*{%s})       | (\chapter{%s} . \chapter*{%s})       | (\section{%s} . \section*{%s})             | (\subsection{%s} . \subsection*{%s}) | (\subsubsection{%s} . \subsubsection*{%s}) |
 
-** WebにHTMLでPublishする 					       :個人設定:
+** WebにHTMLでPublishする					       :個人設定:
    :PROPERTIES:
    :ID:       fcdb09c8-3a9a-4ea9-9482-10d445b6db9f
    :END:
@@ -751,7 +702,7 @@
 	 ;; :section-numbers nil
 	 ;; :with-toc nil
 	 ;; :html-head "<link rel=\"stylesheet\"
-         ;;               href=\"../other/mystyle.css\" type=\"text/css\"/>"
+	 ;;               href=\"../other/mystyle.css\" type=\"text/css\"/>"
 	 ;; :html-preamble t
 	 :recursive t
 	 )
@@ -767,7 +718,7 @@
       ))
 #+end_src
 
-** WordPressに記事を投稿（org2blog） 				       :個人設定:
+** WordPressに記事を投稿（org2blog）				       :個人設定:
   :PROPERTIES:
   :ID:       o2b:83d5ddbc-5e84-446c-826a-a2702eb6b997
   :POST_DATE: [2013-12-28 土 19:16]
@@ -794,13 +745,13 @@
    |--------------------------+--------------------------|
    | 下位層を投稿             | org2blog/wp-post-subtree |
    |--------------------------+--------------------------|
-   
+
 #+begin_src emacs-lisp
 (dolist (package '(org2blog xml-rpc metaweblog htmlize))
   (when (not (package-installed-p package))
     (package-install package)))
 #+end_src
-   
+
 #+begin_src emacs-lisp
 (require 'xml-rpc)
 (require 'metaweblog)
@@ -811,11 +762,11 @@
 #+begin_src emacs-lisp
 (setq org2blog/wp-blog-alist
       '(("blog.chubachi.net"
-         :url "http://blog.chubachi.net/xmlrpc.php"
-         :username "yc"
-         :default-title "Emacs title"
-         :default-categories ("org2blog" "emacs")
-         :tags-as-categories nil)
+	 :url "http://blog.chubachi.net/xmlrpc.php"
+	 :username "yc"
+	 :default-title "Emacs title"
+	 :default-categories ("org2blog" "emacs")
+	 :tags-as-categories nil)
 	))
 #+end_src
 
@@ -920,18 +871,18 @@ C-h でバックスペースと同じように文字を削除できるように�
   (when (executable-find "cmigemo")
     (require 'helm-migemo)
     (setq helm-use-migemo t)
-  
+
     (defadvice helm-c-apropos
       (around ad-helm-apropos activate)
       "候補が表示されないときがあるので migemoらないように設定."
       (let ((helm-use-migemo nil))
-        ad-do-it))
-  
+	ad-do-it))
+
     (defadvice helm-M-x
       (around ad-helm-M-x activate)
       "候補が表示されないときがあるので migemoらないように設定."
       (let ((helm-use-migemo nil))
-        ad-do-it))
+	ad-do-it))
     )
 #+end_src
 
@@ -974,11 +925,11 @@ C-h でバックスペースと同じように文字を削除できるように�
   (eval-after-load "org"
     '(progn
        (smartrep-define-key
-           org-mode-map
-           "C-c" '(("C-n" . (lambda ()
-                              (outline-next-visible-heading 1)))
-                   ("C-p" . (lambda ()
-                              (outline-previous-visible-heading 1)))))
+	   org-mode-map
+	   "C-c" '(("C-n" . (lambda ()
+			      (outline-next-visible-heading 1)))
+		   ("C-p" . (lambda ()
+			      (outline-previous-visible-heading 1)))))
        ))
 #+end_src
 
@@ -990,7 +941,7 @@ C-h でバックスペースと同じように文字を削除できるように�
   (dolist (package '(markdown-mode))
     (when (not (package-installed-p package))
       (package-install package)))
-  
+
   (autoload 'markdown-mode "markdown-mode"
      "Major mode for editing Markdown files" t)
   (add-to-list 'auto-mode-alist '("\\.text\\'" . markdown-mode))
@@ -1002,12 +953,12 @@ C-h でバックスペースと同じように文字を削除できるように�
 
 #+begin_src emacs-lisp
   (add-hook 'markdown-mode-hook
-            '(lambda () (outline-minor-mode t)))
+	    '(lambda () (outline-minor-mode t)))
 #+end_src
 
 ** MediaWiki
   - [[http://www.emacswiki.org/emacs/MediaWikiMode][EmacsWiki: Media Wiki Mode]]
-    
+
 #+begin_src emacs-lisp
   (dolist (package '(mediawiki))
     (when (not (package-installed-p package))
@@ -1026,6 +977,51 @@ C-h でバックスペースと同じように文字を削除できるように�
 #+end_src
 
 * キーバインディング
+** 自作関数
+
+#+begin_src emacs-lisp
+
+  (defun my/fullscreen ()
+    (interactive)
+    (set-frame-parameter
+     nil
+     'fullscreen
+     (if (frame-parameter nil 'fullscreen)
+	 nil
+       'fullboth)))
+
+  (defun my/open-init-folder()
+    "設定フォルダを開きます．"
+    (interactive)
+    (find-file "~/.emacs.d/init.org"))
+
+  (defun my/open-journal()
+    "備忘録を開きます．"
+    (interactive)
+    (find-file "~/Dropbox/Org/journal.org"))
+
+  (defun my/open-todo()
+    "備忘録を開きます．"
+    (interactive)
+    (find-file "~/Dropbox/Org/todo.org"))
+
+  (defun my/open-note()
+    "備忘録を開きます．"
+    (interactive)
+    (find-file "~/Dropbox/Org/notes.org"))
+
+  (defun my/open-project-folder()
+    "プロジェクトフォルダを開きます．"
+    (interactive)
+    (dired "~/git/"))
+
+  (global-set-key [f11] 'my/fullscreen)
+  (global-set-key (kbd "<f1>") 'my/open-init-folder)
+  (global-set-key (kbd "<f2>") 'my/open-journal)
+  (global-set-key (kbd "<f3>") 'my/open-todo)
+  (global-set-key (kbd "<f4>") 'my/open-note)
+  (global-set-key (kbd "<f5>") 'my/open-project-folder)
+#+end_src
 ** グローバル
 #+begin_src emacs-lisp
   ;; ================================================================
@@ -1034,18 +1030,18 @@ C-h でバックスペースと同じように文字を削除できるように�
   (dolist (package '(region-bindings-mode key-chord))
     (when (not (package-installed-p package))
       (package-install package)))
-  
+
 
   ;; ================================================================
   ;; グローバルマップの設定
   ;; ================================================================
-  
+
   ;;; shell-pop
   (global-set-key (kbd "C-z") 'shell-pop)
-  
+
   ;;; magit
   (global-set-key (kbd "C-x g") 'magit-status)
-  
+
   ;; ================================================================
   ;; グローバルマップの設定(org-mode)
   ;; ================================================================
@@ -1053,24 +1049,24 @@ C-h でバックスペースと同じように文字を削除できるように�
   (global-set-key (kbd "C-c c") 'org-capture)
   (global-set-key (kbd "C-c a") 'org-agenda)
   (global-set-key (kbd "C-c b") 'org-iswitchb)
-  
+
   ;; ================================================================
   ;; グローバルマップの設定(helm)
   ;; ================================================================
   (let ((key-and-func
-         `(
-           (,(kbd "M-x")     helm-M-x)
-           (,(kbd "M-y")     helm-show-kill-ring)
-           (,(kbd "C-x C-f") helm-find-files)
+	 `(
+	   (,(kbd "M-x")     helm-M-x)
+	   (,(kbd "M-y")     helm-show-kill-ring)
+	   (,(kbd "C-x C-f") helm-find-files)
   ;;         (,(kbd "C-r")   helm-for-files)
   ;;         (,(kbd "C-^")   helm-c-apropos)
   ;;         (,(kbd "C-;")   helm-resume)
   ;;         (,(kbd "M-s")   helm-occur)
   ;;         (,(kbd "M-z")   helm-do-grep)
   ;;         (,(kbd "C-S-h") helm-descbinds)
-           )))
+	   )))
     (loop for (key func) in key-and-func
-          do (global-set-key key func)))
+	  do (global-set-key key func)))
 
 #+end_src
 
@@ -1081,34 +1077,34 @@ C-h でバックスペースと同じように文字を削除できるように�
     "Move to other window backward."
     (interactive)
     (other-window -1))
-  
+
   (define-prefix-command 'personal-map)
   (global-set-key (kbd "C-.") 'personal-map)
-  
+
   (define-key 'personal-map (kbd "C-n") 'other-window)
   (define-key 'personal-map (kbd "C-p") 'my/other-window-backward)
-  
+
   (define-key 'personal-map (kbd "m") 'imenu)
   (define-key 'personal-map (kbd "h") 'helm-mini)
-  
+
   (define-key 'personal-map (kbd "i") 'yas-insert-snippet)
   (define-key 'personal-map (kbd "n") 'yas-new-snippet)
   (define-key 'personal-map (kbd "v") 'yas-visit-snippet-file)
-  
+
   (define-key 'personal-map (kbd "y") 'helm-c-yas-complete)
   (define-key 'personal-map (kbd "s") 'helm-c-yas-create-snippet-on-region)
-  
+
   (define-key 'personal-map (kbd "b") 'org-beamer-export-to-pdf)
-  
+
   (cond ((eq system-type 'gnu/linux)
-         (define-key 'personal-map (kbd "p") 'evince-forward-search))
-        ((eq system-type 'darwin)
-         (define-key 'personal-map (kbd "p") 'skim-forward-search)))
-  
+	 (define-key 'personal-map (kbd "p") 'evince-forward-search))
+	((eq system-type 'darwin)
+	 (define-key 'personal-map (kbd "p") 'skim-forward-search)))
+
   ;; ================================================================
   ;; リージョンがある間のキーバインディングを変更する
   ;; ================================================================
-  
+
   (require 'region-bindings-mode)
   (region-bindings-mode-enable)
   (define-key region-bindings-mode-map "a" 'mc/mark-all-like-this)
@@ -1117,13 +1113,13 @@ C-h でバックスペースと同じように文字を削除できるように�
   (define-key region-bindings-mode-map "m" 'mc/mark-more-like-this-extended)
   (define-key region-bindings-mode-map "e" 'mc/edit-lines)
   (setq region-bindings-mode-disabled-modes '(mew-summary-mode))
-  
+
   ;; ================================================================
   ;; key-chordの設定をする
   ;; ================================================================
   (require 'key-chord)
   (key-chord-mode 1)
-  
+
   (key-chord-define-global "gc" 'my/other-window-backward)
   (key-chord-define-global "cr" 'other-window)
 #+end_src
@@ -1290,9 +1286,9 @@ shell-pop
 ;; Ruby DSLs
 ;; ================================================================
 
-(add-to-list 'auto-mode-alist '("Capfile" . ruby-mode))  
-(add-to-list 'auto-mode-alist '("Gemfile" . ruby-mode))  
-(add-to-list 'auto-mode-alist '("Guardfile" . ruby-mode))  
+(add-to-list 'auto-mode-alist '("Capfile" . ruby-mode))
+(add-to-list 'auto-mode-alist '("Gemfile" . ruby-mode))
+(add-to-list 'auto-mode-alist '("Guardfile" . ruby-mode))
 (add-to-list 'auto-mode-alist '("Vagrantfile" . ruby-mode))
 (add-to-list 'auto-mode-alist '("Berksfile" . ruby-mode))
 
@@ -1302,44 +1298,44 @@ shell-pop
 
 (require 'outline)
 (add-hook 'ruby-mode-hook
-          (function
-           (lambda ()
-             (defun ruby-outline-level ()
-               (or (and (match-string 1)
-                        (or (cdr (assoc (match-string 1) outline-heading-alist))
-                            (- (match-end 1) (match-beginning 1))))
-                   (cdr (assoc (match-string 0) outline-heading-alist))
-                   (- (match-end 0) (match-beginning 0))))
+	  (function
+	   (lambda ()
+	     (defun ruby-outline-level ()
+	       (or (and (match-string 1)
+			(or (cdr (assoc (match-string 1) outline-heading-alist))
+			    (- (match-end 1) (match-beginning 1))))
+		   (cdr (assoc (match-string 0) outline-heading-alist))
+		   (- (match-end 0) (match-beginning 0))))
 
-             (set (make-local-variable 'outline-level) 'ruby-outline-level)
+	     (set (make-local-variable 'outline-level) 'ruby-outline-level)
 
-             (set (make-local-variable 'outline-regexp)
-                  (rx (group (* " "))
-                      bow
-                      (or "begin" "case" "class" "def" "else" "elsif"
-                          "ensure" "if" "module" "rescue" "when" "unless"
-                          "private")
-                      eow))
-             (outline-minor-mode))))
+	     (set (make-local-variable 'outline-regexp)
+		  (rx (group (* " "))
+		      bow
+		      (or "begin" "case" "class" "def" "else" "elsif"
+			  "ensure" "if" "module" "rescue" "when" "unless"
+			  "private")
+		      eow))
+	     (outline-minor-mode))))
 
 (add-hook 'rspec-mode-hook
-          (function
-           (lambda ()
-             (defun rspec-outline-level ()
-               (or (and (match-string 1)
-                        (or (cdr (assoc (match-string 1) outline-heading-alist))
-                            (- (match-end 1) (match-beginning 1))))
-                   (cdr (assoc (match-string 0) outline-heading-alist))
-                   (- (match-end 0) (match-beginning 0))))
+	  (function
+	   (lambda ()
+	     (defun rspec-outline-level ()
+	       (or (and (match-string 1)
+			(or (cdr (assoc (match-string 1) outline-heading-alist))
+			    (- (match-end 1) (match-beginning 1))))
+		   (cdr (assoc (match-string 0) outline-heading-alist))
+		   (- (match-end 0) (match-beginning 0))))
 
-             (set (make-local-variable 'outline-level) 'rspec-outline-level)
+	     (set (make-local-variable 'outline-level) 'rspec-outline-level)
 
-             (set (make-local-variable 'outline-regexp)
-                  (rx (group (* " "))
-                      bow
-                      (or "context" "describe" "it" "subject")
-                      eow))
-             (outline-minor-mode))))
+	     (set (make-local-variable 'outline-regexp)
+		  (rx (group (* " "))
+		      bow
+		      (or "context" "describe" "it" "subject")
+		      eow))
+	     (outline-minor-mode))))
 
 ;; ================================================================
 ;; flymake関係
@@ -1396,9 +1392,9 @@ shell-pop
   (shell-command "rake yard"))
 
 (define-key ruby-mode-map (kbd "C-c y") (lambda ()
-                                          (interactive)
-                                          (my/run-rake-yard)
-                                          (my/reload-firefox)))
+					  (interactive)
+					  (my/run-rake-yard)
+					  (my/reload-firefox)))
 #+end_src
 
 * PHP
@@ -1421,11 +1417,11 @@ shell-pop
 (autoload 'yatex-mode "yatex" "Yet Another LaTeX mode" t)
 (setq auto-mode-alist
       (append '(("\\.tex$" . yatex-mode)
-                ("\\.ltx$" . yatex-mode)
-                ("\\.cls$" . yatex-mode)
-                ("\\.sty$" . yatex-mode)
-                ("\\.clo$" . yatex-mode)
-                ("\\.bbl$" . yatex-mode)) auto-mode-alist))
+		("\\.ltx$" . yatex-mode)
+		("\\.cls$" . yatex-mode)
+		("\\.sty$" . yatex-mode)
+		("\\.clo$" . yatex-mode)
+		("\\.bbl$" . yatex-mode)) auto-mode-alist))
 (setq YaTeX-inhibit-prefix-letter t)
 (setq YaTeX-kanji-code nil)
 (setq YaTeX-use-LaTeX2e t)
@@ -1436,17 +1432,17 @@ shell-pop
 ;; ================================================================
 (add-hook 'yatex-mode-hook 'turn-on-reftex)
 (add-hook 'yatex-mode-hook
-          '(lambda ()
-             (reftex-mode 1)
-             (define-key reftex-mode-map (concat YaTeX-prefix ">") 'YaTeX-comment-region)
-             (define-key reftex-mode-map (concat YaTeX-prefix "<") 'YaTeX-uncomment-region)))
+	  '(lambda ()
+	     (reftex-mode 1)
+	     (define-key reftex-mode-map (concat YaTeX-prefix ">") 'YaTeX-comment-region)
+	     (define-key reftex-mode-map (concat YaTeX-prefix "<") 'YaTeX-uncomment-region)))
 
 ;; ================================================================
 ;; Outline minor mode for YaTeX
 ;; See http://www.math.s.chiba-u.ac.jp/~matsu/emacs/emacs20/outline.html
 ;; ================================================================
 (add-hook 'yatex-mode-hook
-          '(lambda () (outline-minor-mode t)))
+	  '(lambda () (outline-minor-mode t)))
 
 (make-variable-buffer-local 'outline-regexp)
 (add-hook
@@ -1456,9 +1452,9 @@ shell-pop
     (progn
       (setq outline-level 'latex-outline-level)
       (setq outline-regexp
-            (concat "[ \t]*\\\\\\(documentstyle\\|documentclass\\|"
-                    "chapter\\|section\\|subsection\\|subsubsection\\)"
-                    "\\*?[ \t]*[[{]")
+	    (concat "[ \t]*\\\\\\(documentstyle\\|documentclass\\|"
+		    "chapter\\|section\\|subsection\\|subsubsection\\)"
+		    "\\*?[ \t]*[[{]")
      )))))
 
 (make-variable-buffer-local 'outline-level)
@@ -1468,16 +1464,16 @@ shell-pop
     (looking-at outline-regexp)
     (let ((title (buffer-substring (match-beginning 1) (match-end 1))))
       (cond ((equal (substring title 0 4) "docu") 15)
-            ((equal (substring title 0 4) "chap") 0)
-            ((equal (substring title 0 4) "appe") 0)
-            (t (length title))))))
+	    ((equal (substring title 0 4) "chap") 0)
+	    ((equal (substring title 0 4) "appe") 0)
+	    (t (length title))))))
 
 ;; ================================================================
 ;; BibTeX
 ;; ================================================================
 (add-hook 'bibtex-mode-hook
-          '(lambda ()
-             (outline-minor-mode)))
+	  '(lambda ()
+	     (outline-minor-mode)))
 
 ;; ================================================================
 ;; IPA Fonts
@@ -1488,8 +1484,8 @@ shell-pop
 ;; auto-fill-mode
 ;; ================================================================
 (add-hook 'yatex-mode-hook
-          '(lambda ()
-             (auto-fill-mode 1)))
+	  '(lambda ()
+	     (auto-fill-mode 1)))
 #+end_src
 
 * Clean Mode Line
@@ -1524,13 +1520,13 @@ shell-pop
 (defun clean-mode-line ()
   (interactive)
   (loop for (mode . mode-str) in mode-line-cleaner-alist
-        do
-        (let ((old-mode-str (cdr (assq mode minor-mode-alist))))
-          (when old-mode-str
-            (setcar old-mode-str mode-str))
-          ;; major mode
-          (when (eq mode major-mode)
-            (setq mode-name mode-str)))))
+	do
+	(let ((old-mode-str (cdr (assq mode minor-mode-alist))))
+	  (when old-mode-str
+	    (setcar old-mode-str mode-str))
+	  ;; major mode
+	  (when (eq mode major-mode)
+	    (setq mode-name mode-str)))))
 
 (add-hook 'after-change-major-mode-hook 'clean-mode-line)
 
@@ -1552,7 +1548,7 @@ shell-pop
   (dolist (package package-list)
     (when (not (package-installed-p package))
       (package-install package)))
-  
+
   ; buffer-move : have to add your own keys
   (global-set-key (kbd "<C-S-up>")     'buf-move-up)
   (global-set-key (kbd "<C-S-down>")   'buf-move-down)
@@ -1570,13 +1566,13 @@ shell-pop
   ;; tabbar.el
   ;;
   ;; [Emacsにタブ機能を追加するtabbar.elの導入 - 12FF5B8](http://hico-horiuchi.hateblo.jp/entry/20121208/1354975316)
-  
+
   ;; パッケージのインストール
   (setq package-list '(tabbar))
   (dolist (package package-list)
     (when (not (package-installed-p package))
       (package-install package)))
-  
+
   (require 'tabbar)
   (tabbar-mode)
   (global-set-key "\M-]" 'tabbar-forward)  ; 次のタブ
@@ -1587,10 +1583,10 @@ shell-pop
   (setq tabbar-buffer-groups-function nil)
   ;; 左側のボタンを消す
   (dolist (btn '(tabbar-buffer-home-button
-                 tabbar-scroll-left-button
-                 tabbar-scroll-right-button))
+		 tabbar-scroll-left-button
+		 tabbar-scroll-right-button))
     (set btn (cons (cons "" nil)
-                   (cons "" nil))))
+		   (cons "" nil))))
 #+end_src
 
 ** rcode tools
@@ -1600,7 +1596,7 @@ shell-pop
 
 #+begin_src emacs-lisp :tangle no
   (add-to-list 'load-path "~/.rbenv/versions/2.0.0-p195/lib/ruby/gems/2.0.0/gems/rcodetools-0.8.5.0")
-  
+
   ;; rcodetools
   (require 'rcodetools)
   (setq rct-find-tag-if-available nil)
@@ -1611,7 +1607,7 @@ shell-pop
     (define-key ruby-mode-map "\C-c\C-d" 'xmp)
     (define-key ruby-mode-map "\C-c\C-f" 'rct-ri))
   (add-hook 'ruby-mode-hook 'ruby-mode-hook-rcodetools)
-  
+
   (setq rct-get-all-methods-command "PAGER=cat fri -l")
   ;; See docs
 #+end_src
@@ -1646,32 +1642,32 @@ shell-pop
 (defadvice kill-buffer (around my-kill-buffer-check activate)
   "Prompt when a buffer is about to be killed."
   (let* ((buffer-file-name (buffer-file-name))
-         backup-file)
+	 backup-file)
     ;; see 'backup-buffer
     (if (and (buffer-modified-p)
-             buffer-file-name
-             (file-exists-p buffer-file-name)
-             (setq backup-file (car (find-backup-file-name buffer-file-name))))
-        (let ((answer (completing-read (format "Buffer modified %s, (d)iff, (s)ave, (k)ill? " (buffer-name))
-                                       '("d" "s" "k") nil t)))
-          (cond ((equal answer "d")
-                 (set-buffer-modified-p nil)
-                 (let ((orig-buffer (current-buffer))
-                       (file-to-diff (if (file-newer-than-file-p buffer-file-name backup-file)
-                                         buffer-file-name
-                                       backup-file)))
-                   (set-buffer (get-buffer-create (format "%s last-revision" (file-name-nondirectory file-to-diff))))
-                   (buffer-disable-undo)
-                   (insert-file-contents file-to-diff nil nil nil t)
-                   (set-buffer-modified-p nil)
-                   (setq buffer-read-only t)
-                   (ediff-buffers (current-buffer) orig-buffer)))
-                ((equal answer "k")
-                 (set-buffer-modified-p nil)
-                 ad-do-it)
-                (t
-                 (save-buffer)
-                 ad-do-it)))
+	     buffer-file-name
+	     (file-exists-p buffer-file-name)
+	     (setq backup-file (car (find-backup-file-name buffer-file-name))))
+	(let ((answer (completing-read (format "Buffer modified %s, (d)iff, (s)ave, (k)ill? " (buffer-name))
+				       '("d" "s" "k") nil t)))
+	  (cond ((equal answer "d")
+		 (set-buffer-modified-p nil)
+		 (let ((orig-buffer (current-buffer))
+		       (file-to-diff (if (file-newer-than-file-p buffer-file-name backup-file)
+					 buffer-file-name
+				       backup-file)))
+		   (set-buffer (get-buffer-create (format "%s last-revision" (file-name-nondirectory file-to-diff))))
+		   (buffer-disable-undo)
+		   (insert-file-contents file-to-diff nil nil nil t)
+		   (set-buffer-modified-p nil)
+		   (setq buffer-read-only t)
+		   (ediff-buffers (current-buffer) orig-buffer)))
+		((equal answer "k")
+		 (set-buffer-modified-p nil)
+		 ad-do-it)
+		(t
+		 (save-buffer)
+		 ad-do-it)))
       ad-do-it)))
 #+end_src
 
@@ -1689,4 +1685,3 @@ shell-pop
 #+begin_src emacs-lisp
   ;;; init.el ends here
 #+end_src
-
