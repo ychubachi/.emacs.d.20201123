@@ -41,7 +41,8 @@
       (format "%%f - Emacs@%s" (system-name)))
 
 (require 'whitespace)
-(setq whitespace-action '(auto-cleanup))
+(add-hook 'before-save-hook
+ 'whitespace-cleanup)
 
 ;; ================================================================
 ;; 自作関数
