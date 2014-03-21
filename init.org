@@ -101,17 +101,13 @@
  (message "%% Emacsの設定を開始します %%")
 #+end_src
 
-#+RESULTS:
-: % Emacsの設定を開始します %
-
 ** 完了の通知
   - after-init-hookはパッケージの初期化が完了したら呼ばれるフックです．
 
   - 概要
      - カスタマイズ設定を保存するファイルを指定して，読み込みます．
-     - このコード自体（init.org）はcustom.elに依存させない
        - custom.elには個人用の設定を書く
-     - このコードで設定した値は，custom.el内で上書きされます．
+     - このコードで設定した値は，custom.el内で上書きすることができます．
   - 参考
      - [[http://www.gnu.org/software/emacs/manual/html_node/emacs/Saving-Customizations.html][Saving Customizations - GNU Emacs Manual]]
 
@@ -295,7 +291,7 @@
 #+RESULTS:
 
 * パッケージ
-** パッケージの初期設定
+** リポジトリの設定
   - パッケージをダウンロードするリポジトリを設定します．
   - [[http://emacs-jp.github.io/packages/package-management/package-el.html][package.el - Emacs JP]]
 
