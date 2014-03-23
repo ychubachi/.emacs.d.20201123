@@ -98,16 +98,21 @@
 ** 開始の通知
 
 #+begin_src emacs-lisp
- (message "%% Emacsの設定を開始します %%")
+ (message "%s" "%% Emacsの設定を開始します %%")
 #+end_src
 
 ** 完了の通知
+*** after-init-hookの設定
   - after-init-hookはパッケージの初期化が完了したら呼ばれるフックです．
+    - [[http://www.gnu.org/software/emacs/manual/html_node/elisp/Init-File.html#Init-File][Init File - GNU Emacs Lisp Reference Manual]]
 
+*** カスタマイズ設定を保存するファイルの指定
   - 概要
      - カスタマイズ設定を保存するファイルを指定して，読み込みます．
        - custom.elには個人用の設定を書く
      - このコードで設定した値は，custom.el内で上書きすることができます．
+     - after-init-hookでcustom.elを読みこませる理由
+       - init.elでエラーが発生しても確実にカスタマイズ設定を読み込みます．
   - 参考
      - [[http://www.gnu.org/software/emacs/manual/html_node/emacs/Saving-Customizations.html][Saving Customizations - GNU Emacs Manual]]
 
@@ -117,7 +122,7 @@
 		(setq custom-file "~/.emacs.d/custom.el")
 		(if (file-exists-p (expand-file-name custom-file))
 		    (load (expand-file-name custom-file)))
-		(message "%% Emacsの設定が完了しました %%")))
+		(message "%s" "%% custom.elを読み込みました %%")))
 #+end_src
 
 #+RESULTS:
@@ -137,15 +142,6 @@
 
 * 標準設定
   - 外部のパッケージに依存しない，標準的な設定を行います．
-** 日本語文字コードの設定
-
-- 言語環境を日本語に，コード体系をUTF-8にします．
-
-#+begin_src emacs-lisp
-  (set-language-environment "japanese")
-  (prefer-coding-system 'utf-8)
-#+end_src
-
 ** ロードパスの設定
 
 - normal-top-level-add-subdirs-to-load-path は
@@ -240,12 +236,22 @@
 #+RESULTS:
 | auto-cleanup |
 
-* 日本語文字フォントの設定
-** 説明
+* Japanese
+** 日本語文字コードの設定
+
+- 言語環境を日本語に，コード体系をUTF-8にします．
+
+#+begin_src emacs-lisp
+  (set-language-environment "japanese")
+  (prefer-coding-system 'utf-8)
+#+end_src
+
+** 日本語文字フォントの設定
+*** 説明
 ｰ Fontに関する調査
   - [[file:test.org::*Emacs%E3%81%AE%E3%83%95%E3%82%A9%E3%83%B3%E3%83%88%E3%81%AE%E3%81%8A%E8%A9%B1][Emacsのフォントのお話]]
 
-** Rictyの設定							     :custom:
+*** Rictyの設定							     :custom:
 
 - この値はcustomize可能です．
 
@@ -256,7 +262,7 @@
 #+RESULTS:
 | (font . ricty-13.5) |
 
-** TODO Macでフォントを正しく設定する
+*** TODO Macでフォントを正しく設定する
    :PROPERTIES:
    :ID:       16b070ee-507e-49fa-b84d-fa573911ebeb
    :END:
@@ -1186,14 +1192,23 @@ C-h でバックスペースと同じように文字を削除できるように�
 (setq mew-ssl-verify-level 0)
 ;(setq mew-use-unread-mark t)
 
-; w3m
+#+end_src
+
+** mew-w3m
+
+#+begin_src emacs-lisp
 (condition-case nil
     (require 'mew-w3m)
-  (error (message "mew-w3m: Plase install w3m")))
+  (error (message "%s" "mew-w3m: Plase install w3m")))
 
-; pdf viewer
+#+end_src
+
+** mew-prog-pdf
+
+#+begin_src emacs-lisp
 (setq mew-prog-pdf '("evince" nil t))
 #+end_src
+
 * Programming
 #+begin_src emacs-lisp
 ;; ================================================================
@@ -1255,8 +1270,10 @@ shell-pop
   (when (not (package-installed-p package))
     (condition-case nil
 	(package-install package)
-      (error (message "Please Install w3m command")))))
+      (error (message "%s" "Please Install w3m command")))))
 #+end_src
+
+
 * Ruby
 #+begin_src emacs-lisp
 ;; S式から正規表現を作成する - by shigemk2
@@ -1914,7 +1931,7 @@ shell-pop
 ** 完了表示
 
 #+begin_src emacs-lisp
-  (message "init.elは完了しました")
+  (message "%s" "%% init.elは完了しました %%")
 #+end_src
 
 ** フッタコメント
