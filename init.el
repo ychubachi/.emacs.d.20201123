@@ -867,6 +867,8 @@ SCHEDULED: %t
 ;バッファのフォントサイズを小さく
 (global-set-key (kbd "<next>")  'text-scale-decrease)
 
+(global-set-key (kbd "C-x C-b") 'ibuffer)
+
 (when (eq system-type 'gnu/linux)
   (require 'mozc)
   (setq default-input-method "japanese-mozc")

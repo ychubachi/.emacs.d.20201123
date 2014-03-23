@@ -236,7 +236,7 @@
 #+RESULTS:
 | auto-cleanup |
 
-* Japanese
+* 日本語関連の設定
 ** 日本語文字コードの設定
 
 - 言語環境を日本語に，コード体系をUTF-8にします．
@@ -1691,6 +1691,12 @@ shell-pop
 #+RESULTS:
 : kill-buffer
 
+** ibuffer
+
+#+begin_src emacs-lisp
+  (global-set-key (kbd "C-x C-b") 'ibuffer)
+#+end_src
+
 * linux用設定
 ** Xresources
 ;; 注意: in ~/.Xresourcesに
@@ -1891,7 +1897,6 @@ shell-pop
 
 #+RESULTS:
 
-
 ** dbus for YaTeX
 - http://oku.edu.mie-u.ac.jp/~okumura/texwiki/?Emacs#v19f2543
 
@@ -1924,7 +1929,6 @@ shell-pop
 	   'evince-inverse-search))
     )
 #+end_src
-
 
 
 * 後処理
