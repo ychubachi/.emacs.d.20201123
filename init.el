@@ -76,6 +76,39 @@
 (when (not package-archive-contents)
   (package-refresh-contents))
 
+(defun yc-package-install-and-require (package-symbol)
+  (unless (package-installed-p package-symbol)
+    (package-install package-symbol))
+  (require package-symbol))
+
+(yc-package-install-and-require 'open-junk-file)
+(global-set-key (kbd "C-x C-z") 'open-junk-file)
+
+(yc-package-install-and-require 'lispxmp)                 ; =>
+(define-key emacs-lisp-mode-map (kbd "C-c C-d") 'lispxmp) ; =>
+
+(yc-package-install-and-require 'paredit)
+(add-hook 'emacs-lisp-mode-hook 'enable-paredit-mode)
+(add-hook 'lisp-interaction-mode-hook 'enable-paredit-mode)
+(add-hook 'lisp-mode-hook 'enable-paredit-mode)
+(add-hook 'ielm-mode-hook 'enable-paredit-mode)
+
+(yc-package-install-and-require 'auto-async-byte-compile)
+(setq auto-async-byte-compile-exclude-files-regexp "/junk/")
+(add-hook 'emacs-lisp-mode-hook 'enable-auto-async-byte-compile-mode)
+
+(add-hook 'emacs-lisp-mode-hook 'turn-on-eldoc-mode)
+(add-hook 'lisp-interaction-mode-hook 'turn-on-eldoc-mode)
+(add-hook 'ielm-mode-hook 'turn-on-eldoc-mode)
+(setq eldoc-idle-delay 0.2)
+(setq eldoc-minor-mode-string "")
+
+(show-paren-mode 1)
+
+(global-set-key (kbd "C-m") 'newline-and-indent)
+
+(find-function-setup-keys)
+
 (dolist (package '(exec-path-from-shell))
   (when (not (package-installed-p package))
     (package-install package)))
