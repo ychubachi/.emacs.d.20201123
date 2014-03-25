@@ -20,12 +20,10 @@
 (let ((default-directory "~/.emacs.d/site-lisp/"))
   (normal-top-level-add-subdirs-to-load-path))
 
-;; create backup file in ~/.emacs.d/backup
 (setq backup-directory-alist
-  (cons (cons "\\.*$" (expand-file-name "~/.emacs.d/backup"))
-    backup-directory-alist))
+      (cons (cons "\\.*$" (expand-file-name "~/.emacs.d/backup"))
+            backup-directory-alist))
 
-;; create auto-save file in ~/.emacs.d/backup
 (setq auto-save-file-name-transforms
       `((".*" ,(expand-file-name "~/.emacs.d/backup/") t)))
 

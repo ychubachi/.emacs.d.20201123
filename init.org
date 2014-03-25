@@ -168,16 +168,14 @@
 - この項目はcustom.elでも設定可能．
 
 #+begin_src emacs-lisp
-  ;; create backup file in ~/.emacs.d/backup
   (setq backup-directory-alist
-    (cons (cons "\\.*$" (expand-file-name "~/.emacs.d/backup"))
-      backup-directory-alist))
+	(cons (cons "\\.*$" (expand-file-name "~/.emacs.d/backup"))
+	      backup-directory-alist))
 #+end_src
 
 - 自動保存を設定します．
 
 #+begin_src emacs-lisp
-  ;; create auto-save file in ~/.emacs.d/backup
   (setq auto-save-file-name-transforms
 	`((".*" ,(expand-file-name "~/.emacs.d/backup/") t)))
 #+end_src
