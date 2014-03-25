@@ -322,10 +322,13 @@
 ** 自作パッケージインストールマクロ
 
 #+begin_src emacs-lisp
-    (defun yc-package-install-and-require (package-symbol)
-      (unless (package-installed-p package-symbol)
-	(package-install package-symbol))
-      (require package-symbol))
+  (defun yc-package-install (package-symbol)
+    (unless (package-installed-p package-symbol)
+      (package-install package-symbol)))
+
+  (defun yc-package-install-and-require (package-symbol)
+    (yc-package-install package-symbol)
+    (require package-symbol))
 #+end_src
 
 * Emacs LISP テクニックバイブル
@@ -405,15 +408,14 @@
   (find-function-setup-keys)
 #+end_src
 
-* ShellのPATH設定を引き継ぐ:exec-path-from-shell
+* exec-path-from-shell
 
-- [[http://qiita.com/catatsuy/items/3dda714f4c60c435bb25][EmacsでPATHの設定が引き継がれない問題をエレガントに解決する - Qiita {キータ}]]
+  - ShellのPATH設定を引き継ぐ:
+    - [[http://qiita.com/catatsuy/items/3dda714f4c60c435bb25][EmacsでPATHの設定が引き継がれない問題をエレガントに解決する - Qiita {キータ}]]
 
 #+begin_src emacs-lisp
-    (dolist (package '(exec-path-from-shell))
-      (when (not (package-installed-p package))
-	(package-install package)))
-    (exec-path-from-shell-initialize)
+  (yc-package-install-and-require 'exec-path-from-shell)
+  (exec-path-from-shell-initialize)
 #+end_src
 
 * yasnippet
@@ -895,10 +897,8 @@ javascript:location.href='org-protocol://capture://t/'+encodeURIComponent(locati
 ** パッケージ
 
 #+begin_src emacs-lisp
-(dolist (package '(helm))
-  (when (not (package-installed-p package))
-    (package-install package)))
-(require 'helm-config)
+  (yc-package-install 'helm)
+  (require 'helm-config)
 #+end_src
 
 ** helm-miniを有効にする

@@ -74,9 +74,12 @@
 (when (not package-archive-contents)
   (package-refresh-contents))
 
-(defun yc-package-install-and-require (package-symbol)
+(defun yc-package-install (package-symbol)
   (unless (package-installed-p package-symbol)
-    (package-install package-symbol))
+    (package-install package-symbol)))
+
+(defun yc-package-install-and-require (package-symbol)
+  (yc-package-install package-symbol)
   (require package-symbol))
 
 (yc-package-install-and-require 'open-junk-file)
@@ -107,9 +110,7 @@
 
 (find-function-setup-keys)
 
-(dolist (package '(exec-path-from-shell))
-  (when (not (package-installed-p package))
-    (package-install package)))
+(yc-package-install-and-require 'exec-path-from-shell)
 (exec-path-from-shell-initialize)
 
 (dolist (package '(yasnippet))
@@ -300,9 +301,7 @@ SCHEDULED: %t
 
 (require 'org-protocol)
 
-(dolist (package '(helm))
-  (when (not (package-installed-p package))
-    (package-install package)))
+(yc-package-install 'helm)
 (require 'helm-config)
 
 (global-set-key (kbd "C-c h") 'helm-mini)
