@@ -171,6 +171,12 @@ SCHEDULED: %t
 　引用: %i
 リンク: %a
 ")
+          ("l" "Link as Todo" entry (file+headline "todo.org" "Tasks")
+           "* TODO [#B] %a
+SCHEDULED: %t
+　引用: %i
+%?
+")
           ("j" "Journal" entry (file+datetree "journal.org")
            "* %?
 作成日: %U
@@ -200,8 +206,12 @@ SCHEDULED: %t
 
 (setq org-agenda-custom-commands
       (quote
-       (("x" "Unscheduled TODOs" tags-todo "-SCHEDULED>=\"<today>\"" nil)
-        ("n" "Agenda and all TODO's" ((agenda "" nil) (alltodo "" nil)) nil))))
+       (("x" "TODOs without Scheduled" tags-todo "+SCHEDULED=\"\"" nil)
+        ("d" "TODOs without Deadline" tags-todo "+DEADLINE=\"\"" nil)
+        ("p" "私用" tags-todo "+私用" nil)
+        ("P" "私用以外" tags-todo "-私用" nil)
+        ("n" "Agenda and all TODO's" ((agenda "" nil)
+                                      (alltodo "" nil)) nil))))
 
 (setq org-todo-keywords (quote ((sequence "TODO(t)" "WIP(p)" "WAIT(w)" "|" "DONE(d)" "SOMEDAY(s)" "CANCEL(c)"))))
 
