@@ -1071,8 +1071,7 @@ C-h でバックスペースと同じように文字を削除できるように�
        ))
 #+end_src
 
-* メジャーモード
-** markdown
+* markdown
   - [[http://jblevins.org/projects/markdown-mode/][Emacs Markdown Mode]]
 
 #+begin_src emacs-lisp
@@ -1094,7 +1093,7 @@ C-h でバックスペースと同じように文字を削除できるように�
 	    '(lambda () (outline-minor-mode t)))
 #+end_src
 
-** MediaWiki
+* MediaWiki
   - [[http://www.emacswiki.org/emacs/MediaWikiMode][EmacsWiki: Media Wiki Mode]]
 
 #+begin_src emacs-lisp
@@ -1104,7 +1103,7 @@ C-h でバックスペースと同じように文字を削除できるように�
   (require 'mediawiki)
 #+end_src
 
-** graphviz
+* graphviz
 
 #+begin_src emacs-lisp
 (dolist (package '(graphviz-dot-mode))
