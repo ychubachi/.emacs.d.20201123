@@ -3,7 +3,7 @@
 #+STARTUP: overview
 #+PROPERTY: header-args:emacs-lisp :tangle init.el
 
-* 説明
+* これはなに？
 ** 使い方
   - 日本のEmacsユーザ向け．
   - Emacsを設定するためのelです．
@@ -234,6 +234,43 @@
 #+RESULTS:
 | auto-cleanup |
 
+* パッケージ関連の設定
+** リポジトリの設定
+  - パッケージをダウンロードするリポジトリを設定します．
+  - [[http://emacs-jp.github.io/packages/package-management/package-el.html][package.el - Emacs JP]]
+
+#+begin_src emacs-lisp
+  (require 'package)
+  (setq package-archives
+	'(("org" .       "http://orgmode.org/elpa/")
+	  ("gnu" .       "http://elpa.gnu.org/packages/")
+	  ("marmalade" . "http://marmalade-repo.org/packages/")
+	  ("melpa" .     "http://melpa.milkbox.net/packages/")))
+  (package-initialize)
+#+end_src
+
+** パッケージ一覧の更新
+  - 必要に応じてリフレッシュ
+  - 参考
+    - [[http://stackoverflow.com/questions/14836958/updating-packages-in-emacs][elpa - Updating packages in Emacs - Stack Overflow]]
+
+#+begin_src emacs-lisp
+  (when (not package-archive-contents)
+    (package-refresh-contents))
+#+end_src
+
+** 自作パッケージ導入マクロ
+
+#+begin_src emacs-lisp
+  (defun my:package-install (package-symbol)
+    (unless (package-installed-p package-symbol)
+      (package-install package-symbol)))
+
+  (defun my:package-install-and-require (package-symbol)
+    (my:package-install package-symbol)
+    (require package-symbol))
+#+end_src
+
 * 日本語関連の設定
 ** 日本語文字コードの設定
 
@@ -294,42 +331,36 @@
 
 #+RESULTS:
 
-* パッケージ
-** リポジトリの設定
-  - パッケージをダウンロードするリポジトリを設定します．
-  - [[http://emacs-jp.github.io/packages/package-management/package-el.html][package.el - Emacs JP]]
+** 日本語入力時のカーソル色の変更
 
 #+begin_src emacs-lisp
-  (require 'package)
-  (setq package-archives
-	'(("org" .       "http://orgmode.org/elpa/")
-	  ("gnu" .       "http://elpa.gnu.org/packages/")
-	  ("marmalade" . "http://marmalade-repo.org/packages/")
-	  ("melpa" .     "http://melpa.milkbox.net/packages/")))
-  (package-initialize)
+  (add-hook 'input-method-activate-hook
+	    '(lambda () (set-cursor-color "green")))
+  (add-hook 'input-method-inactivate-hook
+	    '(lambda () (set-cursor-color "orchid")))
 #+end_src
 
-** パッケージ一覧の更新
-  - 必要に応じてリフレッシュ
-  - 参考
-    - [[http://stackoverflow.com/questions/14836958/updating-packages-in-emacs][elpa - Updating packages in Emacs - Stack Overflow]]
+** LinuxでのMozcの設定
+
+注意: in ~/.Xresourcesに
+  Emacs*useXIM:	false
+と設定しておくこと．
+
+- http://www11.atwiki.jp/s-irie/pages/21.html#basic
+- http://d.hatena.ne.jp/iRiE/20100530/1275212234
+
+- 筆者の場合，OS側でもC-oでIMEを切り替えるようにしているため，これを設定しておかないと，C-c C-oなどが効かなくなる．
 
 #+begin_src emacs-lisp
-  (when (not package-archive-contents)
-    (package-refresh-contents))
+  (when (eq system-type 'gnu/linux)
+    (require 'mozc)
+    (setq default-input-method "japanese-mozc")
+    (global-set-key (kbd "C-o") 'toggle-input-method)
+    (setq mozc-candidate-style 'overlay))
 #+end_src
 
-** 自作パッケージインストールマクロ
-
-#+begin_src emacs-lisp
-  (defun yc-package-install (package-symbol)
-    (unless (package-installed-p package-symbol)
-      (package-install package-symbol)))
-
-  (defun yc-package-install-and-require (package-symbol)
-    (yc-package-install package-symbol)
-    (require package-symbol))
-#+end_src
+#+RESULTS:
+: overlay
 
 * Emacs LISP テクニックバイブル
 
@@ -338,7 +369,7 @@
 ** open-junk-file
 
 #+begin_src emacs-lisp
-  (yc-package-install-and-require 'open-junk-file)
+  (my:package-install-and-require 'open-junk-file)
   (global-set-key (kbd "C-x C-z") 'open-junk-file)
 #+end_src
 
@@ -349,7 +380,7 @@
   - C-c C-d で評価結果を注釈
 
 #+begin_src emacs-lisp
-  (yc-package-install-and-require 'lispxmp)                 ; =>
+  (my:package-install-and-require 'lispxmp)                 ; =>
   (define-key emacs-lisp-mode-map (kbd "C-c C-d") 'lispxmp) ; =>
 #+end_src
 
@@ -358,7 +389,7 @@
 - カッコの対応を保持して編集
 
 #+begin_src emacs-lisp
-  (yc-package-install-and-require 'paredit)
+  (my:package-install-and-require 'paredit)
   (add-hook 'emacs-lisp-mode-hook 'enable-paredit-mode)
   (add-hook 'lisp-interaction-mode-hook 'enable-paredit-mode)
   (add-hook 'lisp-mode-hook 'enable-paredit-mode)
@@ -368,7 +399,7 @@
 ** auto-async-byte-compile
 
 #+begin_src emacs-lisp
-  (yc-package-install-and-require 'auto-async-byte-compile)
+  (my:package-install-and-require 'auto-async-byte-compile)
   (setq auto-async-byte-compile-exclude-files-regexp "/junk/")
   (add-hook 'emacs-lisp-mode-hook 'enable-auto-async-byte-compile-mode)
 #+end_src
@@ -414,7 +445,7 @@
     - [[http://qiita.com/catatsuy/items/3dda714f4c60c435bb25][EmacsでPATHの設定が引き継がれない問題をエレガントに解決する - Qiita {キータ}]]
 
 #+begin_src emacs-lisp
-  (yc-package-install-and-require 'exec-path-from-shell)
+  (my:package-install-and-require 'exec-path-from-shell)
   (exec-path-from-shell-initialize)
 #+end_src
 
@@ -897,7 +928,7 @@ javascript:location.href='org-protocol://capture://t/'+encodeURIComponent(locati
 ** パッケージ
 
 #+begin_src emacs-lisp
-  (yc-package-install 'helm)
+  (my:package-install 'helm)
   (require 'helm-config)
 #+end_src
 
@@ -1781,27 +1812,6 @@ shell-pop
 #+end_src
 
 * linux用設定
-** Xresources
-;; 注意: in ~/.Xresourcesに
-;;   Emacs*useXIM:	false
-;; と設定しておくこと．
-;;
-;; Thanks: http://www11.atwiki.jp/s-irie/pages/21.html#basic
-;; Thanks: http://d.hatena.ne.jp/iRiE/20100530/1275212234
-
-** Mozc
-
-#+begin_src emacs-lisp
-  (when (eq system-type 'gnu/linux)
-    (require 'mozc)
-    (setq default-input-method "japanese-mozc")
-    (global-set-key (kbd "C-o") 'toggle-input-method)
-    (setq mozc-candidate-style 'overlay))
-#+end_src
-
-#+RESULTS:
-: overlay
-
 ** Linux YaTeX
 
 #+begin_src emacs-lisp

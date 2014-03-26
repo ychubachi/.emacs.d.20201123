@@ -39,6 +39,25 @@
 (add-hook 'before-save-hook
  'whitespace-cleanup)
 
+(require 'package)
+(setq package-archives
+      '(("org" .       "http://orgmode.org/elpa/")
+        ("gnu" .       "http://elpa.gnu.org/packages/")
+        ("marmalade" . "http://marmalade-repo.org/packages/")
+        ("melpa" .     "http://melpa.milkbox.net/packages/")))
+(package-initialize)
+
+(when (not package-archive-contents)
+  (package-refresh-contents))
+
+(defun my:package-install (package-symbol)
+  (unless (package-installed-p package-symbol)
+    (package-install package-symbol)))
+
+(defun my:package-install-and-require (package-symbol)
+  (my:package-install package-symbol)
+  (require package-symbol))
+
 (set-language-environment "japanese")
 (prefer-coding-system 'utf-8)
 
@@ -63,38 +82,30 @@
 ;;     (set-fontset-font nil '(#x0370 . #x03FF)        font-spec-ascii))
 ;;   ))
 
-(require 'package)
-(setq package-archives
-      '(("org" .       "http://orgmode.org/elpa/")
-        ("gnu" .       "http://elpa.gnu.org/packages/")
-        ("marmalade" . "http://marmalade-repo.org/packages/")
-        ("melpa" .     "http://melpa.milkbox.net/packages/")))
-(package-initialize)
+(add-hook 'input-method-activate-hook
+          '(lambda () (set-cursor-color "green")))
+(add-hook 'input-method-inactivate-hook
+          '(lambda () (set-cursor-color "orchid")))
 
-(when (not package-archive-contents)
-  (package-refresh-contents))
+(when (eq system-type 'gnu/linux)
+  (require 'mozc)
+  (setq default-input-method "japanese-mozc")
+  (global-set-key (kbd "C-o") 'toggle-input-method)
+  (setq mozc-candidate-style 'overlay))
 
-(defun yc-package-install (package-symbol)
-  (unless (package-installed-p package-symbol)
-    (package-install package-symbol)))
-
-(defun yc-package-install-and-require (package-symbol)
-  (yc-package-install package-symbol)
-  (require package-symbol))
-
-(yc-package-install-and-require 'open-junk-file)
+(my:package-install-and-require 'open-junk-file)
 (global-set-key (kbd "C-x C-z") 'open-junk-file)
 
-(yc-package-install-and-require 'lispxmp)                 ; =>
+(my:package-install-and-require 'lispxmp)                 ; =>
 (define-key emacs-lisp-mode-map (kbd "C-c C-d") 'lispxmp) ; =>
 
-(yc-package-install-and-require 'paredit)
+(my:package-install-and-require 'paredit)
 (add-hook 'emacs-lisp-mode-hook 'enable-paredit-mode)
 (add-hook 'lisp-interaction-mode-hook 'enable-paredit-mode)
 (add-hook 'lisp-mode-hook 'enable-paredit-mode)
 (add-hook 'ielm-mode-hook 'enable-paredit-mode)
 
-(yc-package-install-and-require 'auto-async-byte-compile)
+(my:package-install-and-require 'auto-async-byte-compile)
 (setq auto-async-byte-compile-exclude-files-regexp "/junk/")
 (add-hook 'emacs-lisp-mode-hook 'enable-auto-async-byte-compile-mode)
 
@@ -110,7 +121,7 @@
 
 (find-function-setup-keys)
 
-(yc-package-install-and-require 'exec-path-from-shell)
+(my:package-install-and-require 'exec-path-from-shell)
 (exec-path-from-shell-initialize)
 
 (dolist (package '(yasnippet))
@@ -301,7 +312,7 @@ SCHEDULED: %t
 
 (require 'org-protocol)
 
-(yc-package-install 'helm)
+(my:package-install 'helm)
 (require 'helm-config)
 
 (global-set-key (kbd "C-c h") 'helm-mini)
@@ -898,12 +909,6 @@ SCHEDULED: %t
 (global-set-key (kbd "<next>")  'text-scale-decrease)
 
 (global-set-key (kbd "C-x C-b") 'ibuffer)
-
-(when (eq system-type 'gnu/linux)
-  (require 'mozc)
-  (setq default-input-method "japanese-mozc")
-  (global-set-key (kbd "C-o") 'toggle-input-method)
-  (setq mozc-candidate-style 'overlay))
 
 (when (eq system-type 'gnu/linux)
 
