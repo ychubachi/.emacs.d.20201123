@@ -550,12 +550,6 @@ SCHEDULED: %t
 (key-chord-define-global "gc" 'my/other-window-backward)
 (key-chord-define-global "cr" 'other-window)
 
-(when (not (package-installed-p 'init-loader))
-  (package-install 'init-loader))
-(require 'init-loader)
-(init-loader-load "~/.emacs.d/inits")
-; (setq init-loader-show-log-after-init nil)
-
 (dolist (package '(magit))
   (when (not (package-installed-p package))
     (package-install package)))
@@ -1119,6 +1113,17 @@ SCHEDULED: %t
          "org.gnome.evince.Window" "SyncSource"
          'evince-inverse-search))
   )
+
+(when (eq system-type 'darwin)
+  <<mac-keybord-and-input-method-settings>>
+  <<mac-fonts-settings>>
+  <<mac-yatex-settings>>
+)
+
+(when (or (eq system-type 'windows-nt)
+          (eq system-type 'cygwin))
+  <<windows-settings>>
+)
 
 (message "%s" "%% init.elは完了しました %%")
 
