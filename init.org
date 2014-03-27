@@ -262,13 +262,13 @@
 ** 自作パッケージ導入マクロ
 
 #+begin_src emacs-lisp
-  (defun my:package-install (package-symbol)
-    (unless (package-installed-p package-symbol)
-      (package-install package-symbol)))
+    (defun my:package-install (package-symbol)
+      (unless (package-installed-p package-symbol)
+	(package-install package-symbol)))
 
-  (defun my:package-install-and-require (package-symbol)
-    (my:package-install package-symbol)
-    (require package-symbol))
+    (defun my:package-install-and-require (package-symbol)
+      (my:package-install package-symbol)
+      (require package-symbol))
 #+end_src
 
 * 日本語関連の設定

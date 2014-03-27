@@ -56,7 +56,8 @@
 
 (defun my:package-install-and-require (package-symbol)
   (my:package-install package-symbol)
-  (require package-symbol))
+  (require package-symbol)
+  )
 
 (set-language-environment "japanese")
 (prefer-coding-system 'utf-8)
