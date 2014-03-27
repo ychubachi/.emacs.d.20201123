@@ -2031,7 +2031,7 @@ shell-pop
 
 * Mac用設定
 ** 設定全体
-#+begin_src emacs-lisp :noweb
+#+begin_src emacs-lisp :noweb yes
   (when (eq system-type 'darwin)
     <<mac-keybord-and-input-method-settings>>
     <<mac-fonts-settings>>
@@ -2165,7 +2165,7 @@ shell-pop
 * Windows用設定
 ** TODO 設定全体
 
-#+begin_src emacs-lisp :noweb
+#+begin_src emacs-lisp :noweb yes
   (when (or (eq system-type 'windows-nt)
 	    (eq system-type 'cygwin))
     <<windows-settings>>

@@ -56,8 +56,7 @@
 
 (defun my:package-install-and-require (package-symbol)
   (my:package-install package-symbol)
-  (require package-symbol)
-  )
+  (require package-symbol))
 
 (set-language-environment "japanese")
 (prefer-coding-system 'utf-8)
@@ -1116,14 +1115,151 @@ SCHEDULED: %t
   )
 
 (when (eq system-type 'darwin)
-  <<mac-keybord-and-input-method-settings>>
-  <<mac-fonts-settings>>
-  <<mac-yatex-settings>>
+  ;; option <-> meta
+  (setq ns-command-modifier (quote meta))
+  (setq ns-alternate-modifier (quote super))
+  
+  ;; システムへ修飾キーを渡さない
+  (setq mac-pass-control-to-system nil)
+  (setq mac-pass-command-to-system nil)
+  (setq mac-pass-option-to-system nil)
+  
+  ;;; C-oで日本語切り替え
+  (mac-input-method-mode t)
+  (global-set-key "\C-o" 'toggle-input-method)
+  
+  ;; かな
+  (mac-set-input-method-parameter
+   "com.google.inputmethod.Japanese.base" 'cursor-color 'green)
+  
+  ;; 英数字
+  (mac-set-input-method-parameter
+   "com.google.inputmethod.Japanese.Roman" 'cursor-color 'red)
+  
+  ;; change cursor type
+  (mac-set-input-method-parameter
+   "com.google.inputmethod.Japanese.base" 'cursor-type 'box)
+  ;; ================================================================
+  ;; Fonts
+  ;; ================================================================
+  
+  ;; |あああああ|
+  ;; |+-+-+-+-+-|
+  ;; |imimimimim|
+  
+  ;; (when (x-list-fonts "Ricty")
+  ;;   (let* ((size 14)
+  ;;          (asciifont "Ricty")
+  ;;          (jpfont "Ricty")
+  ;;          (h (* size 10))
+  ;;          (fontspec)
+  ;;          (jp-fontspec))
+  ;;     (set-face-attribute 'default nil :family asciifont :height h)
+  ;;     (setq fontspec (font-spec :family asciifont))
+  ;;     (setq jp-fontspec (font-spec :family jpfont))
+  ;;     (set-fontset-font nil 'japanese-jisx0208 jp-fontspec)
+  ;;     (set-fontset-font nil 'japanese-jisx0212 jp-fontspec)
+  ;;     (set-fontset-font nil 'japanese-jisx0213-1 jp-fontspec)
+  ;;     (set-fontset-font nil 'japanese-jisx0213-2 jp-fontspec)
+  ;;     (set-fontset-font nil '(#x0080 . #x024F) fontspec)
+  ;;     (set-fontset-font nil '(#x0370 . #x03FF) fontspec)))
+  
+  (setq YaTeX-dvi2-command-ext-alist
+        '(("Preview\\|TeXShop\\|TeXworks\\|Skim\\|mupdf\\|xpdf\\|Firefox\\|Adobe" . ".pdf")))
+  (setq tex-command "/usr/texbin/ptex2pdf -l -ot '-synctex=1'")
+  ;(setq tex-command "/usr/texbin/ptex2pdf -l -u -ot '-synctex=1'")
+  ;(setq tex-command "/usr/local/bin/pdfplatex")
+  ;(setq tex-command "/usr/local/bin/pdfplatex2")
+  ;(setq tex-command "/usr/local/bin/pdfuplatex")
+  ;(setq tex-command "/usr/local/bin/pdfuplatex2")
+  ;(setq tex-command "/usr/texbin/pdflatex -synctex=1")
+  ;(setq tex-command "/usr/texbin/lualatex -synctex=1")
+  ;(setq tex-command "/usr/texbin/luajitlatex -synctex=1")
+  ;(setq tex-command "/usr/texbin/xelatex -synctex=1")
+  ;(setq tex-command "/usr/texbin/latexmk")
+  ;(setq tex-command "/usr/texbin/latexmk -e '$latex=q/platex %O -synctex=1 %S/' -e '$bibtex=q/pbibtex %O %B/' -e '$makeindex=q/mendex %O -o %D %S/' -e '$dvipdf=q/dvipdfmx %O -o %D %S/' -norc -gg -pdfdvi")
+  ;(setq tex-command "/usr/texbin/latexmk -e '$latex=q/platex %O -synctex=1 %S/' -e '$bibtex=q/pbibtex %O %B/' -e '$makeindex=q/mendex %O -o %D %S/' -e '$dvips=q/dvips %O -z -f %S | convbkmk -g > %D/' -e '$ps2pdf=q/ps2pdf %O %S %D/' -norc -gg -pdfps")
+  ;(setq tex-command "/usr/texbin/latexmk -e '$latex=q/uplatex %O -synctex=1 %S/' -e '$bibtex=q/upbibtex %O %B/' -e '$makeindex=q/mendex %O -o %D %S/' -e '$dvipdf=q/dvipdfmx %O -o %D %S/' -norc -gg -pdfdvi")
+  ;(setq tex-command "/usr/texbin/latexmk -e '$latex=q/uplatex %O -synctex=1 %S/' -e '$bibtex=q/upbibtex %O %B/' -e '$makeindex=q/mendex %O -o %D %S/' -e '$dvips=q/dvips %O -z -f %S | convbkmk -u > %D/' -e '$ps2pdf=q/ps2pdf %O %S %D/' -norc -gg -pdfps")
+  ;(setq tex-command "/usr/texbin/latexmk -e '$pdflatex=q/pdflatex %O -synctex=1 %S/' -e '$bibtex=q/bibtex %O %B/' -e '$makeindex=q/makeindex %O -o %D %S/' -norc -gg -pdf")
+  ;(setq tex-command "/usr/texbin/latexmk -e '$pdflatex=q/lualatex %O -synctex=1 %S/' -e '$bibtex=q/bibtexu %O %B/' -e '$makeindex=q/texindy %O -o %D %S/' -norc -gg -lualatex")
+  ;(setq tex-command "/usr/texbin/latexmk -e '$pdflatex=q/luajitlatex %O -synctex=1 %S/' -e '$bibtex=q/bibtexu %O %B/' -e '$makeindex=q/texindy %O -o %D %S/' -norc -gg -lualatex")
+  ;(setq tex-command "/usr/texbin/latexmk -e '$pdflatex=q/xelatex %O -synctex=1 %S/' -e '$bibtex=q/bibtexu %O %B/' -e '$makeindex=q/texindy %O -o %D %S/' -norc -gg -xelatex")
+  (setq bibtex-command (cond ((string-match "uplatex\\|-u" tex-command) "/usr/texbin/upbibtex")
+                             ((string-match "platex" tex-command) "/usr/texbin/pbibtex")
+                             ((string-match "lualatex\\|luajitlatex\\|xelatex" tex-command) "/usr/texbin/bibtexu")
+                             ((string-match "pdflatex\\|latex" tex-command) "/usr/texbin/bibtex")
+                             (t "/usr/texbin/pbibtex")))
+  (setq makeindex-command (cond ((string-match "uplatex\\|-u" tex-command) "/usr/texbin/mendex")
+                                ((string-match "platex" tex-command) "/usr/texbin/mendex")
+                                ((string-match "lualatex\\|luajitlatex\\|xelatex" tex-command) "/usr/texbin/texindy")
+                                ((string-match "pdflatex\\|latex" tex-command) "/usr/texbin/makeindex")
+                                (t "/usr/texbin/mendex")))
+  ;(setq dvi2-command "/usr/bin/open -a Preview")
+  (setq dvi2-command "/usr/bin/open -a Skim")
+  ;(setq dvi2-command "/usr/bin/open -a TeXShop")
+  ;(setq dvi2-command "/usr/bin/open -a TeXworks")
+  ;(setq dvi2-command "/usr/bin/open -a Firefox")
+  (setq dviprint-command-format "/usr/bin/open -a \"Adobe Reader\" `echo %s | sed -e \"s/\\.[^.]*$/\\.pdf/\"`")
+  
+  (defun skim-forward-search ()
+    (interactive)
+    (progn
+      (process-kill-without-query
+       (start-process
+        "displayline"
+        nil
+        "/Applications/Skim.app/Contents/SharedSupport/displayline"
+        (number-to-string (save-restriction
+                            (widen)
+                            (count-lines (point-min) (point))))
+        (expand-file-name
+         (concat (file-name-sans-extension (or YaTeX-parent-file
+                                               (save-excursion
+                                                 (YaTeX-visit-main t)
+                                                 buffer-file-name)))
+                 ".pdf"))
+        buffer-file-name))))
 )
 
 (when (or (eq system-type 'windows-nt)
           (eq system-type 'cygwin))
-  <<windows-settings>>
+  (setq file-name-coding-system 'cp932)
+  
+  ;; Ctrl-gとかでベルを鳴らさないようにします。
+  (setq visible-bell t)
+  (setq ring-bell-function 'ignore)
+  
+  ;;;** 標準IMEの設定
+  (setq default-input-method "W32-IME")
+  
+  ;;;** IMEの初期化
+  (w32-ime-initialize)
+  
+  ;;;** IME状態のモードライン表示
+  (setq-default w32-ime-mode-line-state-indicator "[--]")
+  (setq w32-ime-mode-line-state-indicator-list '("[--]" "[あ]" "[--]"))
+  
+  ;;;** IME OFF時の初期カーソルカラー
+  (set-cursor-color "red")
+  
+  ;;;** IME ON/OFF時のカーソルカラー
+  (add-hook 'input-method-activate-hook
+            (lambda() (set-cursor-color "green")))
+  (add-hook 'input-method-inactivate-hook
+            (lambda() (set-cursor-color "red")))
+  
+  ;;;** バッファ切り替え時にIME状態を引き継ぐ
+  (setq w32-ime-buffer-switch-p nil)
+  
+  ;;;** Ctrl-Oでトグルするようにする
+  (global-set-key (kbd "C-o") 'toggle-input-method)
+  
+  ;; ;; cp932エンコード時の表示を「P」とする
+  ;; (coding-system-put 'cp932 :mnemonic ?P)
+  ;; (coding-system-put 'cp932-dos :mnemonic ?P)
+  ;; (coding-system-put 'cp932-unix :mnemonic ?P)
+  ;; (coding-system-put 'cp932-mac :mnemonic ?P)
 )
 
 (message "%s" "%% init.elは完了しました %%")
