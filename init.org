@@ -565,8 +565,6 @@
 	   (("t" "Todo" entry (file+headline "todo.org" "Tasks")
 	     "* TODO [#B] %?
   SCHEDULED: %t
-  　引用: %i
-  リンク: %a
   ")
 	    ("l" "Link as Todo" entry (file+headline "todo.org" "Tasks")
 	     "* TODO [#B] %a
@@ -588,12 +586,6 @@
   ")
 	    )))
 #+end_src
-
-#+RESULTS:
-| t | Todo         | entry | (file+headline todo.org Tasks)         | * TODO [#B] %?\nSCHEDULED: %t\n　引用: %i\nリンク: %a\n    |
-| l | Link as Todo | entry | (file+headline todo.org Tasks)         | * TODO [#B] %a\nSCHEDULED: %t\n　引用: %i\n%?\n            |
-| j | Journal      | entry | (file+datetree journal.org)            | * %?\n作成日: %U\n　引用: %i\nリンク: %a\n                 |
-| b | Bookmark     | entry | (file+headline bookmark.org Bookmarks) | * TODO [#B] %a :bookmark:\nSCHEDULED: %t\n　引用: %i\n%?\n |
 
 ** Mobile Org関連
 

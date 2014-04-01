@@ -168,8 +168,6 @@
          (("t" "Todo" entry (file+headline "todo.org" "Tasks")
            "* TODO [#B] %?
 SCHEDULED: %t
-　引用: %i
-リンク: %a
 ")
           ("l" "Link as Todo" entry (file+headline "todo.org" "Tasks")
            "* TODO [#B] %a
