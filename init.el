@@ -39,6 +39,8 @@
 (add-hook 'before-save-hook
  'whitespace-cleanup)
 
+
+
 (require 'package)
 (setq package-archives
       '(("org" .       "http://orgmode.org/elpa/")
@@ -603,22 +605,19 @@ SCHEDULED: %t
 ;; ================================================================
 ;; パッケージのインストール
 ;; ================================================================
-(dolist (package '(auto-complete multiple-cursors yasnippet))
+(dolist (package '(multiple-cursors yasnippet))
   (when (not (package-installed-p package))
     (package-install package)))
 
-;; ================================================================
-;; 自動補間
-;; ================================================================
-
+(my:package-install 'auto-complete)
 (require 'auto-complete-config)
-(ac-config-default)
-(define-key ac-complete-mode-map "\C-n" 'ac-next)
-(define-key ac-complete-mode-map "\C-p" 'ac-previous)
-
-;; ================================================================
-;; 複数のカーソルを扱う
-;; ================================================================
+(eval-after-load "auto-complete-config"
+  '(progn
+     (message "%s" "%% auto-complete-configを読み込みました. %%")
+     (ac-config-default)
+     (setq ac-comphist-file "~/.emacs.d/data/ac-comphist.dat")
+     (define-key ac-complete-mode-map "\C-n" 'ac-next)
+     (define-key ac-complete-mode-map "\C-p" 'ac-previous)))
 
 (require 'multiple-cursors)
 
@@ -1122,7 +1121,42 @@ SCHEDULED: %t
 
 (when (or (eq system-type 'windows-nt)
           (eq system-type 'cygwin))
-  <<windows-settings>>
+  (setq file-name-coding-system 'cp932)
+  
+  ;; Ctrl-gとかでベルを鳴らさないようにします。
+  (setq visible-bell t)
+  (setq ring-bell-function 'ignore)
+  
+  ;;;** 標準IMEの設定
+  (setq default-input-method "W32-IME")
+  
+  ;;;** IMEの初期化
+  (w32-ime-initialize)
+  
+  ;;;** IME状態のモードライン表示
+  (setq-default w32-ime-mode-line-state-indicator "[--]")
+  (setq w32-ime-mode-line-state-indicator-list '("[--]" "[あ]" "[--]"))
+  
+  ;;;** IME OFF時の初期カーソルカラー
+  (set-cursor-color "red")
+  
+  ;;;** IME ON/OFF時のカーソルカラー
+  (add-hook 'input-method-activate-hook
+            (lambda() (set-cursor-color "green")))
+  (add-hook 'input-method-inactivate-hook
+            (lambda() (set-cursor-color "red")))
+  
+  ;;;** バッファ切り替え時にIME状態を引き継ぐ
+  (setq w32-ime-buffer-switch-p nil)
+  
+  ;;;** Ctrl-Oでトグルするようにする
+  (global-set-key (kbd "C-o") 'toggle-input-method)
+  
+  ;; ;; cp932エンコード時の表示を「P」とする
+  ;; (coding-system-put 'cp932 :mnemonic ?P)
+  ;; (coding-system-put 'cp932-dos :mnemonic ?P)
+  ;; (coding-system-put 'cp932-unix :mnemonic ?P)
+  ;; (coding-system-put 'cp932-mac :mnemonic ?P)
 )
 
 (message "%s" "%% init.elは完了しました %%")

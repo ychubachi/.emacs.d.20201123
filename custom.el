@@ -8,7 +8,6 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(ac-comphist-file "~/.emacs.d/data/ac-comphist.dat")
  '(ansi-color-names-vector ["#212526" "#ff4b4b" "#b4fa70" "#fce94f" "#729fcf" "#ad7fa8" "#8cc4ff" "#eeeeec"])
  '(auto-save-file-name-transforms (quote ((".*" "~/.emacs.d/data/backup/" t))))
  '(auto-save-list-file-prefix "~/data/auto-save-list/.saves-")

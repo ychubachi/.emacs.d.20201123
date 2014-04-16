@@ -234,6 +234,10 @@
 #+RESULTS:
 | auto-cleanup |
 
+** 各種データファイル
+#+begin_src emacs-lisp
+#+end_src
+
 * パッケージ関連の設定
 ** リポジトリの設定
   - パッケージをダウンロードするリポジトリを設定します．
@@ -1331,29 +1335,41 @@ C-h でバックスペースと同じように文字を削除できるように�
 #+end_src
 
 * Programming
+
 #+begin_src emacs-lisp
 ;; ================================================================
 ;; パッケージのインストール
 ;; ================================================================
-(dolist (package '(auto-complete multiple-cursors yasnippet))
+(dolist (package '(multiple-cursors yasnippet))
   (when (not (package-installed-p package))
     (package-install package)))
 
-;; ================================================================
-;; 自動補間
-;; ================================================================
+#+end_src
+** 自動補間:auto-complete
 
-(require 'auto-complete-config)
-(ac-config-default)
-(define-key ac-complete-mode-map "\C-n" 'ac-next)
-(define-key ac-complete-mode-map "\C-p" 'ac-previous)
+#+begin_src emacs-lisp
+    (my:package-install 'auto-complete)
+    (require 'auto-complete-config)
+    (eval-after-load "auto-complete-config"
+      '(progn
+	 (message "%s" "%% auto-complete-configを読み込みました. %%")
+	 (ac-config-default)
+	 (setq ac-comphist-file "~/.emacs.d/data/ac-comphist.dat")
+	 (define-key ac-complete-mode-map "\C-n" 'ac-next)
+	 (define-key ac-complete-mode-map "\C-p" 'ac-previous)))
+#+end_src
 
-;; ================================================================
-;; 複数のカーソルを扱う
-;; ================================================================
+#+RESULTS:
+: ~/.emacs.d/data/ac-comphist.dat
 
+** 複数のカーソルを扱う:multiple-cursors
+
+#+begin_src emacs-lisp
 (require 'multiple-cursors)
 #+end_src
+
+#+RESULTS:
+: multiple-cursors
 
 #+begin_src emacs-lisp
 ;; ================================================================
@@ -2165,7 +2181,7 @@ shell-pop
 * Windows用設定
 ** TODO 設定全体
 
-#+begin_src emacs-lisp :noweb
+#+begin_src emacs-lisp :noweb yes
   (when (or (eq system-type 'windows-nt)
 	    (eq system-type 'cygwin))
     <<windows-settings>>
