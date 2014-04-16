@@ -266,13 +266,13 @@
 ** 自作パッケージ導入マクロ
 
 #+begin_src emacs-lisp
-  (defun my:package-install (package-symbol)
-    (unless (package-installed-p package-symbol)
-      (package-install package-symbol)))
+    (defun my:package-install (package-symbol)
+      (unless (package-installed-p package-symbol)
+	(package-install package-symbol)))
 
-  (defun my:package-install-and-require (package-symbol)
-    (my:package-install package-symbol)
-    (require package-symbol))
+    (defun my:package-install-and-require (package-symbol)
+      (my:package-install package-symbol)
+      (require package-symbol))
 #+end_src
 
 * 日本語関連の設定
@@ -569,8 +569,6 @@
 	   (("t" "Todo" entry (file+headline "todo.org" "Tasks")
 	     "* TODO [#B] %?
   SCHEDULED: %t
-  　引用: %i
-  リンク: %a
   ")
 	    ("l" "Link as Todo" entry (file+headline "todo.org" "Tasks")
 	     "* TODO [#B] %a
@@ -592,12 +590,6 @@
   ")
 	    )))
 #+end_src
-
-#+RESULTS:
-| t | Todo         | entry | (file+headline todo.org Tasks)         | * TODO [#B] %?\nSCHEDULED: %t\n　引用: %i\nリンク: %a\n    |
-| l | Link as Todo | entry | (file+headline todo.org Tasks)         | * TODO [#B] %a\nSCHEDULED: %t\n　引用: %i\n%?\n            |
-| j | Journal      | entry | (file+datetree journal.org)            | * %?\n作成日: %U\n　引用: %i\nリンク: %a\n                 |
-| b | Bookmark     | entry | (file+headline bookmark.org Bookmarks) | * TODO [#B] %a :bookmark:\nSCHEDULED: %t\n　引用: %i\n%?\n |
 
 ** Mobile Org関連
 
@@ -2047,7 +2039,7 @@ shell-pop
 
 * Mac用設定
 ** 設定全体
-#+begin_src emacs-lisp :noweb
+#+begin_src emacs-lisp :noweb yes
   (when (eq system-type 'darwin)
     <<mac-keybord-and-input-method-settings>>
     <<mac-fonts-settings>>
