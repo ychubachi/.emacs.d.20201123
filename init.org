@@ -10,7 +10,8 @@
     - [[https://github.com/ychubachi/.emacs.d/blob/master/init.org][.emacs.d/init.org at master · ychubachi/.emacs.d]]
   - preludeを意識しています
     - [[http://batsov.com/prelude/][Prelude by bbatsov]]
-    - CN: accord
+  - コードネーム候補
+    - aperitif 食前酒
   - oh-my-zshのようなplugins
     - [[https://github.com/robbyrussell/oh-my-zsh][robbyrussell/oh-my-zsh]]
   - C-c C-v t でinit.elを生成
@@ -29,10 +30,11 @@
       - 特定の変数は自動的にbuffer localになる．
 	- この場合はset-defaultを使うこと．
 
-  - カスタマイズ
-    - custom.elを最後に読むので，ここでの設定を上書きできます．
-
+** カスタマイズ
+  - custom.elを最後に読むので，ここでの設定を上書きできます．
+  - custom.elはgitではignoreします．
   - Dropboxと連携したorg-modeとMobileOrgのための設定
+  - [[http://d.hatena.ne.jp/a_bicky/20131230/1388396559][custom-set-variables は使わない方が良いかもしれない - あらびき日記]]
 ** 準備
 *** git submodule
   - git submodule init
@@ -88,6 +90,7 @@
     :ID:       0d60c33f-5d9b-4447-bf76-8344bf44471c
     :END:
 *** TODO F1はssh時、ターミナルとかぶる
+*** TODO [[http://www.fan.gr.jp/~ring/doc/elisp_19/elisp-jp_39.html][GNU Emacs Lispリファレンス・マニュアル: A. ヒントと標準的な作法]]
 * 前処理
 ** ヘッダコメント
 
@@ -140,7 +143,7 @@
     (server-start))
 #+end_src
 
-* 標準設定
+* Emacs本体が提供する機能の設定
   - 外部のパッケージに依存しない，標準的な設定を行います．
 ** ロードパスの設定
 
@@ -164,21 +167,24 @@
 
 ** バックアップ保存場所の設定
 
-- 全てのファイルのバックアップを~/.emacs.d/backup/以下に保存します．
+- 全てのファイルのバックアップを~/.emacs.d/data/backup/以下に保存します．
 - この項目はcustom.elでも設定可能．
 
 #+begin_src emacs-lisp
+  (setq auto-save-file-name-transforms
+	(quote ((".*" "~/.emacs.d/data/backup/" t))))
   (setq backup-directory-alist
-	(cons (cons "\\.*$" (expand-file-name "~/.emacs.d/backup"))
-	      backup-directory-alist))
+	(quote (("\\.*$" . "~/.emacs.d/data/backup"))))
+  (setq auto-save-list-file-prefix
+	"~/data/auto-save-list/.saves-")
+  (setq bookmark-default-file
+	"~/.emacs.d/data/bookmarks")
 #+end_src
+
+#+RESULTS:
+: ~/.emacs.d/data/bookmarks
 
 - 自動保存を設定します．
-
-#+begin_src emacs-lisp
-  (setq auto-save-file-name-transforms
-	`((".*" ,(expand-file-name "~/.emacs.d/backup/") t)))
-#+end_src
 
 ** DELキーをBSにする
 
@@ -194,18 +200,13 @@
   (global-auto-revert-mode 1)
 #+end_src
 
-** TODO 行番号表示
+** スタートアップスクリーン					 :startup.el:
 
-- 行番号表示をするとorg-modeが遅くなるらしい
-  - [[http://stackoverflow.com/questions/5229705/emacs-org-mode-turn-off-line-numbers][Emacs Org-Mode: Turn off line numbers - Stack Overflow]]
-
-#+begin_src emacs-lisp :tangle no
-(global-linum-mode t)
-(set-face-attribute 'linum nil :foreground "yellow" :height 0.8)
-(setq linum-format "%4d")
+#+begin_src emacs-lisp
+  (setq inhibit-startup-screen t)
 #+end_src
 
-** フレームの表題
+** フレームの表題							  :C:
 
 | 変数名          | 内容                         |
 |-----------------+------------------------------|
@@ -218,7 +219,7 @@
 	(format "%%f - Emacs@%s" (system-name)))
 #+end_src
 
-** 不要な行末の空白を削除
+** 不要な行末の空白を削除				      :whitespace.el:
 
 - 保存する前に，不要な空白を取り除きます．
 - 参考
@@ -226,16 +227,83 @@
   - [[http://qiita.com/itiut@github/items/4d74da2412a29ef59c3a][Emacs - whitespace-modeを使って、ファイルの保存時に行末のスペースや末尾の改行を削除する - Qiita]]
 
 #+begin_src emacs-lisp
-(require 'whitespace)
-(add-hook 'before-save-hook
- 'whitespace-cleanup)
+  (add-hook 'before-save-hook
+   'whitespace-cleanup)
 #+end_src
 
 #+RESULTS:
 | auto-cleanup |
 
-** 各種データファイル
+** 行番号・列番号をモードラインに表示				  :simple.el:
+
+モードラインに(24, 20)といった形式で，カーソルのある行と列を表示します．
+
 #+begin_src emacs-lisp
+  (column-number-mode t)
+#+end_src
+
+#+RESULTS:
+: t
+
+** 時刻の表示							    :time.el:
+- http://www.emacswiki.org/emacs/DisplayTime
+
+モードラインの時刻を24時間表示にします．ロードアベレージは表示させません．
+
+#+begin_src emacs-lisp
+  (setq display-time-24hr-format t)
+  (setq display-time-default-load-average nil)
+  (display-time-mode 1)
+#+end_src
+
+#+RESULTS:
+
+** カッコの対応を表示						   :paren.el:
+
+#+begin_src emacs-lisp
+  (show-paren-mode 1)
+#+end_src
+
+#+RESULTS:
+: t
+
+** コンパイル							 :compile.el:
+
+#+begin_src emacs-lisp
+ (setq compilation-ask-about-save nil)
+#+end_src
+
+** マウス操作							   :mouse.el:
+
+マウスの中ボタンでペーストする位置を変更します．
+標準ではクリックした位置にペーストされるので，
+カーソルの位置にペーストするようにします．
+
+#+begin_src emacs-lisp
+  (setq mouse-yank-at-point t)
+#+end_src
+
+マウスでドラックした範囲をEmacsのクリップボードにコピーします．
+
+#+begin_src emacs-lisp
+  (setq mouse-drag-copy-region t)
+#+end_src
+
+** アウトラインモード						 :outline.el:
+
+アウトラインマイナーモードのプリフィックスは，標準で C-c @ です．
+これでは使いづらいので，変更します．
+
+#+begin_src emacs-lisp
+  (setq outline-minor-mode-prefix "")
+#+end_src
+
+** コメントのフォントを立体にする			       :font-lock.el:
+- [[http://ja.wikipedia.org/wiki/%E7%AB%8B%E4%BD%93%E6%B4%BB%E5%AD%97][立体活字 - Wikipedia]]
+
+#+begin_src emacs-lisp
+(custom-set-faces
+ '(font-lock-comment-face ((t (:foreground "chocolate1" :slant normal)))))
 #+end_src
 
 * パッケージ関連の設定
@@ -400,9 +468,9 @@
   (add-hook 'ielm-mode-hook 'enable-paredit-mode)
 #+end_src
 
-** auto-async-byte-compile
+** TODO auto-async-byte-compile
 
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
   (my:package-install-and-require 'auto-async-byte-compile)
   (setq auto-async-byte-compile-exclude-files-regexp "/junk/")
   (add-hook 'emacs-lisp-mode-hook 'enable-auto-async-byte-compile-mode)
@@ -546,16 +614,16 @@
 | 説明                       | 変数名                 | 推奨               |
 |----------------------------+------------------------+--------------------|
 | 備忘録用ファイルを置く場所 | org-directory          | "~/Dropbox/Org"    |
+| アジェンダファイルの指定   | org-agenda-files       | ("~/Dropbox/Org/") |
 | デフォルトのノーツ         | org-default-notes-file | "notes.org"        |
 | キャプチャ                 | org-capture-templates  | t: Todo j: Journal |
-| アジェンダファイルの指定   | org-agenda-files       | ("~/Dropbox/Org/") |
 
 - org-agenda-files -> MobileOrgにPushする
 
 #+begin_src emacs-lisp
   (setq org-directory "~/Dropbox/Org")
-  (setq org-default-notes-file "notes.org")
   (setq org-agenda-files (quote ("~/Dropbox/Org/")))
+  (setq org-default-notes-file "notes.org")
 #+end_src
 
 #+RESULTS:
@@ -694,10 +762,13 @@
 : toggle-truncate-lines
 
 ** TODO 未整理
+
+#+begin_src emacs-lisp
+(custom-set-variables
  '(org-export-in-background nil)
  '(org-src-fontify-natively t)
- '(org-tag-alist (quote (("@HOME" . 104) ("@OFFICE" . 111) ("MAIL" . 109) ("WEB" . 119) ("PHONE" . 112))))
- '(org2blog/wp-use-sourcecode-shortcode t)
+ '(org-tag-alist (quote (("@HOME" . 104) ("@OFFICE" . 111) ("MAIL" . 109) ("WEB" . 119) ("PHONE" . 112)))))
+#+end_src
 
 ** Shellのコードの実行にbashを使う
     :PROPERTIES:
@@ -890,6 +961,9 @@
 (require 'org2blog-autoloads)
 #+end_src
 
+#+RESULTS:
+: org2blog-autoloads
+
 - org2blogを使うと，subtreeをwordpressに投稿できる．
 #+begin_src emacs-lisp
 (setq org2blog/wp-blog-alist
@@ -902,7 +976,20 @@
 	))
 #+end_src
 
+
+#+begin_src emacs-lisp
+  (setq org2blog/wp-use-sourcecode-shortcode t)
+#+end_src
+
 ** org-protocol
+** カラムのタイトルのフォント
+
+#+begin_src emacs-lisp
+  (custom-set-faces
+   '(org-column-title
+     ((t (:background "grey30" :underline t :weight bold :height 135)))))
+#+end_src
+
 *** 設定方法
   - C-c C-lでOrg形式のリンク挿入
   - [[http://stackoverflow.com/questions/7464951/how-to-make-org-protocol-work][firefox - How to make org-protocol work? - Stack Overflow]]
@@ -927,6 +1014,7 @@ javascript:location.href='org-protocol://capture://t/'+encodeURIComponent(locati
 
 #+RESULTS:
 : org-protocol
+
 
 * Helm
 ** 参考
@@ -1109,6 +1197,10 @@ C-h でバックスペースと同じように文字を削除できるように�
 (add-to-list 'auto-mode-alist '("\\.dot$" . graphviz-dot-mode))
 #+end_src
 
+#+begin_src emacs-lisp
+(setq graphviz-dot-preview-extension "pdf")
+#+end_src
+
 * キーバインディング
 ** 自作関数
 
@@ -1168,9 +1260,6 @@ C-h でバックスペースと同じように文字を削除できるように�
   ;; ================================================================
   ;; グローバルマップの設定
   ;; ================================================================
-
-  ;;; shell-pop
-  (global-set-key (kbd "C-z") 'shell-pop)
 
   ;;; magit
   (global-set-key (kbd "C-x g") 'magit-status)
@@ -1373,16 +1462,17 @@ C-h でバックスペースと同じように文字を削除できるように�
 
 * Shell-pop
 
-shell-pop
-- 詳細設定はM-x customize-group RET sholl-pop RET
-
 #+begin_src emacs-lisp
-(dolist (package '(shell-pop))
-  (when (not (package-installed-p package))
-    (package-install package)))
+   (my:package-install-and-require 'shell-pop)
 
-(require 'shell-pop)
+   (custom-set-variables
+    '(shell-pop-autocd-to-working-dir nil)
+    '(shell-pop-shell-type (quote ("eshell" "*eshell*" (lambda nil (eshell)))))
+    '(shell-pop-universal-key "C-z")
+    '(shell-pop-window-height 30))
 #+end_src
+
+#+RESULTS:
 
 * Undo Tree
 #+begin_src emacs-lisp
@@ -1404,142 +1494,162 @@ shell-pop
 
 * Ruby
 #+begin_src emacs-lisp
-;; S式から正規表現を作成する - by shigemk2
-;; - http://d.hatena.ne.jp/shigemk2/20120419/1334762456
+  ;; S式から正規表現を作成する - by shigemk2
+  ;; - http://d.hatena.ne.jp/shigemk2/20120419/1334762456
 
-;; EmacsでRubyの開発環境をめちゃガチャパワーアップしたまとめ | Futurismo
-;; http://hmi-me.ciao.jp/wordpress/archives/1295
+  ;; EmacsでRubyの開発環境をめちゃガチャパワーアップしたまとめ | Futurismo
+  ;; http://hmi-me.ciao.jp/wordpress/archives/1295
 
-;;; Code:
+  ;;; Code:
 
-;; ================================================================
-;; パッケージのインストール
-;; ================================================================
-(dolist (package '(flymake-ruby
-		   flymake-haml
-		   flymake-sass
-		   flymake-coffee
-		   smart-compile))
-  (when (not (package-installed-p package))
-    (package-install package)))
+  ;; ================================================================
+  ;; パッケージのインストール
+  ;; ================================================================
+  (dolist (package '(flymake-ruby
+		     flymake-haml
+		     flymake-sass
+		     flymake-coffee
+		     smart-compile))
+    (when (not (package-installed-p package))
+      (package-install package)))
 
-(autoload 'ruby-mode "ruby-mode"
-  "Mode for editing ruby source files" t)
-(require 'ruby-mode)
+  (autoload 'ruby-mode "ruby-mode"
+    "Mode for editing ruby source files" t)
+  (require 'ruby-mode)
 
-;; ================================================================
-;; Ruby DSLs
-;; ================================================================
+  ;; ================================================================
+  ;; Ruby DSLs
+  ;; ================================================================
 
-(add-to-list 'auto-mode-alist '("Capfile" . ruby-mode))
-(add-to-list 'auto-mode-alist '("Gemfile" . ruby-mode))
-(add-to-list 'auto-mode-alist '("Guardfile" . ruby-mode))
-(add-to-list 'auto-mode-alist '("Vagrantfile" . ruby-mode))
-(add-to-list 'auto-mode-alist '("Berksfile" . ruby-mode))
+  (add-to-list 'auto-mode-alist '("Capfile" . ruby-mode))
+  (add-to-list 'auto-mode-alist '("Gemfile" . ruby-mode))
+  (add-to-list 'auto-mode-alist '("Guardfile" . ruby-mode))
+  (add-to-list 'auto-mode-alist '("Vagrantfile" . ruby-mode))
+  (add-to-list 'auto-mode-alist '("Berksfile" . ruby-mode))
 
-;; ================================================================
-;; outline-minnor-mode
-;; ================================================================
+  ;; ================================================================
+  ;; outline-minnor-mode
+  ;; ================================================================
 
-(require 'outline)
-(add-hook 'ruby-mode-hook
-	  (function
-	   (lambda ()
-	     (defun ruby-outline-level ()
-	       (or (and (match-string 1)
-			(or (cdr (assoc (match-string 1) outline-heading-alist))
-			    (- (match-end 1) (match-beginning 1))))
-		   (cdr (assoc (match-string 0) outline-heading-alist))
-		   (- (match-end 0) (match-beginning 0))))
+  (require 'outline)
+  (add-hook 'ruby-mode-hook
+	    (function
+	     (lambda ()
+	       (defun ruby-outline-level ()
+		 (or (and (match-string 1)
+			  (or (cdr (assoc (match-string 1) outline-heading-alist))
+			      (- (match-end 1) (match-beginning 1))))
+		     (cdr (assoc (match-string 0) outline-heading-alist))
+		     (- (match-end 0) (match-beginning 0))))
 
-	     (set (make-local-variable 'outline-level) 'ruby-outline-level)
+	       (set (make-local-variable 'outline-level) 'ruby-outline-level)
 
-	     (set (make-local-variable 'outline-regexp)
-		  (rx (group (* " "))
-		      bow
-		      (or "begin" "case" "class" "def" "else" "elsif"
-			  "ensure" "if" "module" "rescue" "when" "unless"
-			  "private")
-		      eow))
-	     (outline-minor-mode))))
+	       (set (make-local-variable 'outline-regexp)
+		    (rx (group (* " "))
+			bow
+			(or "begin" "case" "class" "def" "else" "elsif"
+			    "ensure" "if" "module" "rescue" "when" "unless"
+			    "private")
+			eow))
+	       (outline-minor-mode))))
 
-(add-hook 'rspec-mode-hook
-	  (function
-	   (lambda ()
-	     (defun rspec-outline-level ()
-	       (or (and (match-string 1)
-			(or (cdr (assoc (match-string 1) outline-heading-alist))
-			    (- (match-end 1) (match-beginning 1))))
-		   (cdr (assoc (match-string 0) outline-heading-alist))
-		   (- (match-end 0) (match-beginning 0))))
+  (add-hook 'rspec-mode-hook
+	    (function
+	     (lambda ()
+	       (defun rspec-outline-level ()
+		 (or (and (match-string 1)
+			  (or (cdr (assoc (match-string 1) outline-heading-alist))
+			      (- (match-end 1) (match-beginning 1))))
+		     (cdr (assoc (match-string 0) outline-heading-alist))
+		     (- (match-end 0) (match-beginning 0))))
 
-	     (set (make-local-variable 'outline-level) 'rspec-outline-level)
+	       (set (make-local-variable 'outline-level) 'rspec-outline-level)
 
-	     (set (make-local-variable 'outline-regexp)
-		  (rx (group (* " "))
-		      bow
-		      (or "context" "describe" "it" "subject")
-		      eow))
-	     (outline-minor-mode))))
+	       (set (make-local-variable 'outline-regexp)
+		    (rx (group (* " "))
+			bow
+			(or "context" "describe" "it" "subject")
+			eow))
+	       (outline-minor-mode))))
 
-;; ================================================================
-;; flymake関係
-;; ================================================================
+  ;; ================================================================
+  ;; flymake関係
+  ;; ================================================================
 
-(require 'flymake-ruby)
-(add-hook 'ruby-mode-hook 'flymake-ruby-load)
+  (require 'flymake-ruby)
+  (add-hook 'ruby-mode-hook 'flymake-ruby-load)
 
-(require 'flymake-haml)
-(add-hook 'haml-mode-hook 'flymake-haml-load)
+  (require 'flymake-haml)
+  (add-hook 'haml-mode-hook 'flymake-haml-load)
 
-(require 'flymake-sass)
-(add-hook 'sass-mode-hook 'flymake-sass-load)
+  (require 'flymake-sass)
+  (add-hook 'sass-mode-hook 'flymake-sass-load)
 
-(require 'flymake-coffee)
-(add-hook 'coffee-mode-hook 'flymake-coffee-load)
+  (require 'flymake-coffee)
+  (add-hook 'coffee-mode-hook 'flymake-coffee-load)
 
-;; ================================================================
-;; Use the right Ruby with Emacs and rbenv - Fist of Senn
-;; - http://blog.senny.ch/blog/2013/02/11/use-the-right-ruby-with-emacs-and-rbenv/
-;; ================================================================
-;; (prelude-require-package 'rbenv)
+  ;; ================================================================
+  ;; Use the right Ruby with Emacs and rbenv - Fist of Senn
+  ;; - http://blog.senny.ch/blog/2013/02/11/use-the-right-ruby-with-emacs-and-rbenv/
+  ;; ================================================================
+  ;; (prelude-require-package 'rbenv)
 
-;; ;; Setting rbenv path
-;; (setenv "PATH" (concat (getenv "HOME") "/.rbenv/shims:"
-;;                        (getenv "HOME") "/.rbenv/bin:"
-;;                        (getenv "PATH")))
-;; (setq exec-path (cons (concat (getenv "HOME") "/.rbenv/shims")
-;;                       (cons (concat (getenv "HOME") "/.rbenv/bin") exec-path)))
+  ;; ;; Setting rbenv path
+  ;; (setenv "PATH" (concat (getenv "HOME") "/.rbenv/shims:"
+  ;;                        (getenv "HOME") "/.rbenv/bin:"
+  ;;                        (getenv "PATH")))
+  ;; (setq exec-path (cons (concat (getenv "HOME") "/.rbenv/shims")
+  ;;                       (cons (concat (getenv "HOME") "/.rbenv/bin") exec-path)))
 
-;; ================================================================
-;; 賢いコンパイル
-;; ================================================================
+  ;; ================================================================
+  ;; 賢いコンパイル
+  ;; ================================================================
 
-(require 'smart-compile)
+  (require 'smart-compile)
 
-(define-key ruby-mode-map (kbd "C-c c") 'smart-compile)
-(define-key ruby-mode-map (kbd "C-c C-c") (kbd "C-c c C-m"))
+  (define-key ruby-mode-map (kbd "C-c c") 'smart-compile)
+  (define-key ruby-mode-map (kbd "C-c C-c") (kbd "C-c c C-m"))
 
-;; ================================================================
-;; Emacsで保存時にFirefoxのタブを探してリロード - Qiita [キータ]
-;; - http://qiita.com/hakomo/items/9a99115f8911b55957bb
-;; ================================================================
-(require 'moz)
+  (setq smart-compile-alist
+	(quote ((emacs-lisp-mode emacs-lisp-byte-compile)
+		(html-mode browse-url-of-buffer)
+		(nxhtml-mode browse-url-of-buffer)
+		(html-helper-mode browse-url-of-buffer)
+		(octave-mode run-octave)
+		("\\.c\\'" . "gcc -O2 %f -lm -o %n")
+		("\\.[Cc]+[Pp]*\\'" . "g++ -O2 %f -lm -o %n")
+		("\\.m\\'" . "gcc -O2 %f -lobjc -lpthread -o %n")
+		("\\.java\\'" . "javac %f")
+		("\\.php\\'" . "php -l %f")
+		("\\.f90\\'" . "gfortran %f -o %n")
+		("\\.[Ff]\\'" . "gfortran %f -o %n")
+		("\\.cron\\(tab\\)?\\'" . "crontab %f")
+		("\\.tex\\'" tex-file)
+		("\\.texi\\'" . "makeinfo %f")
+		("\\.mp\\'" . "mptopdf %f")
+		("\\.pl\\'" . "perl -cw %f")
+		("\\.rb\\'" . "bundle exec ruby %f"))))
 
-(defun my/reload-firefox ()
-  "Reload firefox."
-  (interactive)
-  (comint-send-string (inferior-moz-process) "BrowserReload();"))
+  ;; ================================================================
+  ;; Emacsで保存時にFirefoxのタブを探してリロード - Qiita [キータ]
+  ;; - http://qiita.com/hakomo/items/9a99115f8911b55957bb
+  ;; ================================================================
+  (require 'moz)
 
-(defun my/run-rake-yard ()
-  "Run rake yard."
-  (interactive)
-  (shell-command "rake yard"))
+  (defun my/reload-firefox ()
+    "Reload firefox."
+    (interactive)
+    (comint-send-string (inferior-moz-process) "BrowserReload();"))
 
-(define-key ruby-mode-map (kbd "C-c y") (lambda ()
-					  (interactive)
-					  (my/run-rake-yard)
-					  (my/reload-firefox)))
+  (defun my/run-rake-yard ()
+    "Run rake yard."
+    (interactive)
+    (shell-command "rake yard"))
+
+  (define-key ruby-mode-map (kbd "C-c y") (lambda ()
+					    (interactive)
+					    (my/run-rake-yard)
+					    (my/reload-firefox)))
 #+end_src
 
 * PHP
@@ -1755,6 +1865,17 @@ shell-pop
 
   (setq rct-get-all-methods-command "PAGER=cat fri -l")
   ;; See docs
+#+end_src
+
+** TODO 行番号表示
+
+- 行番号表示をするとorg-modeが遅くなるらしい
+  - [[http://stackoverflow.com/questions/5229705/emacs-org-mode-turn-off-line-numbers][Emacs Org-Mode: Turn off line numbers - Stack Overflow]]
+
+#+begin_src emacs-lisp :tangle no
+(global-linum-mode t)
+(set-face-attribute 'linum nil :foreground "yellow" :height 0.8)
+(setq linum-format "%4d")
 #+end_src
 
 * おためし

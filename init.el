@@ -20,26 +20,46 @@
 (let ((default-directory "~/.emacs.d/site-lisp/"))
   (normal-top-level-add-subdirs-to-load-path))
 
-(setq backup-directory-alist
-      (cons (cons "\\.*$" (expand-file-name "~/.emacs.d/backup"))
-            backup-directory-alist))
-
 (setq auto-save-file-name-transforms
-      `((".*" ,(expand-file-name "~/.emacs.d/backup/") t)))
+      (quote ((".*" "~/.emacs.d/data/backup/" t))))
+(setq backup-directory-alist
+      (quote (("\\.*$" . "~/.emacs.d/data/backup"))))
+(setq auto-save-list-file-prefix
+      "~/data/auto-save-list/.saves-")
+(setq bookmark-default-file
+      "~/.emacs.d/data/bookmarks")
 
 (global-set-key "\C-h" 'delete-backward-char)
 (global-set-key (kbd "C-c C-h") 'help-command)
 
 (global-auto-revert-mode 1)
 
+(setq inhibit-startup-screen t)
+
 (setq frame-title-format
       (format "%%f - Emacs@%s" (system-name)))
 
-(require 'whitespace)
 (add-hook 'before-save-hook
  'whitespace-cleanup)
 
+(column-number-mode t)
 
+(setq display-time-24hr-format t)
+(setq display-time-default-load-average nil)
+(display-time-mode 1)
+
+(show-paren-mode 1)
+
+(setq compilation-ask-about-save nil)
+
+(setq mouse-yank-at-point t)
+
+(setq mouse-drag-copy-region t)
+
+(setq outline-minor-mode-prefix "")
+
+(custom-set-faces
+ '(font-lock-comment-face ((t (:foreground "chocolate1" :slant normal)))))
 
 (require 'package)
 (setq package-archives
@@ -107,10 +127,6 @@
 (add-hook 'lisp-mode-hook 'enable-paredit-mode)
 (add-hook 'ielm-mode-hook 'enable-paredit-mode)
 
-(my:package-install-and-require 'auto-async-byte-compile)
-(setq auto-async-byte-compile-exclude-files-regexp "/junk/")
-(add-hook 'emacs-lisp-mode-hook 'enable-auto-async-byte-compile-mode)
-
 (add-hook 'emacs-lisp-mode-hook 'turn-on-eldoc-mode)
 (add-hook 'lisp-interaction-mode-hook 'turn-on-eldoc-mode)
 (add-hook 'ielm-mode-hook 'turn-on-eldoc-mode)
@@ -162,16 +178,14 @@
 (require 'org)
 
 (setq org-directory "~/Dropbox/Org")
-(setq org-default-notes-file "notes.org")
 (setq org-agenda-files (quote ("~/Dropbox/Org/")))
+(setq org-default-notes-file "notes.org")
 
 (setq org-capture-templates
         (quote
          (("t" "Todo" entry (file+headline "todo.org" "Tasks")
            "* TODO [#B] %?
 SCHEDULED: %t
-　引用: %i
-リンク: %a
 ")
           ("l" "Link as Todo" entry (file+headline "todo.org" "Tasks")
            "* TODO [#B] %a
@@ -220,6 +234,11 @@ SCHEDULED: %t
 (setq org-deadline-warning-days 7)
 
 (define-key org-mode-map "\M-q" 'toggle-truncate-lines)
+
+(custom-set-variables
+ '(org-export-in-background nil)
+ '(org-src-fontify-natively t)
+ '(org-tag-alist (quote (("@HOME" . 104) ("@OFFICE" . 111) ("MAIL" . 109) ("WEB" . 119) ("PHONE" . 112)))))
 
 (setq org-babel-sh-command "bash")
 
@@ -322,6 +341,12 @@ SCHEDULED: %t
          :tags-as-categories nil)
         ))
 
+(setq org2blog/wp-use-sourcecode-shortcode t)
+
+(custom-set-faces
+ '(org-column-title
+   ((t (:background "grey30" :underline t :weight bold :height 135)))))
+
 (require 'org-protocol)
 
 (my:package-install 'helm)
@@ -417,6 +442,8 @@ SCHEDULED: %t
 
 (add-to-list 'auto-mode-alist '("\\.dot$" . graphviz-dot-mode))
 
+(setq graphviz-dot-preview-extension "pdf")
+
 (defun my/fullscreen ()
   (interactive)
   (set-frame-parameter
@@ -469,9 +496,6 @@ SCHEDULED: %t
 ;; ================================================================
 ;; グローバルマップの設定
 ;; ================================================================
-
-;;; shell-pop
-(global-set-key (kbd "C-z") 'shell-pop)
 
 ;;; magit
 (global-set-key (kbd "C-x g") 'magit-status)
@@ -627,11 +651,13 @@ SCHEDULED: %t
 
 (add-hook 'emacs-lisp-mode-hook 'outline-minor-mode)
 
-(dolist (package '(shell-pop))
-  (when (not (package-installed-p package))
-    (package-install package)))
+(my:package-install-and-require 'shell-pop)
 
-(require 'shell-pop)
+(custom-set-variables
+ '(shell-pop-autocd-to-working-dir nil)
+ '(shell-pop-shell-type (quote ("eshell" "*eshell*" (lambda nil (eshell)))))
+ '(shell-pop-universal-key "C-z")
+ '(shell-pop-window-height 30))
 
 (dolist (package '(undo-tree))
   (when (not (package-installed-p package))
@@ -761,6 +787,26 @@ SCHEDULED: %t
 
 (define-key ruby-mode-map (kbd "C-c c") 'smart-compile)
 (define-key ruby-mode-map (kbd "C-c C-c") (kbd "C-c c C-m"))
+
+(setq smart-compile-alist
+      (quote ((emacs-lisp-mode emacs-lisp-byte-compile)
+              (html-mode browse-url-of-buffer)
+              (nxhtml-mode browse-url-of-buffer)
+              (html-helper-mode browse-url-of-buffer)
+              (octave-mode run-octave)
+              ("\\.c\\'" . "gcc -O2 %f -lm -o %n")
+              ("\\.[Cc]+[Pp]*\\'" . "g++ -O2 %f -lm -o %n")
+              ("\\.m\\'" . "gcc -O2 %f -lobjc -lpthread -o %n")
+              ("\\.java\\'" . "javac %f")
+              ("\\.php\\'" . "php -l %f")
+              ("\\.f90\\'" . "gfortran %f -o %n")
+              ("\\.[Ff]\\'" . "gfortran %f -o %n")
+              ("\\.cron\\(tab\\)?\\'" . "crontab %f")
+              ("\\.tex\\'" tex-file)
+              ("\\.texi\\'" . "makeinfo %f")
+              ("\\.mp\\'" . "mptopdf %f")
+              ("\\.pl\\'" . "perl -cw %f")
+              ("\\.rb\\'" . "bundle exec ruby %f"))))
 
 ;; ================================================================
 ;; Emacsで保存時にFirefoxのタブを探してリロード - Qiita [キータ]
@@ -1114,9 +1160,111 @@ SCHEDULED: %t
   )
 
 (when (eq system-type 'darwin)
-  <<mac-keybord-and-input-method-settings>>
-  <<mac-fonts-settings>>
-  <<mac-yatex-settings>>
+  ;; option <-> meta
+  (setq ns-command-modifier (quote meta))
+  (setq ns-alternate-modifier (quote super))
+  
+  ;; システムへ修飾キーを渡さない
+  (setq mac-pass-control-to-system nil)
+  (setq mac-pass-command-to-system nil)
+  (setq mac-pass-option-to-system nil)
+  
+  ;;; C-oで日本語切り替え
+  (mac-input-method-mode t)
+  (global-set-key "\C-o" 'toggle-input-method)
+  
+  ;; かな
+  (mac-set-input-method-parameter
+   "com.google.inputmethod.Japanese.base" 'cursor-color 'green)
+  
+  ;; 英数字
+  (mac-set-input-method-parameter
+   "com.google.inputmethod.Japanese.Roman" 'cursor-color 'red)
+  
+  ;; change cursor type
+  (mac-set-input-method-parameter
+   "com.google.inputmethod.Japanese.base" 'cursor-type 'box)
+  ;; ================================================================
+  ;; Fonts
+  ;; ================================================================
+  
+  ;; |あああああ|
+  ;; |+-+-+-+-+-|
+  ;; |imimimimim|
+  
+  ;; (when (x-list-fonts "Ricty")
+  ;;   (let* ((size 14)
+  ;;          (asciifont "Ricty")
+  ;;          (jpfont "Ricty")
+  ;;          (h (* size 10))
+  ;;          (fontspec)
+  ;;          (jp-fontspec))
+  ;;     (set-face-attribute 'default nil :family asciifont :height h)
+  ;;     (setq fontspec (font-spec :family asciifont))
+  ;;     (setq jp-fontspec (font-spec :family jpfont))
+  ;;     (set-fontset-font nil 'japanese-jisx0208 jp-fontspec)
+  ;;     (set-fontset-font nil 'japanese-jisx0212 jp-fontspec)
+  ;;     (set-fontset-font nil 'japanese-jisx0213-1 jp-fontspec)
+  ;;     (set-fontset-font nil 'japanese-jisx0213-2 jp-fontspec)
+  ;;     (set-fontset-font nil '(#x0080 . #x024F) fontspec)
+  ;;     (set-fontset-font nil '(#x0370 . #x03FF) fontspec)))
+  
+  (setq YaTeX-dvi2-command-ext-alist
+        '(("Preview\\|TeXShop\\|TeXworks\\|Skim\\|mupdf\\|xpdf\\|Firefox\\|Adobe" . ".pdf")))
+  (setq tex-command "/usr/texbin/ptex2pdf -l -ot '-synctex=1'")
+  ;(setq tex-command "/usr/texbin/ptex2pdf -l -u -ot '-synctex=1'")
+  ;(setq tex-command "/usr/local/bin/pdfplatex")
+  ;(setq tex-command "/usr/local/bin/pdfplatex2")
+  ;(setq tex-command "/usr/local/bin/pdfuplatex")
+  ;(setq tex-command "/usr/local/bin/pdfuplatex2")
+  ;(setq tex-command "/usr/texbin/pdflatex -synctex=1")
+  ;(setq tex-command "/usr/texbin/lualatex -synctex=1")
+  ;(setq tex-command "/usr/texbin/luajitlatex -synctex=1")
+  ;(setq tex-command "/usr/texbin/xelatex -synctex=1")
+  ;(setq tex-command "/usr/texbin/latexmk")
+  ;(setq tex-command "/usr/texbin/latexmk -e '$latex=q/platex %O -synctex=1 %S/' -e '$bibtex=q/pbibtex %O %B/' -e '$makeindex=q/mendex %O -o %D %S/' -e '$dvipdf=q/dvipdfmx %O -o %D %S/' -norc -gg -pdfdvi")
+  ;(setq tex-command "/usr/texbin/latexmk -e '$latex=q/platex %O -synctex=1 %S/' -e '$bibtex=q/pbibtex %O %B/' -e '$makeindex=q/mendex %O -o %D %S/' -e '$dvips=q/dvips %O -z -f %S | convbkmk -g > %D/' -e '$ps2pdf=q/ps2pdf %O %S %D/' -norc -gg -pdfps")
+  ;(setq tex-command "/usr/texbin/latexmk -e '$latex=q/uplatex %O -synctex=1 %S/' -e '$bibtex=q/upbibtex %O %B/' -e '$makeindex=q/mendex %O -o %D %S/' -e '$dvipdf=q/dvipdfmx %O -o %D %S/' -norc -gg -pdfdvi")
+  ;(setq tex-command "/usr/texbin/latexmk -e '$latex=q/uplatex %O -synctex=1 %S/' -e '$bibtex=q/upbibtex %O %B/' -e '$makeindex=q/mendex %O -o %D %S/' -e '$dvips=q/dvips %O -z -f %S | convbkmk -u > %D/' -e '$ps2pdf=q/ps2pdf %O %S %D/' -norc -gg -pdfps")
+  ;(setq tex-command "/usr/texbin/latexmk -e '$pdflatex=q/pdflatex %O -synctex=1 %S/' -e '$bibtex=q/bibtex %O %B/' -e '$makeindex=q/makeindex %O -o %D %S/' -norc -gg -pdf")
+  ;(setq tex-command "/usr/texbin/latexmk -e '$pdflatex=q/lualatex %O -synctex=1 %S/' -e '$bibtex=q/bibtexu %O %B/' -e '$makeindex=q/texindy %O -o %D %S/' -norc -gg -lualatex")
+  ;(setq tex-command "/usr/texbin/latexmk -e '$pdflatex=q/luajitlatex %O -synctex=1 %S/' -e '$bibtex=q/bibtexu %O %B/' -e '$makeindex=q/texindy %O -o %D %S/' -norc -gg -lualatex")
+  ;(setq tex-command "/usr/texbin/latexmk -e '$pdflatex=q/xelatex %O -synctex=1 %S/' -e '$bibtex=q/bibtexu %O %B/' -e '$makeindex=q/texindy %O -o %D %S/' -norc -gg -xelatex")
+  (setq bibtex-command (cond ((string-match "uplatex\\|-u" tex-command) "/usr/texbin/upbibtex")
+                             ((string-match "platex" tex-command) "/usr/texbin/pbibtex")
+                             ((string-match "lualatex\\|luajitlatex\\|xelatex" tex-command) "/usr/texbin/bibtexu")
+                             ((string-match "pdflatex\\|latex" tex-command) "/usr/texbin/bibtex")
+                             (t "/usr/texbin/pbibtex")))
+  (setq makeindex-command (cond ((string-match "uplatex\\|-u" tex-command) "/usr/texbin/mendex")
+                                ((string-match "platex" tex-command) "/usr/texbin/mendex")
+                                ((string-match "lualatex\\|luajitlatex\\|xelatex" tex-command) "/usr/texbin/texindy")
+                                ((string-match "pdflatex\\|latex" tex-command) "/usr/texbin/makeindex")
+                                (t "/usr/texbin/mendex")))
+  ;(setq dvi2-command "/usr/bin/open -a Preview")
+  (setq dvi2-command "/usr/bin/open -a Skim")
+  ;(setq dvi2-command "/usr/bin/open -a TeXShop")
+  ;(setq dvi2-command "/usr/bin/open -a TeXworks")
+  ;(setq dvi2-command "/usr/bin/open -a Firefox")
+  (setq dviprint-command-format "/usr/bin/open -a \"Adobe Reader\" `echo %s | sed -e \"s/\\.[^.]*$/\\.pdf/\"`")
+  
+  (defun skim-forward-search ()
+    (interactive)
+    (progn
+      (process-kill-without-query
+       (start-process
+        "displayline"
+        nil
+        "/Applications/Skim.app/Contents/SharedSupport/displayline"
+        (number-to-string (save-restriction
+                            (widen)
+                            (count-lines (point-min) (point))))
+        (expand-file-name
+         (concat (file-name-sans-extension (or YaTeX-parent-file
+                                               (save-excursion
+                                                 (YaTeX-visit-main t)
+                                                 buffer-file-name)))
+                 ".pdf"))
+        buffer-file-name))))
 )
 
 (when (or (eq system-type 'windows-nt)
