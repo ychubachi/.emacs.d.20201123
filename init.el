@@ -458,32 +458,8 @@ SCHEDULED: %t
   (interactive)
   (find-file "~/.emacs.d/init.org"))
 
-(defun my/open-journal()
-  "備忘録を開きます．"
-  (interactive)
-  (find-file "~/Dropbox/Org/journal.org"))
-
-(defun my/open-todo()
-  "備忘録を開きます．"
-  (interactive)
-  (find-file "~/Dropbox/Org/todo.org"))
-
-(defun my/open-note()
-  "備忘録を開きます．"
-  (interactive)
-  (find-file "~/Dropbox/Org/notes.org"))
-
-(defun my/open-project-folder()
-  "プロジェクトフォルダを開きます．"
-  (interactive)
-  (dired "~/git/"))
-
 (global-set-key [f11] 'my/fullscreen)
 (global-set-key (kbd "<f1>") 'my/open-init-folder)
-(global-set-key (kbd "<f2>") 'my/open-journal)
-(global-set-key (kbd "<f3>") 'my/open-todo)
-(global-set-key (kbd "<f4>") 'my/open-note)
-(global-set-key (kbd "<f5>") 'my/open-project-folder)
 
 ;; ================================================================
 ;; パッケージのインストール
