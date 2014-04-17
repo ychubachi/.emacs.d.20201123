@@ -165,8 +165,7 @@
     (normal-top-level-add-subdirs-to-load-path))
 #+end_src
 
-** バックアップ保存場所の設定
-
+** バックアップ保存場所の設定					   :files.el:
 - 全てのファイルのバックアップを~/.emacs.d/data/backup/以下に保存します．
 - この項目はcustom.elでも設定可能．
 
@@ -175,25 +174,22 @@
 	(quote ((".*" "~/.emacs.d/data/backup/" t))))
   (setq backup-directory-alist
 	(quote (("\\.*$" . "~/.emacs.d/data/backup"))))
-  (setq auto-save-list-file-prefix
-	"~/data/auto-save-list/.saves-")
-  (setq bookmark-default-file
-	"~/.emacs.d/data/bookmarks")
 #+end_src
 
 #+RESULTS:
 : ~/.emacs.d/data/bookmarks
 
-- 自動保存を設定します．
+** ブックマーク保存場所の設定					:bookmark.el:
 
-** DELキーをBSにする
+- [[http://www.geocities.co.jp/SiliconValley-Bay/9285/EMACS-JA/emacs_74.html][GNU Emacsマニュアル: Bookmarks]]
+- [[http://maruta.be/intfloat_staff/53][Emacs でファイルを素早く開く(その1) ～ bookmark, filecache ～ | イントフロート スタッフブログ]]
 
 #+begin_src emacs-lisp
-  (global-set-key "\C-h" 'delete-backward-char)
-  (global-set-key (kbd "C-c C-h") 'help-command)
+  (setq bookmark-default-file
+	"~/.emacs.d/data/bookmarks")
 #+end_src
 
-** ファイルの自動再読み込み
+** ファイルの自動再読み込み				      :autorevert.el:
    Emacsの外でファイルが更新されたら，自動的にバッファを再読込する．
 
 #+begin_src emacs-lisp
@@ -206,18 +202,21 @@
   (setq inhibit-startup-screen t)
 #+end_src
 
-** フレームの表題							  :C:
-
-| 変数名          | 内容                         |
-|-----------------+------------------------------|
-| menu-bar-mode   | メニューバーの表示           |
-| tool-bar-mode   | ツールバーを表示             |
-| scroll-bar-mode | スクロールバーの表示（位置） |
+** 自動保存							 :startup.el:
 
 #+begin_src emacs-lisp
-  (setq frame-title-format
-	(format "%%f - Emacs@%s" (system-name)))
+  (setq auto-save-list-file-prefix
+	"~/data/auto-save-list/.saves-")
 #+end_src
+
+** カッコの対応を表示						   :paren.el:
+
+#+begin_src emacs-lisp
+  (show-paren-mode 1)
+#+end_src
+
+#+RESULTS:
+: t
 
 ** 不要な行末の空白を削除				      :whitespace.el:
 
@@ -233,6 +232,19 @@
 
 #+RESULTS:
 | auto-cleanup |
+
+** フレームの表題							  :C:
+
+| 変数名          | 内容                         |
+|-----------------+------------------------------|
+| menu-bar-mode   | メニューバーの表示           |
+| tool-bar-mode   | ツールバーを表示             |
+| scroll-bar-mode | スクロールバーの表示（位置） |
+
+#+begin_src emacs-lisp
+  (setq frame-title-format
+	(format "%%f - Emacs@%s" (system-name)))
+#+end_src
 
 ** 行番号・列番号をモードラインに表示				  :simple.el:
 
@@ -258,19 +270,12 @@
 
 #+RESULTS:
 
-** カッコの対応を表示						   :paren.el:
+** コメントのフォントを立体にする			       :font-lock.el:
+- [[http://ja.wikipedia.org/wiki/%E7%AB%8B%E4%BD%93%E6%B4%BB%E5%AD%97][立体活字 - Wikipedia]]
 
 #+begin_src emacs-lisp
-  (show-paren-mode 1)
-#+end_src
-
-#+RESULTS:
-: t
-
-** コンパイル							 :compile.el:
-
-#+begin_src emacs-lisp
- (setq compilation-ask-about-save nil)
+(custom-set-faces
+ '(font-lock-comment-face ((t (:foreground "chocolate1" :slant normal)))))
 #+end_src
 
 ** マウス操作							   :mouse.el:
@@ -289,7 +294,13 @@
   (setq mouse-drag-copy-region t)
 #+end_src
 
-** アウトラインモード						 :outline.el:
+** コンパイル							 :compile.el:
+
+#+begin_src emacs-lisp
+ (setq compilation-ask-about-save nil)
+#+end_src
+
+** アウトラインモードのプリフィックス				 :outline.el:
 
 アウトラインマイナーモードのプリフィックスは，標準で C-c @ です．
 これでは使いづらいので，変更します．
@@ -298,13 +309,28 @@
   (setq outline-minor-mode-prefix "")
 #+end_src
 
-** コメントのフォントを立体にする			       :font-lock.el:
-- [[http://ja.wikipedia.org/wiki/%E7%AB%8B%E4%BD%93%E6%B4%BB%E5%AD%97][立体活字 - Wikipedia]]
+* キーバインディング
+** DELキーをBSにする
 
 #+begin_src emacs-lisp
-(custom-set-faces
- '(font-lock-comment-face ((t (:foreground "chocolate1" :slant normal)))))
+  (global-set-key "\C-h" 'delete-backward-char)
+  (global-set-key (kbd "C-c C-h") 'help-command)
 #+end_src
+
+** バッファのフォントサイズ
+
+- Page Up，Page Downで操作
+- Macの場合はfn+↑，fn+↓
+
+#+begin_src emacs-lisp
+  ;バッファのフォントサイズを大きく
+  (global-set-key (kbd "<prior>") 'text-scale-increase)
+  ;バッファのフォントサイズを小さく
+  (global-set-key (kbd "<next>")  'text-scale-decrease)
+#+end_src
+
+#+RESULTS:
+: text-scale-decrease
 
 * パッケージ関連の設定
 ** リポジトリの設定
@@ -334,12 +360,12 @@
 ** 自作パッケージ導入マクロ
 
 #+begin_src emacs-lisp
-    (defun my:package-install (package-symbol)
+    (defun my/package-install (package-symbol)
       (unless (package-installed-p package-symbol)
 	(package-install package-symbol)))
 
-    (defun my:package-install-and-require (package-symbol)
-      (my:package-install package-symbol)
+    (defun my/package-install-and-require (package-symbol)
+      (my/package-install package-symbol)
       (require package-symbol))
 #+end_src
 
@@ -441,7 +467,7 @@
 ** open-junk-file
 
 #+begin_src emacs-lisp
-  (my:package-install-and-require 'open-junk-file)
+  (my/package-install-and-require 'open-junk-file)
   (global-set-key (kbd "C-x C-z") 'open-junk-file)
 #+end_src
 
@@ -452,7 +478,7 @@
   - C-c C-d で評価結果を注釈
 
 #+begin_src emacs-lisp
-  (my:package-install-and-require 'lispxmp)                 ; =>
+  (my/package-install-and-require 'lispxmp)                 ; =>
   (define-key emacs-lisp-mode-map (kbd "C-c C-d") 'lispxmp) ; =>
 #+end_src
 
@@ -461,7 +487,7 @@
 - カッコの対応を保持して編集
 
 #+begin_src emacs-lisp
-  (my:package-install-and-require 'paredit)
+  (my/package-install-and-require 'paredit)
   (add-hook 'emacs-lisp-mode-hook 'enable-paredit-mode)
   (add-hook 'lisp-interaction-mode-hook 'enable-paredit-mode)
   (add-hook 'lisp-mode-hook 'enable-paredit-mode)
@@ -471,7 +497,7 @@
 ** TODO auto-async-byte-compile
 
 #+begin_src emacs-lisp :tangle no
-  (my:package-install-and-require 'auto-async-byte-compile)
+  (my/package-install-and-require 'auto-async-byte-compile)
   (setq auto-async-byte-compile-exclude-files-regexp "/junk/")
   (add-hook 'emacs-lisp-mode-hook 'enable-auto-async-byte-compile-mode)
 #+end_src
@@ -499,7 +525,7 @@
 − RET と C-m は同じ
 - TODO C-jとの違いは？
 
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
   (global-set-key (kbd "C-m") 'newline-and-indent)
 #+end_src
 
@@ -517,7 +543,7 @@
     - [[http://qiita.com/catatsuy/items/3dda714f4c60c435bb25][EmacsでPATHの設定が引き継がれない問題をエレガントに解決する - Qiita {キータ}]]
 
 #+begin_src emacs-lisp
-  (my:package-install-and-require 'exec-path-from-shell)
+  (my/package-install-and-require 'exec-path-from-shell)
   (exec-path-from-shell-initialize)
 #+end_src
 
@@ -887,7 +913,7 @@
 | report    | \documentclass[11pt]{report}                                                                                                                                                                                                                                                                                                                                        | (\part{%s} . \part*{%s})       | (\chapter{%s} . \chapter*{%s})       | (\section{%s} . \section*{%s})             | (\subsection{%s} . \subsection*{%s}) | (\subsubsection{%s} . \subsubsection*{%s}) |
 | book      | \documentclass[11pt]{book}                                                                                                                                                                                                                                                                                                                                          | (\part{%s} . \part*{%s})       | (\chapter{%s} . \chapter*{%s})       | (\section{%s} . \section*{%s})             | (\subsection{%s} . \subsection*{%s}) | (\subsubsection{%s} . \subsubsection*{%s}) |
 
-** WebにHTMLでPublishする					       :個人設定:
+** TODO WebにHTMLでPublishする					       :個人設定:
    :PROPERTIES:
    :ID:       fcdb09c8-3a9a-4ea9-9482-10d445b6db9f
    :END:
@@ -981,7 +1007,6 @@
   (setq org2blog/wp-use-sourcecode-shortcode t)
 #+end_src
 
-** org-protocol
 ** カラムのタイトルのフォント
 
 #+begin_src emacs-lisp
@@ -999,7 +1024,8 @@
   - [[http://orgmode.org/worg/org-contrib/org-protocol.html#sec-3-6]]
     - 古い
 
-[[http://orgmode.org/worg/org-contrib/org-protocol.html#sec-3-6][org-protocol.el – Intercept calls from emacsclient to trigger custom actions]]
+[[http://orgmode.org/worg/org-contrib/org-protocol.html#sec-3-6][* org-protocol
+org-protocol.el – Intercept calls from emacsclient to trigger custom actions]]
 
 #+begin_src
 javascript:location.href='org-protocol://store-link://'+encodeURIComponent(location.href)
@@ -1028,7 +1054,7 @@ javascript:location.href='org-protocol://capture://t/'+encodeURIComponent(locati
 ** パッケージ
 
 #+begin_src emacs-lisp
-  (my:package-install 'helm)
+  (my/package-install 'helm)
   (require 'helm-config)
 #+end_src
 
@@ -1400,10 +1426,10 @@ C-h でバックスペースと同じように文字を削除できるように�
     (package-install package)))
 
 #+end_src
-** 自動補間:auto-complete
+* 自動補間:auto-complete
 
 #+begin_src emacs-lisp
-    (my:package-install 'auto-complete)
+    (my/package-install 'auto-complete)
     (require 'auto-complete-config)
     (eval-after-load "auto-complete-config"
       '(progn
@@ -1417,7 +1443,7 @@ C-h でバックスペースと同じように文字を削除できるように�
 #+RESULTS:
 : ~/.emacs.d/data/ac-comphist.dat
 
-** 複数のカーソルを扱う:multiple-cursors
+* 複数のカーソルを扱う:multiple-cursors
 
 #+begin_src emacs-lisp
 (require 'multiple-cursors)
@@ -1437,7 +1463,7 @@ C-h でバックスペースと同じように文字を削除できるように�
 * Shell-pop
 
 #+begin_src emacs-lisp
-   (my:package-install-and-require 'shell-pop)
+   (my/package-install-and-require 'shell-pop)
 
    (custom-set-variables
     '(shell-pop-autocd-to-working-dir nil)
@@ -1762,11 +1788,7 @@ C-h でバックスペースと同じように文字を削除できるように�
 ;;; 80-clean-mode-line.el ends here
 #+end_src
 
-* TODO 対応するか検討中
-  :PROPERTIES:
-  :ID:       3117bdf4-368d-4fcb-aeaf-bb8e1c764fe8
-  :END:
-** Buffer Move
+* TODO Buffer Move
   :PROPERTIES:
   :ID:       09433d16-46c7-4fe8-8708-9382a1270dc0
   :END:
@@ -1785,7 +1807,7 @@ C-h でバックスペースと同じように文字を削除できるように�
   (global-set-key (kbd "<C-S-right>")  'buf-move-right)
 #+end_src
 
-** tab bar
+* TODO tab bar
   :PROPERTIES:
   :ID:       e4164ff6-d405-47f7-8ed7-838c9ffa215d
   :END:
@@ -1818,7 +1840,7 @@ C-h でバックスペースと同じように文字を削除できるように�
 		   (cons "" nil))))
 #+end_src
 
-** rcode tools
+* TODO rcode tools
   :PROPERTIES:
   :ID:       21e85321-7b0d-479f-aa36-66c3d9515adc
   :END:
@@ -1841,7 +1863,7 @@ C-h でバックスペースと同じように文字を削除できるように�
   ;; See docs
 #+end_src
 
-** TODO 行番号表示
+* TODO 行番号表示
 
 - 行番号表示をするとorg-modeが遅くなるらしい
   - [[http://stackoverflow.com/questions/5229705/emacs-org-mode-turn-off-line-numbers][Emacs Org-Mode: Turn off line numbers - Stack Overflow]]
@@ -1853,27 +1875,6 @@ C-h でバックスペースと同じように文字を削除できるように�
 #+end_src
 
 * おためし
-** バッファのフォントサイズ
-
-- Page Up，Page Downで操作
-- Macの場合はfn+↑，fn+↓
-
-#+begin_src emacs-lisp
-  ;バッファのフォントサイズを大きく
-  (global-set-key (kbd "<prior>") 'text-scale-increase)
-  ;バッファのフォントサイズを小さく
-  (global-set-key (kbd "<next>")  'text-scale-decrease)
-#+end_src
-
-#+RESULTS:
-: text-scale-decrease
-
-** デバッガの有効化
-
-| 説明                     | 変数名         | 推奨 |
-|--------------------------+----------------+------|
-| エラー時にデバッガを起動 | debug-on-error | nil  |
-
 ** TODO Diff
 
 - [[http://stackoverflow.com/questions/331569/diff-save-or-kill-when-killing-buffers-in-emacs]["Diff, save or kill" when killing buffers in Emacs - Stack Overflow]]

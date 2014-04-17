@@ -24,23 +24,24 @@
       (quote ((".*" "~/.emacs.d/data/backup/" t))))
 (setq backup-directory-alist
       (quote (("\\.*$" . "~/.emacs.d/data/backup"))))
-(setq auto-save-list-file-prefix
-      "~/data/auto-save-list/.saves-")
+
 (setq bookmark-default-file
       "~/.emacs.d/data/bookmarks")
-
-(global-set-key "\C-h" 'delete-backward-char)
-(global-set-key (kbd "C-c C-h") 'help-command)
 
 (global-auto-revert-mode 1)
 
 (setq inhibit-startup-screen t)
 
-(setq frame-title-format
-      (format "%%f - Emacs@%s" (system-name)))
+(setq auto-save-list-file-prefix
+      "~/data/auto-save-list/.saves-")
+
+(show-paren-mode 1)
 
 (add-hook 'before-save-hook
  'whitespace-cleanup)
+
+(setq frame-title-format
+      (format "%%f - Emacs@%s" (system-name)))
 
 (column-number-mode t)
 
@@ -48,18 +49,24 @@
 (setq display-time-default-load-average nil)
 (display-time-mode 1)
 
-(show-paren-mode 1)
-
-(setq compilation-ask-about-save nil)
+(custom-set-faces
+ '(font-lock-comment-face ((t (:foreground "chocolate1" :slant normal)))))
 
 (setq mouse-yank-at-point t)
 
 (setq mouse-drag-copy-region t)
 
+(setq compilation-ask-about-save nil)
+
 (setq outline-minor-mode-prefix "")
 
-(custom-set-faces
- '(font-lock-comment-face ((t (:foreground "chocolate1" :slant normal)))))
+(global-set-key "\C-h" 'delete-backward-char)
+(global-set-key (kbd "C-c C-h") 'help-command)
+
+;バッファのフォントサイズを大きく
+(global-set-key (kbd "<prior>") 'text-scale-increase)
+;バッファのフォントサイズを小さく
+(global-set-key (kbd "<next>")  'text-scale-decrease)
 
 (require 'package)
 (setq package-archives
@@ -72,12 +79,12 @@
 (when (not package-archive-contents)
   (package-refresh-contents))
 
-(defun my:package-install (package-symbol)
+(defun my/package-install (package-symbol)
   (unless (package-installed-p package-symbol)
     (package-install package-symbol)))
 
-(defun my:package-install-and-require (package-symbol)
-  (my:package-install package-symbol)
+(defun my/package-install-and-require (package-symbol)
+  (my/package-install package-symbol)
   (require package-symbol))
 
 (set-language-environment "japanese")
@@ -115,13 +122,13 @@
   (global-set-key (kbd "C-o") 'toggle-input-method)
   (setq mozc-candidate-style 'overlay))
 
-(my:package-install-and-require 'open-junk-file)
+(my/package-install-and-require 'open-junk-file)
 (global-set-key (kbd "C-x C-z") 'open-junk-file)
 
-(my:package-install-and-require 'lispxmp)                 ; =>
+(my/package-install-and-require 'lispxmp)                 ; =>
 (define-key emacs-lisp-mode-map (kbd "C-c C-d") 'lispxmp) ; =>
 
-(my:package-install-and-require 'paredit)
+(my/package-install-and-require 'paredit)
 (add-hook 'emacs-lisp-mode-hook 'enable-paredit-mode)
 (add-hook 'lisp-interaction-mode-hook 'enable-paredit-mode)
 (add-hook 'lisp-mode-hook 'enable-paredit-mode)
@@ -135,11 +142,9 @@
 
 (show-paren-mode 1)
 
-(global-set-key (kbd "C-m") 'newline-and-indent)
-
 (find-function-setup-keys)
 
-(my:package-install-and-require 'exec-path-from-shell)
+(my/package-install-and-require 'exec-path-from-shell)
 (exec-path-from-shell-initialize)
 
 (dolist (package '(yasnippet))
@@ -349,7 +354,7 @@ SCHEDULED: %t
 
 (require 'org-protocol)
 
-(my:package-install 'helm)
+(my/package-install 'helm)
 (require 'helm-config)
 
 (global-set-key (kbd "C-c h") 'helm-mini)
@@ -609,7 +614,7 @@ SCHEDULED: %t
   (when (not (package-installed-p package))
     (package-install package)))
 
-(my:package-install 'auto-complete)
+(my/package-install 'auto-complete)
 (require 'auto-complete-config)
 (eval-after-load "auto-complete-config"
   '(progn
@@ -627,7 +632,7 @@ SCHEDULED: %t
 
 (add-hook 'emacs-lisp-mode-hook 'outline-minor-mode)
 
-(my:package-install-and-require 'shell-pop)
+(my/package-install-and-require 'shell-pop)
 
 (custom-set-variables
  '(shell-pop-autocd-to-working-dir nil)
@@ -927,11 +932,6 @@ SCHEDULED: %t
 (add-hook 'after-change-major-mode-hook 'clean-mode-line)
 
 ;;; 80-clean-mode-line.el ends here
-
-;バッファのフォントサイズを大きく
-(global-set-key (kbd "<prior>") 'text-scale-increase)
-;バッファのフォントサイズを小さく
-(global-set-key (kbd "<next>")  'text-scale-decrease)
 
 (global-set-key (kbd "C-x C-b") 'ibuffer)
 
