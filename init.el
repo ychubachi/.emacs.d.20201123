@@ -60,6 +60,10 @@
 
 (setq outline-minor-mode-prefix "")
 
+(require 'wdired)
+(define-key dired-mode-map "r"
+  'wdired-change-to-wdired-mode)
+
 (global-set-key "\C-h" 'delete-backward-char)
 (global-set-key (kbd "C-c C-h") 'help-command)
 

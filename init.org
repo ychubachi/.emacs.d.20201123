@@ -309,6 +309,20 @@
   (setq outline-minor-mode-prefix "")
 #+end_src
 
+** ファイル名のリネーム
+
+diredモードで r キーを押すと編集モードに入る．
+完了したらC-c C-cで決定．C-c ESCでキャンセル．
+
+#+begin_src emacs-lisp
+  (require 'wdired)
+  (define-key dired-mode-map "r"
+    'wdired-change-to-wdired-mode)
+#+end_src
+
+#+RESULTS:
+: wdired-change-to-wdired-mode
+
 * キーバインディング
 ** DELキーをBSにする
 
