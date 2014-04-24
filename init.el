@@ -626,8 +626,8 @@ SCHEDULED: %t
 
     (setq mu4e-maildir "~/Maildir")
     (setq mu4e-drafts-folder "/[Gmail].下書き")
-    (setq mu4e-sent-folder   "/[Gmail].送信済みメール") ;
-    (setq mu4e-trash-folder  "/[Gmail].ゴミ箱") ;
+    (setq mu4e-sent-folder   "/[Gmail].送信済みメール")
+    (setq mu4e-trash-folder  "/[Gmail].ゴミ箱")
 
     ;; don't save message to Sent Messages, Gmail/IMAP takes care of this
     (setq mu4e-sent-messages-behavior 'delete)
@@ -641,8 +641,10 @@ SCHEDULED: %t
           '( ("/INBOX"                  . ?i)
              ("/[Gmail].スター付き"     . ?*)
              ("/[Gmail].送信済みメール" . ?s)
+             ("/[Gmail].下書き"         . ?d)
+             ("/[Gmail].すべてのメール" . ?a)
              ("/[Gmail].ゴミ箱"         . ?t)
-             ("/[Gmail].すべてのメール" . ?a)))
+             ("/[Gmail].迷惑メール"     . ?j)))
 
     ;; allow for updating mail using 'U' in the main view:
     ;; I have this running in the background anyway
@@ -677,7 +679,7 @@ SCHEDULED: %t
     (when (fboundp 'imagemagick-register-types)
       (imagemagick-register-types))
 
-    ;;; message view action
+;;; message view action
     (defun mu4e-msgv-action-view-in-browser (msg)
       "View the body of the message in a web browser."
       (interactive)
@@ -700,9 +702,9 @@ SCHEDULED: %t
 
     ;; need this to convert some e-mails properly
     (setq mu4e-html2text-command "html2text -utf8 -width 72")
-  )
+    )
   (mu4e)
-)
+  )
 
 (defalias 'org-mail 'org-mu4e-compose-org-mode)
 
