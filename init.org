@@ -806,8 +806,7 @@ diredモードで r キーを押すと編集モードに入る．
 #+begin_src emacs-lisp
 (custom-set-variables
  '(org-export-in-background nil)
- '(org-src-fontify-natively t)
- '(org-tag-alist (quote (("@HOME" . 104) ("@OFFICE" . 111) ("MAIL" . 109) ("WEB" . 119) ("PHONE" . 112)))))
+ '(org-src-fontify-natively t))
 #+end_src
 
 ** Shellのコードの実行にbashを使う

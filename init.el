@@ -246,8 +246,7 @@ SCHEDULED: %t
 
 (custom-set-variables
  '(org-export-in-background nil)
- '(org-src-fontify-natively t)
- '(org-tag-alist (quote (("@HOME" . 104) ("@OFFICE" . 111) ("MAIL" . 109) ("WEB" . 119) ("PHONE" . 112)))))
+ '(org-src-fontify-natively t))
 
 (setq org-babel-sh-command "bash")
 
@@ -567,37 +566,40 @@ SCHEDULED: %t
 
 (require 'magit)
 
-;; ================================================================
-;; パッケージのインストール
-;; ================================================================
-(dolist (package '(mew))
-  (when (not (package-installed-p package))
-    (package-install package)))
+(my/package-install-and-require 'mew)
 
 (autoload 'mew "mew" nil t)
 (autoload 'mew-send "mew" nil t)
 
-;; ================================================================
-;; Mewの設定
-;; ================================================================
+;; Optional setup (Read Mail menu):
+(setq read-mail-command 'mew)
 
-; Stunnel
+;; Optional setup (e.g. C-xm for sending a message):
+(autoload 'mew-user-agent-compose "mew" nil t)
+(if (boundp 'mail-user-agent)
+    (setq mail-user-agent 'mew-user-agent))
+(if (fboundp 'define-mail-user-agent)
+    (define-mail-user-agent
+      'mew-user-agent
+      'mew-user-agent-compose
+      'mew-draft-send-message
+      'mew-draft-kill
+      'mew-send-hook))
+
+;; To use local mailbox "mbox" or "maildir" instead of POP
+(setq mew-mailbox-type 'maildir)
+(setq mew-mbox-command "incm")
+(setq mew-mbox-command-arg "-u -d ~/Maildir")
+;; If /path/to/mbox is a file, it means "mbox".
+;; If /path/to/mbox is a directory, it means "maildir".
+
 (setq mew-prog-ssl "/usr/bin/stunnel4")
 
-; IMAP for Gmail
-(setq mew-proto "%")
-(setq mew-imap-server "imap.gmail.com")
-(setq mew-imap-user "yoshihide.chubachi@gmail.com")
-(setq mew-imap-auth  t)
-(setq mew-imap-ssl t)
-(setq mew-imap-ssl-port "993")
 (setq mew-smtp-auth t)
 (setq mew-smtp-ssl t)
 (setq mew-smtp-ssl-port "465")
 (setq mew-smtp-user "yoshihide.chubachi@gmail.com")
 (setq mew-smtp-server "smtp.gmail.com")
-(setq mew-fcc "%[Gmail]/送信済みメール") ; 送信メイルを保存する
-(setq mew-imap-trash-folder "%[Gmail]/すべてのメール")
 
 (setq mew-use-cached-passwd t)
 ;(setq mew-use-master-passwd t)
@@ -610,6 +612,99 @@ SCHEDULED: %t
   (error (message "%s" "mew-w3m: Plase install w3m")))
 
 (setq mew-prog-pdf '("evince" nil t))
+
+(defun email ()
+  (interactive)
+
+  (when (not (featurep 'mu4e))
+    (add-to-list 'load-path "/usr/local/share/emacs/site-lisp/mu4e/")
+
+    (require 'mu4e)
+    (require 'org-mu4e)
+
+    ;; defaults
+
+    (setq mu4e-maildir "~/Maildir")
+    (setq mu4e-drafts-folder "/[Gmail].下書き")
+    (setq mu4e-sent-folder   "/[Gmail].送信済みメール") ;
+    (setq mu4e-trash-folder  "/[Gmail].ゴミ箱") ;
+
+    ;; don't save message to Sent Messages, Gmail/IMAP takes care of this
+    (setq mu4e-sent-messages-behavior 'delete)
+
+    ;; setup some handy shortcuts
+    ;; you can quickly switch to your Inbox -- press ``ji''
+    ;; then, when you want archive some messages, move them to
+    ;; the 'All Mail' folder by pressing ``ma''.
+
+    (setq mu4e-maildir-shortcuts
+          '( ("/INBOX"                  . ?i)
+             ("/[Gmail].スター付き"     . ?*)
+             ("/[Gmail].送信済みメール" . ?s)
+             ("/[Gmail].ゴミ箱"         . ?t)
+             ("/[Gmail].すべてのメール" . ?a)))
+
+    ;; allow for updating mail using 'U' in the main view:
+    ;; I have this running in the background anyway
+    (setq mu4e-get-mail-command "offlineimap")
+
+    ;; something about ourselves
+    (setq
+     user-mail-address "yc@aiit.ac.jp"
+     user-full-name  "Yoshihide Chubachi"
+     message-signature nil)
+
+    ;; sending mail -- replace USERNAME with your gmail username
+    ;; also, make sure the gnutls command line utils are installed
+    ;; package 'gnutls-bin' in Debian/Ubuntu
+
+    (require 'smtpmail)
+
+    ;; alternatively, for emacs-24 you can use:
+    (setq message-send-mail-function 'smtpmail-send-it
+          smtpmail-stream-type 'starttls
+          smtpmail-default-smtp-server "smtp.gmail.com"
+          smtpmail-smtp-server "smtp.gmail.com"
+          smtpmail-smtp-service 587)
+
+    ;; don't keep message buffers around
+    (setq message-kill-buffer-on-exit t)
+
+    ;; show images
+    (setq mu4e-show-images t)
+
+    ;; use imagemagick, if available
+    (when (fboundp 'imagemagick-register-types)
+      (imagemagick-register-types))
+
+    ;;; message view action
+    (defun mu4e-msgv-action-view-in-browser (msg)
+      "View the body of the message in a web browser."
+      (interactive)
+      (let ((html (mu4e-msg-field (mu4e-message-at-point t) :body-html))
+            (tmpfile (format "%s/%d.html" temporary-file-directory (random))))
+        (unless html (error "No html part for this message"))
+        (with-temp-file tmpfile
+          (insert
+           "<html>"
+           "<head><meta http-equiv=\"content-type\""
+           "content=\"text/html;charset=UTF-8\">"
+           html))
+        (browse-url (concat "file://" tmpfile))))
+
+    (add-to-list 'mu4e-view-actions
+                 '("View in browser" . mu4e-msgv-action-view-in-browser) t)
+
+    ;; convert org mode to HTML automatically
+    (setq org-mu4e-convert-to-html t)
+
+    ;; need this to convert some e-mails properly
+    (setq mu4e-html2text-command "html2text -utf8 -width 72")
+  )
+  (mu4e)
+)
+
+(defalias 'org-mail 'org-mu4e-compose-org-mode)
 
 ;; ================================================================
 ;; パッケージのインストール
