@@ -28,7 +28,7 @@
     - [[http://www.gnu.org/software/emacs/manual/html_node/emacs/Init-Syntax.html#Init-Syntax][Init Syntax - GNU Emacs Manual]]
       - init fileの文法．
       - 特定の変数は自動的にbuffer localになる．
-	- この場合はset-defaultを使うこと．
+        - この場合はset-defaultを使うこと．
 
 ** カスタマイズ
   - custom.elを最後に読むので，ここでの設定を上書きできます．
@@ -121,11 +121,11 @@
 
 #+begin_src emacs-lisp
     (add-hook 'after-init-hook
-	      (lambda ()
-		(setq custom-file "~/.emacs.d/custom.el")
-		(if (file-exists-p (expand-file-name custom-file))
-		    (load (expand-file-name custom-file)))
-		(message "%s" "%% custom.elを読み込みました %%")))
+              (lambda ()
+                (setq custom-file "~/.emacs.d/custom.el")
+                (if (file-exists-p (expand-file-name custom-file))
+                    (load (expand-file-name custom-file)))
+                (message "%s" "%% custom.elを読み込みました %%")))
 #+end_src
 
 #+RESULTS:
@@ -165,15 +165,15 @@
     (normal-top-level-add-subdirs-to-load-path))
 #+end_src
 
-** バックアップ保存場所の設定					   :files.el:
+** バックアップ保存場所の設定                                      :files.el:
 - 全てのファイルのバックアップを~/.emacs.d/data/backup/以下に保存します．
 - この項目はcustom.elでも設定可能．
 
 #+begin_src emacs-lisp
   (setq auto-save-file-name-transforms
-	(quote ((".*" "~/.emacs.d/data/backup/" t))))
+        (quote ((".*" "~/.emacs.d/data/backup/" t))))
   (setq backup-directory-alist
-	(quote (("\\.*$" . "~/.emacs.d/data/backup"))))
+        (quote (("\\.*$" . "~/.emacs.d/data/backup"))))
 #+end_src
 
 #+RESULTS:
@@ -186,30 +186,30 @@
 
 #+begin_src emacs-lisp
   (setq bookmark-default-file
-	"~/.emacs.d/data/bookmarks")
+        "~/.emacs.d/data/bookmarks")
 #+end_src
 
-** ファイルの自動再読み込み				      :autorevert.el:
+** ファイルの自動再読み込み                                   :autorevert.el:
    Emacsの外でファイルが更新されたら，自動的にバッファを再読込する．
 
 #+begin_src emacs-lisp
   (global-auto-revert-mode 1)
 #+end_src
 
-** スタートアップスクリーン					 :startup.el:
+** スタートアップスクリーン                                      :startup.el:
 
 #+begin_src emacs-lisp
   (setq inhibit-startup-screen t)
 #+end_src
 
-** 自動保存							 :startup.el:
+** 自動保存                                                      :startup.el:
 
 #+begin_src emacs-lisp
   (setq auto-save-list-file-prefix
-	"~/data/auto-save-list/.saves-")
+        "~/data/auto-save-list/.saves-")
 #+end_src
 
-** カッコの対応を表示						   :paren.el:
+** カッコの対応を表示                                              :paren.el:
 
 #+begin_src emacs-lisp
   (show-paren-mode 1)
@@ -218,7 +218,7 @@
 #+RESULTS:
 : t
 
-** 不要な行末の空白を削除				      :whitespace.el:
+** 不要な行末の空白を削除                                     :whitespace.el:
 
 - 保存する前に，不要な空白を取り除きます．
 - 参考
@@ -233,7 +233,7 @@
 #+RESULTS:
 | auto-cleanup |
 
-** フレームの表題							  :C:
+** フレームの表題                                                         :C:
 
 | 変数名          | 内容                         |
 |-----------------+------------------------------|
@@ -243,10 +243,10 @@
 
 #+begin_src emacs-lisp
   (setq frame-title-format
-	(format "%%f - Emacs@%s" (system-name)))
+        (format "%%f - Emacs@%s" (system-name)))
 #+end_src
 
-** 行番号・列番号をモードラインに表示				  :simple.el:
+** 行番号・列番号をモードラインに表示                             :simple.el:
 
 モードラインに(24, 20)といった形式で，カーソルのある行と列を表示します．
 
@@ -257,7 +257,7 @@
 #+RESULTS:
 : t
 
-** 時刻の表示							    :time.el:
+** 時刻の表示                                                       :time.el:
 - http://www.emacswiki.org/emacs/DisplayTime
 
 モードラインの時刻を24時間表示にします．ロードアベレージは表示させません．
@@ -270,7 +270,7 @@
 
 #+RESULTS:
 
-** コメントのフォントを立体にする			       :font-lock.el:
+** コメントのフォントを立体にする                              :font-lock.el:
 - [[http://ja.wikipedia.org/wiki/%E7%AB%8B%E4%BD%93%E6%B4%BB%E5%AD%97][立体活字 - Wikipedia]]
 
 #+begin_src emacs-lisp
@@ -278,7 +278,7 @@
  '(font-lock-comment-face ((t (:foreground "chocolate1" :slant normal)))))
 #+end_src
 
-** マウス操作							   :mouse.el:
+** マウス操作                                                      :mouse.el:
 
 マウスの中ボタンでペーストする位置を変更します．
 標準ではクリックした位置にペーストされるので，
@@ -294,13 +294,13 @@
   (setq mouse-drag-copy-region t)
 #+end_src
 
-** コンパイル							 :compile.el:
+** コンパイル                                                    :compile.el:
 
 #+begin_src emacs-lisp
  (setq compilation-ask-about-save nil)
 #+end_src
 
-** アウトラインモードのプリフィックス				 :outline.el:
+** アウトラインモードのプリフィックス                            :outline.el:
 
 アウトラインマイナーモードのプリフィックスは，標準で C-c @ です．
 これでは使いづらいので，変更します．
@@ -354,10 +354,10 @@ diredモードで r キーを押すと編集モードに入る．
 #+begin_src emacs-lisp
   (require 'package)
   (setq package-archives
-	'(("org" .       "http://orgmode.org/elpa/")
-	  ("gnu" .       "http://elpa.gnu.org/packages/")
-	  ("marmalade" . "http://marmalade-repo.org/packages/")
-	  ("melpa" .     "http://melpa.milkbox.net/packages/")))
+        '(("org" .       "http://orgmode.org/elpa/")
+          ("gnu" .       "http://elpa.gnu.org/packages/")
+          ("marmalade" . "http://marmalade-repo.org/packages/")
+          ("melpa" .     "http://melpa.milkbox.net/packages/")))
   (package-initialize)
 #+end_src
 
@@ -376,7 +376,7 @@ diredモードで r キーを押すと編集モードに入る．
 #+begin_src emacs-lisp
     (defun my/package-install (package-symbol)
       (unless (package-installed-p package-symbol)
-	(package-install package-symbol)))
+        (package-install package-symbol)))
 
     (defun my/package-install-and-require (package-symbol)
       (my/package-install package-symbol)
@@ -398,7 +398,7 @@ diredモードで r キーを押すと編集モードに入る．
 ｰ Fontに関する調査
   - [[file:test.org::*Emacs%E3%81%AE%E3%83%95%E3%82%A9%E3%83%B3%E3%83%88%E3%81%AE%E3%81%8A%E8%A9%B1][Emacsのフォントのお話]]
 
-*** Rictyの設定							     :custom:
+*** Rictyの設定                                                      :custom:
 
 - この値はcustomize可能です．
 
@@ -447,9 +447,9 @@ diredモードで r キーを押すと編集モードに入る．
 
 #+begin_src emacs-lisp
   (add-hook 'input-method-activate-hook
-	    '(lambda () (set-cursor-color "green")))
+            '(lambda () (set-cursor-color "green")))
   (add-hook 'input-method-inactivate-hook
-	    '(lambda () (set-cursor-color "orchid")))
+            '(lambda () (set-cursor-color "orchid")))
 #+end_src
 
 ** LinuxでのMozcの設定
@@ -598,7 +598,7 @@ diredモードで r キーを押すと編集モードに入る．
 
 #+begin_src emacs-lisp
   (when (and (executable-find "cmigemo")
-	     (require 'migemo nil t))
+             (require 'migemo nil t))
     (setq migemo-options '("-q" "--emacs"))
 
     (setq migemo-user-dictionary nil)
@@ -673,30 +673,30 @@ diredモードで r キーを押すと編集モードに入る．
 
 #+begin_src emacs-lisp
     (setq org-capture-templates
-	  (quote
-	   (("t" "Todo" entry (file+headline "todo.org" "Tasks")
-	     "* TODO [#B] %?
+          (quote
+           (("t" "Todo" entry (file+headline "todo.org" "Tasks")
+             "* TODO [#B] %?
   SCHEDULED: %t
   ")
-	    ("l" "Link as Todo" entry (file+headline "todo.org" "Tasks")
-	     "* TODO [#B] %a
+            ("l" "Link as Todo" entry (file+headline "todo.org" "Tasks")
+             "* TODO [#B] %a
   SCHEDULED: %t
   　引用: %i
   %?
   ")
-	    ("j" "Journal" entry (file+datetree "journal.org")
-	     "* %?
+            ("j" "Journal" entry (file+datetree "journal.org")
+             "* %?
   作成日: %U
   　引用: %i
   リンク: %a
   ")
-	    ("b" "Bookmark" entry (file+headline "bookmark.org" "Bookmarks")
-	     "* TODO [#B] %a :bookmark:
+            ("b" "Bookmark" entry (file+headline "bookmark.org" "Bookmarks")
+             "* TODO [#B] %a :bookmark:
   SCHEDULED: %t
   　引用: %i
   %?
   ")
-	    )))
+            )))
 #+end_src
 
 ** Mobile Org関連
@@ -720,12 +720,12 @@ diredモードで r キーを押すと編集モードに入る．
 
 #+begin_src emacs-lisp
   (setq org-babel-load-languages
-	(quote
-	 ((emacs-lisp . t)
-	  (dot . t)
-	  (java . t)
-	  (ruby . t)
-	  (sh . t))))
+        (quote
+         ((emacs-lisp . t)
+          (dot . t)
+          (java . t)
+          (ruby . t)
+          (sh . t))))
 #+end_src
 
 #+RESULTS:
@@ -744,13 +744,13 @@ diredモードで r キーを押すと編集モードに入る．
 
 #+begin_src emacs-lisp
   (setq org-agenda-custom-commands
-	(quote
-	 (("x" "TODOs without Scheduled" tags-todo "+SCHEDULED=\"\"" nil)
-	  ("d" "TODOs without Deadline" tags-todo "+DEADLINE=\"\"" nil)
-	  ("p" "私用" tags-todo "+私用" nil)
-	  ("P" "私用以外" tags-todo "-私用" nil)
-	  ("n" "Agenda and all TODO's" ((agenda "" nil)
-					(alltodo "" nil)) nil))))
+        (quote
+         (("x" "TODOs without Scheduled" tags-todo "+SCHEDULED=\"\"" nil)
+          ("d" "TODOs without Deadline" tags-todo "+DEADLINE=\"\"" nil)
+          ("p" "私用" tags-todo "+私用" nil)
+          ("P" "私用以外" tags-todo "-私用" nil)
+          ("n" "Agenda and all TODO's" ((agenda "" nil)
+                                        (alltodo "" nil)) nil))))
 #+end_src
 
 #+RESULTS:
@@ -844,10 +844,10 @@ diredモードで r キーを押すと編集モードに入る．
 
 #+begin_src emacs-lisp
   (when (or
-	 (eq system-type 'gnu/linux)
-	 (eq system-type 'darwin))
+         (eq system-type 'gnu/linux)
+         (eq system-type 'darwin))
     (setq org-latex-pdf-process
-	  '("latexmk -e '$latex=q/platex %S/' -e '$bibtex=q/pbibtex %B/' -e '$makeindex=q/mendex -o %D %S/' -e '$dvipdf=q/dvipdfmx -o %D %S/' -norc -gg -pdfdvi %f"))
+          '("latexmk -e '$latex=q/platex %S/' -e '$bibtex=q/pbibtex %B/' -e '$makeindex=q/mendex -o %D %S/' -e '$dvipdf=q/dvipdfmx -o %D %S/' -norc -gg -pdfdvi %f"))
     )
 #+end_src
 
@@ -859,8 +859,8 @@ diredモードで r キーを押すと編集モードに入る．
 #+begin_src emacs-lisp
   (setq org-latex-default-class "jsarticle")
   (add-to-list 'org-latex-classes
-	       '("jsarticle"
-		 "\\ifdefined\\ucs
+               '("jsarticle"
+                 "\\ifdefined\\ucs
     \\documentclass[uplatex,12pt,a4paper,papersize,dvipdfmx]{jsarticle}
   \\else
     \\documentclass[12pt,a4paper,papersize,dvipdfmx]{jsarticle}
@@ -872,11 +872,11 @@ diredモードで r キーを押すと編集モードに入る．
   \\usepackage{hyperref}
   \\usepackage{pxjahyper}
   \\hypersetup{setpagesize=false,colorlinks=true}"
-		 ("\\section{%s}" . "\\section*{%s}")
-		 ("\\subsection{%s}" . "\\subsection*{%s}")
-		 ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
-		 ("\\paragraph{%s}" . "\\paragraph*{%s}")
-		 ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
+                 ("\\section{%s}" . "\\section*{%s}")
+                 ("\\subsection{%s}" . "\\subsection*{%s}")
+                 ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+                 ("\\paragraph{%s}" . "\\paragraph*{%s}")
+                 ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
 #+end_src
 
 #+RESULTS:
@@ -898,8 +898,8 @@ diredモードで r キーを押すと編集モードに入る．
 
 #+begin_src emacs-lisp
 (add-to-list 'org-latex-classes
-	     '("beamer"
-	       "\\documentclass[dvipdfmx]{beamer}
+             '("beamer"
+               "\\documentclass[dvipdfmx]{beamer}
 [NO-DEFAULT-PACKAGES]
 \\usepackage{bxdpx-beamer}
 \\usepackage{pxjahyper}
@@ -911,11 +911,11 @@ diredモードで r キーを押すと編集モードに入る．
   \\tableofcontents[currentsection,currentsubsection]
   \\end{frame}
 }"
-	       ("\\section{%s}" . "\\section*{%s}")
-	       ("\\subsection{%s}" . "\\subsection*{%s}")
-	       ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
-	       ("\\paragraph{%s}" . "\\paragraph*{%s}")
-	       ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
+               ("\\section{%s}" . "\\section*{%s}")
+               ("\\subsection{%s}" . "\\subsection*{%s}")
+               ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+               ("\\paragraph{%s}" . "\\paragraph*{%s}")
+               ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
 #+end_src
 
 #+RESULTS:
@@ -926,7 +926,7 @@ diredモードで r キーを押すと編集モードに入る．
 | report    | \documentclass[11pt]{report}                                                                                                                                                                                                                                                                                                                                        | (\part{%s} . \part*{%s})       | (\chapter{%s} . \chapter*{%s})       | (\section{%s} . \section*{%s})             | (\subsection{%s} . \subsection*{%s}) | (\subsubsection{%s} . \subsubsection*{%s}) |
 | book      | \documentclass[11pt]{book}                                                                                                                                                                                                                                                                                                                                          | (\part{%s} . \part*{%s})       | (\chapter{%s} . \chapter*{%s})       | (\section{%s} . \section*{%s})             | (\subsection{%s} . \subsection*{%s}) | (\subsubsection{%s} . \subsubsection*{%s}) |
 
-** TODO WebにHTMLでPublishする					       :個人設定:
+** TODO WebにHTMLでPublishする                                         :個人設定:
    :PROPERTIES:
    :ID:       fcdb09c8-3a9a-4ea9-9482-10d445b6db9f
    :END:
@@ -935,32 +935,32 @@ diredモードで r キーを押すと編集モードに入る．
 #+begin_src emacs-lisp
 (setq org-publish-project-alist
       '(
-	("chubachi.net-notes"
-	 :base-directory "~/Ubuntu One/WebSites/chubachi.net/org/"
-	 :base-extension "org"
-	 :publishing-directory "~/Ubuntu One/WebSites/chubachi.net/www/"
-	 :publishing-function org-html-publish-to-html
-	 ;; :headline-levels 3
-	 ;; :section-numbers nil
-	 ;; :with-toc nil
-	 ;; :html-head "<link rel=\"stylesheet\"
-	 ;;               href=\"../other/mystyle.css\" type=\"text/css\"/>"
-	 ;; :html-preamble t
-	 :recursive t
-	 )
-	("chubachi.net-static"
-	 :base-directory "~/Ubuntu One/WebSites/chubachi.net/org/"
-	 :base-extension "css\\|js\\|png\\|jpg\\|gif\\|pdf\\|mp3\\|ogg\\|swf"
-	 :publishing-directory "~/Ubuntu One/WebSites/chubachi.net/www/"
-	 :recursive t
-	 :publishing-function org-publish-attachment
-	 )
-	("chubachi.net"
-	 :components ("chubachi.net-notes" "chubachi.net-static"))
+        ("chubachi.net-notes"
+         :base-directory "~/Ubuntu One/WebSites/chubachi.net/org/"
+         :base-extension "org"
+         :publishing-directory "~/Ubuntu One/WebSites/chubachi.net/www/"
+         :publishing-function org-html-publish-to-html
+         ;; :headline-levels 3
+         ;; :section-numbers nil
+         ;; :with-toc nil
+         ;; :html-head "<link rel=\"stylesheet\"
+         ;;               href=\"../other/mystyle.css\" type=\"text/css\"/>"
+         ;; :html-preamble t
+         :recursive t
+         )
+        ("chubachi.net-static"
+         :base-directory "~/Ubuntu One/WebSites/chubachi.net/org/"
+         :base-extension "css\\|js\\|png\\|jpg\\|gif\\|pdf\\|mp3\\|ogg\\|swf"
+         :publishing-directory "~/Ubuntu One/WebSites/chubachi.net/www/"
+         :recursive t
+         :publishing-function org-publish-attachment
+         )
+        ("chubachi.net"
+         :components ("chubachi.net-notes" "chubachi.net-static"))
       ))
 #+end_src
 
-** WordPressに記事を投稿（org2blog）				       :個人設定:
+** WordPressに記事を投稿（org2blog）                                   :個人設定:
   :PROPERTIES:
   :ID:       o2b:83d5ddbc-5e84-446c-826a-a2702eb6b997
   :POST_DATE: [2013-12-28 土 19:16]
@@ -1007,12 +1007,12 @@ diredモードで r キーを押すと編集モードに入る．
 #+begin_src emacs-lisp
 (setq org2blog/wp-blog-alist
       '(("blog.chubachi.net"
-	 :url "http://blog.chubachi.net/xmlrpc.php"
-	 :username "yc"
-	 :default-title "Emacs title"
-	 :default-categories ("org2blog" "emacs")
-	 :tags-as-categories nil)
-	))
+         :url "http://blog.chubachi.net/xmlrpc.php"
+         :username "yc"
+         :default-title "Emacs title"
+         :default-categories ("org2blog" "emacs")
+         :tags-as-categories nil)
+        ))
 #+end_src
 
 
@@ -1106,10 +1106,10 @@ C-h でバックスペースと同じように文字を削除できるように�
 
 #+begin_src emacs-lisp
 (dolist (package '(helm-descbinds
-		   helm-migemo
-		   helm-themes
-		   imenu-anywhere
-		   helm-c-yasnippet))
+                   helm-migemo
+                   helm-themes
+                   imenu-anywhere
+                   helm-c-yasnippet))
   (when (not (package-installed-p package))
     (package-install package)))
 #+end_src
@@ -1136,13 +1136,13 @@ C-h でバックスペースと同じように文字を削除できるように�
       (around ad-helm-apropos activate)
       "候補が表示されないときがあるので migemoらないように設定."
       (let ((helm-use-migemo nil))
-	ad-do-it))
+        ad-do-it))
 
     (defadvice helm-M-x
       (around ad-helm-M-x activate)
       "候補が表示されないときがあるので migemoらないように設定."
       (let ((helm-use-migemo nil))
-	ad-do-it))
+        ad-do-it))
     )
 #+end_src
 
@@ -1185,11 +1185,11 @@ C-h でバックスペースと同じように文字を削除できるように�
   (eval-after-load "org"
     '(progn
        (smartrep-define-key
-	   org-mode-map
-	   "C-c" '(("C-n" . (lambda ()
-			      (outline-next-visible-heading 1)))
-		   ("C-p" . (lambda ()
-			      (outline-previous-visible-heading 1)))))
+           org-mode-map
+           "C-c" '(("C-n" . (lambda ()
+                              (outline-next-visible-heading 1)))
+                   ("C-p" . (lambda ()
+                              (outline-previous-visible-heading 1)))))
        ))
 #+end_src
 
@@ -1212,7 +1212,7 @@ C-h でバックスペースと同じように文字を削除できるように�
 
 #+begin_src emacs-lisp
   (add-hook 'markdown-mode-hook
-	    '(lambda () (outline-minor-mode t)))
+            '(lambda () (outline-minor-mode t)))
 #+end_src
 
 * MediaWiki
@@ -1249,7 +1249,7 @@ C-h でバックスペースと同じように文字を削除できるように�
      nil
      'fullscreen
      (if (frame-parameter nil 'fullscreen)
-	 nil
+         nil
        'fullboth)))
 
   (defun my/open-init-folder()
@@ -1289,19 +1289,19 @@ C-h でバックスペースと同じように文字を削除できるように�
   ;; グローバルマップの設定(helm)
   ;; ================================================================
   (let ((key-and-func
-	 `(
-	   (,(kbd "M-x")     helm-M-x)
-	   (,(kbd "M-y")     helm-show-kill-ring)
-	   (,(kbd "C-x C-f") helm-find-files)
+         `(
+           (,(kbd "M-x")     helm-M-x)
+           (,(kbd "M-y")     helm-show-kill-ring)
+           (,(kbd "C-x C-f") helm-find-files)
   ;;         (,(kbd "C-r")   helm-for-files)
   ;;         (,(kbd "C-^")   helm-c-apropos)
   ;;         (,(kbd "C-;")   helm-resume)
   ;;         (,(kbd "M-s")   helm-occur)
   ;;         (,(kbd "M-z")   helm-do-grep)
   ;;         (,(kbd "C-S-h") helm-descbinds)
-	   )))
+           )))
     (loop for (key func) in key-and-func
-	  do (global-set-key key func)))
+          do (global-set-key key func)))
 
 #+end_src
 
@@ -1332,9 +1332,9 @@ C-h でバックスペースと同じように文字を削除できるように�
   (define-key 'personal-map (kbd "b") 'org-beamer-export-to-pdf)
 
   (cond ((eq system-type 'gnu/linux)
-	 (define-key 'personal-map (kbd "p") 'evince-forward-search))
-	((eq system-type 'darwin)
-	 (define-key 'personal-map (kbd "p") 'skim-forward-search)))
+         (define-key 'personal-map (kbd "p") 'evince-forward-search))
+        ((eq system-type 'darwin)
+         (define-key 'personal-map (kbd "p") 'skim-forward-search)))
 
   ;; ================================================================
   ;; リージョンがある間のキーバインディングを変更する
@@ -1370,114 +1370,25 @@ C-h でバックスペースと同じように文字を削除できるように�
 
 (require 'magit)
 #+end_src
-* Mew
-** 説明
-
-- [[http://www.mew.org/ja/info/release/index.html#Top][Mew 6.3 マニュアル]]
-
-** パッケージのインストール
-
-- sudo apt-get install mew-bin
-
-#+begin_src emacs-lisp
-(my/package-install-and-require 'mew)
-
-(autoload 'mew "mew" nil t)
-(autoload 'mew-send "mew" nil t)
-
-;; Optional setup (Read Mail menu):
-(setq read-mail-command 'mew)
-
-;; Optional setup (e.g. C-xm for sending a message):
-(autoload 'mew-user-agent-compose "mew" nil t)
-(if (boundp 'mail-user-agent)
-    (setq mail-user-agent 'mew-user-agent))
-(if (fboundp 'define-mail-user-agent)
-    (define-mail-user-agent
-      'mew-user-agent
-      'mew-user-agent-compose
-      'mew-draft-send-message
-      'mew-draft-kill
-      'mew-send-hook))
-#+end_src
-
-#+RESULTS:
-: mew-send-hook
-
-** ローカルのメールボックスを利用
-
-#+begin_src emacs-lisp
-;; To use local mailbox "mbox" or "maildir" instead of POP
-(setq mew-mailbox-type 'maildir)
-(setq mew-mbox-command "incm")
-(setq mew-mbox-command-arg "-u -d ~/Maildir")
-;; If /path/to/mbox is a file, it means "mbox".
-;; If /path/to/mbox is a directory, it means "maildir".
-#+end_src
-
-#+RESULTS:
-: -u -d ~/Maildir
-
-
-** Stunnel
-
-#+begin_src emacs-lisp
-(setq mew-prog-ssl "/usr/bin/stunnel4")
-#+end_src
-
-** TODO Gmail imap
-
-  ; IMAP for Gmail
-  ;; (setq mew-proto "%")
-  ;; (setq mew-imap-server "imap.gmail.com")
-  ;; (setq mew-imap-user "yoshihide.chubachi@gmail.com")
-  ;; (setq mew-imap-auth  t)
-  ;; (setq mew-imap-ssl t)
-  ;; (setq mew-imap-ssl-port "993")
-  ;; (setq mew-fcc "%[Gmail]/送信済みメール") ; 送信メイルを保存する
-  ;; (setq mew-imap-trash-folder "%[Gmail]/すべてのメール")
-
-** Gmail SMTP
-#+begin_src emacs-lisp
-  (setq mew-smtp-auth t)
-  (setq mew-smtp-ssl t)
-  (setq mew-smtp-ssl-port "465")
-  (setq mew-smtp-user "yoshihide.chubachi@gmail.com")
-  (setq mew-smtp-server "smtp.gmail.com")
-
-  (setq mew-use-cached-passwd t)
-  ;(setq mew-use-master-passwd t)
-
-  (setq mew-ssl-verify-level 0)
-  ;(setq mew-use-unread-mark t)
-#+end_src
-
-#+RESULTS:
-: 0
-
-** mew-w3m
-
-#+begin_src emacs-lisp
-(condition-case nil
-    (require 'mew-w3m)
-  (error (message "%s" "mew-w3m: Plase install w3m")))
-#+end_src
-
-** mew-prog-pdf
-
-#+begin_src emacs-lisp
-(setq mew-prog-pdf '("evince" nil t))
-#+end_src
-
 * mu4e
-
+** offline imap
 - [[http://docs.offlineimap.org/en/latest/][Welcome to offlineimaps‘s documentation — OfflineImap 6.5.4 documentation]]
-- [[http://www.brool.com/index.php/using-mu4e][Using mu4e | brool]]
-- [[https://github.com/djcb/mu][djcb/mu]]
 - [[http://gihyo.jp/admin/serial/01/ubuntu-recipe/0247?page=1][第247回　Offlineimap＋Dovecotによる快適メール環境：Ubuntu Weekly Recipe｜gihyo.jp … 技術評論社]]
 - [[http://piao-tech.blogspot.jp/2010/03/get-offlineimap-working-with-non-ascii.html][私のTech記憶: Get offlineimap working with non ASCII characters.]]
 
+** mu4e
+- [[http://www.brool.com/index.php/using-mu4e][Using mu4e | brool]]
+- [[https://github.com/djcb/mu][djcb/mu]]
+
 - offlineimapの設定
+- custom.el
+  (user-mail-address "yoshi@chubachi.net")
+  (user-full-name  "Yoshihide Chubachi")
+  (message-signature "Yoshihide Chubachi @AIIT")
+  (smtpmail-smtp-user "yoshihide.chubachi@gmail.com")
+
+- これはよくわからない
+  '(mu4e-user-mail-address-list (quote ("yc@aiit.ac.jp" "yoshi@chubachi.net" "yoshihide.chubachi@gmail.com")))
 
 #+begin_src emacs-lisp
   (defun email ()
@@ -1491,7 +1402,7 @@ C-h でバックスペースと同じように文字を削除できるように�
 
       ;; defaults
 
-      (setq mu4e-maildir "~/Maildir")
+      (setq mu4e-maildir       "~/Maildir")
       (setq mu4e-drafts-folder "/[Gmail].下書き")
       (setq mu4e-sent-folder   "/[Gmail].送信済みメール")
       (setq mu4e-trash-folder  "/[Gmail].ゴミ箱")
@@ -1505,23 +1416,17 @@ C-h でバックスペースと同じように文字を削除できるように�
       ;; the 'All Mail' folder by pressing ``ma''.
 
       (setq mu4e-maildir-shortcuts
-	    '( ("/INBOX"                  . ?i)
-	       ("/[Gmail].スター付き"     . ?*)
-	       ("/[Gmail].送信済みメール" . ?s)
-	       ("/[Gmail].下書き"         . ?d)
-	       ("/[Gmail].すべてのメール" . ?a)
-	       ("/[Gmail].ゴミ箱"         . ?t)
-	       ("/[Gmail].迷惑メール"     . ?j)))
+            '( ("/INBOX"                  . ?i)
+               ("/[Gmail].スター付き"     . ?*)
+               ("/[Gmail].送信済みメール" . ?s)
+               ("/[Gmail].下書き"         . ?d)
+               ("/[Gmail].すべてのメール" . ?a)
+               ("/[Gmail].ゴミ箱"         . ?t)
+               ("/[Gmail].迷惑メール"     . ?j)))
 
       ;; allow for updating mail using 'U' in the main view:
       ;; I have this running in the background anyway
       (setq mu4e-get-mail-command "offlineimap")
-
-      ;; something about ourselves
-      (setq
-       user-mail-address "yc@aiit.ac.jp"
-       user-full-name  "Yoshihide Chubachi"
-       message-signature nil)
 
       ;; sending mail -- replace USERNAME with your gmail username
       ;; also, make sure the gnutls command line utils are installed
@@ -1531,10 +1436,10 @@ C-h でバックスペースと同じように文字を削除できるように�
 
       ;; alternatively, for emacs-24 you can use:
       (setq message-send-mail-function 'smtpmail-send-it
-	    smtpmail-stream-type 'starttls
-	    smtpmail-default-smtp-server "smtp.gmail.com"
-	    smtpmail-smtp-server "smtp.gmail.com"
-	    smtpmail-smtp-service 587)
+            smtpmail-stream-type 'starttls
+            smtpmail-default-smtp-server "smtp.gmail.com"
+            smtpmail-smtp-server "smtp.gmail.com"
+            smtpmail-smtp-service 587)
 
       ;; don't keep message buffers around
       (setq message-kill-buffer-on-exit t)
@@ -1544,25 +1449,25 @@ C-h でバックスペースと同じように文字を削除できるように�
 
       ;; use imagemagick, if available
       (when (fboundp 'imagemagick-register-types)
-	(imagemagick-register-types))
+        (imagemagick-register-types))
 
   ;;; message view action
       (defun mu4e-msgv-action-view-in-browser (msg)
-	"View the body of the message in a web browser."
-	(interactive)
-	(let ((html (mu4e-msg-field (mu4e-message-at-point t) :body-html))
-	      (tmpfile (format "%s/%d.html" temporary-file-directory (random))))
-	  (unless html (error "No html part for this message"))
-	  (with-temp-file tmpfile
-	    (insert
-	     "<html>"
-	     "<head><meta http-equiv=\"content-type\""
-	     "content=\"text/html;charset=UTF-8\">"
-	     html))
-	  (browse-url (concat "file://" tmpfile))))
+        "View the body of the message in a web browser."
+        (interactive)
+        (let ((html (mu4e-msg-field (mu4e-message-at-point t) :body-html))
+              (tmpfile (format "%s/%d.html" temporary-file-directory (random))))
+          (unless html (error "No html part for this message"))
+          (with-temp-file tmpfile
+            (insert
+             "<html>"
+             "<head><meta http-equiv=\"content-type\""
+             "content=\"text/html;charset=UTF-8\">"
+             html))
+          (browse-url (concat "file://" tmpfile))))
 
       (add-to-list 'mu4e-view-actions
-		   '("View in browser" . mu4e-msgv-action-view-in-browser) t)
+                   '("View in browser" . mu4e-msgv-action-view-in-browser) t)
 
       ;; convert org mode to HTML automatically
       (setq org-mu4e-convert-to-html t)
@@ -1597,11 +1502,11 @@ C-h でバックスペースと同じように文字を削除できるように�
     (require 'auto-complete-config)
     (eval-after-load "auto-complete-config"
       '(progn
-	 (message "%s" "%% auto-complete-configを読み込みました. %%")
-	 (ac-config-default)
-	 (setq ac-comphist-file "~/.emacs.d/data/ac-comphist.dat")
-	 (define-key ac-complete-mode-map "\C-n" 'ac-next)
-	 (define-key ac-complete-mode-map "\C-p" 'ac-previous)))
+         (message "%s" "%% auto-complete-configを読み込みました. %%")
+         (ac-config-default)
+         (setq ac-comphist-file "~/.emacs.d/data/ac-comphist.dat")
+         (define-key ac-complete-mode-map "\C-n" 'ac-next)
+         (define-key ac-complete-mode-map "\C-p" 'ac-previous)))
 #+end_src
 
 #+RESULTS:
@@ -1652,7 +1557,7 @@ C-h でバックスペースと同じように文字を削除できるように�
 (dolist (package '(w3m))
   (when (not (package-installed-p package))
     (condition-case nil
-	(package-install package)
+        (package-install package)
       (error (message "%s" "Please Install w3m command")))))
 #+end_src
 
@@ -1670,10 +1575,10 @@ C-h でバックスペースと同じように文字を削除できるように�
   ;; パッケージのインストール
   ;; ================================================================
   (dolist (package '(flymake-ruby
-		     flymake-haml
-		     flymake-sass
-		     flymake-coffee
-		     smart-compile))
+                     flymake-haml
+                     flymake-sass
+                     flymake-coffee
+                     smart-compile))
     (when (not (package-installed-p package))
       (package-install package)))
 
@@ -1697,44 +1602,44 @@ C-h でバックスペースと同じように文字を削除できるように�
 
   (require 'outline)
   (add-hook 'ruby-mode-hook
-	    (function
-	     (lambda ()
-	       (defun ruby-outline-level ()
-		 (or (and (match-string 1)
-			  (or (cdr (assoc (match-string 1) outline-heading-alist))
-			      (- (match-end 1) (match-beginning 1))))
-		     (cdr (assoc (match-string 0) outline-heading-alist))
-		     (- (match-end 0) (match-beginning 0))))
+            (function
+             (lambda ()
+               (defun ruby-outline-level ()
+                 (or (and (match-string 1)
+                          (or (cdr (assoc (match-string 1) outline-heading-alist))
+                              (- (match-end 1) (match-beginning 1))))
+                     (cdr (assoc (match-string 0) outline-heading-alist))
+                     (- (match-end 0) (match-beginning 0))))
 
-	       (set (make-local-variable 'outline-level) 'ruby-outline-level)
+               (set (make-local-variable 'outline-level) 'ruby-outline-level)
 
-	       (set (make-local-variable 'outline-regexp)
-		    (rx (group (* " "))
-			bow
-			(or "begin" "case" "class" "def" "else" "elsif"
-			    "ensure" "if" "module" "rescue" "when" "unless"
-			    "private")
-			eow))
-	       (outline-minor-mode))))
+               (set (make-local-variable 'outline-regexp)
+                    (rx (group (* " "))
+                        bow
+                        (or "begin" "case" "class" "def" "else" "elsif"
+                            "ensure" "if" "module" "rescue" "when" "unless"
+                            "private")
+                        eow))
+               (outline-minor-mode))))
 
   (add-hook 'rspec-mode-hook
-	    (function
-	     (lambda ()
-	       (defun rspec-outline-level ()
-		 (or (and (match-string 1)
-			  (or (cdr (assoc (match-string 1) outline-heading-alist))
-			      (- (match-end 1) (match-beginning 1))))
-		     (cdr (assoc (match-string 0) outline-heading-alist))
-		     (- (match-end 0) (match-beginning 0))))
+            (function
+             (lambda ()
+               (defun rspec-outline-level ()
+                 (or (and (match-string 1)
+                          (or (cdr (assoc (match-string 1) outline-heading-alist))
+                              (- (match-end 1) (match-beginning 1))))
+                     (cdr (assoc (match-string 0) outline-heading-alist))
+                     (- (match-end 0) (match-beginning 0))))
 
-	       (set (make-local-variable 'outline-level) 'rspec-outline-level)
+               (set (make-local-variable 'outline-level) 'rspec-outline-level)
 
-	       (set (make-local-variable 'outline-regexp)
-		    (rx (group (* " "))
-			bow
-			(or "context" "describe" "it" "subject")
-			eow))
-	       (outline-minor-mode))))
+               (set (make-local-variable 'outline-regexp)
+                    (rx (group (* " "))
+                        bow
+                        (or "context" "describe" "it" "subject")
+                        eow))
+               (outline-minor-mode))))
 
   ;; ================================================================
   ;; flymake関係
@@ -1775,24 +1680,24 @@ C-h でバックスペースと同じように文字を削除できるように�
   (define-key ruby-mode-map (kbd "C-c C-c") (kbd "C-c c C-m"))
 
   (setq smart-compile-alist
-	(quote ((emacs-lisp-mode emacs-lisp-byte-compile)
-		(html-mode browse-url-of-buffer)
-		(nxhtml-mode browse-url-of-buffer)
-		(html-helper-mode browse-url-of-buffer)
-		(octave-mode run-octave)
-		("\\.c\\'" . "gcc -O2 %f -lm -o %n")
-		("\\.[Cc]+[Pp]*\\'" . "g++ -O2 %f -lm -o %n")
-		("\\.m\\'" . "gcc -O2 %f -lobjc -lpthread -o %n")
-		("\\.java\\'" . "javac %f")
-		("\\.php\\'" . "php -l %f")
-		("\\.f90\\'" . "gfortran %f -o %n")
-		("\\.[Ff]\\'" . "gfortran %f -o %n")
-		("\\.cron\\(tab\\)?\\'" . "crontab %f")
-		("\\.tex\\'" tex-file)
-		("\\.texi\\'" . "makeinfo %f")
-		("\\.mp\\'" . "mptopdf %f")
-		("\\.pl\\'" . "perl -cw %f")
-		("\\.rb\\'" . "bundle exec ruby %f"))))
+        (quote ((emacs-lisp-mode emacs-lisp-byte-compile)
+                (html-mode browse-url-of-buffer)
+                (nxhtml-mode browse-url-of-buffer)
+                (html-helper-mode browse-url-of-buffer)
+                (octave-mode run-octave)
+                ("\\.c\\'" . "gcc -O2 %f -lm -o %n")
+                ("\\.[Cc]+[Pp]*\\'" . "g++ -O2 %f -lm -o %n")
+                ("\\.m\\'" . "gcc -O2 %f -lobjc -lpthread -o %n")
+                ("\\.java\\'" . "javac %f")
+                ("\\.php\\'" . "php -l %f")
+                ("\\.f90\\'" . "gfortran %f -o %n")
+                ("\\.[Ff]\\'" . "gfortran %f -o %n")
+                ("\\.cron\\(tab\\)?\\'" . "crontab %f")
+                ("\\.tex\\'" tex-file)
+                ("\\.texi\\'" . "makeinfo %f")
+                ("\\.mp\\'" . "mptopdf %f")
+                ("\\.pl\\'" . "perl -cw %f")
+                ("\\.rb\\'" . "bundle exec ruby %f"))))
 
   ;; ================================================================
   ;; Emacsで保存時にFirefoxのタブを探してリロード - Qiita [キータ]
@@ -1811,9 +1716,9 @@ C-h でバックスペースと同じように文字を削除できるように�
     (shell-command "rake yard"))
 
   (define-key ruby-mode-map (kbd "C-c y") (lambda ()
-					    (interactive)
-					    (my/run-rake-yard)
-					    (my/reload-firefox)))
+                                            (interactive)
+                                            (my/run-rake-yard)
+                                            (my/reload-firefox)))
 #+end_src
 
 * PHP
@@ -1836,11 +1741,11 @@ C-h でバックスペースと同じように文字を削除できるように�
 (autoload 'yatex-mode "yatex" "Yet Another LaTeX mode" t)
 (setq auto-mode-alist
       (append '(("\\.tex$" . yatex-mode)
-		("\\.ltx$" . yatex-mode)
-		("\\.cls$" . yatex-mode)
-		("\\.sty$" . yatex-mode)
-		("\\.clo$" . yatex-mode)
-		("\\.bbl$" . yatex-mode)) auto-mode-alist))
+                ("\\.ltx$" . yatex-mode)
+                ("\\.cls$" . yatex-mode)
+                ("\\.sty$" . yatex-mode)
+                ("\\.clo$" . yatex-mode)
+                ("\\.bbl$" . yatex-mode)) auto-mode-alist))
 (setq YaTeX-inhibit-prefix-letter t)
 (setq YaTeX-kanji-code nil)
 (setq YaTeX-use-LaTeX2e t)
@@ -1851,17 +1756,17 @@ C-h でバックスペースと同じように文字を削除できるように�
 ;; ================================================================
 (add-hook 'yatex-mode-hook 'turn-on-reftex)
 (add-hook 'yatex-mode-hook
-	  '(lambda ()
-	     (reftex-mode 1)
-	     (define-key reftex-mode-map (concat YaTeX-prefix ">") 'YaTeX-comment-region)
-	     (define-key reftex-mode-map (concat YaTeX-prefix "<") 'YaTeX-uncomment-region)))
+          '(lambda ()
+             (reftex-mode 1)
+             (define-key reftex-mode-map (concat YaTeX-prefix ">") 'YaTeX-comment-region)
+             (define-key reftex-mode-map (concat YaTeX-prefix "<") 'YaTeX-uncomment-region)))
 
 ;; ================================================================
 ;; Outline minor mode for YaTeX
 ;; See http://www.math.s.chiba-u.ac.jp/~matsu/emacs/emacs20/outline.html
 ;; ================================================================
 (add-hook 'yatex-mode-hook
-	  '(lambda () (outline-minor-mode t)))
+          '(lambda () (outline-minor-mode t)))
 
 (make-variable-buffer-local 'outline-regexp)
 (add-hook
@@ -1871,9 +1776,9 @@ C-h でバックスペースと同じように文字を削除できるように�
     (progn
       (setq outline-level 'latex-outline-level)
       (setq outline-regexp
-	    (concat "[ \t]*\\\\\\(documentstyle\\|documentclass\\|"
-		    "chapter\\|section\\|subsection\\|subsubsection\\)"
-		    "\\*?[ \t]*[[{]")
+            (concat "[ \t]*\\\\\\(documentstyle\\|documentclass\\|"
+                    "chapter\\|section\\|subsection\\|subsubsection\\)"
+                    "\\*?[ \t]*[[{]")
      )))))
 
 (make-variable-buffer-local 'outline-level)
@@ -1883,16 +1788,16 @@ C-h でバックスペースと同じように文字を削除できるように�
     (looking-at outline-regexp)
     (let ((title (buffer-substring (match-beginning 1) (match-end 1))))
       (cond ((equal (substring title 0 4) "docu") 15)
-	    ((equal (substring title 0 4) "chap") 0)
-	    ((equal (substring title 0 4) "appe") 0)
-	    (t (length title))))))
+            ((equal (substring title 0 4) "chap") 0)
+            ((equal (substring title 0 4) "appe") 0)
+            (t (length title))))))
 
 ;; ================================================================
 ;; BibTeX
 ;; ================================================================
 (add-hook 'bibtex-mode-hook
-	  '(lambda ()
-	     (outline-minor-mode)))
+          '(lambda ()
+             (outline-minor-mode)))
 
 ;; ================================================================
 ;; IPA Fonts
@@ -1903,8 +1808,8 @@ C-h でバックスペースと同じように文字を削除できるように�
 ;; auto-fill-mode
 ;; ================================================================
 (add-hook 'yatex-mode-hook
-	  '(lambda ()
-	     (auto-fill-mode 1)))
+          '(lambda ()
+             (auto-fill-mode 1)))
 #+end_src
 
 * Clean Mode Line
@@ -1939,13 +1844,13 @@ C-h でバックスペースと同じように文字を削除できるように�
 (defun clean-mode-line ()
   (interactive)
   (loop for (mode . mode-str) in mode-line-cleaner-alist
-	do
-	(let ((old-mode-str (cdr (assq mode minor-mode-alist))))
-	  (when old-mode-str
-	    (setcar old-mode-str mode-str))
-	  ;; major mode
-	  (when (eq mode major-mode)
-	    (setq mode-name mode-str)))))
+        do
+        (let ((old-mode-str (cdr (assq mode minor-mode-alist))))
+          (when old-mode-str
+            (setcar old-mode-str mode-str))
+          ;; major mode
+          (when (eq mode major-mode)
+            (setq mode-name mode-str)))))
 
 (add-hook 'after-change-major-mode-hook 'clean-mode-line)
 
@@ -1998,10 +1903,10 @@ C-h でバックスペースと同じように文字を削除できるように�
   (setq tabbar-buffer-groups-function nil)
   ;; 左側のボタンを消す
   (dolist (btn '(tabbar-buffer-home-button
-		 tabbar-scroll-left-button
-		 tabbar-scroll-right-button))
+                 tabbar-scroll-left-button
+                 tabbar-scroll-right-button))
     (set btn (cons (cons "" nil)
-		   (cons "" nil))))
+                   (cons "" nil))))
 #+end_src
 
 * TODO rcode tools
@@ -2047,32 +1952,32 @@ C-h でバックスペースと同じように文字を削除できるように�
 (defadvice kill-buffer (around my-kill-buffer-check activate)
   "Prompt when a buffer is about to be killed."
   (let* ((buffer-file-name (buffer-file-name))
-	 backup-file)
+         backup-file)
     ;; see 'backup-buffer
     (if (and (buffer-modified-p)
-	     buffer-file-name
-	     (file-exists-p buffer-file-name)
-	     (setq backup-file (car (find-backup-file-name buffer-file-name))))
-	(let ((answer (completing-read (format "Buffer modified %s, (d)iff, (s)ave, (k)ill? " (buffer-name))
-				       '("d" "s" "k") nil t)))
-	  (cond ((equal answer "d")
-		 (set-buffer-modified-p nil)
-		 (let ((orig-buffer (current-buffer))
-		       (file-to-diff (if (file-newer-than-file-p buffer-file-name backup-file)
-					 buffer-file-name
-				       backup-file)))
-		   (set-buffer (get-buffer-create (format "%s last-revision" (file-name-nondirectory file-to-diff))))
-		   (buffer-disable-undo)
-		   (insert-file-contents file-to-diff nil nil nil t)
-		   (set-buffer-modified-p nil)
-		   (setq buffer-read-only t)
-		   (ediff-buffers (current-buffer) orig-buffer)))
-		((equal answer "k")
-		 (set-buffer-modified-p nil)
-		 ad-do-it)
-		(t
-		 (save-buffer)
-		 ad-do-it)))
+             buffer-file-name
+             (file-exists-p buffer-file-name)
+             (setq backup-file (car (find-backup-file-name buffer-file-name))))
+        (let ((answer (completing-read (format "Buffer modified %s, (d)iff, (s)ave, (k)ill? " (buffer-name))
+                                       '("d" "s" "k") nil t)))
+          (cond ((equal answer "d")
+                 (set-buffer-modified-p nil)
+                 (let ((orig-buffer (current-buffer))
+                       (file-to-diff (if (file-newer-than-file-p buffer-file-name backup-file)
+                                         buffer-file-name
+                                       backup-file)))
+                   (set-buffer (get-buffer-create (format "%s last-revision" (file-name-nondirectory file-to-diff))))
+                   (buffer-disable-undo)
+                   (insert-file-contents file-to-diff nil nil nil t)
+                   (set-buffer-modified-p nil)
+                   (setq buffer-read-only t)
+                   (ediff-buffers (current-buffer) orig-buffer)))
+                ((equal answer "k")
+                 (set-buffer-modified-p nil)
+                 ad-do-it)
+                (t
+                 (save-buffer)
+                 ad-do-it)))
       ad-do-it)))
 #+end_src
 
@@ -2092,7 +1997,7 @@ C-h でバックスペースと同じように文字を削除できるように�
   (when (eq system-type 'gnu/linux)
 
     (setq YaTeX-dvi2-command-ext-alist
-	  '(("texworks\\|evince\\|okular\\|zathura\\|qpdfview\\|pdfviewer\\|mupdf\\|xpdf\\|firefox\\|chromium\\|acroread\\|pdfopen" . ".pdf")))
+          '(("texworks\\|evince\\|okular\\|zathura\\|qpdfview\\|pdfviewer\\|mupdf\\|xpdf\\|firefox\\|chromium\\|acroread\\|pdfopen" . ".pdf")))
     (setq tex-command "ptex2pdf -l -ot '-synctex=1'")
   ;;(setq tex-command "ptex2pdf -l -u -ot '-synctex=1'")
   ;;(setq tex-command "pdfplatex")
@@ -2113,15 +2018,15 @@ C-h でバックスペースと同じように文字を削除できるように�
   ;(setq tex-command "latexmk -e '$pdflatex=q/luajitlatex %O -synctex=1 %S/' -e '$bibtex=q/bibtexu %O %B/' -e '$makeindex=q/texindy %O -o %D %S/' -norc -gg -lualatex")
   ;(setq tex-command "latexmk -e '$pdflatex=q/xelatex %O -synctex=1 %S/' -e '$bibtex=q/bibtexu %O %B/' -e '$makeindex=q/texindy %O -o %D %S/' -norc -gg -xelatex")
   (setq bibtex-command (cond ((string-match "uplatex\\|-u" tex-command) "upbibtex")
-			     ((string-match "platex" tex-command) "pbibtex")
-			     ((string-match "lualatex\\|luajitlatex\\|xelatex" tex-command) "bibtexu")
-			     ((string-match "pdflatex\\|latex" tex-command) "bibtex")
-			     (t "pbibtex")))
+                             ((string-match "platex" tex-command) "pbibtex")
+                             ((string-match "lualatex\\|luajitlatex\\|xelatex" tex-command) "bibtexu")
+                             ((string-match "pdflatex\\|latex" tex-command) "bibtex")
+                             (t "pbibtex")))
   (setq makeindex-command (cond ((string-match "uplatex\\|-u" tex-command) "mendex")
-				((string-match "platex" tex-command) "mendex")
-				((string-match "lualatex\\|luajitlatex\\|xelatex" tex-command) "texindy")
-				((string-match "pdflatex\\|latex" tex-command) "makeindex")
-				(t "mendex")))
+                                ((string-match "platex" tex-command) "mendex")
+                                ((string-match "lualatex\\|luajitlatex\\|xelatex" tex-command) "texindy")
+                                ((string-match "pdflatex\\|latex" tex-command) "makeindex")
+                                (t "mendex")))
 
   (setq dvi2-command "evince")
   ;(setq dvi2-command "okular --unique")
@@ -2139,39 +2044,39 @@ C-h でバックスペースと同じように文字を削除できるように�
     (progn
       (process-kill-without-query
        (start-process
-	"fwdevince"
-	nil
-	"fwdevince"
-	(expand-file-name
-	 (concat (file-name-sans-extension (or YaTeX-parent-file
-					       (save-excursion
-						 (YaTeX-visit-main t)
-						 buffer-file-name)))
-		 ".pdf"))
-	(number-to-string (save-restriction
-			    (widen)
-			    (count-lines (point-min) (point))))
-	(buffer-name)))))
+        "fwdevince"
+        nil
+        "fwdevince"
+        (expand-file-name
+         (concat (file-name-sans-extension (or YaTeX-parent-file
+                                               (save-excursion
+                                                 (YaTeX-visit-main t)
+                                                 buffer-file-name)))
+                 ".pdf"))
+        (number-to-string (save-restriction
+                            (widen)
+                            (count-lines (point-min) (point))))
+        (buffer-name)))))
 
   (require 'dbus)
 
   (defun un-urlify (fname-or-url)
     "A trivial function that replaces a prefix of file:/// with just /."
     (if (string= (substring fname-or-url 0 8) "file:///")
-	(substring fname-or-url 7)
+        (substring fname-or-url 7)
       fname-or-url))
 
   (defun evince-inverse-search (file linecol &rest ignored)
     (let* ((fname (un-urlify file))
-	   (buf (find-file fname))
-	   (line (car linecol))
-	   (col (cadr linecol)))
+           (buf (find-file fname))
+           (line (car linecol))
+           (col (cadr linecol)))
       (if (null buf)
-	  (message "[Synctex]: %s is not opened..." fname)
-	(switch-to-buffer buf)
-	(goto-line (car linecol))
-	(unless (= col -1)
-	  (move-to-column col)))))
+          (message "[Synctex]: %s is not opened..." fname)
+        (switch-to-buffer buf)
+        (goto-line (car linecol))
+        (unless (= col -1)
+          (move-to-column col)))))
 
   (dbus-register-signal
    :session nil "/org/gnome/evince/Window/0"
@@ -2183,82 +2088,82 @@ C-h でバックスペースと同じように文字を削除できるように�
     (progn
       (process-kill-without-query
        (start-process
-	"okular"
-	nil
-	"okular"
-	"--unique"
-	(concat (expand-file-name
-		 (concat (file-name-sans-extension (or YaTeX-parent-file
-						       (save-excursion
-							 (YaTeX-visit-main t)
-							 buffer-file-name)))
-			 ".pdf"))
-		"#src:"
-		(number-to-string (save-restriction
-				    (widen)
-				    (count-lines (point-min) (point))))
-		(buffer-file-name))))))
+        "okular"
+        nil
+        "okular"
+        "--unique"
+        (concat (expand-file-name
+                 (concat (file-name-sans-extension (or YaTeX-parent-file
+                                                       (save-excursion
+                                                         (YaTeX-visit-main t)
+                                                         buffer-file-name)))
+                         ".pdf"))
+                "#src:"
+                (number-to-string (save-restriction
+                                    (widen)
+                                    (count-lines (point-min) (point))))
+                (buffer-file-name))))))
 
   (add-hook 'yatex-mode-hook
-	    '(lambda ()
-	       (define-key YaTeX-mode-map (kbd "C-c o") 'okular-forward-search)))
+            '(lambda ()
+               (define-key YaTeX-mode-map (kbd "C-c o") 'okular-forward-search)))
 
   (defun qpdfview-forward-search ()
     (interactive)
     (progn
       (process-kill-without-query
        (start-process
-	"qpdfview"
-	nil
-	"qpdfview"
-	"--unique"
-	(concat (expand-file-name
-		 (concat (file-name-sans-extension (or YaTeX-parent-file
-						       (save-excursion
-							 (YaTeX-visit-main t)
-							 buffer-file-name)))
-			 ".pdf"))
-		"#src:"
-		(buffer-name)
-		":"
-		(number-to-string (save-restriction
-				    (widen)
-				    (count-lines (point-min) (point))))
-		":0")))))
+        "qpdfview"
+        nil
+        "qpdfview"
+        "--unique"
+        (concat (expand-file-name
+                 (concat (file-name-sans-extension (or YaTeX-parent-file
+                                                       (save-excursion
+                                                         (YaTeX-visit-main t)
+                                                         buffer-file-name)))
+                         ".pdf"))
+                "#src:"
+                (buffer-name)
+                ":"
+                (number-to-string (save-restriction
+                                    (widen)
+                                    (count-lines (point-min) (point))))
+                ":0")))))
 
   (add-hook 'yatex-mode-hook
-	    '(lambda ()
-	       (define-key YaTeX-mode-map (kbd "C-c q") 'qpdfview-forward-search)))
+            '(lambda ()
+               (define-key YaTeX-mode-map (kbd "C-c q") 'qpdfview-forward-search)))
 
   (defun pdfviewer-forward-search ()
     (interactive)
     (progn
       (process-kill-without-query
        (start-process
-	"pdfviewer"
-	nil
-	"pdfviewer"
-	(concat "file:"
-		(expand-file-name
-		 (concat (file-name-sans-extension (or YaTeX-parent-file
-						       (save-excursion
-							 (YaTeX-visit-main t)
-							 buffer-file-name)))
-			 ".pdf"))
-		"#src:"
-		(number-to-string (save-restriction
-				    (widen)
-				    (count-lines (point-min) (point))))
-		" "
-		(buffer-name))))))
+        "pdfviewer"
+        nil
+        "pdfviewer"
+        (concat "file:"
+                (expand-file-name
+                 (concat (file-name-sans-extension (or YaTeX-parent-file
+                                                       (save-excursion
+                                                         (YaTeX-visit-main t)
+                                                         buffer-file-name)))
+                         ".pdf"))
+                "#src:"
+                (number-to-string (save-restriction
+                                    (widen)
+                                    (count-lines (point-min) (point))))
+                " "
+                (buffer-name))))))
 
   (add-hook 'yatex-mode-hook
-	    '(lambda ()
-	       (define-key YaTeX-mode-map (kbd "C-c p") 'pdfviewer-forward-search)))
+            '(lambda ()
+               (define-key YaTeX-mode-map (kbd "C-c p") 'pdfviewer-forward-search)))
 
   (add-hook 'yatex-mode-hook
-	    '(lambda ()
-	       (auto-fill-mode -1)))
+            '(lambda ()
+               (auto-fill-mode -1)))
   )
 #+end_src
 
@@ -2274,26 +2179,26 @@ C-h でバックスペースと同じように文字を削除できるように�
     (defun un-urlify (fname-or-url)
       "A trivial function that replaces a prefix of file:/// with just /."
       (if (string= (substring fname-or-url 0 8) "file:///")
-	  (substring fname-or-url 7)
-	fname-or-url))
+          (substring fname-or-url 7)
+        fname-or-url))
 
     (defun evince-inverse-search (file linecol &rest ignored)
       (let* ((fname (un-urlify file))
-	     (buf (find-file fname))
-	     (line (car linecol))
-	     (col (cadr linecol)))
-	(if (null buf)
-	    (message "[Synctex]: %s is not opened..." fname)
-	  (switch-to-buffer buf)
-	  (goto-line (car linecol))
-	  (unless (= col -1)
-	    (move-to-column col)))))
+             (buf (find-file fname))
+             (line (car linecol))
+             (col (cadr linecol)))
+        (if (null buf)
+            (message "[Synctex]: %s is not opened..." fname)
+          (switch-to-buffer buf)
+          (goto-line (car linecol))
+          (unless (= col -1)
+            (move-to-column col)))))
 
     (when (boundp 'dbus-message-type-method-call) nil t
-	  (dbus-register-signal
-	   :session nil "/org/gnome/evince/Window/0"
-	   "org.gnome.evince.Window" "SyncSource"
-	   'evince-inverse-search))
+          (dbus-register-signal
+           :session nil "/org/gnome/evince/Window/0"
+           "org.gnome.evince.Window" "SyncSource"
+           'evince-inverse-search))
     )
 #+end_src
 
@@ -2373,7 +2278,7 @@ C-h でバックスペースと同じように文字を削除できるように�
 #+name: mac-yatex-settings
 #+begin_src emacs-lisp :tangle no
   (setq YaTeX-dvi2-command-ext-alist
-	'(("Preview\\|TeXShop\\|TeXworks\\|Skim\\|mupdf\\|xpdf\\|Firefox\\|Adobe" . ".pdf")))
+        '(("Preview\\|TeXShop\\|TeXworks\\|Skim\\|mupdf\\|xpdf\\|Firefox\\|Adobe" . ".pdf")))
   (setq tex-command "/usr/texbin/ptex2pdf -l -ot '-synctex=1'")
   ;(setq tex-command "/usr/texbin/ptex2pdf -l -u -ot '-synctex=1'")
   ;(setq tex-command "/usr/local/bin/pdfplatex")
@@ -2394,15 +2299,15 @@ C-h でバックスペースと同じように文字を削除できるように�
   ;(setq tex-command "/usr/texbin/latexmk -e '$pdflatex=q/luajitlatex %O -synctex=1 %S/' -e '$bibtex=q/bibtexu %O %B/' -e '$makeindex=q/texindy %O -o %D %S/' -norc -gg -lualatex")
   ;(setq tex-command "/usr/texbin/latexmk -e '$pdflatex=q/xelatex %O -synctex=1 %S/' -e '$bibtex=q/bibtexu %O %B/' -e '$makeindex=q/texindy %O -o %D %S/' -norc -gg -xelatex")
   (setq bibtex-command (cond ((string-match "uplatex\\|-u" tex-command) "/usr/texbin/upbibtex")
-			     ((string-match "platex" tex-command) "/usr/texbin/pbibtex")
-			     ((string-match "lualatex\\|luajitlatex\\|xelatex" tex-command) "/usr/texbin/bibtexu")
-			     ((string-match "pdflatex\\|latex" tex-command) "/usr/texbin/bibtex")
-			     (t "/usr/texbin/pbibtex")))
+                             ((string-match "platex" tex-command) "/usr/texbin/pbibtex")
+                             ((string-match "lualatex\\|luajitlatex\\|xelatex" tex-command) "/usr/texbin/bibtexu")
+                             ((string-match "pdflatex\\|latex" tex-command) "/usr/texbin/bibtex")
+                             (t "/usr/texbin/pbibtex")))
   (setq makeindex-command (cond ((string-match "uplatex\\|-u" tex-command) "/usr/texbin/mendex")
-				((string-match "platex" tex-command) "/usr/texbin/mendex")
-				((string-match "lualatex\\|luajitlatex\\|xelatex" tex-command) "/usr/texbin/texindy")
-				((string-match "pdflatex\\|latex" tex-command) "/usr/texbin/makeindex")
-				(t "/usr/texbin/mendex")))
+                                ((string-match "platex" tex-command) "/usr/texbin/mendex")
+                                ((string-match "lualatex\\|luajitlatex\\|xelatex" tex-command) "/usr/texbin/texindy")
+                                ((string-match "pdflatex\\|latex" tex-command) "/usr/texbin/makeindex")
+                                (t "/usr/texbin/mendex")))
   ;(setq dvi2-command "/usr/bin/open -a Preview")
   (setq dvi2-command "/usr/bin/open -a Skim")
   ;(setq dvi2-command "/usr/bin/open -a TeXShop")
@@ -2415,19 +2320,19 @@ C-h でバックスペースと同じように文字を削除できるように�
     (progn
       (process-kill-without-query
        (start-process
-	"displayline"
-	nil
-	"/Applications/Skim.app/Contents/SharedSupport/displayline"
-	(number-to-string (save-restriction
-			    (widen)
-			    (count-lines (point-min) (point))))
-	(expand-file-name
-	 (concat (file-name-sans-extension (or YaTeX-parent-file
-					       (save-excursion
-						 (YaTeX-visit-main t)
-						 buffer-file-name)))
-		 ".pdf"))
-	buffer-file-name))))
+        "displayline"
+        nil
+        "/Applications/Skim.app/Contents/SharedSupport/displayline"
+        (number-to-string (save-restriction
+                            (widen)
+                            (count-lines (point-min) (point))))
+        (expand-file-name
+         (concat (file-name-sans-extension (or YaTeX-parent-file
+                                               (save-excursion
+                                                 (YaTeX-visit-main t)
+                                                 buffer-file-name)))
+                 ".pdf"))
+        buffer-file-name))))
 #+end_src
 
 * Windows用設定
@@ -2435,7 +2340,7 @@ C-h でバックスペースと同じように文字を削除できるように�
 
 #+begin_src emacs-lisp :noweb yes
   (when (or (eq system-type 'windows-nt)
-	    (eq system-type 'cygwin))
+            (eq system-type 'cygwin))
     <<windows-settings>>
   )
 #+end_src
@@ -2465,9 +2370,9 @@ C-h でバックスペースと同じように文字を削除できるように�
 
   ;;;** IME ON/OFF時のカーソルカラー
   (add-hook 'input-method-activate-hook
-	    (lambda() (set-cursor-color "green")))
+            (lambda() (set-cursor-color "green")))
   (add-hook 'input-method-inactivate-hook
-	    (lambda() (set-cursor-color "red")))
+            (lambda() (set-cursor-color "red")))
 
   ;;;** バッファ切り替え時にIME状態を引き継ぐ
   (setq w32-ime-buffer-switch-p nil)

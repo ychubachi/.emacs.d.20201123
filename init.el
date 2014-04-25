@@ -566,53 +566,6 @@ SCHEDULED: %t
 
 (require 'magit)
 
-(my/package-install-and-require 'mew)
-
-(autoload 'mew "mew" nil t)
-(autoload 'mew-send "mew" nil t)
-
-;; Optional setup (Read Mail menu):
-(setq read-mail-command 'mew)
-
-;; Optional setup (e.g. C-xm for sending a message):
-(autoload 'mew-user-agent-compose "mew" nil t)
-(if (boundp 'mail-user-agent)
-    (setq mail-user-agent 'mew-user-agent))
-(if (fboundp 'define-mail-user-agent)
-    (define-mail-user-agent
-      'mew-user-agent
-      'mew-user-agent-compose
-      'mew-draft-send-message
-      'mew-draft-kill
-      'mew-send-hook))
-
-;; To use local mailbox "mbox" or "maildir" instead of POP
-(setq mew-mailbox-type 'maildir)
-(setq mew-mbox-command "incm")
-(setq mew-mbox-command-arg "-u -d ~/Maildir")
-;; If /path/to/mbox is a file, it means "mbox".
-;; If /path/to/mbox is a directory, it means "maildir".
-
-(setq mew-prog-ssl "/usr/bin/stunnel4")
-
-(setq mew-smtp-auth t)
-(setq mew-smtp-ssl t)
-(setq mew-smtp-ssl-port "465")
-(setq mew-smtp-user "yoshihide.chubachi@gmail.com")
-(setq mew-smtp-server "smtp.gmail.com")
-
-(setq mew-use-cached-passwd t)
-;(setq mew-use-master-passwd t)
-
-(setq mew-ssl-verify-level 0)
-;(setq mew-use-unread-mark t)
-
-(condition-case nil
-    (require 'mew-w3m)
-  (error (message "%s" "mew-w3m: Plase install w3m")))
-
-(setq mew-prog-pdf '("evince" nil t))
-
 (defun email ()
   (interactive)
 
@@ -624,7 +577,7 @@ SCHEDULED: %t
 
     ;; defaults
 
-    (setq mu4e-maildir "~/Maildir")
+    (setq mu4e-maildir       "~/Maildir")
     (setq mu4e-drafts-folder "/[Gmail].下書き")
     (setq mu4e-sent-folder   "/[Gmail].送信済みメール")
     (setq mu4e-trash-folder  "/[Gmail].ゴミ箱")
@@ -649,12 +602,6 @@ SCHEDULED: %t
     ;; allow for updating mail using 'U' in the main view:
     ;; I have this running in the background anyway
     (setq mu4e-get-mail-command "offlineimap")
-
-    ;; something about ourselves
-    (setq
-     user-mail-address "yc@aiit.ac.jp"
-     user-full-name  "Yoshihide Chubachi"
-     message-signature nil)
 
     ;; sending mail -- replace USERNAME with your gmail username
     ;; also, make sure the gnutls command line utils are installed
