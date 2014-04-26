@@ -309,10 +309,12 @@
   (setq outline-minor-mode-prefix "")
 #+end_src
 
-** ファイル名のリネーム
+** ファイル名のリネーム						  :wdired.el:
 
 diredモードで r キーを押すと編集モードに入る．
 完了したらC-c C-cで決定．C-c ESCでキャンセル．
+
+wdiredのrequireは，dired-mode-mapを定義するために必要
 
 #+begin_src emacs-lisp
   (require 'wdired)
@@ -1371,6 +1373,7 @@ C-h でバックスペースと同じように文字を削除できるように�
 (require 'magit)
 #+end_src
 * mu4e
+** 概要
 ** offline imap
 - [[http://docs.offlineimap.org/en/latest/][Welcome to offlineimaps‘s documentation — OfflineImap 6.5.4 documentation]]
 - [[http://gihyo.jp/admin/serial/01/ubuntu-recipe/0247?page=1][第247回　Offlineimap＋Dovecotによる快適メール環境：Ubuntu Weekly Recipe｜gihyo.jp … 技術評論社]]
@@ -1379,10 +1382,16 @@ C-h でバックスペースと同じように文字を削除できるように�
 - sudo apt-get install offlineimap
 
 ** mu4e
-- [[http://www.brool.com/index.php/using-mu4e][Using mu4e | brool]]
-- [[https://github.com/djcb/mu][djcb/mu]]
 
-- offlineimapの設定
+
+- mu (maildir-utils)
+  - [[https://github.com/djcb/mu][djcb/mu]]
+  - [[http://www.brool.com/index.php/using-mu4e][Using mu4e | brool]]
+
+
+- sudo apt-get install mu4e
+- mu index
+
 - custom.el
   (user-mail-address "yoshi@chubachi.net")
   (user-full-name  "Yoshihide Chubachi")
