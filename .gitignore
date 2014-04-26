@@ -26,3 +26,4 @@ tmp/
 tutorial
 url/
 custom.el
+*.pyc
