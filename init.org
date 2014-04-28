@@ -1373,26 +1373,52 @@ C-h でバックスペースと同じように文字を削除できるように�
 (require 'magit)
 #+end_src
 * mu4e
-** 概要
+** OfflineImap
 
-** offline imap
+OfflineImapは，IMAPサーバにあるメールを同期するツールです．
+ローカルにはMaildir形式でメールを格納します．
+
+IMAPのフォルダ名を英語にするため，Gmailは「英語」の設定にする．
+nametransで変換することもできるが，
+文字コード変換で何らかの問題が発生することは避けたい．
+
+Gmailでラベルを使用していたが，muでの検索機能が優れているので，全て削除した．
+
 - [[http://docs.offlineimap.org/en/latest/][Welcome to offlineimaps‘s documentation — OfflineImap 6.5.4 documentation]]
 - [[http://gihyo.jp/admin/serial/01/ubuntu-recipe/0247?page=1][第247回　Offlineimap＋Dovecotによる快適メール環境：Ubuntu Weekly Recipe｜gihyo.jp … 技術評論社]]
 - [[http://piao-tech.blogspot.jp/2010/03/get-offlineimap-working-with-non-ascii.html][私のTech記憶: Get offlineimap working with non ASCII characters.]]
 
-- sudo apt-get install offlineimap
+- インストール
+  - sudo apt-get install offlineimap
 
-** mu4e
+- 設定例
+  - [[https://github.com/spaetz/offlineimap/blob/master/offlineimap.conf][offlineimap/offlineimap.conf at master · spaetz/offlineimap]]
 
+.netrcに，imapのログイン名とパスワードを書いておく．
+
+初回実行したら，97,388件のメールをダウンロードするのに508分55秒かかった．
+
+** mu
+
+muは，MaildirにあるメールをDB化します．
+表示や検索が素早く行えるようになります．
 
 - mu (maildir-utils)
   - [[https://github.com/djcb/mu][djcb/mu]]
+  - [[http://code.google.com/p/mu0/downloads/detail?name=mu4e-manual-0.9.9.pdf][mu4e-manual-0.9.9.pdf - mu0 - mu4e v0.9.9 manual - mu is a collection of utilties for indexing and searching Maildirs - Google Project Hosting]]
   - [[http://www.brool.com/index.php/using-mu4e][Using mu4e | brool]]
 
+- インストール
+  - sudo apt-get install mu4e mildir-utils-extra
 
-- sudo apt-get install mu4e
 - mu index
 
+こちらは510.57秒．
+
+** crontab
+offlineimapをcrontabで定期的に実行する．muのインデックスも同時に行う．
+
+** custom.el
 - custom.el
   (user-mail-address "yoshi@chubachi.net")
   (user-full-name  "Yoshihide Chubachi")
@@ -1401,6 +1427,8 @@ C-h でバックスペースと同じように文字を削除できるように�
 
 - これはよくわからない
   '(mu4e-user-mail-address-list (quote ("yc@aiit.ac.jp" "yoshi@chubachi.net" "yoshihide.chubachi@gmail.com")))
+
+** Emacsの設定
 
 #+begin_src emacs-lisp
   (defun email ()
@@ -1412,12 +1440,10 @@ C-h でバックスペースと同じように文字を削除できるように�
       (require 'mu4e)
       (require 'org-mu4e)
 
-      ;; defaults
-
       (setq mu4e-maildir       "~/Maildir")
-      (setq mu4e-drafts-folder "/[Gmail].下書き")
-      (setq mu4e-sent-folder   "/[Gmail].送信済みメール")
-      (setq mu4e-trash-folder  "/[Gmail].ゴミ箱")
+      (setq mu4e-drafts-folder "/[Gmail].Drafts")
+      (setq mu4e-trash-folder  "/[Gmail].Trash")
+      (setq mu4e-sent-folder   "/[Gmail].All Mail")
 
       ;; don't save message to Sent Messages, Gmail/IMAP takes care of this
       (setq mu4e-sent-messages-behavior 'delete)
@@ -1426,32 +1452,22 @@ C-h でバックスペースと同じように文字を削除できるように�
       ;; you can quickly switch to your Inbox -- press ``ji''
       ;; then, when you want archive some messages, move them to
       ;; the 'All Mail' folder by pressing ``ma''.
-
       (setq mu4e-maildir-shortcuts
-	    '( ("/INBOX"                  . ?i)
-	       ("/[Gmail].スター付き"     . ?*)
-	       ("/[Gmail].送信済みメール" . ?s)
-	       ("/[Gmail].下書き"         . ?d)
-	       ("/[Gmail].すべてのメール" . ?a)
-	       ("/[Gmail].ゴミ箱"         . ?t)
-	       ("/[Gmail].迷惑メール"     . ?j)))
+            '( ("/INBOX"             . ?i)
+               ("/[Gmail].All Mail"  . ?a)
+               ("/[Gmail].Drafts"    . ?d)
+               ("/[Gmail].Trash"     . ?t)))
 
       ;; allow for updating mail using 'U' in the main view:
       ;; I have this running in the background anyway
       (setq mu4e-get-mail-command "offlineimap")
 
-      ;; sending mail -- replace USERNAME with your gmail username
-      ;; also, make sure the gnutls command line utils are installed
-      ;; package 'gnutls-bin' in Debian/Ubuntu
-
       (require 'smtpmail)
-
-      ;; alternatively, for emacs-24 you can use:
       (setq message-send-mail-function 'smtpmail-send-it
-	    smtpmail-stream-type 'starttls
-	    smtpmail-default-smtp-server "smtp.gmail.com"
-	    smtpmail-smtp-server "smtp.gmail.com"
-	    smtpmail-smtp-service 587)
+            smtpmail-stream-type 'starttls
+            smtpmail-default-smtp-server "smtp.gmail.com"
+            smtpmail-smtp-server "smtp.gmail.com"
+            smtpmail-smtp-service 587)
 
       ;; don't keep message buffers around
       (setq message-kill-buffer-on-exit t)
@@ -1461,31 +1477,20 @@ C-h でバックスペースと同じように文字を削除できるように�
 
       ;; use imagemagick, if available
       (when (fboundp 'imagemagick-register-types)
-	(imagemagick-register-types))
+        (imagemagick-register-types))
 
-  ;;; message view action
-      (defun mu4e-msgv-action-view-in-browser (msg)
-	"View the body of the message in a web browser."
-	(interactive)
-	(let ((html (mu4e-msg-field (mu4e-message-at-point t) :body-html))
-	      (tmpfile (format "%s/%d.html" temporary-file-directory (random))))
-	  (unless html (error "No html part for this message"))
-	  (with-temp-file tmpfile
-	    (insert
-	     "<html>"
-	     "<head><meta http-equiv=\"content-type\""
-	     "content=\"text/html;charset=UTF-8\">"
-	     html))
-	  (browse-url (concat "file://" tmpfile))))
+      (setq mu4e-msg2pdf "/usr/bin/msg2pdf")
 
       (add-to-list 'mu4e-view-actions
-		   '("View in browser" . mu4e-msgv-action-view-in-browser) t)
+                   '("View in browser" . mu4e-action-view-in-browser) t)
 
       ;; convert org mode to HTML automatically
       (setq org-mu4e-convert-to-html t)
 
       ;; need this to convert some e-mails properly
       (setq mu4e-html2text-command "html2text -utf8 -width 72")
+
+      (add-to-list 'mu4e-bookmarks '("flag:flagged" "Starred" ?s))
       )
     (mu4e)
     )
