@@ -632,6 +632,16 @@ SCHEDULED: %t
 
 (defalias 'org-mail 'org-mu4e-compose-org-mode)
 
+(setq mu4e-headers-date-format "%y-%m-%d %H:%M")
+
+(setq mu4e-headers-fields
+      '((:human-date . 14)
+        (:flags . 6)
+        (:from . 15)
+        (:subject)))
+
+(setq mu4e-update-interval 300)
+
 ;; ================================================================
 ;; パッケージのインストール
 ;; ================================================================
