@@ -2,15 +2,16 @@
 #+TITLE: test.org
 #+STARTUP: overview
 #+PROPERTY: header-args:emacs-lisp :tangle test.el
-
-#+begin_src emacs-lisp
-;; init.el --- Emacsの初期設定
-#+end_src
+#+PROPERTY: header-args            :results silent
 
 * org-mode test
 ** あああ
 
 いいい
+
+#+begin_src emacs-lisp
+;; test.el --- Test
+#+end_src
 
 ** ううう
 
