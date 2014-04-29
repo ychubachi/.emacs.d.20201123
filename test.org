@@ -1,8 +1,11 @@
 # -*- org -*-
-#+TITLE: init.org
-#+AUTHOR: Yoshihide Chubachi
+#+TITLE: test.org
 #+STARTUP: overview
-#+PROPERTY: header-args:emacs-lisp :tangle init.el
+#+PROPERTY: header-args:emacs-lisp :tangle test.el
+
+#+begin_src emacs-lisp
+;; init.el --- Emacsの初期設定
+#+end_src
 
 * org-mode test
 ** あああ
@@ -12,11 +15,9 @@
 ** ううう
 
 #+begin_src emacs-lisp
+  (defvar test-debug nil)
   (setq hoge "test")
 #+end_src
 
-#+begin_src ruby
-def hoge
-  "huga"
-end
-#+end_src
+#+RESULTS:
+: test
