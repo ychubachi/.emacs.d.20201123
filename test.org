@@ -8,3 +8,9 @@
 #+begin_src emacs-lisp
   (setq hoge "test")
 #+end_src
+
+#+begin_src ruby
+def hoge
+  "huga"
+end
+#+end_src
