@@ -1,4 +1,3 @@
-
 ;; init.el --- Emacsの初期設定
 
 (message "%s" "%% Emacsの設定を開始します %%")

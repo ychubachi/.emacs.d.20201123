@@ -95,7 +95,7 @@
 * 前処理
 ** ヘッダコメント
 
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :padline no
 ;; init.el --- Emacsの初期設定
 #+end_src
 
