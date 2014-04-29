@@ -1411,7 +1411,6 @@ Gmailでラベルを使用していたが，muでの検索機能が優れてい�
 - bash
   nohup offlineimap &
 
-
 ** mu
 
 muは，MaildirにあるメールをDB化します．
@@ -1419,8 +1418,8 @@ muは，MaildirにあるメールをDB化します．
 検索が優れているので，ファルダを利用してメールを整理する必要がありません．
 
 - mu (maildir-utils)
-  - [[https://github.com/djcb/mu][djcb/mu]]
   - [[http://code.google.com/p/mu0/downloads/detail?name=mu4e-manual-0.9.9.pdf][mu4e-manual-0.9.9.pdf - mu0 - mu4e v0.9.9 manual - mu is a collection of utilties for indexing and searching Maildirs - Google Project Hosting]]
+  - [[https://github.com/djcb/mu][djcb/mu]]
   - [[http://www.brool.com/index.php/using-mu4e][Using mu4e | brool]]
 
 - インストール
@@ -1446,84 +1445,114 @@ offlineimapをcrontabで定期的に実行する．muのインデックスも同
 ** Emacsの設定
 
 #+begin_src emacs-lisp
-  (defun email ()
-    (interactive)
+  (require 'mu4e)
+  (require 'org-mu4e)
+#+end_src
 
-    (when (not (featurep 'mu4e))
-      (add-to-list 'load-path "/usr/local/share/emacs/site-lisp/mu4e/")
+#+RESULTS:
+: org-mu4e
 
-      (require 'mu4e)
-      (require 'org-mu4e)
+mu4eで用いるGmailのフォルダを指定する．
+GmailのSentフォルダは設定せず，All Mailフォルダを指定する．
 
-      (setq mu4e-maildir       "~/Maildir")
-      (setq mu4e-drafts-folder "/[Gmail].Drafts")
-      (setq mu4e-trash-folder  "/[Gmail].Trash")
-      (setq mu4e-sent-folder   "/[Gmail].All Mail")
+#+begin_src emacs-lisp
+  (setq mu4e-maildir       "~/Maildir")
+  (setq mu4e-sent-folder   "/[Gmail].All Mail")
+  (setq mu4e-drafts-folder "/[Gmail].Drafts")
+  (setq mu4e-trash-folder  "/[Gmail].Trash")
+  (setq mu4e-refile-folder "/[Gmail].All Mail")
+#+end_src
 
-      ;; don't save message to Sent Messages, Gmail/IMAP takes care of this
-      (setq mu4e-sent-messages-behavior 'delete)
+#+RESULTS:
+: /[Gmail].All Mail
+
+don't save message to Sent Messages, Gmail/IMAP takes care of this
+
+#+begin_src emacs-lisp
+  (setq mu4e-sent-messages-behavior 'delete)
+#+end_src
+
+#+RESULTS:
+: delete
 
       ;; setup some handy shortcuts
       ;; you can quickly switch to your Inbox -- press ``ji''
       ;; then, when you want archive some messages, move them to
       ;; the 'All Mail' folder by pressing ``ma''.
-      (setq mu4e-maildir-shortcuts
-	    '( ("/INBOX"             . ?i)
-	       ("/[Gmail].All Mail"  . ?a)
-	       ("/[Gmail].Drafts"    . ?d)
-	       ("/[Gmail].Trash"     . ?t)))
 
-      ;; allow for updating mail using 'U' in the main view:
-      ;; I have this running in the background anyway
-      ;; (setq mu4e-get-mail-command "offlineimap")
+rでrefileしたほうが便利．
 
-      (require 'smtpmail)
-      (setq message-send-mail-function 'smtpmail-send-it
-	    smtpmail-stream-type 'starttls
-	    smtpmail-default-smtp-server "smtp.gmail.com"
-	    smtpmail-smtp-server "smtp.gmail.com"
-	    smtpmail-smtp-service 587)
+#+begin_src emacs-lisp
+  (setq mu4e-maildir-shortcuts
+	'( ("/INBOX"             . ?i)
+	   ("/[Gmail].All Mail"  . ?a)
+	   ("/[Gmail].Drafts"    . ?d)
+	   ("/[Gmail].Trash"     . ?t)))
+#+end_src
 
-      ;; don't keep message buffers around
-      (setq message-kill-buffer-on-exit t)
+#+RESULTS:
+| (/INBOX . 105) | (/[Gmail].All Mail . 97) | (/[Gmail].Drafts . 100) | (/[Gmail].Trash . 116) |
 
-      ;; show images
-      (setq mu4e-show-images t)
 
-      ;; use imagemagick, if available
-      (when (fboundp 'imagemagick-register-types)
-	(imagemagick-register-types))
+#+begin_src emacs-lisp
+  (require 'smtpmail)
+  (setq message-send-mail-function 'smtpmail-send-it
+	smtpmail-stream-type 'starttls
+	smtpmail-default-smtp-server "smtp.gmail.com"
+	smtpmail-smtp-server "smtp.gmail.com"
+	smtpmail-smtp-service 587)
 
-      (setq mu4e-msg2pdf "/usr/bin/msg2pdf")
+  ;; don't keep message buffers around
+  (setq message-kill-buffer-on-exit t)
 
-      (add-to-list 'mu4e-view-actions
-		   '("View in browser" . mu4e-action-view-in-browser) t)
+  ;; show images
+  (setq mu4e-show-images t)
 
-      ;; convert org mode to HTML automatically
-      (setq org-mu4e-convert-to-html t)
+  ;; use imagemagick, if available
+  (when (fboundp 'imagemagick-register-types)
+    (imagemagick-register-types))
 
-      ;; need this to convert some e-mails properly
-      (setq mu4e-html2text-command "html2text -utf8 -width 72")
+  (setq mu4e-msg2pdf "/usr/bin/msg2pdf")
 
-      (add-to-list 'mu4e-bookmarks '("flag:flagged" "Starred" ?s))
-      )
-    (mu4e)
-    )
+  (add-to-list 'mu4e-view-actions
+	       '("View in browser" . mu4e-action-view-in-browser) t)
 
+  ;; convert org mode to HTML automatically
+  (setq org-mu4e-convert-to-html t)
+
+  ;; need this to convert some e-mails properly
+  (setq mu4e-html2text-command "html2text -utf8 -width 72")
+
+  (add-to-list 'mu4e-bookmarks '("flag:flagged" "Starred" ?s))
+#+end_src
+
+#+RESULTS:
+| flag:flagged                     | Starred              | 115 |
+| flag:unread AND NOT flag:trashed | Unread messages      | 117 |
+| date:today..now                  | Today's messages     | 116 |
+| date:7d..now                     | Last 7 days          | 119 |
+| mime:image/*                     | Messages with images | 112 |
+
+
+#+begin_src emacs-lisp
   (defalias 'org-mail 'org-mu4e-compose-org-mode)
 #+end_src
 
 #+RESULTS:
 : org-mail
 
+ヘッダ一覧画面に表示される日付と時刻の表示形式を設定する．
+当日のメールにも日付が表示されるようにした．
+
 #+begin_src emacs-lisp
-(setq mu4e-headers-date-format "%y-%m-%d %H:%M")
+  (setq mu4e-headers-date-format "%y-%m-%d %H:%M")
+  (setq mu4e-headers-time-format "%y-%m-%d %H:%M")
 #+end_src
 
 #+RESULTS:
 : %y-%m-%d %H:%M
 
-ヘッダーに表示する列と幅を指定します．
+ヘッダーに表示する列と幅を指定する．
 
 #+begin_src emacs-lisp
   (setq mu4e-headers-fields
@@ -1535,6 +1564,18 @@ offlineimapをcrontabで定期的に実行する．muのインデックスも同
 
 #+RESULTS:
 | (:human-date . 14) | (:flags . 6) | (:from . 15) | (:subject) |
+
+メールが/INDEXと/[Gmail]/All Mailの両方に存在する状態の場合，
+検索結果に両方が含まれる．次の設定をすることにより，
+重複を除外して表示する．
+
+#+begin_src emacs-lisp
+  (setq mu4e-headers-skip-duplicates 't)
+#+end_src
+
+#+RESULTS:
+: t
+
 
 5分ごとに，自動的にインデックスをアップデートします．
 

@@ -566,79 +566,65 @@ SCHEDULED: %t
 
 (require 'magit)
 
-(defun email ()
-  (interactive)
+(require 'mu4e)
+(require 'org-mu4e)
 
-  (when (not (featurep 'mu4e))
-    (add-to-list 'load-path "/usr/local/share/emacs/site-lisp/mu4e/")
+(setq mu4e-maildir       "~/Maildir")
+(setq mu4e-sent-folder   "/[Gmail].All Mail")
+(setq mu4e-drafts-folder "/[Gmail].Drafts")
+(setq mu4e-trash-folder  "/[Gmail].Trash")
+(setq mu4e-refile-folder "/[Gmail].All Mail")
 
-    (require 'mu4e)
-    (require 'org-mu4e)
+(setq mu4e-sent-messages-behavior 'delete)
 
-    (setq mu4e-maildir       "~/Maildir")
-    (setq mu4e-drafts-folder "/[Gmail].Drafts")
-    (setq mu4e-trash-folder  "/[Gmail].Trash")
-    (setq mu4e-sent-folder   "/[Gmail].All Mail")
+(setq mu4e-maildir-shortcuts
+      '( ("/INBOX"             . ?i)
+         ("/[Gmail].All Mail"  . ?a)
+         ("/[Gmail].Drafts"    . ?d)
+         ("/[Gmail].Trash"     . ?t)))
 
-    ;; don't save message to Sent Messages, Gmail/IMAP takes care of this
-    (setq mu4e-sent-messages-behavior 'delete)
+(require 'smtpmail)
+(setq message-send-mail-function 'smtpmail-send-it
+      smtpmail-stream-type 'starttls
+      smtpmail-default-smtp-server "smtp.gmail.com"
+      smtpmail-smtp-server "smtp.gmail.com"
+      smtpmail-smtp-service 587)
 
-    ;; setup some handy shortcuts
-    ;; you can quickly switch to your Inbox -- press ``ji''
-    ;; then, when you want archive some messages, move them to
-    ;; the 'All Mail' folder by pressing ``ma''.
-    (setq mu4e-maildir-shortcuts
-          '( ("/INBOX"             . ?i)
-             ("/[Gmail].All Mail"  . ?a)
-             ("/[Gmail].Drafts"    . ?d)
-             ("/[Gmail].Trash"     . ?t)))
+;; don't keep message buffers around
+(setq message-kill-buffer-on-exit t)
 
-    ;; allow for updating mail using 'U' in the main view:
-    ;; I have this running in the background anyway
-    ;; (setq mu4e-get-mail-command "offlineimap")
+;; show images
+(setq mu4e-show-images t)
 
-    (require 'smtpmail)
-    (setq message-send-mail-function 'smtpmail-send-it
-          smtpmail-stream-type 'starttls
-          smtpmail-default-smtp-server "smtp.gmail.com"
-          smtpmail-smtp-server "smtp.gmail.com"
-          smtpmail-smtp-service 587)
+;; use imagemagick, if available
+(when (fboundp 'imagemagick-register-types)
+  (imagemagick-register-types))
 
-    ;; don't keep message buffers around
-    (setq message-kill-buffer-on-exit t)
+(setq mu4e-msg2pdf "/usr/bin/msg2pdf")
 
-    ;; show images
-    (setq mu4e-show-images t)
+(add-to-list 'mu4e-view-actions
+             '("View in browser" . mu4e-action-view-in-browser) t)
 
-    ;; use imagemagick, if available
-    (when (fboundp 'imagemagick-register-types)
-      (imagemagick-register-types))
+;; convert org mode to HTML automatically
+(setq org-mu4e-convert-to-html t)
 
-    (setq mu4e-msg2pdf "/usr/bin/msg2pdf")
+;; need this to convert some e-mails properly
+(setq mu4e-html2text-command "html2text -utf8 -width 72")
 
-    (add-to-list 'mu4e-view-actions
-                 '("View in browser" . mu4e-action-view-in-browser) t)
-
-    ;; convert org mode to HTML automatically
-    (setq org-mu4e-convert-to-html t)
-
-    ;; need this to convert some e-mails properly
-    (setq mu4e-html2text-command "html2text -utf8 -width 72")
-
-    (add-to-list 'mu4e-bookmarks '("flag:flagged" "Starred" ?s))
-    )
-  (mu4e)
-  )
+(add-to-list 'mu4e-bookmarks '("flag:flagged" "Starred" ?s))
 
 (defalias 'org-mail 'org-mu4e-compose-org-mode)
 
 (setq mu4e-headers-date-format "%y-%m-%d %H:%M")
+(setq mu4e-headers-time-format "%y-%m-%d %H:%M")
 
 (setq mu4e-headers-fields
       '((:human-date . 14)
         (:flags . 6)
         (:from . 15)
         (:subject)))
+
+(setq mu4e-headers-skip-duplicates 't)
 
 (setq mu4e-update-interval 300)
 
