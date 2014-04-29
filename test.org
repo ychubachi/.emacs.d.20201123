@@ -9,10 +9,11 @@
 
 いいい
 
-#+begin_src emacs-lisp
-;; test.el --- Test
+#+begin_src emacs-lisp -n -r
+;; test.el --- Test (ref:hoge)
 #+end_src
 
+In line [[(hoge)]] is..
 ** ううう
 
 #+begin_src emacs-lisp
