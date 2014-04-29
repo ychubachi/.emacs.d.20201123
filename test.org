@@ -9,7 +9,7 @@
 
 いいい
 
-#+begin_src emacs-lisp -n -r
+#+begin_src emacs-lisp -n -r :padline no
 ;; test.el --- Test (ref:hoge)
 #+end_src
 
