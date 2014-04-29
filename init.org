@@ -1398,10 +1398,17 @@ Gmailでラベルを使用していたが，muでの検索機能が優れてい�
 
 初回実行したら，97,388件のメールをダウンロードするのに508分55秒かかった．
 
+- zsh
+  offlineimap &!
+- bash
+  nohup offlineimap &
+
+
 ** mu
 
 muは，MaildirにあるメールをDB化します．
 表示や検索が素早く行えるようになります．
+検索が優れているので，ファルダを利用してメールを整理する必要がありません．
 
 - mu (maildir-utils)
   - [[https://github.com/djcb/mu][djcb/mu]]
@@ -1453,21 +1460,21 @@ offlineimapをcrontabで定期的に実行する．muのインデックスも同
       ;; then, when you want archive some messages, move them to
       ;; the 'All Mail' folder by pressing ``ma''.
       (setq mu4e-maildir-shortcuts
-            '( ("/INBOX"             . ?i)
-               ("/[Gmail].All Mail"  . ?a)
-               ("/[Gmail].Drafts"    . ?d)
-               ("/[Gmail].Trash"     . ?t)))
+	    '( ("/INBOX"             . ?i)
+	       ("/[Gmail].All Mail"  . ?a)
+	       ("/[Gmail].Drafts"    . ?d)
+	       ("/[Gmail].Trash"     . ?t)))
 
       ;; allow for updating mail using 'U' in the main view:
       ;; I have this running in the background anyway
-      (setq mu4e-get-mail-command "offlineimap")
+      ;; (setq mu4e-get-mail-command "offlineimap")
 
       (require 'smtpmail)
       (setq message-send-mail-function 'smtpmail-send-it
-            smtpmail-stream-type 'starttls
-            smtpmail-default-smtp-server "smtp.gmail.com"
-            smtpmail-smtp-server "smtp.gmail.com"
-            smtpmail-smtp-service 587)
+	    smtpmail-stream-type 'starttls
+	    smtpmail-default-smtp-server "smtp.gmail.com"
+	    smtpmail-smtp-server "smtp.gmail.com"
+	    smtpmail-smtp-service 587)
 
       ;; don't keep message buffers around
       (setq message-kill-buffer-on-exit t)
@@ -1477,12 +1484,12 @@ offlineimapをcrontabで定期的に実行する．muのインデックスも同
 
       ;; use imagemagick, if available
       (when (fboundp 'imagemagick-register-types)
-        (imagemagick-register-types))
+	(imagemagick-register-types))
 
       (setq mu4e-msg2pdf "/usr/bin/msg2pdf")
 
       (add-to-list 'mu4e-view-actions
-                   '("View in browser" . mu4e-action-view-in-browser) t)
+		   '("View in browser" . mu4e-action-view-in-browser) t)
 
       ;; convert org mode to HTML automatically
       (setq org-mu4e-convert-to-html t)
@@ -1500,6 +1507,36 @@ offlineimapをcrontabで定期的に実行する．muのインデックスも同
 
 #+RESULTS:
 : org-mail
+
+#+begin_src emacs-lisp
+(setq mu4e-headers-date-format "%y-%m-%d %H:%M")
+#+end_src
+
+#+RESULTS:
+: %y-%m-%d %H:%M
+
+ヘッダーに表示する列と幅を指定します．
+
+#+begin_src emacs-lisp
+  (setq mu4e-headers-fields
+	'((:human-date . 14)
+	  (:flags . 6)
+	  (:from . 15)
+	  (:subject)))
+#+end_src
+
+#+RESULTS:
+| (:human-date . 14) | (:flags . 6) | (:from . 15) | (:subject) |
+
+5分ごとに，自動的にインデックスをアップデートします．
+
+#+begin_src emacs-lisp
+  (setq mu4e-update-interval 300)
+#+end_src
+
+#+RESULTS:
+: 300
+
 
 * Programming
 

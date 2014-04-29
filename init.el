@@ -595,7 +595,7 @@ SCHEDULED: %t
 
     ;; allow for updating mail using 'U' in the main view:
     ;; I have this running in the background anyway
-    (setq mu4e-get-mail-command "offlineimap")
+    ;; (setq mu4e-get-mail-command "offlineimap")
 
     (require 'smtpmail)
     (setq message-send-mail-function 'smtpmail-send-it
