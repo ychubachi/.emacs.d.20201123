@@ -589,6 +589,10 @@ SCHEDULED: %t
       smtpmail-smtp-server "smtp.gmail.com"
       smtpmail-smtp-service 587)
 
+(setq
+   mu4e-get-mail-command "offlineimap"
+   mu4e-update-interval 300)
+
 ;; don't keep message buffers around
 (setq message-kill-buffer-on-exit t)
 
@@ -610,7 +614,7 @@ SCHEDULED: %t
 ;; need this to convert some e-mails properly
 (setq mu4e-html2text-command "html2text -utf8 -width 72")
 
-(add-to-list 'mu4e-bookmarks '("flag:flagged" "Starred" ?s))
+(add-to-list 'mu4e-bookmarks '("flag:flagged" "Flagged (Starred in Gmail)" ?s))
 
 (defalias 'org-mail 'org-mu4e-compose-org-mode)
 
