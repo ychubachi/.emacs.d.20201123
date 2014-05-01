@@ -1500,9 +1500,9 @@ offlineimapをmu4eから呼び出す設定．
 - [[http://www.djcbsoftware.nl/code/mu/mu4e/Retrieval-and-indexing.html#Retrieval-and-indexing][Retrieval and indexing - mu4e user manual]]
 
 #+begin_src emacs-lisp
-  (setq
-     mu4e-get-mail-command "offlineimap"
-     mu4e-update-interval 300)
+  ;; (setq
+  ;;    mu4e-get-mail-command "offlineimap"
+  ;;    mu4e-update-interval 300)
 #+end_src
 
 #+begin_src emacs-lisp

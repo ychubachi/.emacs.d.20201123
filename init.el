@@ -589,9 +589,9 @@ SCHEDULED: %t
       smtpmail-smtp-server "smtp.gmail.com"
       smtpmail-smtp-service 587)
 
-(setq
-   mu4e-get-mail-command "offlineimap"
-   mu4e-update-interval 300)
+;; (setq
+;;    mu4e-get-mail-command "offlineimap"
+;;    mu4e-update-interval 300)
 
 ;; don't keep message buffers around
 (setq message-kill-buffer-on-exit t)
