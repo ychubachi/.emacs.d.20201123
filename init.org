@@ -1636,20 +1636,6 @@ Gmailでスターをつけると，flagが付く．
 (add-hook 'emacs-lisp-mode-hook 'outline-minor-mode)
 #+end_src
 
-* Shell-pop
-
-#+begin_src emacs-lisp
-   (my/package-install-and-require 'shell-pop)
-
-   (custom-set-variables
-    '(shell-pop-autocd-to-working-dir nil)
-    '(shell-pop-shell-type (quote ("eshell" "*eshell*" (lambda nil (eshell)))))
-    '(shell-pop-universal-key "C-z")
-    '(shell-pop-window-height 30))
-#+end_src
-
-#+RESULTS:
-
 * Undo Tree
 #+begin_src emacs-lisp
 (dolist (package '(undo-tree))
