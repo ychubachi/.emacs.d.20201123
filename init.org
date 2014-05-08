@@ -2494,6 +2494,22 @@ Gmailでスターをつけると，flagが付く．
   ;; (coding-system-put 'cp932-mac :mnemonic ?P)
 #+end_src
 
+* 文芸的プログラミング
+
+#' = function
+- [[http://www.gnu.org/software/emacs/manual/html_node/elisp/Anonymous-Functions.html][Anonymous Functions - GNU Emacs Lisp Reference Manual]]
+
+[[http://orgmode.org/worg/org-contrib/babel/intro.html#literate-programming][Babel: Introduction]]
+
+Following codes do not work well in org-mode runing with C-c C-c.
+
+#+begin_src emacs-lisp
+  (setq dot-file-dir (file-name-directory
+		       (or (buffer-file-name) load-file-name)))
+  (setq org-file-dir (expand-file-name "plugins-enabled" dot-file-dir))
+  (mapc #'org-babel-load-file (directory-files org-file-dir t "\\.org$"))
+#+end_src
+
 * 後処理
 ** 完了表示
 

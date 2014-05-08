@@ -1306,6 +1306,11 @@ SCHEDULED: %t
   ;; (coding-system-put 'cp932-mac :mnemonic ?P)
 )
 
+(setq dot-file-dir (file-name-directory
+                     (or (buffer-file-name) load-file-name)))
+(setq org-file-dir (expand-file-name "plugins-enabled" dot-file-dir))
+(mapc #'org-babel-load-file (directory-files org-file-dir t "\\.org$"))
+
 (message "%s" "%% init.elは完了しました %%")
 
 ;;; init.el ends here
