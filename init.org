@@ -1524,11 +1524,18 @@ offlineimapをmu4eから呼び出す設定．
   ;; convert org mode to HTML automatically
   (setq org-mu4e-convert-to-html t)
 
-  ;; need this to convert some e-mails properly
-  (setq mu4e-html2text-command "html2text -utf8 -width 72")
 #+end_src
 
-Gmailでスターをつけると，flogが付く．
+HTML形式のメールをEmacs内で読むためにテキスト形式に整形するための
+コマンドを指定する．
+html2textも利用できるが，Shift JISに対応していない．
+
+#+begin_src emacs-lisp
+  (setq mu4e-html2text-command "w3m -dump -T text/html")
+#+end_src
+
+
+Gmailでスターをつけると，flagが付く．
 そこで，これを検索するブックマークを追加する．
 
 #+begin_src emacs-lisp

@@ -611,8 +611,7 @@ SCHEDULED: %t
 ;; convert org mode to HTML automatically
 (setq org-mu4e-convert-to-html t)
 
-;; need this to convert some e-mails properly
-(setq mu4e-html2text-command "html2text -utf8 -width 72")
+(setq mu4e-html2text-command "w3m -dump -T text/html")
 
 (add-to-list 'mu4e-bookmarks '("flag:flagged" "Flagged (Starred in Gmail)" ?s))
 
