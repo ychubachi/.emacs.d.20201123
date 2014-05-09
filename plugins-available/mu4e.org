@@ -187,9 +187,6 @@ Gmailでスターをつけると，flagが付く．
   (setq mu4e-headers-time-format "%y-%m-%d %H:%M")
 #+end_src
 
-#+RESULTS:
-: %y-%m-%d %H:%M
-
 ヘッダーに表示する列と幅を指定する．
 
 #+begin_src emacs-lisp
@@ -200,9 +197,6 @@ Gmailでスターをつけると，flagが付く．
 	  (:subject)))
 #+end_src
 
-#+RESULTS:
-| (:human-date . 14) | (:flags . 6) | (:from . 15) | (:subject) |
-
 メールが/INDEXと/[Gmail]/All Mailの両方に存在する状態の場合，
 検索結果に両方が含まれる．次の設定をすることにより，
 重複を除外して表示する．
@@ -210,16 +204,3 @@ Gmailでスターをつけると，flagが付く．
 #+begin_src emacs-lisp
   (setq mu4e-headers-skip-duplicates 't)
 #+end_src
-
-#+RESULTS:
-: t
-
-
-5分ごとに，自動的にインデックスをアップデートします．
-
-#+begin_src emacs-lisp
-  (setq mu4e-update-interval 300)
-#+end_src
-
-#+RESULTS:
-: 300
