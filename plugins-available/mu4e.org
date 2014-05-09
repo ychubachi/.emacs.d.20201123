@@ -1,4 +1,11 @@
 * mu4e
+** 概要
+
+[[https://github.com/ychubachi/.emacs.d/blob/master/plugins-available/mu4e.org][.emacs.d/plugins-available/mu4e.org at master · ychubachi/.emacs.d]]
+
+mu4eは，offlineimap及びmaildir-toolsと組み合わせることで動作する，
+軽快なIMAPサーバ用メールリーダである．
+
 ** OfflineImap
 
 offlineImapは，IMAPサーバにあるメールをローカルのファイルに
@@ -6,6 +13,7 @@ offlineImapは，IMAPサーバにあるメールをローカルのファイル�
 分かりやすいかもしれない．
 
 IMAPのサーバとして，Gmailを用いる場合の設定例を示す．
+
 IMAPのフォルダ名を英語にするため，Gmailは「英語」の設定にする．
 日本語のフォルダ名を，offlineimapのnametrans機能で
 日本語に変換することもできるのだが，
@@ -56,7 +64,7 @@ muは，MaildirにあるメールをDB化します．
 
 こちらは510.57秒．
 
-** crontab
+** バックグラウンド
 offlineimapをcrontabで定期的に実行する．muのインデックスも同時に行う．
 
 ** custom.el
