@@ -27,9 +27,9 @@ IMAPのフォルダ名を英語にするため，Gmailは「英語」の設定�
 
 ** OfflineImapコマンドのインストール
 
-#+begin_sh
+#+begin_src sh
  sudo apt-get install offlineimap
-#+end_sh
+#+end_src
 
 - 設定例
   - [[https://github.com/spaetz/offlineimap/blob/master/offlineimap.conf][offlineimap/offlineimap.conf at master · spaetz/offlineimap]]
