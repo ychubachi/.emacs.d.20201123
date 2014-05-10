@@ -79,9 +79,6 @@ Gmailでラベルを使用していたが，muでの検索機能が優れてい�
 
 こちらは510.57秒．
 
-** バックグラウンド
-offlineimapをcrontabで定期的に実行する．muのインデックスも同時に行う．
-
 ** custom.el
 - custom.el
   (user-mail-address "yoshi@chubachi.net")
@@ -92,12 +89,13 @@ offlineimapをcrontabで定期的に実行する．muのインデックスも同
 - これはよくわからない
   '(mu4e-user-mail-address-list (quote ("yc@aiit.ac.jp" "yoshi@chubachi.net" "yoshihide.chubachi@gmail.com")))
 
-** Emacsの設定
-
+* Emacsの設定
+** パッケージの読み込み
 #+begin_src emacs-lisp
   (require 'mu4e)
 #+end_src
 
+** Gmail用Maildirフォルダの指定
 mu4eで用いるGmailのフォルダを指定する．
 GmailのSentフォルダは設定せず，All Mailフォルダを指定する．
 
@@ -141,36 +139,33 @@ SMTPの設定．Emacs標準のコンポーネント．
 	smtpmail-smtp-service 587)
 #+end_src
 
-offlineimapをmu4eから呼び出す設定．
-間隔を5分に．
-
 - [[http://www.djcbsoftware.nl/code/mu/mu4e/Retrieval-and-indexing.html#Retrieval-and-indexing][Retrieval and indexing - mu4e user manual]]
 
+  ;; don't keep message buffers around
 #+begin_src emacs-lisp
-  ;; (setq
-  ;;    mu4e-get-mail-command "offlineimap"
-  ;;    mu4e-update-interval 300)
+  (setq message-kill-buffer-on-exit t)
 #+end_src
 
-#+begin_src emacs-lisp
-  ;; don't keep message buffers around
-  (setq message-kill-buffer-on-exit t)
 
   ;; show images
+#+begin_src emacs-lisp
   (setq mu4e-show-images t)
+#+end_src
 
   ;; use imagemagick, if available
+#+begin_src emacs-lisp
   (when (fboundp 'imagemagick-register-types)
     (imagemagick-register-types))
 
-  (setq mu4e-msg2pdf "/usr/bin/msg2pdf")
+#+end_src
 
+#+begin_src emacs-lisp
+  (setq mu4e-msg2pdf "/usr/bin/msg2pdf")
+#+end_src
+
+#+begin_src emacs-lisp
   (add-to-list 'mu4e-view-actions
 	       '("View in browser" . mu4e-action-view-in-browser) t)
-
-  ;; convert org mode to HTML automatically
-  (setq org-mu4e-convert-to-html t)
-
 #+end_src
 
 HTML形式のメールをEmacs内で読むためにテキスト形式に整形するための
@@ -180,7 +175,6 @@ html2textも利用できるが，Shift JISに対応していない．
 #+begin_src emacs-lisp
   (setq mu4e-html2text-command "w3m -dump -T text/html")
 #+end_src
-
 
 Gmailでスターをつけると，flagが付く．
 そこで，これを検索するブックマークを追加する．
@@ -223,4 +217,9 @@ Gmailでスターをつけると，flagが付く．
 
 #+begin_src emacs-lisp
   (defalias 'org-mail 'org-mu4e-compose-org-mode)
+#+end_src
+
+  ;; convert org mode to HTML automatically
+#+begin_src emacs-lisp
+  (setq org-mu4e-convert-to-html t)
 #+end_src

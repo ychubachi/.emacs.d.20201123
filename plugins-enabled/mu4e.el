@@ -22,17 +22,10 @@
       smtpmail-smtp-server "smtp.gmail.com"
       smtpmail-smtp-service 587)
 
-;; (setq
-;;    mu4e-get-mail-command "offlineimap"
-;;    mu4e-update-interval 300)
-
-;; don't keep message buffers around
 (setq message-kill-buffer-on-exit t)
 
-;; show images
 (setq mu4e-show-images t)
 
-;; use imagemagick, if available
 (when (fboundp 'imagemagick-register-types)
   (imagemagick-register-types))
 
@@ -40,9 +33,6 @@
 
 (add-to-list 'mu4e-view-actions
              '("View in browser" . mu4e-action-view-in-browser) t)
-
-;; convert org mode to HTML automatically
-(setq org-mu4e-convert-to-html t)
 
 (setq mu4e-html2text-command "w3m -dump -T text/html")
 
@@ -62,3 +52,5 @@
 (require 'org-mu4e)
 
 (defalias 'org-mail 'org-mu4e-compose-org-mode)
+
+(setq org-mu4e-convert-to-html t)
