@@ -61,5 +61,3 @@
         (:subject)))
 
 (setq mu4e-headers-skip-duplicates 't)
-
-(setq mu4e-update-interval 300)
