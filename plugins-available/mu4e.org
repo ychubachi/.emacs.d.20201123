@@ -5,13 +5,17 @@ Gmail等IMAPサーバに対応する軽快なメールリーダである．
 
 ** OfflineImapとは
 
-offlineImapは，IMAPサーバにあるメールをローカルのファイルに
+OfflineImapは，IMAPサーバにあるメールをローカルのファイルに
 Maildir形式で同期するツールである．DropboxやOneDriveのIMAP版と考えれば
-分かりやすいかもしれない．
+分かりやすいかもしれない．ここでは，Gmailを利用することを前提に，
+OfflineImapを設定する．
 
+まず，Gmail側で設定を行う．
 IMAPのフォルダ名を英語にするため，Gmailは「英語」の設定にする．
-日本語のフォルダ名を，offlineimapのnametrans機能で
-日本語に変換することもできるのだが，
+実は，日本語のフォルダ名を，offlineimapのnametrans機能で
+日本語に変換することもできる．
+
+しかしながら，
 筆者が試行錯誤したところ，このことに起因すると思われる
 文字コードに関連したエラーが発生してしまった．
 安定的な動作を期するため，Gmailの設定画面において、
@@ -21,8 +25,11 @@ IMAPのフォルダ名を英語にするため，Gmailは「英語」の設定�
 - [[http://gihyo.jp/admin/serial/01/ubuntu-recipe/0247?page=1][第247回　Offlineimap＋Dovecotによる快適メール環境：Ubuntu Weekly Recipe｜gihyo.jp … 技術評論社]]
 - [[http://piao-tech.blogspot.jp/2010/03/get-offlineimap-working-with-non-ascii.html][私のTech記憶: Get offlineimap working with non ASCII characters.]]
 
-- インストール
-  - sudo apt-get install offlineimap
+** OfflineImapコマンドのインストール
+
+#+begin_sh
+ sudo apt-get install offlineimap
+#+end_sh
 
 - 設定例
   - [[https://github.com/spaetz/offlineimap/blob/master/offlineimap.conf][offlineimap/offlineimap.conf at master · spaetz/offlineimap]]
