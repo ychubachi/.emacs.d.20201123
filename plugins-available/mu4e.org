@@ -11,7 +11,7 @@ Maildir形式で同期するツールである．DropboxやOneDriveのIMAP版と
 OfflineImapをバックグラウンドで定期的に実行することで，
 手元にあるローカルファイルが，IMAPサーバ上にあるメールと同期する．
 新しいメールが届いていればダウンロードし，
-ローカルでメールを削除したら，サーバのメールも削除される．
+ローカルでメールを削除したら，サーバのメールも削除する．
 
 *** Gmailでの利用
 ここでは，Gmailを利用することを前提に，
@@ -96,7 +96,6 @@ offlineimapをcrontabで定期的に実行する．muのインデックスも同
 
 #+begin_src emacs-lisp
   (require 'mu4e)
-  (require 'org-mu4e)
 #+end_src
 
 mu4eで用いるGmailのフォルダを指定する．
@@ -190,10 +189,6 @@ Gmailでスターをつけると，flagが付く．
   (add-to-list 'mu4e-bookmarks '("flag:flagged" "Flagged (Starred in Gmail)" ?s))
 #+end_src
 
-#+begin_src emacs-lisp
-  (defalias 'org-mail 'org-mu4e-compose-org-mode)
-#+end_src
-
 ヘッダ一覧画面に表示される日付と時刻の表示形式を設定する．
 当日のメールにも日付が表示されるようにした．
 
@@ -218,4 +213,14 @@ Gmailでスターをつけると，flagが付く．
 
 #+begin_src emacs-lisp
   (setq mu4e-headers-skip-duplicates 't)
+#+end_src
+
+** org-mode対応
+
+#+begin_src emacs-lisp
+  (require 'org-mu4e)
+#+end_src
+
+#+begin_src emacs-lisp
+  (defalias 'org-mail 'org-mu4e-compose-org-mode)
 #+end_src

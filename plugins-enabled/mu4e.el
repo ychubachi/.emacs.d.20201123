@@ -1,6 +1,5 @@
 
 (require 'mu4e)
-(require 'org-mu4e)
 
 (setq mu4e-maildir       "~/Maildir")
 (setq mu4e-sent-folder   "/[Gmail].All Mail")
@@ -49,8 +48,6 @@
 
 (add-to-list 'mu4e-bookmarks '("flag:flagged" "Flagged (Starred in Gmail)" ?s))
 
-(defalias 'org-mail 'org-mu4e-compose-org-mode)
-
 (setq mu4e-headers-date-format "%y-%m-%d %H:%M")
 (setq mu4e-headers-time-format "%y-%m-%d %H:%M")
 
@@ -61,3 +58,7 @@
         (:subject)))
 
 (setq mu4e-headers-skip-duplicates 't)
+
+(require 'org-mu4e)
+
+(defalias 'org-mail 'org-mu4e-compose-org-mode)
