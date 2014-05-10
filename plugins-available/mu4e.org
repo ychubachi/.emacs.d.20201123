@@ -1,5 +1,5 @@
-* mu4e
-** 概要 [[https://github.com/ychubachi/.emacs.d/blob/master/plugins-available/mu4e.org][(GitHub)]]
+* mu4e [[https://github.com/ychubachi/.emacs.d/blob/master/plugins-available/mu4e.org][(GitHub)]]
+** 概要
 mu4eは，offlineimap及びmaildir-toolsと組み合わせることで動作する，
 Gmail等IMAPサーバに対応する軽快なメールリーダである．
 
