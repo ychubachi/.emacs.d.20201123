@@ -1,18 +1,13 @@
 * mu4e
-** 概要
-
-[[https://github.com/ychubachi/.emacs.d/blob/master/plugins-available/mu4e.org][.emacs.d/plugins-available/mu4e.org at master · ychubachi/.emacs.d]]
-
+** 概要 [[https://github.com/ychubachi/.emacs.d/blob/master/plugins-available/mu4e.org][(GitHub)]]
 mu4eは，offlineimap及びmaildir-toolsと組み合わせることで動作する，
 Gmail等IMAPサーバに対応する軽快なメールリーダである．
 
-** OfflineImap
+** OfflineImapとは
 
 offlineImapは，IMAPサーバにあるメールをローカルのファイルに
-同期するツールである．DropboxやOneDriveのIMAP版と考えれば
+Maildir形式で同期するツールである．DropboxやOneDriveのIMAP版と考えれば
 分かりやすいかもしれない．
-
-IMAPのサーバとして，Gmailを用いる場合の設定例を示す．
 
 IMAPのフォルダ名を英語にするため，Gmailは「英語」の設定にする．
 日本語のフォルダ名を，offlineimapのnametrans機能で
@@ -21,10 +16,6 @@ IMAPのフォルダ名を英語にするため，Gmailは「英語」の設定�
 文字コードに関連したエラーが発生してしまった．
 安定的な動作を期するため，Gmailの設定画面において、
 「使用する言語」を英語にしておくのが良さそうだ．
-
-ローカルにはMaildir形式でメールを格納する．
-
-Gmailでラベルを使用していたが，muでの検索機能が優れているので，全て削除した．
 
 - [[http://docs.offlineimap.org/en/latest/][Welcome to offlineimaps‘s documentation — OfflineImap 6.5.4 documentation]]
 - [[http://gihyo.jp/admin/serial/01/ubuntu-recipe/0247?page=1][第247回　Offlineimap＋Dovecotによる快適メール環境：Ubuntu Weekly Recipe｜gihyo.jp … 技術評論社]]
@@ -40,12 +31,19 @@ Gmailでラベルを使用していたが，muでの検索機能が優れてい�
 
 初回実行したら，97,388件のメールをダウンロードするのに508分55秒かかった．
 
-- zsh
-  offlineimap &!
-- bash
-  nohup offlineimap &
+** バックグラウンドでの実行
+
+offlineimapをバックグラウンドで動作させるにはいくつかの方法がある．
+手軽に始められる方法として以下のやり方がある．
+
+#+begin_src sh
+  (zsh)$  offlineimap &!
+  (bash)$ nohup offlineimap &
+#+end_src
 
 ** mu
+
+Gmailでラベルを使用していたが，muでの検索機能が優れているので，全て削除した．
 
 muは，MaildirにあるメールをDB化します．
 表示や検索が素早く行えるようになります．
