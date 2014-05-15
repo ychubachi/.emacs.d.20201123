@@ -1,0 +1,128 @@
+* Helm
+** 参考
+   - [[http://d.hatena.ne.jp/a_bicky/20140104/1388822688][Helm をストレスなく使うための個人的な設定 - あらびき日記]]
+   - [[https://github.com/emacs-helm/helm/wiki][Home · emacs-helm/helm Wiki]]
+   - [[http://sleepboy-zzz.blogspot.jp/2012/09/anythinghelm.html][memo: AnythingからHelmに移行しました]]
+   - [[http://www49.atwiki.jp/ntemacs/m/pages/32.html][NTEmacs @ ウィキ - helm を使うための設定 - @ｳｨｷﾓﾊﾞｲﾙ]]
+   - [[http://qiita.com/akisute3@github/items/7c8ea3970e4cbb7baa97][Emacs - helm-mode 有効時でも helm-find-files は無効にする - Qiita {キータ}]]
+   - [[http://www.fan.gr.jp/~ring/doc/elisp_19/elisp-jp_14.html#IDX592][GNU Emacs Lispリファレンス・マニュアル: 12. マクロ]]
+     - 逆引用符は`,'の引数を評価し、 リスト構造にその値を入れます。
+
+** パッケージ
+
+#+begin_src emacs-lisp
+  (my/package-install 'helm)
+  (require 'helm-config)
+#+end_src
+
+** helm-miniを有効にする
+
+#+begin_src emacs-lisp
+  (global-set-key (kbd "C-c h") 'helm-mini)
+#+end_src
+
+** helm-modeを有効にする
+- [[https://github.com/emacs-helm/helm/wiki#18-helm-mode][Home · emacs-helm/helm Wiki]]
+
+Customize with: helm-completing-read-handlers-alist
+See C-h v helm-completing-read-handlers-alist for more infos.
+
+#+begin_src emacs-lisp
+  (helm-mode 1)
+#+end_src
+
+** C-h
+C-h でバックスペースと同じように文字を削除できるようにする
+
+#+begin_src emacs-lisp
+(define-key helm-map (kbd "C-h") 'delete-backward-char)
+(define-key helm-find-files-map (kbd "C-h") 'delete-backward-char)
+#+end_src
+
+** C-k
+ミニバッファで C-k 入力時にカーソル以降を削除する
+
+#+begin_src emacs-lisp
+(setq helm-delete-minibuffer-contents-from-point t)
+#+end_src
+
+** 他のパッケージ
+
+#+begin_src emacs-lisp
+(dolist (package '(helm-descbinds
+		   helm-migemo
+		   helm-themes
+		   imenu-anywhere
+		   helm-c-yasnippet))
+  (when (not (package-installed-p package))
+    (package-install package)))
+#+end_src
+
+** ???
+
+#+begin_src emacs-lisp
+(require 'helm-command)
+(require 'helm-descbinds)
+
+(setq helm-idle-delay             0.1
+      helm-input-idle-delay       0.1
+      helm-candidate-number-limit 200)
+#+end_src
+
+** helm-migemo - ローマ字検索
+
+#+begin_src emacs-lisp
+  (when (executable-find "cmigemo")
+    (require 'helm-migemo)
+    (setq helm-use-migemo t)
+
+    (defadvice helm-c-apropos
+      (around ad-helm-apropos activate)
+      "候補が表示されないときがあるので migemoらないように設定."
+      (let ((helm-use-migemo nil))
+	ad-do-it))
+
+    (defadvice helm-M-x
+      (around ad-helm-M-x activate)
+      "候補が表示されないときがあるので migemoらないように設定."
+      (let ((helm-use-migemo nil))
+	ad-do-it))
+    )
+#+end_src
+
+** その他
+
+#+begin_src emacs-lisp
+(require 'helm-imenu)
+(setq imenu-auto-rescan t)
+(setq imenu-after-jump-hook (lambda () (recenter 10))) ; 選択後の表示位置を調整
+
+(require 'helm-themes)
+
+(require 'helm-c-yasnippet)
+#+end_src
+
+** package listをhelmで選択
+
+#+begin_src emacs-lisp
+(require 'helm-package)
+#+end_src
+
+** keybinding
+
+#+begin_src emacs-lisp
+  (let ((key-and-func
+	 `(
+	   (,(kbd "M-x")     helm-M-x)
+	   (,(kbd "M-y")     helm-show-kill-ring)
+	   (,(kbd "C-x C-f") helm-find-files)
+  ;;         (,(kbd "C-r")   helm-for-files)
+  ;;         (,(kbd "C-^")   helm-c-apropos)
+  ;;         (,(kbd "C-;")   helm-resume)
+  ;;         (,(kbd "M-s")   helm-occur)
+  ;;         (,(kbd "M-z")   helm-do-grep)
+  ;;         (,(kbd "C-S-h") helm-descbinds)
+	   )))
+    (loop for (key func) in key-and-func
+	  do (global-set-key key func)))
+#+end_src

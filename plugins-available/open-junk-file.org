@@ -1,0 +1,6 @@
+* open-junk-file
+
+#+begin_src emacs-lisp
+  (my/package-install-and-require 'open-junk-file)
+  (global-set-key (kbd "C-x C-z") 'open-junk-file)
+#+end_src

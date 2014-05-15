@@ -1,0 +1,9 @@
+* PHP
+
+#+begin_src emacs-lisp
+  (dolist (package '(php-mode))
+    (when (not (package-installed-p package))
+      (package-install package)))
+#+end_src
+
+#+RESULTS:

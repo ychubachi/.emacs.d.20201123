@@ -1,0 +1,10 @@
+* lispxmp
+
+- 式の評価結果を注釈する
+  - M-; M-; て lispxmp用コメントの自動挿入
+  - C-c C-d で評価結果を注釈
+
+#+begin_src emacs-lisp
+  (my/package-install-and-require 'lispxmp)                 ; =>
+  (define-key emacs-lisp-mode-map (kbd "C-c C-d") 'lispxmp) ; =>
+#+end_src

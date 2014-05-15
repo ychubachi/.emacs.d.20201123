@@ -1,0 +1,28 @@
+* smartrep.el
+- [[http://sheephead.homelinux.org/2011/12/19/6930/][連続操作を素敵にするsmartrep.el作った - sheephead]]
+
+** パッケージのインストール
+
+#+begin_src emacs-lisp
+  (dolist (package '(smartrep))
+    (when (not (package-installed-p package))
+      (package-install package)))
+  (require 'smartrep)
+#+end_src
+
+** org-mode用設定
+
+- eval-after-loadにより，orgがロードされた後，
+  もしくは，既にロードされていれば即，実行する．
+
+#+begin_src emacs-lisp
+  (eval-after-load "org"
+    '(progn
+       (smartrep-define-key
+	   org-mode-map
+	   "C-c" '(("C-n" . (lambda ()
+			      (outline-next-visible-heading 1)))
+		   ("C-p" . (lambda ()
+			      (outline-previous-visible-heading 1)))))
+       ))
+#+end_src

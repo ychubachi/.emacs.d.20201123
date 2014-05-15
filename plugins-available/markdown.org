@@ -1,0 +1,21 @@
+* markdown
+  - [[http://jblevins.org/projects/markdown-mode/][Emacs Markdown Mode]]
+
+#+begin_src emacs-lisp
+  (dolist (package '(markdown-mode))
+    (when (not (package-installed-p package))
+      (package-install package)))
+
+  (autoload 'markdown-mode "markdown-mode"
+     "Major mode for editing Markdown files" t)
+  (add-to-list 'auto-mode-alist '("\\.text\\'" . markdown-mode))
+  (add-to-list 'auto-mode-alist '("\\.markdown\\'" . markdown-mode))
+  (add-to-list 'auto-mode-alist '("\\.md\\'" . markdown-mode))
+#+end_src
+
+  - markdownモードでアウトラインを有効にする
+
+#+begin_src emacs-lisp
+  (add-hook 'markdown-mode-hook
+	    '(lambda () (outline-minor-mode t)))
+#+end_src

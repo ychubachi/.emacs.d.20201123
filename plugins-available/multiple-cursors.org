@@ -1,0 +1,11 @@
+* 複数のカーソルを扱う:multiple-cursors
+
+#+begin_src emacs-lisp
+(dolist (package '(multiple-cursors yasnippet))
+  (when (not (package-installed-p package))
+    (package-install package)))
+(require 'multiple-cursors)
+#+end_src
+
+#+RESULTS:
+: multiple-cursors

@@ -1,0 +1,13 @@
+* graphviz-dot-mode
+
+#+begin_src emacs-lisp
+(dolist (package '(graphviz-dot-mode))
+  (when (not (package-installed-p package))
+    (package-install package)))
+
+(add-to-list 'auto-mode-alist '("\\.dot$" . graphviz-dot-mode))
+#+end_src
+
+#+begin_src emacs-lisp
+(setq graphviz-dot-preview-extension "pdf")
+#+end_src

@@ -1,0 +1,132 @@
+* Mac用設定
+** 設定全体
+#+begin_src emacs-lisp :noweb yes
+  (when (eq system-type 'darwin)
+    <<mac-keybord-and-input-method-settings>>
+    <<mac-fonts-settings>>
+    <<mac-yatex-settings>>
+  )
+#+end_src
+
+** Mac用キーボードと入力方式の設定
+
+#+name: mac-keybord-and-input-method-settings
+#+begin_src emacs-lisp :tangle no
+  ;; option <-> meta
+  (setq ns-command-modifier (quote meta))
+  (setq ns-alternate-modifier (quote super))
+
+  ;; システムへ修飾キーを渡さない
+  (setq mac-pass-control-to-system nil)
+  (setq mac-pass-command-to-system nil)
+  (setq mac-pass-option-to-system nil)
+
+  ;;; C-oで日本語切り替え
+  (mac-input-method-mode t)
+  (global-set-key "\C-o" 'toggle-input-method)
+
+  ;; かな
+  (mac-set-input-method-parameter
+   "com.google.inputmethod.Japanese.base" 'cursor-color 'green)
+
+  ;; 英数字
+  (mac-set-input-method-parameter
+   "com.google.inputmethod.Japanese.Roman" 'cursor-color 'red)
+
+  ;; change cursor type
+  (mac-set-input-method-parameter
+   "com.google.inputmethod.Japanese.base" 'cursor-type 'box)
+#+end_src
+
+** Mac用フォントの設定
+
+#+name: mac-fonts-settings
+#+begin_src emacs-lisp :tangle no
+  ;; ================================================================
+  ;; Fonts
+  ;; ================================================================
+
+  ;; |あああああ|
+  ;; |+-+-+-+-+-|
+  ;; |imimimimim|
+
+  ;; (when (x-list-fonts "Ricty")
+  ;;   (let* ((size 14)
+  ;;          (asciifont "Ricty")
+  ;;          (jpfont "Ricty")
+  ;;          (h (* size 10))
+  ;;          (fontspec)
+  ;;          (jp-fontspec))
+  ;;     (set-face-attribute 'default nil :family asciifont :height h)
+  ;;     (setq fontspec (font-spec :family asciifont))
+  ;;     (setq jp-fontspec (font-spec :family jpfont))
+  ;;     (set-fontset-font nil 'japanese-jisx0208 jp-fontspec)
+  ;;     (set-fontset-font nil 'japanese-jisx0212 jp-fontspec)
+  ;;     (set-fontset-font nil 'japanese-jisx0213-1 jp-fontspec)
+  ;;     (set-fontset-font nil 'japanese-jisx0213-2 jp-fontspec)
+  ;;     (set-fontset-font nil '(#x0080 . #x024F) fontspec)
+  ;;     (set-fontset-font nil '(#x0370 . #x03FF) fontspec)))
+
+#+end_src
+
+** Mac用YaTeXの設定
+
+#+name: mac-yatex-settings
+#+begin_src emacs-lisp :tangle no
+  (setq YaTeX-dvi2-command-ext-alist
+	'(("Preview\\|TeXShop\\|TeXworks\\|Skim\\|mupdf\\|xpdf\\|Firefox\\|Adobe" . ".pdf")))
+  (setq tex-command "/usr/texbin/ptex2pdf -l -ot '-synctex=1'")
+  ;(setq tex-command "/usr/texbin/ptex2pdf -l -u -ot '-synctex=1'")
+  ;(setq tex-command "/usr/local/bin/pdfplatex")
+  ;(setq tex-command "/usr/local/bin/pdfplatex2")
+  ;(setq tex-command "/usr/local/bin/pdfuplatex")
+  ;(setq tex-command "/usr/local/bin/pdfuplatex2")
+  ;(setq tex-command "/usr/texbin/pdflatex -synctex=1")
+  ;(setq tex-command "/usr/texbin/lualatex -synctex=1")
+  ;(setq tex-command "/usr/texbin/luajitlatex -synctex=1")
+  ;(setq tex-command "/usr/texbin/xelatex -synctex=1")
+  ;(setq tex-command "/usr/texbin/latexmk")
+  ;(setq tex-command "/usr/texbin/latexmk -e '$latex=q/platex %O -synctex=1 %S/' -e '$bibtex=q/pbibtex %O %B/' -e '$makeindex=q/mendex %O -o %D %S/' -e '$dvipdf=q/dvipdfmx %O -o %D %S/' -norc -gg -pdfdvi")
+  ;(setq tex-command "/usr/texbin/latexmk -e '$latex=q/platex %O -synctex=1 %S/' -e '$bibtex=q/pbibtex %O %B/' -e '$makeindex=q/mendex %O -o %D %S/' -e '$dvips=q/dvips %O -z -f %S | convbkmk -g > %D/' -e '$ps2pdf=q/ps2pdf %O %S %D/' -norc -gg -pdfps")
+  ;(setq tex-command "/usr/texbin/latexmk -e '$latex=q/uplatex %O -synctex=1 %S/' -e '$bibtex=q/upbibtex %O %B/' -e '$makeindex=q/mendex %O -o %D %S/' -e '$dvipdf=q/dvipdfmx %O -o %D %S/' -norc -gg -pdfdvi")
+  ;(setq tex-command "/usr/texbin/latexmk -e '$latex=q/uplatex %O -synctex=1 %S/' -e '$bibtex=q/upbibtex %O %B/' -e '$makeindex=q/mendex %O -o %D %S/' -e '$dvips=q/dvips %O -z -f %S | convbkmk -u > %D/' -e '$ps2pdf=q/ps2pdf %O %S %D/' -norc -gg -pdfps")
+  ;(setq tex-command "/usr/texbin/latexmk -e '$pdflatex=q/pdflatex %O -synctex=1 %S/' -e '$bibtex=q/bibtex %O %B/' -e '$makeindex=q/makeindex %O -o %D %S/' -norc -gg -pdf")
+  ;(setq tex-command "/usr/texbin/latexmk -e '$pdflatex=q/lualatex %O -synctex=1 %S/' -e '$bibtex=q/bibtexu %O %B/' -e '$makeindex=q/texindy %O -o %D %S/' -norc -gg -lualatex")
+  ;(setq tex-command "/usr/texbin/latexmk -e '$pdflatex=q/luajitlatex %O -synctex=1 %S/' -e '$bibtex=q/bibtexu %O %B/' -e '$makeindex=q/texindy %O -o %D %S/' -norc -gg -lualatex")
+  ;(setq tex-command "/usr/texbin/latexmk -e '$pdflatex=q/xelatex %O -synctex=1 %S/' -e '$bibtex=q/bibtexu %O %B/' -e '$makeindex=q/texindy %O -o %D %S/' -norc -gg -xelatex")
+  (setq bibtex-command (cond ((string-match "uplatex\\|-u" tex-command) "/usr/texbin/upbibtex")
+			     ((string-match "platex" tex-command) "/usr/texbin/pbibtex")
+			     ((string-match "lualatex\\|luajitlatex\\|xelatex" tex-command) "/usr/texbin/bibtexu")
+			     ((string-match "pdflatex\\|latex" tex-command) "/usr/texbin/bibtex")
+			     (t "/usr/texbin/pbibtex")))
+  (setq makeindex-command (cond ((string-match "uplatex\\|-u" tex-command) "/usr/texbin/mendex")
+				((string-match "platex" tex-command) "/usr/texbin/mendex")
+				((string-match "lualatex\\|luajitlatex\\|xelatex" tex-command) "/usr/texbin/texindy")
+				((string-match "pdflatex\\|latex" tex-command) "/usr/texbin/makeindex")
+				(t "/usr/texbin/mendex")))
+  ;(setq dvi2-command "/usr/bin/open -a Preview")
+  (setq dvi2-command "/usr/bin/open -a Skim")
+  ;(setq dvi2-command "/usr/bin/open -a TeXShop")
+  ;(setq dvi2-command "/usr/bin/open -a TeXworks")
+  ;(setq dvi2-command "/usr/bin/open -a Firefox")
+  (setq dviprint-command-format "/usr/bin/open -a \"Adobe Reader\" `echo %s | sed -e \"s/\\.[^.]*$/\\.pdf/\"`")
+
+  (defun skim-forward-search ()
+    (interactive)
+    (progn
+      (process-kill-without-query
+       (start-process
+	"displayline"
+	nil
+	"/Applications/Skim.app/Contents/SharedSupport/displayline"
+	(number-to-string (save-restriction
+			    (widen)
+			    (count-lines (point-min) (point))))
+	(expand-file-name
+	 (concat (file-name-sans-extension (or YaTeX-parent-file
+					       (save-excursion
+						 (YaTeX-visit-main t)
+						 buffer-file-name)))
+		 ".pdf"))
+	buffer-file-name))))
+#+end_src

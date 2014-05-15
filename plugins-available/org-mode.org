@@ -1,0 +1,442 @@
+* Org
+** Orgについて
+*** マニュアル
+  - [[http://orgmode.org/org.html][The Org Manual]]
+  - [[http://orgmode.org/elpa.html][Org Emacs lisp Package Archive]]
+*** Dropboxとの連携
+
+** orgパッケージのインストール
+
+#+begin_src emacs-lisp
+  (dolist (package '(org org-plus-contrib))
+    (when (not (package-installed-p package))
+      (package-install package)))
+
+  (require 'org)
+#+end_src
+
+** 思いついたらすぐ記録（Capture）
+- 準備
+  - mkdir ~/Dropbox/Org
+- org-directory のデフォルトは~/org
+- これをDropboxの下にする．Dropbox/Org
+- ディレクトリは自分で作ること．
+
+- org-default-notes-file のデフォルトは .notes
+- ただし，.notesを開いてもorgモードにならないので，エラーになる．
+- だから，ファイル名は指定する必要がある． -> notes.org
+- その他に，t: Todoとj: Journal（日記帳）を．
+
+- notes.orgは，トップページ扱い
+
+| 説明                       | 変数名                 | 推奨               |
+|----------------------------+------------------------+--------------------|
+| 備忘録用ファイルを置く場所 | org-directory          | "~/Dropbox/Org"    |
+| アジェンダファイルの指定   | org-agenda-files       | ("~/Dropbox/Org/") |
+| デフォルトのノーツ         | org-default-notes-file | "notes.org"        |
+| キャプチャ                 | org-capture-templates  | t: Todo j: Journal |
+
+- org-agenda-files -> MobileOrgにPushする
+
+#+begin_src emacs-lisp
+  (setq org-directory "~/Dropbox/Org")
+  (setq org-agenda-files (quote ("~/Dropbox/Org/")))
+  (setq org-default-notes-file "notes.org")
+#+end_src
+
+#+RESULTS:
+| ~/Dropbox/Org/ |
+
+** キャプチャのテンプレート
+
+#+begin_src emacs-lisp
+    (setq org-capture-templates
+	  (quote
+	   (("t" "Todo" entry (file+headline "todo.org" "Tasks")
+	     "* TODO [#B] %?
+  SCHEDULED: %t
+  ")
+	    ("l" "Link as Todo" entry (file+headline "todo.org" "Tasks")
+	     "* TODO [#B] %a
+  SCHEDULED: %t
+  　引用: %i
+  %?
+  ")
+	    ("j" "Journal" entry (file+datetree "journal.org")
+	     "* %?
+  作成日: %U
+  　引用: %i
+  リンク: %a
+  ")
+	    ("b" "Bookmark" entry (file+headline "bookmark.org" "Bookmarks")
+	     "* TODO [#B] %a :bookmark:
+  SCHEDULED: %t
+  　引用: %i
+  %?
+  ")
+	    )))
+#+end_src
+
+** Mobile Org関連
+
+- [[https://github.com/matburt/mobileorg-android/wiki][Home · matburt/mobileorg-android Wiki]]
+
+
+#+begin_src emacs-lisp
+  (setq org-mobile-directory "~/Dropbox/アプリ/MobileOrg")
+  (setq org-mobile-inbox-for-pull "~/Dropbox/Org/from-mobile.org")
+#+end_src
+
+#+RESULTS:
+: ~/Dropbox/Org/from-mobile.org
+
+** Babel
+
+| 説明 | 変数名 | 推奨 |
+|------+--------+------|
+|      |        |      |
+
+#+begin_src emacs-lisp
+  (setq org-babel-load-languages
+	(quote
+	 ((emacs-lisp . t)
+	  (dot . t)
+	  (java . t)
+	  (ruby . t)
+	  (sh . t))))
+#+end_src
+
+#+RESULTS:
+| (emacs-lisp . t) | (dot . t) | (java . t) | (ruby . t) | (sh . t) |
+
+#+begin_src emacs-lisp
+  (setq org-confirm-babel-evaluate nil)
+#+end_src
+
+#+RESULTS:
+
+** 予定表生成追加命令
+
+- [[http://orgmode.org/manual/Matching-tags-and-properties.html][Matching tags and properties - The Org Manual]]
+- [[https://www.gnu.org/software/emacs/manual/html_node/org/Special-agenda-views.html][Special agenda views - The Org Manual]]
+
+#+begin_src emacs-lisp
+  (setq org-agenda-custom-commands
+	(quote
+	 (("x" "TODOs without Scheduled" tags-todo "+SCHEDULED=\"\"" nil)
+	  ("d" "TODOs without Deadline" tags-todo "+DEADLINE=\"\"" nil)
+	  ("p" "私用" tags-todo "+私用" nil)
+	  ("P" "私用以外" tags-todo "-私用" nil)
+	  ("n" "Agenda and all TODO's" ((agenda "" nil)
+					(alltodo "" nil)) nil))))
+#+end_src
+
+#+RESULTS:
+| x | TODOs without Scheduled | tags-todo                      | +SCHEDULED="" | nil |
+| d | TODOs without Deadline  | tags-todo                      | +DEADLINE=""  | nil |
+| p | 私用                    | tags-todo                      | +私用         | nil |
+| P | 私用以外                | tags-todo                      | -私用         | nil |
+| n | Agenda and all TODO's   | ((agenda  nil) (alltodo  nil)) | nil           |     |
+
+** Org Column Title
+- Heightをフォントの高さに合わせる
+
+** その他
+
+| 説明                           | 変数名                         | 推奨                          |
+|--------------------------------+--------------------------------+-------------------------------|
+| バックグランドでのエキスポート | org-export-in-background       | nil                           |
+| 画像を表示                     | org-startup-with-inline-images | t                             |
+| ToDoアイテムの状態             | org-todo-keywords              | TODO WAIT DONE SOMEDAY CANCEL |
+|                                |                                |                               |
+
+** TODOの種類
+
+#+begin_src emacs-lisp
+  (setq org-todo-keywords (quote ((sequence "TODO(t)" "WIP(p)" "WAIT(w)" "|" "DONE(d)" "SOMEDAY(s)" "CANCEL(c)"))))
+#+end_src
+
+#+RESULTS:
+| sequence | TODO(t) | WIP(p) | WAIT(w) |   |   | DONE(d) | SOMEDAY(s) | CANCEL(c) |
+
+** 期日の何日前に予定表（Agenda）に表示するか
+
+#+begin_src emacs-lisp
+  (setq org-deadline-warning-days 7)
+#+end_src
+
+#+RESULTS:
+: 7
+
+** Linewrap
+
+- [[http://superuser.com/questions/299886/linewrap-in-org-mode-of-emacs][Linewrap in Org-mode of Emacs? - Super User]]
+
+#+begin_src emacs-lisp
+  (define-key org-mode-map "\M-q" 'toggle-truncate-lines)
+#+end_src
+
+#+RESULTS:
+: toggle-truncate-lines
+
+** TODO 未整理
+
+#+begin_src emacs-lisp
+(custom-set-variables
+ '(org-export-in-background nil)
+ '(org-src-fontify-natively t))
+#+end_src
+
+** Shellのコードの実行にbashを使う
+    :PROPERTIES:
+    :ID:       adc108a7-c5d7-49b7-b1fb-bfb681d748b0
+    :END:
+   - デフォルトのシェルがzshなので，設定しておく．
+   - 2014-01-24現在，customizationの対応ではない模様．
+
+#+begin_src emacs-lisp
+(setq org-babel-sh-command "bash")
+#+end_src
+
+** エキスポート
+*** Markdown export
+
+#+begin_src emacs-lisp
+  (require 'ox-md)
+#+end_src
+
+*** mediawiki export
+
+#+begin_src emacs-lisp
+  (require 'ox-mediawiki)
+#+end_src
+
+*** LaTeX export
+**** パッケージの読み込み
+
+#+begin_src emacs-lisp
+  (require 'ox-latex)
+#+end_src
+
+**** PDFを生成するコマンド
+
+#+begin_src emacs-lisp
+  (when (or
+	 (eq system-type 'gnu/linux)
+	 (eq system-type 'darwin))
+    (setq org-latex-pdf-process
+	  '("latexmk -e '$latex=q/platex %S/' -e '$bibtex=q/pbibtex %B/' -e '$makeindex=q/mendex -o %D %S/' -e '$dvipdf=q/dvipdfmx -o %D %S/' -norc -gg -pdfdvi %f"))
+    )
+#+end_src
+
+#+RESULTS:
+| latexmk -e '$latex=q/platex %S/' -e '$bibtex=q/pbibtex %B/' -e '$makeindex=q/mendex -o %D %S/' -e '$dvipdf=q/dvipdfmx -o %D %S/' -norc -gg -pdfdvi %f |
+
+**** 文書クラスの設定(jsarticle)
+
+#+begin_src emacs-lisp
+  (setq org-latex-default-class "jsarticle")
+  (add-to-list 'org-latex-classes
+	       '("jsarticle"
+		 "\\ifdefined\\ucs
+    \\documentclass[uplatex,12pt,a4paper,papersize,dvipdfmx]{jsarticle}
+  \\else
+    \\documentclass[12pt,a4paper,papersize,dvipdfmx]{jsarticle}
+  \\fi
+  [NO-DEFAULT-PACKAGES]
+  \\usepackage{amsmath}
+  \\usepackage{newtxtext,newtxmath}
+  \\usepackage{graphicx}
+  \\usepackage{hyperref}
+  \\usepackage{pxjahyper}
+  \\hypersetup{setpagesize=false,colorlinks=true}"
+		 ("\\section{%s}" . "\\section*{%s}")
+		 ("\\subsection{%s}" . "\\subsection*{%s}")
+		 ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+		 ("\\paragraph{%s}" . "\\paragraph*{%s}")
+		 ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
+#+end_src
+
+#+RESULTS:
+| beamer    | \documentclass[dvipdfmx]{beamer}\n[NO-DEFAULT-PACKAGES]\n\usepackage{bxdpx-beamer}\n\usepackage{pxjahyper}\n\usepackage{minijs}\n\renewcommand{\kanjifamilydefault}{\gtdefault}\n\AtBeginSection[]\n{\n  \begin{frame}<beamer>{Outline}\n  \tableofcontents[currentsection,currentsubsection]\n  \end{frame}\n}                                                     | (\section{%s} . \section*{%s}) | (\subsection{%s} . \subsection*{%s}) | (\subsubsection{%s} . \subsubsection*{%s}) | (\paragraph{%s} . \paragraph*{%s})   | (\subparagraph{%s} . \subparagraph*{%s})   |
+| beamer    | \documentclass[presentation]{beamer}\n[DEFAULT-PACKAGES]\n[PACKAGES]\n[EXTRA]                                                                                                                                                                                                                                                                                       | (\section{%s} . \section*{%s}) | (\subsection{%s} . \subsection*{%s}) | (\subsubsection{%s} . \subsubsection*{%s}) |                                      |                                            |
+| jsarticle | \ifdefined\ucs\n  \documentclass[uplatex,12pt,a4paper,papersize,dvipdfmx]{jsarticle}\n\else\n  \documentclass[12pt,a4paper,papersize,dvipdfmx]{jsarticle}\n\fi\n[NO-DEFAULT-PACKAGES]\n\usepackage{amsmath}\n\usepackage{newtxtext,newtxmath}\n\usepackage{graphicx}\n\usepackage{hyperref}\n\usepackage{pxjahyper}\n\hypersetup{setpagesize=false,colorlinks=true} | (\section{%s} . \section*{%s}) | (\subsection{%s} . \subsection*{%s}) | (\subsubsection{%s} . \subsubsection*{%s}) | (\paragraph{%s} . \paragraph*{%s})   | (\subparagraph{%s} . \subparagraph*{%s})   |
+| article   | \documentclass[11pt]{article}                                                                                                                                                                                                                                                                                                                                       | (\section{%s} . \section*{%s}) | (\subsection{%s} . \subsection*{%s}) | (\subsubsection{%s} . \subsubsection*{%s}) | (\paragraph{%s} . \paragraph*{%s})   | (\subparagraph{%s} . \subparagraph*{%s})   |
+| report    | \documentclass[11pt]{report}                                                                                                                                                                                                                                                                                                                                        | (\part{%s} . \part*{%s})       | (\chapter{%s} . \chapter*{%s})       | (\section{%s} . \section*{%s})             | (\subsection{%s} . \subsection*{%s}) | (\subsubsection{%s} . \subsubsection*{%s}) |
+| book      | \documentclass[11pt]{book}                                                                                                                                                                                                                                                                                                                                          | (\part{%s} . \part*{%s})       | (\chapter{%s} . \chapter*{%s})       | (\section{%s} . \section*{%s})             | (\subsection{%s} . \subsection*{%s}) | (\subsubsection{%s} . \subsubsection*{%s}) |
+
+*** LeTex (beamer) export
+**** パッケージの読み込み
+
+#+begin_src emacs-lisp
+(require 'ox-beamer)
+#+end_src
+
+**** 文書クラスの設定(beamer)
+
+#+begin_src emacs-lisp
+(add-to-list 'org-latex-classes
+	     '("beamer"
+	       "\\documentclass[dvipdfmx]{beamer}
+[NO-DEFAULT-PACKAGES]
+\\usepackage{bxdpx-beamer}
+\\usepackage{pxjahyper}
+\\usepackage{minijs}
+\\renewcommand{\\kanjifamilydefault}{\\gtdefault}
+\\AtBeginSection[]
+{
+  \\begin{frame}<beamer>{Outline}
+  \\tableofcontents[currentsection,currentsubsection]
+  \\end{frame}
+}"
+	       ("\\section{%s}" . "\\section*{%s}")
+	       ("\\subsection{%s}" . "\\subsection*{%s}")
+	       ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+	       ("\\paragraph{%s}" . "\\paragraph*{%s}")
+	       ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
+#+end_src
+
+#+RESULTS:
+| beamer    | \documentclass[dvipdfmx]{beamer}\n[NO-DEFAULT-PACKAGES]\n\usepackage{bxdpx-beamer}\n\usepackage{pxjahyper}\n\usepackage{minijs}\n\renewcommand{\kanjifamilydefault}{\gtdefault}\n\AtBeginSection[]\n{\n  \begin{frame}<beamer>{Outline}\n  \tableofcontents[currentsection,currentsubsection]\n  \end{frame}\n}                                                     | (\section{%s} . \section*{%s}) | (\subsection{%s} . \subsection*{%s}) | (\subsubsection{%s} . \subsubsection*{%s}) | (\paragraph{%s} . \paragraph*{%s})   | (\subparagraph{%s} . \subparagraph*{%s})   |
+| beamer    | \documentclass[presentation]{beamer}\n[DEFAULT-PACKAGES]\n[PACKAGES]\n[EXTRA]                                                                                                                                                                                                                                                                                       | (\section{%s} . \section*{%s}) | (\subsection{%s} . \subsection*{%s}) | (\subsubsection{%s} . \subsubsection*{%s}) |                                      |                                            |
+| jsarticle | \ifdefined\ucs\n  \documentclass[uplatex,12pt,a4paper,papersize,dvipdfmx]{jsarticle}\n\else\n  \documentclass[12pt,a4paper,papersize,dvipdfmx]{jsarticle}\n\fi\n[NO-DEFAULT-PACKAGES]\n\usepackage{amsmath}\n\usepackage{newtxtext,newtxmath}\n\usepackage{graphicx}\n\usepackage{hyperref}\n\usepackage{pxjahyper}\n\hypersetup{setpagesize=false,colorlinks=true} | (\section{%s} . \section*{%s}) | (\subsection{%s} . \subsection*{%s}) | (\subsubsection{%s} . \subsubsection*{%s}) | (\paragraph{%s} . \paragraph*{%s})   | (\subparagraph{%s} . \subparagraph*{%s})   |
+| article   | \documentclass[11pt]{article}                                                                                                                                                                                                                                                                                                                                       | (\section{%s} . \section*{%s}) | (\subsection{%s} . \subsection*{%s}) | (\subsubsection{%s} . \subsubsection*{%s}) | (\paragraph{%s} . \paragraph*{%s})   | (\subparagraph{%s} . \subparagraph*{%s})   |
+| report    | \documentclass[11pt]{report}                                                                                                                                                                                                                                                                                                                                        | (\part{%s} . \part*{%s})       | (\chapter{%s} . \chapter*{%s})       | (\section{%s} . \section*{%s})             | (\subsection{%s} . \subsection*{%s}) | (\subsubsection{%s} . \subsubsection*{%s}) |
+| book      | \documentclass[11pt]{book}                                                                                                                                                                                                                                                                                                                                          | (\part{%s} . \part*{%s})       | (\chapter{%s} . \chapter*{%s})       | (\section{%s} . \section*{%s})             | (\subsection{%s} . \subsection*{%s}) | (\subsubsection{%s} . \subsubsection*{%s}) |
+
+** TODO WebにHTMLでPublishする                                         :個人設定:
+   :PROPERTIES:
+   :ID:       fcdb09c8-3a9a-4ea9-9482-10d445b6db9f
+   :END:
+   - customzationに移動する？
+
+#+begin_src emacs-lisp
+(setq org-publish-project-alist
+      '(
+	("chubachi.net-notes"
+	 :base-directory "~/Ubuntu One/WebSites/chubachi.net/org/"
+	 :base-extension "org"
+	 :publishing-directory "~/Ubuntu One/WebSites/chubachi.net/www/"
+	 :publishing-function org-html-publish-to-html
+	 ;; :headline-levels 3
+	 ;; :section-numbers nil
+	 ;; :with-toc nil
+	 ;; :html-head "<link rel=\"stylesheet\"
+	 ;;               href=\"../other/mystyle.css\" type=\"text/css\"/>"
+	 ;; :html-preamble t
+	 :recursive t
+	 )
+	("chubachi.net-static"
+	 :base-directory "~/Ubuntu One/WebSites/chubachi.net/org/"
+	 :base-extension "css\\|js\\|png\\|jpg\\|gif\\|pdf\\|mp3\\|ogg\\|swf"
+	 :publishing-directory "~/Ubuntu One/WebSites/chubachi.net/www/"
+	 :recursive t
+	 :publishing-function org-publish-attachment
+	 )
+	("chubachi.net"
+	 :components ("chubachi.net-notes" "chubachi.net-static"))
+      ))
+#+end_src
+
+** WordPressに記事を投稿（org2blog）                                   :個人設定:
+  :PROPERTIES:
+  :ID:       o2b:83d5ddbc-5e84-446c-826a-a2702eb6b997
+  :POST_DATE: [2013-12-28 土 19:16]
+  :POSTID:   18
+  :BLOG:     blog.chubachi.net
+  :END:
+
+   - 使い方は [[https://github.com/punchagan/org2blog][punchagan/org2blog]] を参照．
+   - ソースコードを表示させるには
+     [[http://wordpress.org/plugins/syntaxhighlighter/][WordPress › SyntaxHighlighter Evolved « WordPress Plugins]]
+     をインストールしておく．
+   - emacs lispには対応していない．残念．
+
+   |--------------------------+--------------------------|
+   | 機能                     | コマンド                 |
+   |--------------------------+--------------------------|
+   | ログイン                 | org2blog/wp-login        |
+   | 新規投稿                 | org2blog/wp-new-entry    |
+   |--------------------------+--------------------------|
+   | 草稿として投稿           | C-c d                    |
+   | 公開                     | C-c p                    |
+   | 草稿として草稿（ページ） | C-c D                    |
+   | 公開（ページ）           | C-c P                    |
+   |--------------------------+--------------------------|
+   | 下位層を投稿             | org2blog/wp-post-subtree |
+   |--------------------------+--------------------------|
+
+#+begin_src emacs-lisp
+(dolist (package '(org2blog xml-rpc metaweblog htmlize))
+  (when (not (package-installed-p package))
+    (package-install package)))
+#+end_src
+
+#+begin_src emacs-lisp
+(require 'xml-rpc)
+(require 'metaweblog)
+(require 'org2blog-autoloads)
+#+end_src
+
+#+RESULTS:
+: org2blog-autoloads
+
+- org2blogを使うと，subtreeをwordpressに投稿できる．
+#+begin_src emacs-lisp
+(setq org2blog/wp-blog-alist
+      '(("blog.chubachi.net"
+	 :url "http://blog.chubachi.net/xmlrpc.php"
+	 :username "yc"
+	 :default-title "Emacs title"
+	 :default-categories ("org2blog" "emacs")
+	 :tags-as-categories nil)
+	))
+#+end_src
+
+
+#+begin_src emacs-lisp
+  (setq org2blog/wp-use-sourcecode-shortcode t)
+#+end_src
+
+** カラムのタイトルのフォント
+
+#+begin_src emacs-lisp
+  (custom-set-faces
+   '(org-column-title
+     ((t (:background "grey30" :underline t :weight bold :height 135)))))
+#+end_src
+
+*** 設定方法
+  - C-c C-lでOrg形式のリンク挿入
+  - [[http://stackoverflow.com/questions/7464951/how-to-make-org-protocol-work][firefox - How to make org-protocol work? - Stack Overflow]]
+    - gistで公開してあげようかな
+  - [[http://d.hatena.ne.jp/reppets/20111109/1320846292][Unityランチャーに自分でインストール/ビルドしたアプリケーションを登録する - reppets.log.1]]
+  - [[http://kb.mozillazine.org/Register_protocol#Linux][Register protocol - MozillaZine Knowledge Base]]
+  - [[http://orgmode.org/worg/org-contrib/org-protocol.html#sec-3-6]]
+    - 古い
+
+[[http://orgmode.org/worg/org-contrib/org-protocol.html#sec-3-6][* org-protocol
+org-protocol.el – Intercept calls from emacsclient to trigger custom actions]]
+
+#+begin_src
+javascript:location.href='org-protocol://store-link://'+encodeURIComponent(location.href)
+javascript:location.href='org-protocol://capture://t/'+encodeURIComponent(location.href)+'/'+encodeURIComponent(document.title)+'/'+encodeURIComponent(window.getSelection())
+#+end_src
+
+*** 有効化
+
+#+begin_src emacs-lisp
+  (require 'org-protocol)
+#+end_src
+
+#+RESULTS:
+: org-protocol
+
+** keybinding
+
+#+begin_src emacs-lisp
+  (global-set-key (kbd "C-c l") 'org-store-link)
+  (global-set-key (kbd "C-c c") 'org-capture)
+  (global-set-key (kbd "C-c a") 'org-agenda)
+  (global-set-key (kbd "C-c b") 'org-iswitchb)
+#+end_src
