@@ -1,0 +1,8 @@
+* Magit
+#+begin_src emacs-lisp
+(dolist (package '(magit))
+  (when (not (package-installed-p package))
+    (package-install package)))
+
+(require 'magit)
+#+end_src

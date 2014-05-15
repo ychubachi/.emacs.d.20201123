@@ -1365,14 +1365,6 @@ C-h でバックスペースと同じように文字を削除できるように�
 #+RESULTS:
 : other-window
 
-* Magit
-#+begin_src emacs-lisp
-(dolist (package '(magit))
-  (when (not (package-installed-p package))
-    (package-install package)))
-
-(require 'magit)
-#+end_src
 * Programming
 
 #+begin_src emacs-lisp
