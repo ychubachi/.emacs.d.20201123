@@ -97,25 +97,6 @@
 
 (add-to-list 'default-frame-alist '(font . "ricty-13.5"))
 
-;; (cond
-;;  ((eq system-type 'darwin)
-;;   (let* ((size 14)
-;;          (h (* size 10))
-;;          (font-ascii "Ricty")
-;;          (font-jp    "Ricty")
-;;          (font-spec-ascii (font-spec :family font-ascii))
-;;          (font-spec-jp    (font-spec :family font-jp)))
-;;     (set-face-attribute 'default nil :family font-ascii :height h)
-;;     (set-fontset-font nil 'japanese-jisx0208        font-spec-jp)
-;;     (set-fontset-font nil 'japanese-jisx0212        font-spec-jp)
-;;     (set-fontset-font nil 'japanese-jisx0213.2004-1 font-spec-jp)
-;;     (set-fontset-font nil 'japanese-jisx0213-1      font-spec-jp)
-;;     (set-fontset-font nil 'japanese-jisx0213-2      font-spec-jp)
-;;     (set-fontset-font nil 'katakana-jisx0201        font-spec-jp)
-;;     (set-fontset-font nil '(#x0080 . #x024F)        font-spec-ascii)
-;;     (set-fontset-font nil '(#x0370 . #x03FF)        font-spec-ascii))
-;;   ))
-
 (add-hook 'input-method-activate-hook
           '(lambda () (set-cursor-color "green")))
 (add-hook 'input-method-inactivate-hook
