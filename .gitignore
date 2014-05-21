@@ -27,3 +27,4 @@ tutorial
 url/
 custom.el
 *.pyc
+/plugins-enabled/

@@ -161,6 +161,8 @@
       ((eq system-type 'darwin)
        (define-key 'personal-map (kbd "p") 'skim-forward-search)))
 
+(setq vc-follow-symlinks t)
+
 (setq dot-file-dir (file-name-directory
                      (or (buffer-file-name) load-file-name)))
 (setq org-file-dir (expand-file-name "plugins-enabled" dot-file-dir))

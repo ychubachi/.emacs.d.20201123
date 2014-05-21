@@ -535,6 +535,12 @@ wdiredのrequireは，dired-mode-mapを定義するために必要
 
 * 文芸的プログラミング
 
+plugin-enabledにあるシンボリックリンクをフォローします．
+
+#+begin_src emacs-lisp
+  (setq vc-follow-symlinks t)
+#+end_src
+
 #' = function
 - [[http://www.gnu.org/software/emacs/manual/html_node/elisp/Anonymous-Functions.html][Anonymous Functions - GNU Emacs Lisp Reference Manual]]
 
