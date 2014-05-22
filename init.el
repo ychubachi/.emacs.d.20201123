@@ -109,7 +109,7 @@
   (setq mozc-candidate-style 'overlay))
 
 (global-set-key "\C-h" 'delete-backward-char)
-(global-set-key (kbd "C-c C-h") 'help-command)
+(global-set-key (kbd "C-?") 'help-command)
 
 ;バッファのフォントサイズを大きく
 (global-set-key (kbd "<prior>") 'text-scale-increase)
@@ -140,6 +140,8 @@
 
 (define-prefix-command 'personal-map)
 (global-set-key (kbd "C-.") 'personal-map)
+
+(define-key 'personal-map (kbd "?") 'help-command)
 
 (define-key 'personal-map (kbd "C-n") 'other-window)
 (define-key 'personal-map (kbd "C-p") 'my/other-window-backward)
