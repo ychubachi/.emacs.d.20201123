@@ -50,54 +50,6 @@
   Error enabling Flyspell mode:
   (Error: No word lists can be found for the language "ja_JP".)
 
-** TODOs
-*** TODO custem-sample.elを作る
-   :PROPERTIES:
-   :ID:       82dac097-153d-4efc-88eb-ac6616df3b5a
-   :END:
-   - ファイルがなければコピーする
-     - その際，問い合わせをする
-*** TODO custom.elにある設定をこちらに移す（custom.elなしでもokにする）
-    :PROPERTIES:
-    :ID:       5aad65c8-d606-4d34-808d-9afaa5e638c0
-    :END:
-*** TODO org-insert-heading-respect-contentをC-jにする
-    :PROPERTIES:
-    :ID:       f9593ce6-203d-47a7-9342-fd602c193a0c
-    :END:
-    C-jはorg-return-indentにバインドされている
-*** TODO [[http://www.emacswiki.org/emacs/UnitTesting][EmacsWiki: Unit Testing]]
-    :PROPERTIES:
-    :ID:       5cb66ace-65c3-4e01-9c1c-f25ae7008668
-    :END:
-*** TODO [[https://github.com/purcell/exec-path-from-shell][purcell/exec-path-from-shell]]
-    :PROPERTIES:
-    :ID:       cd8617f9-5634-467f-9c14-ca657a802726
-    :END:
-*** TODO flyspell-modeでC-.がかちあう
-    :PROPERTIES:
-    :ID:       7af985a9-1630-4e8a-8202-3d434351c518
-    :END:
-*** TODO [[http://shibayu36.hatenablog.com/entry/2012/12/29/001418][年末emacs設定大掃除をして、これは捨てられないと思った設定書いてく - $shibayu36->blog;]]
-    :PROPERTIES:
-    :ID:       e010dd60-ee65-4042-9b16-9ae0f2681837
-    :END:
-*** TODO Qiitaに投稿できないか
-    :PROPERTIES:
-    :ID:       7cd92222-91c7-4c46-9325-85e891c20216
-    :END:
-*** TODO org-modeで候補をインラインにできないか
-    :PROPERTIES:
-    :ID:       0d60c33f-5d9b-4447-bf76-8344bf44471c
-    :END:
-*** TODO F1はssh時、ターミナルとかぶる
-*** TODO [[http://www.fan.gr.jp/~ring/doc/elisp_19/elisp-jp_39.html][GNU Emacs Lispリファレンス・マニュアル: A. ヒントと標準的な作法]]
-** 参考文献
-
- Emacs LISP テクニックバイブル
-
-- p.31より
-
 * 前処理
 ** ヘッダコメント
 
@@ -551,10 +503,18 @@ plugin-enabledにあるシンボリックリンクをフォローします．
 Following codes do not work well in org-mode runing with C-c C-c.
 
 #+begin_src emacs-lisp
-  (setq dot-file-dir (file-name-directory
-		       (or (buffer-file-name) load-file-name)))
-  (setq org-file-dir (expand-file-name "plugins-enabled" dot-file-dir))
-  (mapc #'org-babel-load-file (directory-files org-file-dir t "\\.org$"))
+  (setq dot-file-dir
+	(file-name-directory (or (buffer-file-name) load-file-name)))
+  (setq plugin-file-dir
+	(expand-file-name "plugins-enabled" dot-file-dir))
+  (setq plugin-files
+	(directory-files plugin-file-dir t "\\.org$"))
+  (mapc (lambda (plugin-file)
+	  (message "%s - %s" "%% プラグインを読み込みます %%" plugin-file)
+	  (condition-case nil
+	      (org-babel-load-file plugin-file)
+	    (error (message "%s" "!! エラーが発生しました !!"))))
+	plugin-files)
 #+end_src
 
 * 後処理
@@ -568,3 +528,41 @@ Following codes do not work well in org-mode runing with C-c C-c.
 #+begin_src emacs-lisp
   ;;; init.el ends here
 #+end_src
+* Todo List
+** TODO org-insert-heading-respect-contentをC-jにする
+   :PROPERTIES:
+   :ID:       f9593ce6-203d-47a7-9342-fd602c193a0c
+   :END:
+   C-jはorg-return-indentにバインドされている
+** TODO [[http://www.emacswiki.org/emacs/UnitTesting][EmacsWiki: Unit Testing]]
+   :PROPERTIES:
+   :ID:       5cb66ace-65c3-4e01-9c1c-f25ae7008668
+   :END:
+** TODO [[https://github.com/purcell/exec-path-from-shell][purcell/exec-path-from-shell]]
+   :PROPERTIES:
+   :ID:       cd8617f9-5634-467f-9c14-ca657a802726
+   :END:
+** TODO flyspell-modeでC-.がかちあう
+   :PROPERTIES:
+   :ID:       7af985a9-1630-4e8a-8202-3d434351c518
+   :END:
+** TODO [[http://shibayu36.hatenablog.com/entry/2012/12/29/001418][年末emacs設定大掃除をして、これは捨てられないと思った設定書いてく - $shibayu36->blog;]]
+   :PROPERTIES:
+   :ID:       e010dd60-ee65-4042-9b16-9ae0f2681837
+   :END:
+** TODO Qiitaに投稿できないか
+   :PROPERTIES:
+   :ID:       7cd92222-91c7-4c46-9325-85e891c20216
+   :END:
+** TODO org-modeで候補をインラインにできないか
+   :PROPERTIES:
+   :ID:       0d60c33f-5d9b-4447-bf76-8344bf44471c
+   :END:
+** TODO F1はssh時、ターミナルとかぶる
+** TODO [[http://www.fan.gr.jp/~ring/doc/elisp_19/elisp-jp_39.html][GNU Emacs Lispリファレンス・マニュアル: A. ヒントと標準的な作法]]
+** TODO 参考文献
+
+ Emacs LISP テクニックバイブル
+
+- p.31より
+** TODO プラグインを実行した時のエラー処理

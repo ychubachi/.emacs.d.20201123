@@ -165,10 +165,18 @@
 
 (setq vc-follow-symlinks t)
 
-(setq dot-file-dir (file-name-directory
-                     (or (buffer-file-name) load-file-name)))
-(setq org-file-dir (expand-file-name "plugins-enabled" dot-file-dir))
-(mapc #'org-babel-load-file (directory-files org-file-dir t "\\.org$"))
+(setq dot-file-dir
+      (file-name-directory (or (buffer-file-name) load-file-name)))
+(setq plugin-file-dir
+      (expand-file-name "plugins-enabled" dot-file-dir))
+(setq plugin-files
+      (directory-files plugin-file-dir t "\\.org$"))
+(mapc (lambda (plugin-file)
+        (message "%s - %s" "%% プラグインを読み込みます %%" plugin-file)
+        (condition-case nil
+            (org-babel-load-file plugin-file)
+          (error (message "%s" "!! エラーが発生しました !!"))))
+      plugin-files)
 
 (message "%s" "%% init.elは完了しました %%")
 

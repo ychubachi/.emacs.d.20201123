@@ -1,0 +1,7 @@
+* auto-async-byte-compile
+
+#+begin_src emacs-lisp :tangle no
+  (my/package-install-and-require 'auto-async-byte-compile)
+  (setq auto-async-byte-compile-exclude-files-regexp "/junk/")
+  (add-hook 'emacs-lisp-mode-hook 'enable-auto-async-byte-compile-mode)
+#+end_src
