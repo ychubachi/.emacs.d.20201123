@@ -87,9 +87,6 @@
 		(message "%s" "%% custom.elを読み込みました %%")))
 #+end_src
 
-#+RESULTS:
-| x-wm-set-size-hint | init-loader-show-log | (lambda nil (message %% Emacsの設定が完了しました %%)) |
-
 ** サーバー起動
 
 - Emacs serverの開始
