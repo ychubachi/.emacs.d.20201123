@@ -64,9 +64,6 @@
   ")
 	    ("j" "Journal" entry (file+datetree "journal.org")
 	     "* %?
-  作成日: %U
-  　引用: %i
-  リンク: %a
   ")
 	    ("b" "Bookmark" entry (file+headline "bookmark.org" "Bookmarks")
 	     "* TODO [#B] %a :bookmark:
@@ -336,66 +333,6 @@
 	("chubachi.net"
 	 :components ("chubachi.net-notes" "chubachi.net-static"))
       ))
-#+end_src
-
-** WordPressに記事を投稿（org2blog）                                   :個人設定:
-  :PROPERTIES:
-  :ID:       o2b:83d5ddbc-5e84-446c-826a-a2702eb6b997
-  :POST_DATE: [2013-12-28 土 19:16]
-  :POSTID:   18
-  :BLOG:     blog.chubachi.net
-  :END:
-
-   - 使い方は [[https://github.com/punchagan/org2blog][punchagan/org2blog]] を参照．
-   - ソースコードを表示させるには
-     [[http://wordpress.org/plugins/syntaxhighlighter/][WordPress › SyntaxHighlighter Evolved « WordPress Plugins]]
-     をインストールしておく．
-   - emacs lispには対応していない．残念．
-
-   |--------------------------+--------------------------|
-   | 機能                     | コマンド                 |
-   |--------------------------+--------------------------|
-   | ログイン                 | org2blog/wp-login        |
-   | 新規投稿                 | org2blog/wp-new-entry    |
-   |--------------------------+--------------------------|
-   | 草稿として投稿           | C-c d                    |
-   | 公開                     | C-c p                    |
-   | 草稿として草稿（ページ） | C-c D                    |
-   | 公開（ページ）           | C-c P                    |
-   |--------------------------+--------------------------|
-   | 下位層を投稿             | org2blog/wp-post-subtree |
-   |--------------------------+--------------------------|
-
-#+begin_src emacs-lisp
-(dolist (package '(org2blog xml-rpc metaweblog htmlize))
-  (when (not (package-installed-p package))
-    (package-install package)))
-#+end_src
-
-#+begin_src emacs-lisp
-(require 'xml-rpc)
-(require 'metaweblog)
-(require 'org2blog-autoloads)
-#+end_src
-
-#+RESULTS:
-: org2blog-autoloads
-
-- org2blogを使うと，subtreeをwordpressに投稿できる．
-#+begin_src emacs-lisp
-(setq org2blog/wp-blog-alist
-      '(("blog.chubachi.net"
-	 :url "http://blog.chubachi.net/xmlrpc.php"
-	 :username "yc"
-	 :default-title "Emacs title"
-	 :default-categories ("org2blog" "emacs")
-	 :tags-as-categories nil)
-	))
-#+end_src
-
-
-#+begin_src emacs-lisp
-  (setq org2blog/wp-use-sourcecode-shortcode t)
 #+end_src
 
 ** カラムのタイトルのフォント

@@ -1,0 +1,47 @@
+* WordPressに記事を投稿（org2blog）
+** 利用法
+  - org2blogを使うと，subtreeをwordpressに投稿できる．
+  - 使い方は [[https://github.com/punchagan/org2blog][punchagan/org2blog]] を参照．
+
+   |--------------------------+--------------------------|
+   | 機能                     | コマンド                 |
+   |--------------------------+--------------------------|
+   | 下位層を投稿             | org2blog/wp-post-subtree |
+   |--------------------------+--------------------------|
+   | ログイン                 | org2blog/wp-login        |
+   | 新規投稿                 | org2blog/wp-new-entry    |
+   |--------------------------+--------------------------|
+   | 草稿として投稿           | C-c d                    |
+   | 公開                     | C-c p                    |
+   | 草稿として草稿（ページ） | C-c D                    |
+   | 公開（ページ）           | C-c P                    |
+   |--------------------------+--------------------------|
+
+1. キャプチャして新しい記事を作成
+2. 投稿したいエントリのヘッダにカーソルを移動して
+   org2blog/wp-new-entry
+   -> ログインしてなければログインが促される
+3. ブラウザで確認
+
+** 導入
+
+#+begin_src emacs-lisp
+  (my/package-install 'org2blog)
+  (require 'org2blog-autoloads)
+#+end_src
+
+** 手動設定
+
+- wordpressのログイン情報をcustom.el内に記述
+
+** ソースコードを投稿できるようにする
+
+#+begin_src emacs-lisp
+  (setq org2blog/wp-use-sourcecode-shortcode t)
+#+end_src
+
+** 備考
+   - ソースコードを表示させるには
+     [[http://wordpress.org/plugins/syntaxhighlighter/][WordPress › SyntaxHighlighter Evolved « WordPress Plugins]]
+     をインストールしておく．
+   - emacs lispには対応していない．残念．
