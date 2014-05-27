@@ -19,45 +19,14 @@
 (let ((default-directory "~/.emacs.d/site-lisp/"))
   (normal-top-level-add-subdirs-to-load-path))
 
-(setq auto-save-file-name-transforms
-      (quote ((".*" "~/.emacs.d/data/backup/" t))))
-(setq backup-directory-alist
-      (quote (("\\.*$" . "~/.emacs.d/data/backup"))))
-
-(setq bookmark-default-file
-      "~/.emacs.d/data/bookmarks")
-
-(global-auto-revert-mode 1)
-
-(setq inhibit-startup-screen t)
-
-(setq auto-save-list-file-prefix
-      "~/data/auto-save-list/.saves-")
-
-(show-paren-mode 1)
-
 (add-hook 'before-save-hook
  'whitespace-cleanup)
 
 (setq frame-title-format
       (format "%%f - Emacs@%s" (system-name)))
 
-(column-number-mode t)
-
-(setq display-time-24hr-format t)
-(setq display-time-default-load-average nil)
-(display-time-mode 1)
-
 (custom-set-faces
  '(font-lock-comment-face ((t (:foreground "chocolate1" :slant normal)))))
-
-(setq mouse-yank-at-point t)
-
-(setq mouse-drag-copy-region t)
-
-(setq compilation-ask-about-save nil)
-
-(setq outline-minor-mode-prefix "")
 
 (require 'wdired)
 (define-key dired-mode-map "r"
@@ -68,10 +37,6 @@
 (add-hook 'ielm-mode-hook 'turn-on-eldoc-mode)
 (setq eldoc-idle-delay 0.2)
 (setq eldoc-minor-mode-string "")
-
-(show-paren-mode 1)
-
-(find-function-setup-keys)
 
 (require 'package)
 (setq package-archives

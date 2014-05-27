@@ -121,59 +121,6 @@
     (normal-top-level-add-subdirs-to-load-path))
 #+end_src
 
-** バックアップ保存場所の設定                                      :files.el:
-- 全てのファイルのバックアップを~/.emacs.d/data/backup/以下に保存します．
-- この項目はcustom.elでも設定可能．
-
-#+begin_src emacs-lisp
-  (setq auto-save-file-name-transforms
-	(quote ((".*" "~/.emacs.d/data/backup/" t))))
-  (setq backup-directory-alist
-	(quote (("\\.*$" . "~/.emacs.d/data/backup"))))
-#+end_src
-
-#+RESULTS:
-: ~/.emacs.d/data/bookmarks
-
-** ブックマーク保存場所の設定					:bookmark.el:
-
-- [[http://www.geocities.co.jp/SiliconValley-Bay/9285/EMACS-JA/emacs_74.html][GNU Emacsマニュアル: Bookmarks]]
-- [[http://maruta.be/intfloat_staff/53][Emacs でファイルを素早く開く(その1) ～ bookmark, filecache ～ | イントフロート スタッフブログ]]
-
-#+begin_src emacs-lisp
-  (setq bookmark-default-file
-	"~/.emacs.d/data/bookmarks")
-#+end_src
-
-** ファイルの自動再読み込み                                   :autorevert.el:
-   Emacsの外でファイルが更新されたら，自動的にバッファを再読込する．
-
-#+begin_src emacs-lisp
-  (global-auto-revert-mode 1)
-#+end_src
-
-** スタートアップスクリーン                                      :startup.el:
-
-#+begin_src emacs-lisp
-  (setq inhibit-startup-screen t)
-#+end_src
-
-** 自動保存                                                      :startup.el:
-
-#+begin_src emacs-lisp
-  (setq auto-save-list-file-prefix
-	"~/data/auto-save-list/.saves-")
-#+end_src
-
-** カッコの対応を表示                                              :paren.el:
-
-#+begin_src emacs-lisp
-  (show-paren-mode 1)
-#+end_src
-
-#+RESULTS:
-: t
-
 ** 不要な行末の空白を削除                                     :whitespace.el:
 
 - 保存する前に，不要な空白を取り除きます．
@@ -185,9 +132,6 @@
   (add-hook 'before-save-hook
    'whitespace-cleanup)
 #+end_src
-
-#+RESULTS:
-| auto-cleanup |
 
 ** フレームの表題                                                         :C:
 
@@ -206,25 +150,9 @@
 
 モードラインに(24, 20)といった形式で，カーソルのある行と列を表示します．
 
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
   (column-number-mode t)
 #+end_src
-
-#+RESULTS:
-: t
-
-** 時刻の表示                                                       :time.el:
-- http://www.emacswiki.org/emacs/DisplayTime
-
-モードラインの時刻を24時間表示にします．ロードアベレージは表示させません．
-
-#+begin_src emacs-lisp
-  (setq display-time-24hr-format t)
-  (setq display-time-default-load-average nil)
-  (display-time-mode 1)
-#+end_src
-
-#+RESULTS:
 
 ** コメントのフォントを立体にする                              :font-lock.el:
 - [[http://ja.wikipedia.org/wiki/%E7%AB%8B%E4%BD%93%E6%B4%BB%E5%AD%97][立体活字 - Wikipedia]]
@@ -234,52 +162,18 @@
  '(font-lock-comment-face ((t (:foreground "chocolate1" :slant normal)))))
 #+end_src
 
-** マウス操作                                                      :mouse.el:
-
-マウスの中ボタンでペーストする位置を変更します．
-標準ではクリックした位置にペーストされるので，
-カーソルの位置にペーストするようにします．
-
-#+begin_src emacs-lisp
-  (setq mouse-yank-at-point t)
-#+end_src
-
-マウスでドラックした範囲をEmacsのクリップボードにコピーします．
-
-#+begin_src emacs-lisp
-  (setq mouse-drag-copy-region t)
-#+end_src
-
-** コンパイル                                                    :compile.el:
-
-#+begin_src emacs-lisp
- (setq compilation-ask-about-save nil)
-#+end_src
-
-** アウトラインモードのプリフィックス                            :outline.el:
-
-アウトラインマイナーモードのプリフィックスは，標準で C-c @ です．
-これでは使いづらいので，変更します．
-
-#+begin_src emacs-lisp
-  (setq outline-minor-mode-prefix "")
-#+end_src
-
-** ファイル名のリネーム                                           :wdired.el:
+** diredでファイル名のリネーム                                    :wdired.el:
 
 diredモードで r キーを押すと編集モードに入る．
 完了したらC-c C-cで決定．C-c ESCでキャンセル．
 
-wdiredのrequireは，dired-mode-mapを定義するために必要
+wdiredのrequireはdired-mode-mapを定義するために必要．
 
 #+begin_src emacs-lisp
   (require 'wdired)
   (define-key dired-mode-map "r"
     'wdired-change-to-wdired-mode)
 #+end_src
-
-#+RESULTS:
-: wdired-change-to-wdired-mode
 
 ** eldoc
 
@@ -291,18 +185,107 @@ wdiredのrequireは，dired-mode-mapを定義するために必要
   (setq eldoc-minor-mode-string "")
 #+end_src
 
-** show-paren-mode
+** TODO バックアップ保存場所の設定                                      :files.el:
+- 全てのファイルのバックアップを~/.emacs.d/data/backup/以下に保存します．
+- この項目はcustom.elでも設定可能．
+
+#+begin_src emacs-lisp :tangle no
+  (setq auto-save-file-name-transforms
+	(quote ((".*" "~/.emacs.d/data/backup/" t))))
+  (setq backup-directory-alist
+	(quote (("\\.*$" . "~/.emacs.d/data/backup"))))
+#+end_src
+
+** TODO ブックマーク保存場所の設定					:bookmark.el:
+
+「C-x r m」カレントバッファをブックマークに追加 (デフォルトではファイル名＝ブックマーク名)
+「C-x r b」ブックマーク名を指定して開く
+「C-x r l」ブックマークの一覧を表示
+「d」一覧表示で、ブックマークに削除マークをつける
+
+「x」一覧表示で、削除マークのついたものを削除
+
+- 参考
+  - [[http://www.geocities.co.jp/SiliconValley-Bay/9285/EMACS-JA/emacs_74.html][GNU Emacsマニュアル: Bookmarks]]
+  - [[http://maruta.be/intfloat_staff/53][Emacs でファイルを素早く開く(その1) ～ bookmark, filecache ～ | イントフロート スタッフブログ]]
+
+** TODO ファイルの自動再読み込み                                   :autorevert.el:
+   Emacsの外でファイルが更新されたら，自動的にバッファを再読込する．
+
+#+begin_src emacs-lisp :tangle no
+  (global-auto-revert-mode 1)
+#+end_src
+
+** TODO スタートアップスクリーン                                      :startup.el:
+
+#+begin_src emacs-lisp :tangle no
+  (setq inhibit-startup-screen t)
+#+end_src
+
+** TODO 自動保存                                                      :startup.el:
+
+#+begin_src emacs-lisp :tangle no
+  (setq auto-save-list-file-prefix
+	"~/data/auto-save-list/.saves-")
+#+end_src
+
+** TODO カッコの対応を表示                                              :paren.el:
 
 - 対応するカッコを表示する
 
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
   (show-paren-mode 1)
 #+end_src
+
+** TODO 時刻の表示                                                       :time.el:
+- http://www.emacswiki.org/emacs/DisplayTime
+
+モードラインの時刻を24時間表示にします．ロードアベレージは表示させません．
+
+#+begin_src emacs-lisp :tangle no
+  (setq display-time-24hr-format t)
+  (setq display-time-default-load-average nil)
+  (display-time-mode 1)
+#+end_src
+
+#+RESULTS:
+
+** TODO マウス操作                                                      :mouse.el:
+
+マウスの中ボタンでペーストする位置を変更します．
+標準ではクリックした位置にペーストされるので，
+カーソルの位置にペーストするようにします．
+
+#+begin_src emacs-lisp :tangle no
+  (setq mouse-yank-at-point t)
+#+end_src
+
+マウスでドラックした範囲をEmacsのクリップボードにコピーします．
+
+#+begin_src emacs-lisp :tangle no
+  (setq mouse-drag-copy-region t)
+#+end_src
+
+** TODO コンパイル                                                    :compile.el:
+
+#+begin_src emacs-lisp :tangle no
+ (setq compilation-ask-about-save nil)
+#+end_src
+
+** TODO アウトラインモードのプリフィックス                            :outline.el:
+
+アウトラインマイナーモードのプリフィックスは，標準で C-c @ です．
+これでは使いづらいので，変更します．
+
+#+begin_src emacs-lisp :tangle no
+  (setq outline-minor-mode-prefix "")
+#+end_src
+
 ** TODO find-function
 
 - これは何をするんだろう？
 
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
   (find-function-setup-keys)
 #+end_src
 
