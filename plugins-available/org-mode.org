@@ -53,26 +53,36 @@
     (setq org-capture-templates
 	  (quote
 	   (("t" "Todo" entry (file+headline "todo.org" "Tasks")
-	     "* TODO [#B] %?
+	     "\
+* TODO [#B] %?
   SCHEDULED: %t
-  ")
+")
 	    ("l" "Link as Todo" entry (file+headline "todo.org" "Tasks")
-	     "* TODO [#B] %a
+	     "\
+* TODO [#B] %a
   SCHEDULED: %t
   　引用: %i
   %?
-  ")
+")
 	    ("j" "Journal" entry (file+datetree "journal.org")
-	     "* %?
-  ")
+	     "\
+* %?
+")
 	    ("b" "Bookmark" entry (file+headline "bookmark.org" "Bookmarks")
-	     "* TODO [#B] %a :bookmark:
+	     "\
+* TODO [#B] %a :bookmark:
   SCHEDULED: %t
   　引用: %i
   %?
-  ")
+")
 	    )))
 #+end_src
+
+#+RESULTS:
+| t | Todo         | entry | (file+headline todo.org Tasks)         | * TODO [#B] %?\n  SCHEDULED: %t\n                                |
+| l | Link as Todo | entry | (file+headline todo.org Tasks)         | * TODO [#B] %a\n  SCHEDULED: %t\n  　引用: %i\n  %?\n            |
+| j | Journal      | entry | (file+datetree journal.org)            | * %?\n                                                           |
+| b | Bookmark     | entry | (file+headline bookmark.org Bookmarks) | * TODO [#B] %a :bookmark:\n  SCHEDULED: %t\n  　引用: %i\n  %?\n |
 
 ** Mobile Org関連
 
