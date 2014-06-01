@@ -101,7 +101,7 @@
 
 * Emacs本体が提供する機能の設定
   - 外部のパッケージに依存しない，標準的な設定を行います．
-** ロードパスの設定
+** ロードパスの設定						 :startup.el:
 
 - normal-top-level-add-subdirs-to-load-path は
   default-directory の全てのサブディレクトリを load-path に追加する
