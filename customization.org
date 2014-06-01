@@ -102,3 +102,10 @@
 #+begin_src emacs-lisp :tangle no
   (find-function-setup-keys)
 #+end_src
+** TODO 行番号・列番号をモードラインに表示                             :simple.el:
+
+モードラインに(24, 20)といった形式で，カーソルのある行と列を表示します．
+
+#+begin_src emacs-lisp :tangle no
+  (column-number-mode t)
+#+end_src

@@ -146,14 +146,6 @@
 	(format "%%f - Emacs@%s" (system-name)))
 #+end_src
 
-** 行番号・列番号をモードラインに表示                             :simple.el:
-
-モードラインに(24, 20)といった形式で，カーソルのある行と列を表示します．
-
-#+begin_src emacs-lisp :tangle no
-  (column-number-mode t)
-#+end_src
-
 ** コメントのフォントを立体にする                              :font-lock.el:
 - [[http://ja.wikipedia.org/wiki/%E7%AB%8B%E4%BD%93%E6%B4%BB%E5%AD%97][立体活字 - Wikipedia]]
 
