@@ -305,7 +305,7 @@ wdiredのrequireはdired-mode-mapを定義するために必要．
 #+RESULTS:
 : text-scale-decrease
 
-** 個人用キーマップの設定
+* 個人用キーマップの設定
 #+begin_src emacs-lisp
   (defun my/fullscreen ()
     (interactive)
@@ -328,7 +328,9 @@ wdiredのrequireはdired-mode-mapを定義するために必要．
     "Move to other window backward."
     (interactive)
     (other-window -1))
+#+end_src
 
+#+begin_src emacs-lisp
   (define-prefix-command 'personal-map)
   (global-set-key (kbd "C-.") 'personal-map)
 
@@ -355,7 +357,7 @@ wdiredのrequireはdired-mode-mapを定義するために必要．
 	 (define-key 'personal-map (kbd "p") 'skim-forward-search)))
 #+end_src
 
-* 文芸的プログラミング
+* プラグインの読み込み
 
 plugin-enabledにあるシンボリックリンクをフォローします．
 
