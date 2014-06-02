@@ -1,6 +1,12 @@
 * open-junk-file
+  - Note taken on [2014-06-02 月 08:05] \\
+    test C-c C-z
 
 #+begin_src emacs-lisp
   (my/package-install-and-require 'open-junk-file)
-  (global-set-key (kbd "C-x C-z") 'open-junk-file)
+  (setq open-junk-file-directory "~/tmp/junk/%Y/%m/%d-%H%M%S.")
+#+end_src
+
+#+begin_src emacs-lisp
+  (define-key 'personal-map (kbd "j") 'open-junk-file)
 #+end_src
