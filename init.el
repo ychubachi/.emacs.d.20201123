@@ -130,6 +130,14 @@
 
 (setq vc-follow-symlinks t)
 
+(message "%s" "%% orgをインストールします %%")
+
+(my/package-install 'org)
+(my/package-install 'org-plus-contrib)
+
+(require 'org-install)
+(require 'ob-tangle)
+
 (setq dot-file-dir
       (file-name-directory (or (buffer-file-name) load-file-name)))
 (setq plugin-file-dir
