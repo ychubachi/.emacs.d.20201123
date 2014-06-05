@@ -30,6 +30,7 @@
       - init fileの文法．
       - 特定の変数は自動的にbuffer localになる．
 	- この場合はset-defaultを使うこと．
+  - [[http://cask.readthedocs.org/en/latest/index.html][Cask — Cask 0.7.0]]
 
 ** カスタマイズ
   - custom.elを最後に読むので，ここでの設定を上書きできます．
