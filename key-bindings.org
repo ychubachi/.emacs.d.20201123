@@ -1,0 +1,16 @@
+* キーバインディング
+** global
+
+|       | map                 | Description            | plugin         |   |
+|-------+---------------------+------------------------+----------------+---|
+| C-c a | global              | org-agenda             | [[file:plugins-available/org-mode.org::*%E3%82%AD%E3%83%BC%E3%83%90%E3%82%A4%E3%83%B3%E3%83%87%E3%82%A3%E3%83%B3%E3%82%B0][org]]            |   |
+| C-c b | global              | org-switchb            | [[file:plugins-available/org-mode.org::*%E3%82%AD%E3%83%BC%E3%83%90%E3%82%A4%E3%83%B3%E3%83%87%E3%82%A3%E3%83%B3%E3%82%B0][org]]            |   |
+| C-c c | global              | org-capture            | [[file:plugins-available/org-mode.org::*%E3%82%AD%E3%83%BC%E3%83%90%E3%82%A4%E3%83%B3%E3%83%87%E3%82%A3%E3%83%B3%E3%82%B0][org]]            |   |
+| C-c j | global              | ジャンクファイルを開く | [[file:plugins-available/open-junk-file.org::*open-junk-file][open-junk-file]] |   |
+| C-c l | global              | org-store-link         | [[file:plugins-available/org-mode.org::*%E3%82%AD%E3%83%BC%E3%83%90%E3%82%A4%E3%83%B3%E3%83%87%E3%82%A3%E3%83%B3%E3%82%B0][org]]            |   |
+
+** minnor
+
+|       | map                 | Description            | plugin         |   |
+|-------+---------------------+------------------------+----------------+---|
+| C-c x | emacs-lisp-mode-map | lispxmpを実行する      | [[file:plugins-available/lispxmp.org::*lispxmp][lispxmp]]        |   |

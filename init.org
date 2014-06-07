@@ -81,9 +81,6 @@
 #+begin_src emacs-lisp
     (add-hook 'after-init-hook
 	      (lambda ()
-		(setq custom-file "~/.emacs.d/custom.el")
-		(if (file-exists-p (expand-file-name custom-file))
-		    (load (expand-file-name custom-file)))
 		(message "%s" "%% custom.elを読み込みました %%")))
 #+end_src
 
@@ -398,6 +395,13 @@ Following codes do not work well in org-mode runing with C-c C-c.
 #+end_src
 
 * 後処理
+
+#+begin_src emacs-lisp
+  (setq custom-file "~/.emacs.d/custom.el")
+  (if (file-exists-p (expand-file-name custom-file))
+      (load (expand-file-name custom-file)))
+#+end_src
+
 ** 完了表示
 
 #+begin_src emacs-lisp
