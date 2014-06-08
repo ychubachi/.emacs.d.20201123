@@ -399,8 +399,8 @@ Following codes do not work well in org-mode runing with C-c C-c.
 
 #+begin_src emacs-lisp
   (setq custom-file "~/.emacs.d/custom.el")
-  (if (file-exists-p (expand-file-name custom-file))
-      (load (expand-file-name custom-file)))
+  (if (file-exists-p custom-file)
+      (load custom-file))
 #+end_src
 
 ** 完了表示

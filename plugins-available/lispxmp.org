@@ -6,5 +6,5 @@
 
 #+begin_src emacs-lisp
   (my/package-install-and-require 'lispxmp)
-  (define-key emacs-lisp-mode-map (kbd "C-c x") 'lispxmp)
+  (define-key emacs-lisp-mode-map (kbd "C-c e") 'lispxmp)
 #+end_src
