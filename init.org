@@ -452,6 +452,9 @@ Following codes do not work well in org-mode runing with C-c C-c.
 - p.31より
 ** TODO プラグインを実行した時のエラー処理
 ** TODO os-name
+
+[[http://wisdom.sakura.ne.jp/programming/lisp/clisp11.html][condとcase]]
+
 (defun convert-system-type-to-os-name ()
   (cond ((eq system-type 'gnu/linux) 'linux)
 	((eq system-type 'darwin) 'osx)
