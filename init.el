@@ -149,8 +149,15 @@
       plugin-files)
 
 (setq custom-file "~/.emacs.d/custom.el")
-(if (file-exists-p (expand-file-name custom-file))
-    (load (expand-file-name custom-file)))
+(if (file-exists-p custom-file)
+    (load custom-file))
+
+(let (custom-file-system-name)
+  (setq custom-file-system-name
+        (format "~/.emacs.d/custom/%s.el" (system-name)))
+  (when (file-exists-p custom-file-system-name)
+    (message "%s" (format "%sを読み込みます" custom-file-system-name))
+    (load custom-file)))
 
 (message "%s" "%% init.elは完了しました %%")
 
