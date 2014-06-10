@@ -375,11 +375,11 @@ javascript:location.href='org-protocol://capture://t/'+encodeURIComponent(locati
 #+RESULTS:
 : org-protocol
 
-** keybinding
+** キーバインディング
 
 #+begin_src emacs-lisp
   (global-set-key (kbd "C-c l") 'org-store-link)
   (global-set-key (kbd "C-c c") 'org-capture)
   (global-set-key (kbd "C-c a") 'org-agenda)
-  (global-set-key (kbd "C-c b") 'org-iswitchb)
+  (global-set-key (kbd "C-c b") 'org-switchb)
 #+end_src

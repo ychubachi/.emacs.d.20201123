@@ -5,5 +5,5 @@
 #+end_src
 
 #+begin_src emacs-lisp
-  (define-key 'personal-map (kbd "j") 'open-junk-file)
+  (global-set-key (kbd "C-c j") 'open-junk-file)
 #+end_src

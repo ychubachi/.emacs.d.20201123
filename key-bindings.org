@@ -1,0 +1,29 @@
+* キーバインディング
+** キー割り当ての考え方
+− ヘルプ
+  - C-c C-hと打ち，「Global Bindings Starting With C-c:」の節を見る．
+- 規則
+  - [[http://www.gnu.org/software/emacs/manual/html_node/elisp/Key-Binding-Conventions.html][Key Binding Conventions - GNU Emacs Lisp Reference Manual]]
+- C-c + 一文字
+  - 利用者のために用意されている
+- 何に使うのが良いか
+  - アプリケーションの起動（メール，gitステータス）
+** global
+
+|       | map    | Description            | plugin         |
+|-------+--------+------------------------+----------------|
+| C-c a | global | org-agenda             | [[file:plugins-available/org-mode.org::*%E3%82%AD%E3%83%BC%E3%83%90%E3%82%A4%E3%83%B3%E3%83%87%E3%82%A3%E3%83%B3%E3%82%B0][org]]            |
+| C-c b | global | org-switchb            | [[file:plugins-available/org-mode.org::*%E3%82%AD%E3%83%BC%E3%83%90%E3%82%A4%E3%83%B3%E3%83%87%E3%82%A3%E3%83%B3%E3%82%B0][org]]            |
+| C-c c | global | org-capture            | [[file:plugins-available/org-mode.org::*%E3%82%AD%E3%83%BC%E3%83%90%E3%82%A4%E3%83%B3%E3%83%87%E3%82%A3%E3%83%B3%E3%82%B0][org]]            |
+| C-c l | global | org-store-link         | [[file:plugins-available/org-mode.org::*%E3%82%AD%E3%83%BC%E3%83%90%E3%82%A4%E3%83%B3%E3%83%87%E3%82%A3%E3%83%B3%E3%82%B0][org]]            |
+|-------+--------+------------------------+----------------|
+| C-c j | global | ジャンクファイルを開く | [[file:plugins-available/open-junk-file.org::*open-junk-file][open-junk-file]] |
+|-------+--------+------------------------+----------------|
+| C-c g | global | magit                  | [[file:plugins-available/magit.org::*Magit][Magit]]          |
+
+
+** minnor
+
+|         | map                 | Description       | plugin  |   |
+|---------+---------------------+-------------------+---------+---|
+| C-c e   | emacs-lisp-mode-map | lispxmpを実行する | [[file:plugins-available/lispxmp.org::*lispxmp][lispxmp]] |   |

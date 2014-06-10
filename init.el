@@ -4,9 +4,6 @@
 
 (add-hook 'after-init-hook
           (lambda ()
-            (setq custom-file "~/.emacs.d/custom.el")
-            (if (file-exists-p (expand-file-name custom-file))
-                (load (expand-file-name custom-file)))
             (message "%s" "%% custom.elを読み込みました %%")))
 
 (load "server")
@@ -150,6 +147,10 @@
             (org-babel-load-file plugin-file)
           (error (message "%s" "!! エラーが発生しました !!"))))
       plugin-files)
+
+(setq custom-file "~/.emacs.d/custom.el")
+(if (file-exists-p (expand-file-name custom-file))
+    (load (expand-file-name custom-file)))
 
 (message "%s" "%% init.elは完了しました %%")
 

@@ -2,9 +2,9 @@
 
 - 式の評価結果を注釈する
   - M-; M-; て lispxmp用コメントの自動挿入
-  - C-c C-d で評価結果を注釈
+  - C-c x で評価結果を注釈
 
 #+begin_src emacs-lisp
-  (my/package-install-and-require 'lispxmp)                 ; =>
-  (define-key emacs-lisp-mode-map (kbd "C-c C-d") 'lispxmp) ; =>
+  (my/package-install-and-require 'lispxmp)
+  (define-key emacs-lisp-mode-map (kbd "C-c e") 'lispxmp)
 #+end_src

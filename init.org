@@ -30,6 +30,7 @@
       - init fileの文法．
       - 特定の変数は自動的にbuffer localになる．
 	- この場合はset-defaultを使うこと．
+  - [[http://cask.readthedocs.org/en/latest/index.html][Cask — Cask 0.7.0]]
 
 ** カスタマイズ
   - custom.elを最後に読むので，ここでの設定を上書きできます．
@@ -81,9 +82,6 @@
 #+begin_src emacs-lisp
     (add-hook 'after-init-hook
 	      (lambda ()
-		(setq custom-file "~/.emacs.d/custom.el")
-		(if (file-exists-p (expand-file-name custom-file))
-		    (load (expand-file-name custom-file)))
 		(message "%s" "%% custom.elを読み込みました %%")))
 #+end_src
 
@@ -398,6 +396,13 @@ Following codes do not work well in org-mode runing with C-c C-c.
 #+end_src
 
 * 後処理
+
+#+begin_src emacs-lisp
+  (setq custom-file "~/.emacs.d/custom.el")
+  (if (file-exists-p custom-file)
+      (load custom-file))
+#+end_src
+
 ** 完了表示
 
 #+begin_src emacs-lisp
@@ -446,3 +451,20 @@ Following codes do not work well in org-mode runing with C-c C-c.
 
 - p.31より
 ** TODO プラグインを実行した時のエラー処理
+** TODO os-name
+
+[[http://wisdom.sakura.ne.jp/programming/lisp/clisp11.html][condとcase]]
+
+(defun convert-system-type-to-os-name ()
+  (cond ((eq system-type 'gnu/linux) 'linux)
+	((eq system-type 'darwin) 'osx)
+	((eq system-type 'windows-nt) 'windows)
+	((eq system-type 'cygwin) 'cygwin)
+	(t 'unknown)))
+
+(convert-system-type-to-os-name)	; => linux
+
+(let (custom-file-system-name)
+  (setq custom-file-system-name
+	(format "custom-%s.el" system-type)) ; => "custom-gnu/linux.el"
+  (message custom-file-system-name))	       ; => "custom-gnu/linux.el"
