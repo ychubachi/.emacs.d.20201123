@@ -403,6 +403,10 @@ Following codes do not work well in org-mode runing with C-c C-c.
       (load custom-file))
 #+end_src
 
+#+begin_src emacs-lisp
+
+#+end_src
+
 ** 完了表示
 
 #+begin_src emacs-lisp
