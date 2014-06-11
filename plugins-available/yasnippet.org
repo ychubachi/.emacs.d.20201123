@@ -1,10 +1,10 @@
 * yasnippet
+  - [[https://github.com/capitaomorte/yasnippet][capitaomorte/yasnippet]]
   - [[http://fukuyama.co/yasnippet][yasnippet 8.0の導入からスニペットの書き方、anything/helm/auto-completeとの連携 - Web学び]]
 
 #+begin_src emacs-lisp
-  (dolist (package '(yasnippet))
-    (when (not (package-installed-p package))
-      (package-install package)))
+  (when (not (package-installed-p 'yasnippet))
+    (package-install 'yasnippet))
   (require 'yasnippet)
   (yas-global-mode 1)
   (setq yas-snippet-dirs '("~/.emacs.d/snippets"))
