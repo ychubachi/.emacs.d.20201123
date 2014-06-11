@@ -119,60 +119,12 @@
     (normal-top-level-add-subdirs-to-load-path))
 #+end_src
 
-** 不要な行末の空白を削除                                     :whitespace.el:
-
-- 保存する前に，不要な空白を取り除きます．
-- 参考
-  - [[http://batsov.com/articles/2011/11/25/emacs-tip-number-3-whitespace-cleanup/][Emacs Tip #3: Whitespace Cleanup - (think)]]
-  - [[http://qiita.com/itiut@github/items/4d74da2412a29ef59c3a][Emacs - whitespace-modeを使って、ファイルの保存時に行末のスペースや末尾の改行を削除する - Qiita]]
-
-#+begin_src emacs-lisp
-  (add-hook 'before-save-hook
-   'whitespace-cleanup)
-#+end_src
-
-** フレームの表題                                                         :C:
-
-| 変数名          | 内容                         |
-|-----------------+------------------------------|
-| menu-bar-mode   | メニューバーの表示           |
-| tool-bar-mode   | ツールバーを表示             |
-| scroll-bar-mode | スクロールバーの表示（位置） |
-
-#+begin_src emacs-lisp
-  (setq frame-title-format
-	(format "%%f - Emacs@%s" (system-name)))
-#+end_src
-
 ** コメントのフォントを立体にする                              :font-lock.el:
 - [[http://ja.wikipedia.org/wiki/%E7%AB%8B%E4%BD%93%E6%B4%BB%E5%AD%97][立体活字 - Wikipedia]]
 
 #+begin_src emacs-lisp
 (custom-set-faces
  '(font-lock-comment-face ((t (:foreground "chocolate1" :slant normal)))))
-#+end_src
-
-** diredでファイル名のリネーム                                    :wdired.el:
-
-diredモードで r キーを押すと編集モードに入る．
-完了したらC-c C-cで決定．C-c ESCでキャンセル．
-
-wdiredのrequireはdired-mode-mapを定義するために必要．
-
-#+begin_src emacs-lisp
-  (require 'wdired)
-  (define-key dired-mode-map "r"
-    'wdired-change-to-wdired-mode)
-#+end_src
-
-** eldoc
-
-#+begin_src emacs-lisp
-  (add-hook 'emacs-lisp-mode-hook 'turn-on-eldoc-mode)
-  (add-hook 'lisp-interaction-mode-hook 'turn-on-eldoc-mode)
-  (add-hook 'ielm-mode-hook 'turn-on-eldoc-mode)
-  (setq eldoc-idle-delay 0.2)
-  (setq eldoc-minor-mode-string "")
 #+end_src
 
 * パッケージ関連の設定

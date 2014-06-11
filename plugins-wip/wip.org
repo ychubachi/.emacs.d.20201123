@@ -144,3 +144,9 @@
 #+begin_src emacs-lisp :tangle no
   (global-set-key (kbd "C-m") 'newline-and-indent)
 #+end_src
+* TODO フレームの表題							  :C:
+
+#+begin_src emacs-lisp
+  (setq frame-title-format
+	(format "%%f - Emacs@%s" (system-name)))
+#+end_src

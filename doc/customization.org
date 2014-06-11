@@ -109,3 +109,10 @@
 #+begin_src emacs-lisp :tangle no
   (column-number-mode t)
 #+end_src
+** TODO メニューバーなど
+
+| 変数名          | 内容                         |
+|-----------------+------------------------------|
+| menu-bar-mode   | メニューバーの表示           |
+| tool-bar-mode   | ツールバーを表示             |
+| scroll-bar-mode | スクロールバーの表示（位置） |
