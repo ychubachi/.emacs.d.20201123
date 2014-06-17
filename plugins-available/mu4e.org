@@ -225,3 +225,8 @@ Gmailでスターをつけると，flagが付く．
 #+begin_src emacs-lisp
   (setq org-mu4e-convert-to-html t)
 #+end_src
+** キーバインド
+
+#+begin_src emacs-lisp
+  (global-set-key (kbd "C-c m") 'mu4e)
+#+end_src
