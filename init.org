@@ -69,16 +69,6 @@
   - after-init-hookはパッケージの初期化が完了したら呼ばれるフックです．
     - [[http://www.gnu.org/software/emacs/manual/html_node/elisp/Init-File.html#Init-File][Init File - GNU Emacs Lisp Reference Manual]]
 
-*** カスタマイズ設定を保存するファイルの指定
-  - 概要
-     - カスタマイズ設定を保存するファイルを指定して，読み込みます．
-       - custom.elには個人用の設定を書く
-     - このコードで設定した値は，custom.el内で上書きすることができます．
-     - after-init-hookでcustom.elを読みこませる理由
-       - init.elでエラーが発生しても確実にカスタマイズ設定を読み込みます．
-  - 参考
-     - [[http://www.gnu.org/software/emacs/manual/html_node/emacs/Saving-Customizations.html][Saving Customizations - GNU Emacs Manual]]
-
 #+begin_src emacs-lisp
     (add-hook 'after-init-hook
 	      (lambda ()
@@ -395,6 +385,15 @@ Following codes do not work well in org-mode runing with C-c C-c.
 #+end_src
 
 * 後処理
+** カスタマイズ設定を保存するファイルの指定
+  - 概要
+     - カスタマイズ設定を保存するファイルを指定して，読み込みます．
+       - custom.elには個人用の設定を書く
+     - このコードで設定した値は，custom.el内で上書きすることができます．
+     - after-init-hookでcustom.elを読みこませる理由
+       - init.elでエラーが発生しても確実にカスタマイズ設定を読み込みます．
+  - 参考
+     - [[http://www.gnu.org/software/emacs/manual/html_node/emacs/Saving-Customizations.html][Saving Customizations - GNU Emacs Manual]]
 
 #+begin_src emacs-lisp
   (setq custom-file "~/.emacs.d/custom.el")

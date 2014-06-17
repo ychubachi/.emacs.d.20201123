@@ -109,7 +109,6 @@
 (define-key 'personal-map (kbd "C-p") 'my/other-window-backward)
 
 (define-key 'personal-map (kbd "m") 'imenu)
-(define-key 'personal-map (kbd "h") 'helm-mini)
 
 (define-key 'personal-map (kbd "i") 'yas-insert-snippet)
 (define-key 'personal-map (kbd "n") 'yas-new-snippet)
