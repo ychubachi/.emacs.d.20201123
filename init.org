@@ -146,7 +146,7 @@
       (require package-symbol))
 #+end_src
 
-* 日本語関連の設定
+* 日本語関連の設定						:mule-cmd.el:
 ** 日本語文字コードの設定
 
 - 言語環境を日本語に，コード体系をUTF-8にします．
@@ -157,20 +157,16 @@
 #+end_src
 
 ** 日本語文字フォントの設定
-*** 説明
+*** Rictyの設定                                                      :custom:
 ｰ Fontに関する調査
   - [[file:test.org::*Emacs%E3%81%AE%E3%83%95%E3%82%A9%E3%83%B3%E3%83%88%E3%81%AE%E3%81%8A%E8%A9%B1][Emacsのフォントのお話]]
 
-*** Rictyの設定                                                      :custom:
 
 - この値はcustomize可能です．
 
 #+begin_src emacs-lisp
   (add-to-list 'default-frame-alist '(font . "ricty-13.5"))
 #+end_src
-
-#+RESULTS:
-| (font . ricty-13.5) |
 
 *** TODO Macでフォントを正しく設定する
    :PROPERTIES:
