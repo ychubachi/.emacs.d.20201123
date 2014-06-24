@@ -6,5 +6,6 @@
   - [[http://qiita.com/itiut@github/items/4d74da2412a29ef59c3a][Emacs - whitespace-modeを使って、ファイルの保存時に行末のスペースや末尾の改行を削除する - Qiita]]
 
 #+begin_src emacs-lisp
-  (add-hook 'before-save-hook 'whitespace-cleanup)
+  (add-hook 'before-save-hook
+   'whitespace-cleanup)
 #+end_src

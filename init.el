@@ -16,25 +16,6 @@
 (let ((default-directory "~/.emacs.d/site-lisp/"))
   (normal-top-level-add-subdirs-to-load-path))
 
-(add-hook 'before-save-hook
- 'whitespace-cleanup)
-
-(setq frame-title-format
-      (format "%%f - Emacs@%s" (system-name)))
-
-(custom-set-faces
- '(font-lock-comment-face ((t (:foreground "chocolate1" :slant normal)))))
-
-(require 'wdired)
-(define-key dired-mode-map "r"
-  'wdired-change-to-wdired-mode)
-
-(add-hook 'emacs-lisp-mode-hook 'turn-on-eldoc-mode)
-(add-hook 'lisp-interaction-mode-hook 'turn-on-eldoc-mode)
-(add-hook 'ielm-mode-hook 'turn-on-eldoc-mode)
-(setq eldoc-idle-delay 0.2)
-(setq eldoc-minor-mode-string "")
-
 (require 'package)
 (setq package-archives
       '(("org" .       "http://orgmode.org/elpa/")
@@ -109,7 +90,6 @@
 (define-key 'personal-map (kbd "C-p") 'my/other-window-backward)
 
 (define-key 'personal-map (kbd "m") 'imenu)
-(define-key 'personal-map (kbd "h") 'helm-mini)
 
 (define-key 'personal-map (kbd "i") 'yas-insert-snippet)
 (define-key 'personal-map (kbd "n") 'yas-new-snippet)

@@ -1,5 +1,4 @@
 * eldoc
-- [[http://www.emacswiki.org/emacs/ElDoc][EmacsWiki: El Doc]]
 
 #+begin_src emacs-lisp
   (add-hook 'emacs-lisp-mode-hook 'turn-on-eldoc-mode)

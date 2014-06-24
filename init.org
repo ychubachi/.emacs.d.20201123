@@ -69,16 +69,6 @@
   - after-init-hookはパッケージの初期化が完了したら呼ばれるフックです．
     - [[http://www.gnu.org/software/emacs/manual/html_node/elisp/Init-File.html#Init-File][Init File - GNU Emacs Lisp Reference Manual]]
 
-*** カスタマイズ設定を保存するファイルの指定
-  - 概要
-     - カスタマイズ設定を保存するファイルを指定して，読み込みます．
-       - custom.elには個人用の設定を書く
-     - このコードで設定した値は，custom.el内で上書きすることができます．
-     - after-init-hookでcustom.elを読みこませる理由
-       - init.elでエラーが発生しても確実にカスタマイズ設定を読み込みます．
-  - 参考
-     - [[http://www.gnu.org/software/emacs/manual/html_node/emacs/Saving-Customizations.html][Saving Customizations - GNU Emacs Manual]]
-
 #+begin_src emacs-lisp
     (add-hook 'after-init-hook
 	      (lambda ()
@@ -119,14 +109,6 @@
     (normal-top-level-add-subdirs-to-load-path))
 #+end_src
 
-** コメントのフォントを立体にする                              :font-lock.el:
-- [[http://ja.wikipedia.org/wiki/%E7%AB%8B%E4%BD%93%E6%B4%BB%E5%AD%97][立体活字 - Wikipedia]]
-
-#+begin_src emacs-lisp
-(custom-set-faces
- '(font-lock-comment-face ((t (:foreground "chocolate1" :slant normal)))))
-#+end_src
-
 * パッケージ関連の設定
 ** リポジトリの設定
   - パッケージをダウンロードするリポジトリを設定します．
@@ -164,7 +146,7 @@
       (require package-symbol))
 #+end_src
 
-* 日本語関連の設定
+* 日本語関連の設定						:mule-cmd.el:
 ** 日本語文字コードの設定
 
 - 言語環境を日本語に，コード体系をUTF-8にします．
@@ -175,20 +157,16 @@
 #+end_src
 
 ** 日本語文字フォントの設定
-*** 説明
+*** Rictyの設定                                                      :custom:
 ｰ Fontに関する調査
   - [[file:test.org::*Emacs%E3%81%AE%E3%83%95%E3%82%A9%E3%83%B3%E3%83%88%E3%81%AE%E3%81%8A%E8%A9%B1][Emacsのフォントのお話]]
 
-*** Rictyの設定                                                      :custom:
 
 - この値はcustomize可能です．
 
 #+begin_src emacs-lisp
   (add-to-list 'default-frame-alist '(font . "ricty-13.5"))
 #+end_src
-
-#+RESULTS:
-| (font . ricty-13.5) |
 
 *** TODO Macでフォントを正しく設定する
    :PROPERTIES:
@@ -290,7 +268,6 @@
   (define-key 'personal-map (kbd "C-p") 'my/other-window-backward)
 
   (define-key 'personal-map (kbd "m") 'imenu)
-  (define-key 'personal-map (kbd "h") 'helm-mini)
 
   (define-key 'personal-map (kbd "i") 'yas-insert-snippet)
   (define-key 'personal-map (kbd "n") 'yas-new-snippet)
@@ -348,6 +325,15 @@ Following codes do not work well in org-mode runing with C-c C-c.
 #+end_src
 
 * 後処理
+** カスタマイズ設定を保存するファイルの指定
+  - 概要
+     - カスタマイズ設定を保存するファイルを指定して，読み込みます．
+       - custom.elには個人用の設定を書く
+     - このコードで設定した値は，custom.el内で上書きすることができます．
+     - after-init-hookでcustom.elを読みこませる理由
+       - init.elでエラーが発生しても確実にカスタマイズ設定を読み込みます．
+  - 参考
+     - [[http://www.gnu.org/software/emacs/manual/html_node/emacs/Saving-Customizations.html][Saving Customizations - GNU Emacs Manual]]
 
 #+begin_src emacs-lisp
   (setq custom-file "~/.emacs.d/custom.el")
