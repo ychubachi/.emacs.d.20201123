@@ -204,37 +204,29 @@
 #+end_src
 
 *** LaTeX export
-**** パッケージの読み込み
+
+LaTeXでエキスポートできるようにします．
+下記URLのコードを利用しています（2014-08-03 参照）．
+
+− [[http://oku.edu.mie-u.ac.jp/~okumura/texwiki/?Emacs%2FOrg%20mode#h20d131a][Emacs/Org mode - TeX Wiki]]
 
 #+begin_src emacs-lisp
   (require 'ox-latex)
-#+end_src
-
-**** PDFを生成するコマンド
-
-#+begin_src emacs-lisp
-  (when (or
-	 (eq system-type 'gnu/linux)
-	 (eq system-type 'darwin))
-    (setq org-latex-pdf-process
-	  '("latexmk -e '$latex=q/platex %S/' -e '$bibtex=q/pbibtex %B/' -e '$makeindex=q/mendex -o %D %S/' -e '$dvipdf=q/dvipdfmx -o %D %S/' -norc -gg -pdfdvi %f"))
-    )
-#+end_src
-
-#+RESULTS:
-| latexmk -e '$latex=q/platex %S/' -e '$bibtex=q/pbibtex %B/' -e '$makeindex=q/mendex -o %D %S/' -e '$dvipdf=q/dvipdfmx -o %D %S/' -norc -gg -pdfdvi %f |
-
-**** 文書クラスの設定(jsarticle)
-
-#+begin_src emacs-lisp
+  (add-to-list 'auto-mode-alist '("\\.org$" . org-mode))
   (setq org-latex-default-class "jsarticle")
+  (setq org-latex-pdf-process '("latexmk -e '$latex=q/uplatex %S/' -e '$bibtex=q/upbibtex %B/' -e '$biber=q/biber --bblencoding=utf8 -u -U --output_safechars %B/' -e '$makeindex=q/mendex -U -o %D %S/' -e '$dvipdf=q/dvipdfmx -o %D %S/' -norc -gg -pdfdvi %f"))
+  ;(setq org-latex-pdf-process '("latexmk -e '$latex=q/uplatex %S/' -e '$bibtex=q/upbibtex %B/' -e '$biber=q/biber --bblencoding=utf8 -u -U --output_safechars %B/' -e '$makeindex=q/mendex -U -o %D %S/' -e '$dvips=q/dvips -Ppdf -z -f %S | convbkmk -u > %D/' -e '$ps2pdf=q/ps2pdf %S %D/' -norc -gg -pdfps %f"))
+  ;(setq org-latex-pdf-process '("latexmk -e '$pdflatex=q/pdflatex %S/' -e '$bibtex=q/bibtex %B/' -e '$biber=q/biber --bblencoding=utf8 -u -U --output_safechars %B/' -e '$makeindex=q/makeindex -o %D %S/' -norc -gg -pdf %f"))
+  ;(setq org-latex-pdf-process '("latexmk -e '$pdflatex=q/lualatex %S/' -e '$bibtex=q/bibtexu %B/' -e '$biber=q/biber --bblencoding=utf8 -u -U --output_safechars %B/' -e '$makeindex=q/makeindex -o %D %S/' -norc -gg -pdf %f"))
+  ;(setq org-latex-pdf-process '("latexmk -e '$pdflatex=q/luajitlatex %S/' -e '$bibtex=q/bibtexu %B/' -e '$biber=q/biber --bblencoding=utf8 -u -U --output_safechars %B/' -e '$makeindex=q/makeindex -o %D %S/' -norc -gg -pdf %f"))
+  ;(setq org-latex-pdf-process '("latexmk -e '$pdflatex=q/xelatex %S/' -e '$bibtex=q/bibtexu %B/' -e '$biber=q/biber --bblencoding=utf8 -u -U --output_safechars %B/' -e '$makeindex=q/makeindex -o %D %S/' -norc -gg -pdf %f"))
+  ;(setq org-export-in-background t)
+  (setq org-file-apps
+        '(("pdf" . "xdg-open %s")))
+
   (add-to-list 'org-latex-classes
-	       '("jsarticle"
-		 "\\ifdefined\\ucs
-    \\documentclass[uplatex,12pt,a4paper,papersize,dvipdfmx]{jsarticle}
-  \\else
-    \\documentclass[12pt,a4paper,papersize,dvipdfmx]{jsarticle}
-  \\fi
+               '("jsarticle"
+                 "\\documentclass[uplatex,dvipdfmx,12pt,a4paper,papersize]{jsarticle}
   [NO-DEFAULT-PACKAGES]
   \\usepackage{amsmath}
   \\usepackage{newtxtext,newtxmath}
@@ -242,29 +234,91 @@
   \\usepackage{hyperref}
   \\usepackage{pxjahyper}
   \\hypersetup{setpagesize=false,colorlinks=true}"
-		 ("\\section{%s}" . "\\section*{%s}")
-		 ("\\subsection{%s}" . "\\subsection*{%s}")
-		 ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
-		 ("\\paragraph{%s}" . "\\paragraph*{%s}")
-		 ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
+                 ("\\section{%s}" . "\\section*{%s}")
+                 ("\\subsection{%s}" . "\\subsection*{%s}")
+                 ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+                 ("\\paragraph{%s}" . "\\paragraph*{%s}")
+                 ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
+
+  (add-to-list 'org-latex-classes
+               '("jsarticle-dvips"
+                 "\\documentclass[uplatex,12pt,a4paper,papersize]{jsarticle}
+  [NO-DEFAULT-PACKAGES]
+  \\usepackage{amsmath}
+  \\usepackage{newtxtext,newtxmath}
+  \\usepackage{graphicx}
+  \\usepackage{hyperref}
+  \\hypersetup{setpagesize=false,colorlinks=true}"
+                 ("\\section{%s}" . "\\section*{%s}")
+                 ("\\subsection{%s}" . "\\subsection*{%s}")
+                 ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+                 ("\\paragraph{%s}" . "\\paragraph*{%s}")
+                 ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
+
+  (add-to-list 'org-latex-classes
+               '("ltjsarticle"
+                 "\\documentclass[12pt,a4paper]{ltjsarticle}
+  [NO-DEFAULT-PACKAGES]
+  \\usepackage{amsmath}
+  \\usepackage{newtxtext,newtxmath}
+  \\usepackage{graphicx}
+  \\usepackage{hyperref}
+  \\hypersetup{pdfencoding=auto,colorlinks=true}"
+                 ("\\section{%s}" . "\\section*{%s}")
+                 ("\\subsection{%s}" . "\\subsection*{%s}")
+                 ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+                 ("\\paragraph{%s}" . "\\paragraph*{%s}")
+                 ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
+
+  (add-to-list 'org-latex-classes
+               '("bxjsarticle"
+                 "\\ifdefined\\kanjiskip
+    \\documentclass[autodetect-engine,dvipdfmx,12pt,a4paper,jadriver=standard]{bxjsarticle}
+  \\else
+    \\ifdefined\\pdfoutput
+      \\ifnum\\pdfoutput=0
+        \\documentclass[autodetect-engine,dvipdfmx,12pt,a4paper,jadriver=standard]{bxjsarticle}
+      \\else
+        \\documentclass[autodetect-engine,12pt,a4paper,jadriver=standard]{bxjsarticle}
+      \\fi
+    \\else
+      \\documentclass[autodetect-engine,12pt,a4paper,jadriver=standard]{bxjsarticle}
+    \\fi
+  \\fi
+  [NO-DEFAULT-PACKAGES]
+  \\usepackage{amsmath}
+  \\usepackage{newtxtext,newtxmath}
+  \\usepackage{graphicx}
+  \\usepackage{hyperref}
+  \\ifdefined\\kanjiskip
+    \\usepackage{pxjahyper}
+    \\hypersetup{colorlinks=true}
+  \\else
+    \\ifdefined\\XeTeXversion
+        \\hypersetup{colorlinks=true}
+    \\else
+      \\ifdefined\\directlua
+        \\hypersetup{pdfencoding=auto,colorlinks=true}
+      \\else
+        \\hypersetup{unicode,colorlinks=true}
+      \\fi
+    \\fi
+  \\fi"
+                 ("\\section{%s}" . "\\section*{%s}")
+                 ("\\subsection{%s}" . "\\subsection*{%s}")
+                 ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+                 ("\\paragraph{%s}" . "\\paragraph*{%s}")
+                 ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
 #+end_src
 
-#+RESULTS:
-| beamer    | \documentclass[dvipdfmx]{beamer}\n[NO-DEFAULT-PACKAGES]\n\usepackage{bxdpx-beamer}\n\usepackage{pxjahyper}\n\usepackage{minijs}\n\renewcommand{\kanjifamilydefault}{\gtdefault}\n\AtBeginSection[]\n{\n  \begin{frame}<beamer>{Outline}\n  \tableofcontents[currentsection,currentsubsection]\n  \end{frame}\n}                                                     | (\section{%s} . \section*{%s}) | (\subsection{%s} . \subsection*{%s}) | (\subsubsection{%s} . \subsubsection*{%s}) | (\paragraph{%s} . \paragraph*{%s})   | (\subparagraph{%s} . \subparagraph*{%s})   |
-| beamer    | \documentclass[presentation]{beamer}\n[DEFAULT-PACKAGES]\n[PACKAGES]\n[EXTRA]                                                                                                                                                                                                                                                                                       | (\section{%s} . \section*{%s}) | (\subsection{%s} . \subsection*{%s}) | (\subsubsection{%s} . \subsubsection*{%s}) |                                      |                                            |
-| jsarticle | \ifdefined\ucs\n  \documentclass[uplatex,12pt,a4paper,papersize,dvipdfmx]{jsarticle}\n\else\n  \documentclass[12pt,a4paper,papersize,dvipdfmx]{jsarticle}\n\fi\n[NO-DEFAULT-PACKAGES]\n\usepackage{amsmath}\n\usepackage{newtxtext,newtxmath}\n\usepackage{graphicx}\n\usepackage{hyperref}\n\usepackage{pxjahyper}\n\hypersetup{setpagesize=false,colorlinks=true} | (\section{%s} . \section*{%s}) | (\subsection{%s} . \subsection*{%s}) | (\subsubsection{%s} . \subsubsection*{%s}) | (\paragraph{%s} . \paragraph*{%s})   | (\subparagraph{%s} . \subparagraph*{%s})   |
-| article   | \documentclass[11pt]{article}                                                                                                                                                                                                                                                                                                                                       | (\section{%s} . \section*{%s}) | (\subsection{%s} . \subsection*{%s}) | (\subsubsection{%s} . \subsubsection*{%s}) | (\paragraph{%s} . \paragraph*{%s})   | (\subparagraph{%s} . \subparagraph*{%s})   |
-| report    | \documentclass[11pt]{report}                                                                                                                                                                                                                                                                                                                                        | (\part{%s} . \part*{%s})       | (\chapter{%s} . \chapter*{%s})       | (\section{%s} . \section*{%s})             | (\subsection{%s} . \subsection*{%s}) | (\subsubsection{%s} . \subsubsection*{%s}) |
-| book      | \documentclass[11pt]{book}                                                                                                                                                                                                                                                                                                                                          | (\part{%s} . \part*{%s})       | (\chapter{%s} . \chapter*{%s})       | (\section{%s} . \section*{%s})             | (\subsection{%s} . \subsection*{%s}) | (\subsubsection{%s} . \subsubsection*{%s}) |
-
 *** LeTex (beamer) export
-**** パッケージの読み込み
+ パッケージの読み込み
 
 #+begin_src emacs-lisp
 (require 'ox-beamer)
 #+end_src
 
-**** 文書クラスの設定(beamer)
+ 文書クラスの設定(beamer)
 
 #+begin_src emacs-lisp
 (add-to-list 'org-latex-classes
@@ -286,48 +340,6 @@
 	       ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
 	       ("\\paragraph{%s}" . "\\paragraph*{%s}")
 	       ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
-#+end_src
-
-#+RESULTS:
-| beamer    | \documentclass[dvipdfmx]{beamer}\n[NO-DEFAULT-PACKAGES]\n\usepackage{bxdpx-beamer}\n\usepackage{pxjahyper}\n\usepackage{minijs}\n\renewcommand{\kanjifamilydefault}{\gtdefault}\n\AtBeginSection[]\n{\n  \begin{frame}<beamer>{Outline}\n  \tableofcontents[currentsection,currentsubsection]\n  \end{frame}\n}                                                     | (\section{%s} . \section*{%s}) | (\subsection{%s} . \subsection*{%s}) | (\subsubsection{%s} . \subsubsection*{%s}) | (\paragraph{%s} . \paragraph*{%s})   | (\subparagraph{%s} . \subparagraph*{%s})   |
-| beamer    | \documentclass[presentation]{beamer}\n[DEFAULT-PACKAGES]\n[PACKAGES]\n[EXTRA]                                                                                                                                                                                                                                                                                       | (\section{%s} . \section*{%s}) | (\subsection{%s} . \subsection*{%s}) | (\subsubsection{%s} . \subsubsection*{%s}) |                                      |                                            |
-| jsarticle | \ifdefined\ucs\n  \documentclass[uplatex,12pt,a4paper,papersize,dvipdfmx]{jsarticle}\n\else\n  \documentclass[12pt,a4paper,papersize,dvipdfmx]{jsarticle}\n\fi\n[NO-DEFAULT-PACKAGES]\n\usepackage{amsmath}\n\usepackage{newtxtext,newtxmath}\n\usepackage{graphicx}\n\usepackage{hyperref}\n\usepackage{pxjahyper}\n\hypersetup{setpagesize=false,colorlinks=true} | (\section{%s} . \section*{%s}) | (\subsection{%s} . \subsection*{%s}) | (\subsubsection{%s} . \subsubsection*{%s}) | (\paragraph{%s} . \paragraph*{%s})   | (\subparagraph{%s} . \subparagraph*{%s})   |
-| article   | \documentclass[11pt]{article}                                                                                                                                                                                                                                                                                                                                       | (\section{%s} . \section*{%s}) | (\subsection{%s} . \subsection*{%s}) | (\subsubsection{%s} . \subsubsection*{%s}) | (\paragraph{%s} . \paragraph*{%s})   | (\subparagraph{%s} . \subparagraph*{%s})   |
-| report    | \documentclass[11pt]{report}                                                                                                                                                                                                                                                                                                                                        | (\part{%s} . \part*{%s})       | (\chapter{%s} . \chapter*{%s})       | (\section{%s} . \section*{%s})             | (\subsection{%s} . \subsection*{%s}) | (\subsubsection{%s} . \subsubsection*{%s}) |
-| book      | \documentclass[11pt]{book}                                                                                                                                                                                                                                                                                                                                          | (\part{%s} . \part*{%s})       | (\chapter{%s} . \chapter*{%s})       | (\section{%s} . \section*{%s})             | (\subsection{%s} . \subsection*{%s}) | (\subsubsection{%s} . \subsubsection*{%s}) |
-
-** TODO WebにHTMLでPublishする                                         :個人設定:
-   :PROPERTIES:
-   :ID:       fcdb09c8-3a9a-4ea9-9482-10d445b6db9f
-   :END:
-   - customzationに移動する？
-
-#+begin_src emacs-lisp
-(setq org-publish-project-alist
-      '(
-	("chubachi.net-notes"
-	 :base-directory "~/Ubuntu One/WebSites/chubachi.net/org/"
-	 :base-extension "org"
-	 :publishing-directory "~/Ubuntu One/WebSites/chubachi.net/www/"
-	 :publishing-function org-html-publish-to-html
-	 ;; :headline-levels 3
-	 ;; :section-numbers nil
-	 ;; :with-toc nil
-	 ;; :html-head "<link rel=\"stylesheet\"
-	 ;;               href=\"../other/mystyle.css\" type=\"text/css\"/>"
-	 ;; :html-preamble t
-	 :recursive t
-	 )
-	("chubachi.net-static"
-	 :base-directory "~/Ubuntu One/WebSites/chubachi.net/org/"
-	 :base-extension "css\\|js\\|png\\|jpg\\|gif\\|pdf\\|mp3\\|ogg\\|swf"
-	 :publishing-directory "~/Ubuntu One/WebSites/chubachi.net/www/"
-	 :recursive t
-	 :publishing-function org-publish-attachment
-	 )
-	("chubachi.net"
-	 :components ("chubachi.net-notes" "chubachi.net-static"))
-      ))
 #+end_src
 
 ** カラムのタイトルのフォント
@@ -372,3 +384,38 @@ javascript:location.href='org-protocol://capture://t/'+encodeURIComponent(locati
   (global-set-key (kbd "C-c a") 'org-agenda)
   (global-set-key (kbd "C-c b") 'org-switchb)
 #+end_src
+* WIP
+** TODO WebにHTMLでPublishする                                         :個人設定:
+   :PROPERTIES:
+   :ID:       fcdb09c8-3a9a-4ea9-9482-10d445b6db9f
+   :END:
+   - customzationに移動する？
+
+#+begin_src emacs-lisp
+(setq org-publish-project-alist
+      '(
+	("chubachi.net-notes"
+	 :base-directory "~/Ubuntu One/WebSites/chubachi.net/org/"
+	 :base-extension "org"
+	 :publishing-directory "~/Ubuntu One/WebSites/chubachi.net/www/"
+	 :publishing-function org-html-publish-to-html
+	 ;; :headline-levels 3
+	 ;; :section-numbers nil
+	 ;; :with-toc nil
+	 ;; :html-head "<link rel=\"stylesheet\"
+	 ;;               href=\"../other/mystyle.css\" type=\"text/css\"/>"
+	 ;; :html-preamble t
+	 :recursive t
+	 )
+	("chubachi.net-static"
+	 :base-directory "~/Ubuntu One/WebSites/chubachi.net/org/"
+	 :base-extension "css\\|js\\|png\\|jpg\\|gif\\|pdf\\|mp3\\|ogg\\|swf"
+	 :publishing-directory "~/Ubuntu One/WebSites/chubachi.net/www/"
+	 :recursive t
+	 :publishing-function org-publish-attachment
+	 )
+	("chubachi.net"
+	 :components ("chubachi.net-notes" "chubachi.net-static"))
+      ))
+#+end_src
+
