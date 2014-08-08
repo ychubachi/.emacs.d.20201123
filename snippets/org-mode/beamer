@@ -2,11 +2,12 @@
 # name: beamer
 # key: beamer
 # --
-#+TITLE: Title \linebreak Title2
-#+AUTHOR: 産業技術大学院大学 \linebreak 中鉢 欣秀
-#+DATE: 2013-11-03
+#+TITLE: ${1:Title \linebreak Sub-title}
+#+AUTHOR: ${2:産業技術大学院大学 \linebreak 中鉢 欣秀}
+#+DATE: ${3:yyyy-mm-dd}
+#+BEAMER_THEME: ${4:Madrid}
+#+OPTIONS: toc:nil
 #+OPTIONS: H:2
-#+BEAMER_THEME: Madrid
+#+OPTIONS: ^:nil
 #+COLUMNS: %45ITEM %10BEAMER_ENV(Env) %10BEAMER_ACT(Act) %4BEAMER_COL(Col) %8BEAMER_OPT(Opt)
-#+OPTIONS: ^:nil toc:nil
 #+PROPERTY: BEAMER_col_ALL 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9 0.0 :ETC

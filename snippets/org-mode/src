@@ -1,8 +1,0 @@
-# -*- mode: snippet -*-
-# name: src
-# key: src
-# --
-#+NAME: ${1:name}
-#+BEGIN_SRC ${2:language}
-$0
-#+END_SRC

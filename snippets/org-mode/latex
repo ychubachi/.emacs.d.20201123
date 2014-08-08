@@ -2,7 +2,7 @@
 # name: latex
 # key: latex
 # --
-#+TITLE: ${1:Title}
-#+AUTHOR: ${2:Author}
-#+LATEX_CLASS: jsarticle
+#+TITLE: ${1:Title \linebreak Sub-title}
+#+AUTHOR: ${2:産業技術大学院大学 \linebreak 中鉢 欣秀}
+#+DATE: ${3:yyyy-mm-dd}
 #+OPTIONS: toc:nil
