@@ -53,9 +53,8 @@
 	     "* TODO %?
 ")
 	    ("l" "Link as Todo" entry (file+headline "todo.org" "Tasks")
-	     "* TODO %a
-  %?
-  ---
+	     "* TODO %?
+  Link: %a
   引用: %i
 ")
 	    ("j" "Journal" entry (file+datetree "journal.org")
@@ -68,6 +67,12 @@
 ")
 	    )))
 #+end_src
+
+#+RESULTS:
+| t | Todo         | entry | (file+headline todo.org Tasks)         | * TODO %?\n                           |
+| l | Link as Todo | entry | (file+headline todo.org Tasks)         | * TODO %?\n  Link: %a\n  引用: %i\n   |
+| j | Journal      | entry | (file+datetree journal.org)            | * %?\n                                |
+| b | Bookmark     | entry | (file+headline bookmark.org Bookmarks) | * %a :bookmark:\n  　引用: %i\n  %?\n |
 
 ** Mobile Org関連
 
