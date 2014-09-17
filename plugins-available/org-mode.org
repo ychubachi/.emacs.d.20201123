@@ -252,6 +252,7 @@ LaTeXでエキスポートできるようにします．
                ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
                ("\\paragraph{%s}" . "\\paragraph*{%s}")
                ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
+
 #+end_src
 
 #+RESULTS:
@@ -261,6 +262,16 @@ LaTeXでエキスポートできるようにします．
 | article     | \documentclass[11pt]{article}                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               | (\section{%s} . \section*{%s}) | (\subsection{%s} . \subsection*{%s}) | (\subsubsection{%s} . \subsubsection*{%s}) | (\paragraph{%s} . \paragraph*{%s})   | (\subparagraph{%s} . \subparagraph*{%s})   |
 | report      | \documentclass[11pt]{report}                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                | (\part{%s} . \part*{%s})       | (\chapter{%s} . \chapter*{%s})       | (\section{%s} . \section*{%s})             | (\subsection{%s} . \subsection*{%s}) | (\subsubsection{%s} . \subsubsection*{%s}) |
 | book        | \documentclass[11pt]{book}                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  | (\part{%s} . \part*{%s})       | (\chapter{%s} . \chapter*{%s})       | (\section{%s} . \section*{%s})             | (\subsection{%s} . \subsection*{%s}) | (\subsubsection{%s} . \subsubsection*{%s}) |
+
+ソースコードのエクスポート．
+
+#+begin_src emacs-lisp
+(add-to-list 'org-latex-packages-alist '("" "minted"))
+(setq org-latex-listings 'minted)
+#+end_src
+
+#+RESULTS:
+: minted
 
 *** LeTex (beamer) export
  パッケージの読み込み
@@ -278,12 +289,7 @@ LaTeXでエキスポートできるようにします．
 [NO-DEFAULT-PACKAGES]
 \\usepackage{zxjatype}
 \\usepackage[ipa]{zxjafont}
-\\usepackage{xltxtra}
-\\usepackage{amsmath}
-\\usepackage{newtxtext,newtxmath}
-\\usepackage{graphicx}
-\\usepackage{hyperref}
-\\usepackage{bxdpx-beamer}
+\\setbeamertemplate{navigation symbols}{}
 \\AtBeginSection[]
 {
   \\begin{frame}<beamer>{Outline}
@@ -293,10 +299,18 @@ LaTeXでエキスポートできるようにします．
 \\setbeamertemplate{navigation symbols}{}"
 	       ("\\section{%s}" . "\\section*{%s}")
 	       ("\\subsection{%s}" . "\\subsection*{%s}")
-	       ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
-	       ("\\paragraph{%s}" . "\\paragraph*{%s}")
-	       ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
+	       ("\\subsubsection{%s}" . "\\subsubsection*{%s}")))
 #+end_src
+
+#+RESULTS:
+| beamer         | \documentclass[t]{beamer}\n[NO-DEFAULT-PACKAGES]\n\usepackage{zxjatype}\n\usepackage[ipa]{zxjafont}\n\setbeamertemplate{navigation symbols}{}\n\AtBeginSection[]\n{\n  \begin{frame}<beamer>{Outline}\n  \tableofcontents[currentsection,currentsubsection]\n  \end{frame}\n}\n\setbeamertemplate{navigation symbols}{}                                                                                                                                                                                                                                     | (\section{%s} . \section*{%s})                                                                                                                                                                                       | (\subsection{%s} . \subsection*{%s}) | (\subsubsection{%s} . \subsubsection*{%s}) |                                      |                                            |
+| beamer_lecture | \documentclass[t]{beamer}\n[NO-DEFAULT-PACKAGES]\n\usepackage{zxjatype}\n\usepackage[ipa]{zxjafont}\n\setbeamertemplate{navigation symbols}{}\n\AtBeginPart\n{\n  \begin{frame}<beamer                                                                                                                                                                                                                                                                                                                                                                      | handout>\n    \date{第{\insertpartnumber}回 \insertpart}\n    \maketitle\n  \end{frame}\n}\n\AtBeginSubsection[]\n{\n  \begin{frame}<beamer>\n  \tableofcontents[currentsection,currentsubsection]\n  \end{frame}\n} | (\part{%s} . \part*{%s})             | (\section{%s} . \section*{%s})             | (\subsection{%s} . \subsection*{%s}) | (\subsubsection{%s} . \subsubsection*{%s}) |
+| beamer         | \documentclass[t]{beamer}\n[NO-DEFAULT-PACKAGES]\n\usepackage{zxjatype}\n\usepackage[ipa]{zxjafont}\n\usepackage{xltxtra}\n\usepackage{amsmath}\n\usepackage{newtxtext,newtxmath}\n\usepackage{graphicx}\n\usepackage{hyperref}\n\usepackage{bxdpx-beamer}\n\AtBeginSection[]\n{\n  \begin{frame}<beamer>{Outline}\n  \tableofcontents[currentsection,currentsubsection]\n  \end{frame}\n}\n\setbeamertemplate{navigation symbols}{}                                                                                                                        | (\section{%s} . \section*{%s})                                                                                                                                                                                       | (\subsection{%s} . \subsection*{%s}) | (\subsubsection{%s} . \subsubsection*{%s}) | (\paragraph{%s} . \paragraph*{%s})   | (\subparagraph{%s} . \subparagraph*{%s})   |
+| beamer         | \documentclass[presentation]{beamer}                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        | (\section{%s} . \section*{%s})                                                                                                                                                                                       | (\subsection{%s} . \subsection*{%s}) | (\subsubsection{%s} . \subsubsection*{%s}) |                                      |                                            |
+| bxjsarticle    | \documentclass{bxjsarticle}\n[NO-DEFAULT-PACKAGES]\n\usepackage{zxjatype}\n\usepackage[ipa]{zxjafont}\n\usepackage{xltxtra}\n\usepackage{amsmath}\n\usepackage{newtxtext,newtxmath}\n\usepackage{graphicx}\n\usepackage{hyperref}\n\ifdefined\kanjiskip\n  \usepackage{pxjahyper}\n  \hypersetup{colorlinks=true}\n\else\n  \ifdefined\XeTeXversion\n      \hypersetup{colorlinks=true}\n  \else\n    \ifdefined\directlua\n      \hypersetup{pdfencoding=auto,colorlinks=true}\n    \else\n      \hypersetup{unicode,colorlinks=true}\n    \fi\n  \fi\n\fi | (\section{%s} . \section*{%s})                                                                                                                                                                                       | (\subsection{%s} . \subsection*{%s}) | (\subsubsection{%s} . \subsubsection*{%s}) | (\paragraph{%s} . \paragraph*{%s})   | (\subparagraph{%s} . \subparagraph*{%s})   |
+| article        | \documentclass[11pt]{article}                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               | (\section{%s} . \section*{%s})                                                                                                                                                                                       | (\subsection{%s} . \subsection*{%s}) | (\subsubsection{%s} . \subsubsection*{%s}) | (\paragraph{%s} . \paragraph*{%s})   | (\subparagraph{%s} . \subparagraph*{%s})   |
+| report         | \documentclass[11pt]{report}                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                | (\part{%s} . \part*{%s})                                                                                                                                                                                             | (\chapter{%s} . \chapter*{%s})       | (\section{%s} . \section*{%s})             | (\subsection{%s} . \subsection*{%s}) | (\subsubsection{%s} . \subsubsection*{%s}) |
+| book           | \documentclass[11pt]{book}                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  | (\part{%s} . \part*{%s})                                                                                                                                                                                             | (\chapter{%s} . \chapter*{%s})       | (\section{%s} . \section*{%s})             | (\subsection{%s} . \subsection*{%s}) | (\subsubsection{%s} . \subsubsection*{%s}) |
 
 #+begin_src emacs-lisp
 (add-to-list 'org-latex-classes
