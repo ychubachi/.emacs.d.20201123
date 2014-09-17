@@ -1,0 +1,29 @@
+* org-page
+  - [[https://github.com/kelvinh/org-page][kelvinh/org-page]]
+  - 新しいリポジトリを作る
+    - op/new-repository 
+  ｰ 公開
+    - op/do-publication
+
+#+begin_src emacs-lisp
+(dolist (package '(org-page))
+  (when (not (package-installed-p package))
+    (package-install package)))
+(require 'org-page)
+#+end_src
+
+#+RESULTS:
+: http://ychubachi.github.io/
+
+#+begin_src emacs-lisp
+(op/do-publication)
+#+end_src
+
+
+** customize
+
+| 変数名                  | 設定例                             |
+|-------------------------+------------------------------------|
+| op/repository-directory | "/home/yc/git/ychubachi.github.io" |
+| op/site-domain          | "http://ychubachi.github.io/"      |
+
