@@ -1,0 +1,13 @@
+* outline-minnor-mode
+
+プリフィックスをC-c C-oに変更する．
+
+#+begin_src emacs-lisp :tangle yes
+  (add-hook 'outline-minor-mode-hook
+            (lambda () (local-set-key "\C-c\C-o"
+                                      outline-mode-prefix-map)))))
+#+end_src
+
+#+RESULTS:
+| lambda | nil | (local-set-key  outline-mode-prefix-map) |
+
