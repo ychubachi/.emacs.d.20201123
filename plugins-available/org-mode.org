@@ -204,7 +204,7 @@
 
 *** mediawiki export
 
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
   (require 'ox-mediawiki)
 #+end_src
 
