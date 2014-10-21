@@ -15,11 +15,6 @@
 #+RESULTS:
 : http://ychubachi.github.io/
 
-#+begin_src emacs-lisp
-(op/do-publication)
-#+end_src
-
-
 ** customize
 
 | 変数名                  | 設定例                             |
