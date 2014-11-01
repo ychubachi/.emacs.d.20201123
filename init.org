@@ -6,6 +6,9 @@
 
 * これはなに？
 ** 使い方
+  - C-c C-v t でinit.elを生成
+    - [[http://orgmode.org/manual/Header-arguments-in-Org-mode-properties.html#Header-arguments-in-Org-mode-properties][Header arguments in Org mode properties - The Org Manual]]
+  - Caskに以降作業中
   - 日本のEmacsユーザ向け．
   - Emacsを設定するためのelです．
     - [[https://github.com/ychubachi/.emacs.d/blob/master/init.org][.emacs.d/init.org at master · ychubachi/.emacs.d]]
@@ -15,8 +18,6 @@
     - aperitif 食前酒
   - oh-my-zshのようなplugins
     - [[https://github.com/robbyrussell/oh-my-zsh][robbyrussell/oh-my-zsh]]
-  - C-c C-v t でinit.elを生成
-    - [[http://orgmode.org/manual/Header-arguments-in-Org-mode-properties.html#Header-arguments-in-Org-mode-properties][Header arguments in Org mode properties - The Org Manual]]
   - daemonについて
   - 対応するEmacsのバージョンは24.3（2013-03-11公開版）以降です．
     - [[http://www.gnu.org/software/emacs/][GNU Emacs - GNU Project - Free Software Foundation (FSF)]]
