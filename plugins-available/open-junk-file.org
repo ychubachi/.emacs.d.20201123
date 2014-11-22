@@ -1,9 +1,0 @@
-* open-junk-file
-#+begin_src emacs-lisp
-  (my/package-install-and-require 'open-junk-file)
-  (setq open-junk-file-directory "~/tmp/junk/%Y/%m/%d-%H%M%S.")
-#+end_src
-
-#+begin_src emacs-lisp
-  (global-set-key (kbd "C-c j") 'open-junk-file)
-#+end_src

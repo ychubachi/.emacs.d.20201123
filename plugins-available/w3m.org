@@ -1,8 +1,0 @@
-* w3m
-#+begin_src emacs-lisp
-(dolist (package '(w3m))
-  (when (not (package-installed-p package))
-    (condition-case nil
-	(package-install package)
-      (error (message "%s" "Please Install w3m command")))))
-#+end_src

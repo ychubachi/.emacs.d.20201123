@@ -1,5 +1,0 @@
-こんにちは！
-
-#+begin_src emacs-lisp
-(message "hello.org")
-#+end_src

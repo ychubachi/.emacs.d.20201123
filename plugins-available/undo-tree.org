@@ -1,9 +1,0 @@
-* Undo Tree
-#+begin_src emacs-lisp
-(dolist (package '(undo-tree))
-  (when (not (package-installed-p package))
-    (package-install package)))
-
-(require 'undo-tree)
-(global-undo-tree-mode t)
-#+end_src

@@ -1,9 +1,0 @@
-* exec-path-from-shell
-
-  - ShellのPATH設定を引き継ぐ:
-    - [[http://qiita.com/catatsuy/items/3dda714f4c60c435bb25][EmacsでPATHの設定が引き継がれない問題をエレガントに解決する - Qiita {キータ}]]
-
-#+begin_src emacs-lisp
-  (my/package-install-and-require 'exec-path-from-shell)
-  (exec-path-from-shell-initialize)
-#+end_src
