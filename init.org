@@ -113,43 +113,6 @@
 (cask-initialize)
 #+end_src
 
-* パッケージ関連の設定
-** リポジトリの設定
-  - パッケージをダウンロードするリポジトリを設定します．
-  - [[http://emacs-jp.github.io/packages/package-management/package-el.html][package.el - Emacs JP]]
-
-#+begin_src emacs-lisp
-  (require 'package)
-  (setq package-archives
-	'(("org" .       "http://orgmode.org/elpa/")
-	  ("gnu" .       "http://elpa.gnu.org/packages/")
-	  ("marmalade" . "http://marmalade-repo.org/packages/")
-	  ("melpa" .     "http://melpa.milkbox.net/packages/")))
-  (package-initialize)
-#+end_src
-
-** パッケージ一覧の更新
-  - 必要に応じてリフレッシュ
-  - 参考
-    - [[http://stackoverflow.com/questions/14836958/updating-packages-in-emacs][elpa - Updating packages in Emacs - Stack Overflow]]
-
-#+begin_src emacs-lisp
-  (when (not package-archive-contents)
-    (package-refresh-contents))
-#+end_src
-
-** 自作パッケージ導入マクロ
-
-#+begin_src emacs-lisp
-    (defun my/package-install (package-symbol)
-      (unless (package-installed-p package-symbol)
-	(package-install package-symbol)))
-
-    (defun my/package-install-and-require (package-symbol)
-      (my/package-install package-symbol)
-      (require package-symbol))
-#+end_src
-
 * 日本語関連の設定						:mule-cmd.el:
 ** 日本語文字コードの設定
 

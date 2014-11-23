@@ -19,25 +19,6 @@
 (require 'cask "~/.cask/cask.el")
 (cask-initialize)
 
-(require 'package)
-(setq package-archives
-      '(("org" .       "http://orgmode.org/elpa/")
-        ("gnu" .       "http://elpa.gnu.org/packages/")
-        ("marmalade" . "http://marmalade-repo.org/packages/")
-        ("melpa" .     "http://melpa.milkbox.net/packages/")))
-(package-initialize)
-
-(when (not package-archive-contents)
-  (package-refresh-contents))
-
-(defun my/package-install (package-symbol)
-  (unless (package-installed-p package-symbol)
-    (package-install package-symbol)))
-
-(defun my/package-install-and-require (package-symbol)
-  (my/package-install package-symbol)
-  (require package-symbol))
-
 (set-language-environment "japanese")
 (prefer-coding-system 'utf-8)
 
