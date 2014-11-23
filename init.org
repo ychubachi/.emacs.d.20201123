@@ -1525,7 +1525,6 @@ javascript:location.href='org-protocol://capture://t/'+encodeURIComponent(locati
       ))
 #+end_src
 
-
 * org-page
   - [[https://github.com/kelvinh/org-page][kelvinh/org-page]]
   - 新しいリポジトリを作る
@@ -1543,7 +1542,6 @@ javascript:location.href='org-protocol://capture://t/'+encodeURIComponent(locati
 |-------------------------+------------------------------------|
 | op/repository-directory | "/home/yc/git/ychubachi.github.io" |
 | op/site-domain          | "http://ychubachi.github.io/"      |
-
 
 * WordPressに記事を投稿（org2blog）
 ** 利用法
