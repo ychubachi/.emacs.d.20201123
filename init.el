@@ -16,6 +16,9 @@
 (let ((default-directory "~/.emacs.d/site-lisp/"))
   (normal-top-level-add-subdirs-to-load-path))
 
+(require 'cask "~/.cask/cask.el")
+(cask-initialize)
+
 (require 'package)
 (setq package-archives
       '(("org" .       "http://orgmode.org/elpa/")
@@ -105,29 +108,6 @@
       ((eq system-type 'darwin)
        (define-key 'personal-map (kbd "p") 'skim-forward-search)))
 
-(setq vc-follow-symlinks t)
-
-(message "%s" "%% orgをインストールします %%")
-
-(my/package-install 'org)
-(my/package-install 'org-plus-contrib)
-
-(require 'org-install)
-(require 'ob-tangle)
-
-(setq dot-file-dir
-      (file-name-directory (or (buffer-file-name) load-file-name)))
-(setq plugin-file-dir
-      (expand-file-name "plugins-enabled" dot-file-dir))
-(setq plugin-files
-      (directory-files plugin-file-dir t "\\.org$"))
-(mapc (lambda (plugin-file)
-        (message "%s - %s" "%% プラグインを読み込みます %%" plugin-file)
-        (condition-case nil
-            (org-babel-load-file plugin-file)
-          (error (message "%s" "!! エラーが発生しました !!"))))
-      plugin-files)
-
 (setq custom-file "~/.emacs.d/custom.el")
 (if (file-exists-p custom-file)
     (load custom-file))
@@ -142,9 +122,6 @@
 (message "%s" "%% init.elは完了しました %%")
 
 ;;; init.el ends here
-
-(require 'cask "~/.cask/cask.el")
-(cask-initialize)
 
 (require 'yasnippet)
 (yas-global-mode 1)

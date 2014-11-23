@@ -107,6 +107,12 @@
     (normal-top-level-add-subdirs-to-load-path))
 #+end_src
 
+* Caskの設定
+#+begin_src emacs-lisp
+(require 'cask "~/.cask/cask.el")
+(cask-initialize)
+#+end_src
+
 * パッケージ関連の設定
 ** リポジトリの設定
   - パッケージをダウンロードするリポジトリを設定します．
@@ -282,47 +288,6 @@
 	 (define-key 'personal-map (kbd "p") 'skim-forward-search)))
 #+end_src
 
-* プラグインの読み込み
-
-plugin-enabledにあるシンボリックリンクをフォローします．
-
-#+begin_src emacs-lisp
-  (setq vc-follow-symlinks t)
-#+end_src
-
-#' = function
-- [[http://www.gnu.org/software/emacs/manual/html_node/elisp/Anonymous-Functions.html][Anonymous Functions - GNU Emacs Lisp Reference Manual]]
-
-[[http://orgmode.org/worg/org-contrib/babel/intro.html#literate-programming][Babel: Introduction]]
-
-* orgのインストール
-#+begin_src emacs-lisp
-  (message "%s" "%% orgをインストールします %%")
-
-  (my/package-install 'org)
-  (my/package-install 'org-plus-contrib)
-#+end_src
-
-Following codes do not work well in org-mode runing with C-c C-c.
-
-#+begin_src emacs-lisp
-  (require 'org-install)
-  (require 'ob-tangle)
-
-  (setq dot-file-dir
-	(file-name-directory (or (buffer-file-name) load-file-name)))
-  (setq plugin-file-dir
-	(expand-file-name "plugins-enabled" dot-file-dir))
-  (setq plugin-files
-	(directory-files plugin-file-dir t "\\.org$"))
-  (mapc (lambda (plugin-file)
-	  (message "%s - %s" "%% プラグインを読み込みます %%" plugin-file)
-	  (condition-case nil
-	      (org-babel-load-file plugin-file)
-	    (error (message "%s" "!! エラーが発生しました !!"))))
-	plugin-files)
-#+end_src
-
 * 後処理
 ** カスタマイズ設定を保存するファイルの指定
   - 概要
@@ -414,12 +379,6 @@ Following codes do not work well in org-mode runing with C-c C-c.
   (setq custom-file-system-name
 	(format "custom-%s.el" system-type)) ; => "custom-gnu/linux.el"
   (message custom-file-system-name))	       ; => "custom-gnu/linux.el"
-* Caskの設定
-#+begin_src emacs-lisp
-(require 'cask "~/.cask/cask.el")
-(cask-initialize)
-#+end_src
-
 * yasnippet
   - [[https://github.com/capitaomorte/yasnippet][capitaomorte/yasnippet]]
   - [[http://fukuyama.co/yasnippet][yasnippet 8.0の導入からスニペットの書き方、anything/helm/auto-completeとの連携 - Web学び]]
