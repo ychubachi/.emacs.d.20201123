@@ -35,8 +35,7 @@
   (global-set-key (kbd "C-o") 'toggle-input-method)
   (setq mozc-candidate-style 'overlay))
 
-(keyboard-translate ?\C-h ?\C-?)  ; translate `C-h' to DEL
-(keyboard-translate ?\C-? ?\C-h)  ; translate DEL to `C-h'.
+(keyboard-translate ?\C-h ?\C-?)
 
 ;バッファのフォントサイズを大きく
 (global-set-key (kbd "<prior>") 'text-scale-increase)

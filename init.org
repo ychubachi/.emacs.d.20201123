@@ -177,21 +177,18 @@
 #+RESULTS:
 : overlay
 
-* 個人用設定
-** C-hとDELキーを入れ替える
-   - C-h が押されたら，C-? (<DEL>) に変換する
-   - ただし，<DEL>でヘルプが出なかった．
-     その場合は[F1]でもヘルプが参照できるのでこれを使う．
+* C-hをDELキーにする
+   - C-h が押されたら，C-? (<DEL>) に変換する．
+   - ヘルプは[F1]でも参照できる．
    - 参考
      - [[http://akisute3.hatenablog.com/entry/20120318/1332059326][EmacsのC-hをbackspaceとして使用する - 勉強日記]]
      - [[http://www.gnu.org/software/emacs/manual/html_node/efaq/Swapping-keys.html#Swapping-keys][Swapping keys - GNU Emacs FAQ]]
 
 #+begin_src emacs-lisp
-(keyboard-translate ?\C-h ?\C-?)  ; translate `C-h' to DEL
-(keyboard-translate ?\C-? ?\C-h)  ; translate DEL to `C-h'.
+(keyboard-translate ?\C-h ?\C-?)
 #+end_src
 
-** バッファのフォントサイズ
+* フォントサイズをPU，PDで変更できるようにする
 
 - Page Up，Page Downで操作
 - Macの場合はfn+↑，fn+↓
