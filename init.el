@@ -35,8 +35,8 @@
   (global-set-key (kbd "C-o") 'toggle-input-method)
   (setq mozc-candidate-style 'overlay))
 
-(global-set-key "\C-h" 'delete-backward-char)
-(global-set-key (kbd "C-?") 'help-command)
+(keyboard-translate ?\C-h ?\C-?)  ; translate `C-h' to DEL
+(keyboard-translate ?\C-? ?\C-h)  ; translate DEL to `C-h'.
 
 ;バッファのフォントサイズを大きく
 (global-set-key (kbd "<prior>") 'text-scale-increase)
@@ -51,14 +51,14 @@
    (if (frame-parameter nil 'fullscreen)
        nil
      'fullboth)))
-
-(defun my/open-init-folder()
-  "設定フォルダを開きます．"
-  (interactive)
-  (find-file "~/.emacs.d/init.org"))
-
 (global-set-key [f11] 'my/fullscreen)
-(global-set-key (kbd "<f1>") 'my/open-init-folder)
+
+;; (defun my/open-init-folder()
+;;   "設定フォルダを開きます．"
+;;   (interactive)
+;;   (find-file "~/.emacs.d/init.org"))
+;; (global-set-key (kbd "<f1>") 'my/open-init-folder)
+
 
 (defun my/other-window-backward ()
   "Move to other window backward."

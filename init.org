@@ -178,11 +178,17 @@
 : overlay
 
 * 個人用設定
-** DELキーをBSにする
+** C-hとDELキーを入れ替える
+   - C-h が押されたら，C-? (<DEL>) に変換する
+   - ただし，<DEL>でヘルプが出なかった．
+     その場合は[F1]でもヘルプが参照できるのでこれを使う．
+   - 参考
+     - [[http://akisute3.hatenablog.com/entry/20120318/1332059326][EmacsのC-hをbackspaceとして使用する - 勉強日記]]
+     - [[http://www.gnu.org/software/emacs/manual/html_node/efaq/Swapping-keys.html#Swapping-keys][Swapping keys - GNU Emacs FAQ]]
 
 #+begin_src emacs-lisp
-  (global-set-key "\C-h" 'delete-backward-char)
-  (global-set-key (kbd "C-?") 'help-command)
+(keyboard-translate ?\C-h ?\C-?)  ; translate `C-h' to DEL
+(keyboard-translate ?\C-? ?\C-h)  ; translate DEL to `C-h'.
 #+end_src
 
 ** バッファのフォントサイズ
@@ -210,14 +216,14 @@
      (if (frame-parameter nil 'fullscreen)
 	 nil
        'fullboth)))
-
-  (defun my/open-init-folder()
-    "設定フォルダを開きます．"
-    (interactive)
-    (find-file "~/.emacs.d/init.org"))
-
   (global-set-key [f11] 'my/fullscreen)
-  (global-set-key (kbd "<f1>") 'my/open-init-folder)
+
+  ;; (defun my/open-init-folder()
+  ;;   "設定フォルダを開きます．"
+  ;;   (interactive)
+  ;;   (find-file "~/.emacs.d/init.org"))
+  ;; (global-set-key (kbd "<f1>") 'my/open-init-folder)
+
 
   (defun my/other-window-backward ()
     "Move to other window backward."
