@@ -1,9 +1,0 @@
-* mediawiki
-  - [[http://www.emacswiki.org/emacs/MediaWikiMode][EmacsWiki: Media Wiki Mode]]
-
-#+begin_src emacs-lisp
-  (dolist (package '(mediawiki))
-    (when (not (package-installed-p package))
-      (package-install package)))
-  (require 'mediawiki)
-#+end_src
