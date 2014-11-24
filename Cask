@@ -50,3 +50,7 @@
 (depends-on "flymake-sass")
 (depends-on "flymake-coffee")
 (depends-on "smart-compile")
+
+;; Scala
+(depends-on "scala-mode2")
+(depends-on "ensime")

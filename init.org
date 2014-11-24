@@ -1794,3 +1794,8 @@ javascript:location.href='org-protocol://capture://t/'+encodeURIComponent(locati
   ;; (coding-system-put 'cp932-unix :mnemonic ?P)
   ;; (coding-system-put 'cp932-mac :mnemonic ?P)
 #+end_src
+* Scala
+#+begin_src emacs-lisp
+(require 'ensime)
+(add-hook 'scala-mode-hook 'ensime-scala-mode-hook)
+#+end_src
