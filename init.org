@@ -1795,6 +1795,9 @@ javascript:location.href='org-protocol://capture://t/'+encodeURIComponent(locati
   ;; (coding-system-put 'cp932-mac :mnemonic ?P)
 #+end_src
 * Scala
+  - 参考
+    - [[http://futurismo.biz/archives/2449][EmacsでScala開発環境を構築(Ensime) | Futurismo]]
+
 #+begin_src emacs-lisp
 (require 'ensime)
 (add-hook 'scala-mode-hook 'ensime-scala-mode-hook)
