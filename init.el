@@ -6,6 +6,8 @@
           (lambda ()
             (message "%s" "%% custom.elを読み込みました %%")))
 
+(define-key key-translation-map [?\C-h] [?\C-?])
+
 (load "server")
 (unless (server-running-p)
   (server-start))
@@ -34,8 +36,6 @@
   (setq default-input-method "japanese-mozc")
   (global-set-key (kbd "C-o") 'toggle-input-method)
   (setq mozc-candidate-style 'overlay))
-
-(keyboard-translate ?\C-h ?\C-?)
 
 ;バッファのフォントサイズを大きく
 (global-set-key (kbd "<prior>") 'text-scale-increase)
@@ -854,3 +854,5 @@
 
 (require 'ensime)
 (add-hook 'scala-mode-hook 'ensime-scala-mode-hook)
+
+(require 'sbt-mode)
