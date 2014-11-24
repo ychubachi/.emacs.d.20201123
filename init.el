@@ -851,3 +851,6 @@
   ;; (coding-system-put 'cp932-unix :mnemonic ?P)
   ;; (coding-system-put 'cp932-mac :mnemonic ?P)
 )
+
+(require 'ensime)
+(add-hook 'scala-mode-hook 'ensime-scala-mode-hook)
