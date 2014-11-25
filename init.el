@@ -838,3 +838,5 @@
 (add-hook 'scala-mode-hook 'ensime-scala-mode-hook)
 
 (require 'sbt-mode)
+
+(require 'ox-reveal)

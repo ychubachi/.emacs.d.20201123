@@ -1782,3 +1782,9 @@ javascript:location.href='org-protocol://capture://t/'+encodeURIComponent(locati
 
 (require 'sbt-mode)
 #+end_src
+* org-reveal
+  - https://github.com/yjwen/org-reveal
+
+#+begin_src emacs-lisp
+(require 'ox-reveal)
+#+end_src
