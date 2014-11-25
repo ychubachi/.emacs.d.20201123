@@ -421,18 +421,6 @@ wdiredのrequireはdired-mode-mapを定義するために必要．
     '(shell-pop-window-height 30))
 #+end_src
 
-* helm-recentfを呼び出す
-
-#+BEGIN_SRC emacs-lisp
-(require 'recentf)
-(recentf-mode 1)
-(setq recentf-max-menu-items 25)
-(global-set-key "\C-x\ \C-r" 'helm-recentf)
-#+END_SRC
-
-#+RESULTS:
-: helm-recentf
-
 * TODO PHP
 
 #+begin_src emacs-lisp
@@ -706,35 +694,24 @@ wdiredのrequireはdired-mode-mapを定義するために必要．
    - [[http://qiita.com/akisute3@github/items/7c8ea3970e4cbb7baa97][Emacs - helm-mode 有効時でも helm-find-files は無効にする - Qiita {キータ}]]
    - [[http://www.fan.gr.jp/~ring/doc/elisp_19/elisp-jp_14.html#IDX592][GNU Emacs Lispリファレンス・マニュアル: 12. マクロ]]
      - 逆引用符は`,'の引数を評価し、 リスト構造にその値を入れます。
+   - helm-mode 1 はおせっかいすぎるので使わない
 
-** パッケージ
+** パッケージの読み込み
 
 #+begin_src emacs-lisp
   (require 'helm-config)
+#+end_src
+
+** helm-M-xを有効にする
+
+#+begin_src emacs-lisp
+  (global-set-key (kbd "M-x") 'helm-M-x)
 #+end_src
 
 ** helm-miniを有効にする
 
 #+begin_src emacs-lisp
   (global-set-key (kbd "C-c h") 'helm-mini)
-#+end_src
-
-** helm-modeを有効にする
-- [[https://github.com/emacs-helm/helm/wiki#18-helm-mode][Home · emacs-helm/helm Wiki]]
-
-Customize with: helm-completing-read-handlers-alist
-See C-h v helm-completing-read-handlers-alist for more infos.
-
-#+begin_src emacs-lisp
-  (helm-mode 1)
-#+end_src
-
-** C-h
-C-h でバックスペースと同じように文字を削除できるようにする
-
-#+begin_src emacs-lisp
-(define-key helm-map (kbd "C-h") 'delete-backward-char)
-(define-key helm-find-files-map (kbd "C-h") 'delete-backward-char)
 #+end_src
 
 ** C-k
@@ -808,22 +785,21 @@ C-h でバックスペースと同じように文字を削除できるように�
 
 ** keybinding
 
-#+begin_src emacs-lisp
-  (let ((key-and-func
-	 `(
-	   (,(kbd "M-x")     helm-M-x)
-	   (,(kbd "M-y")     helm-show-kill-ring)
-	   (,(kbd "C-x C-f") helm-find-files)
   ;;         (,(kbd "C-r")   helm-for-files)
   ;;         (,(kbd "C-^")   helm-c-apropos)
   ;;         (,(kbd "C-;")   helm-resume)
   ;;         (,(kbd "M-s")   helm-occur)
   ;;         (,(kbd "M-z")   helm-do-grep)
   ;;         (,(kbd "C-S-h") helm-descbinds)
-	   )))
-    (loop for (key func) in key-and-func
-	  do (global-set-key key func)))
-#+end_src
+
+** helm-recentfを呼び出す
+
+#+BEGIN_SRC emacs-lisp
+(require 'recentf)
+(recentf-mode 1)
+(setq recentf-max-menu-items 25)
+(global-set-key "\C-x\ \C-r" 'helm-recentf)
+#+END_SRC
 
 * migemo
 ** 概要

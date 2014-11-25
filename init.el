@@ -136,11 +136,6 @@
  '(shell-pop-universal-key "C-z")
  '(shell-pop-window-height 30))
 
-(require 'recentf)
-(recentf-mode 1)
-(setq recentf-max-menu-items 25)
-(global-set-key "\C-x\ \C-r" 'helm-recentf)
-
 ;; (dolist (package '(php-mode))
 ;;   (when (not (package-installed-p package))
 ;;     (package-install package)))
@@ -337,12 +332,9 @@
 
 (require 'helm-config)
 
+(global-set-key (kbd "M-x") 'helm-M-x)
+
 (global-set-key (kbd "C-c h") 'helm-mini)
-
-(helm-mode 1)
-
-(define-key helm-map (kbd "C-h") 'delete-backward-char)
-(define-key helm-find-files-map (kbd "C-h") 'delete-backward-char)
 
 (setq helm-delete-minibuffer-contents-from-point t)
 
@@ -388,20 +380,10 @@
 
 (require 'helm-package)
 
-(let ((key-and-func
-       `(
-         (,(kbd "M-x")     helm-M-x)
-         (,(kbd "M-y")     helm-show-kill-ring)
-         (,(kbd "C-x C-f") helm-find-files)
-;;         (,(kbd "C-r")   helm-for-files)
-;;         (,(kbd "C-^")   helm-c-apropos)
-;;         (,(kbd "C-;")   helm-resume)
-;;         (,(kbd "M-s")   helm-occur)
-;;         (,(kbd "M-z")   helm-do-grep)
-;;         (,(kbd "C-S-h") helm-descbinds)
-         )))
-  (loop for (key func) in key-and-func
-        do (global-set-key key func)))
+(require 'recentf)
+(recentf-mode 1)
+(setq recentf-max-menu-items 25)
+(global-set-key "\C-x\ \C-r" 'helm-recentf)
 
 (unless (executable-find "cmigemo")
   (warn "！！ 警告：cmigemoコマンドが呼び出せません　！！"))
