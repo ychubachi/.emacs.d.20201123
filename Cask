@@ -55,5 +55,4 @@
 (depends-on "scala-mode2")
 (depends-on "ensime")
 (depends-on "sbt-mode")
-
-(depends-on "ox-reveal")
+(depends-on "ox-reveal" :git "https://github.com/yjwen/org-reveal.git" :branch "stable")
