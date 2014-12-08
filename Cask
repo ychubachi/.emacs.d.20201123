@@ -1,6 +1,8 @@
 (source gnu)
 (source melpa)
 (source org)
+(source "e6h" "http://www.e6h.org/packages/")
+
 
 (depends-on "bind-key")
 (depends-on "cask")
@@ -55,4 +57,9 @@
 (depends-on "scala-mode2")
 (depends-on "ensime")
 (depends-on "sbt-mode")
+
+;; Reveal.js
 (depends-on "ox-reveal" :git "https://github.com/yjwen/org-reveal.git" :branch "stable")
+
+;; wanderlust
+(depends-on "wanderlust")
