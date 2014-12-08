@@ -34,59 +34,7 @@
 (when (eq system-type 'gnu/linux)
   (require 'mozc)
   (setq default-input-method "japanese-mozc")
-  (global-set-key (kbd "C-o") 'toggle-input-method)
   (setq mozc-candidate-style 'overlay))
-
-;バッファのフォントサイズを大きく
-(global-set-key (kbd "<prior>") 'text-scale-increase)
-;バッファのフォントサイズを小さく
-(global-set-key (kbd "<next>")  'text-scale-decrease)
-
-(defun my/fullscreen ()
-  (interactive)
-  (set-frame-parameter
-   nil
-   'fullscreen
-   (if (frame-parameter nil 'fullscreen)
-       nil
-     'fullboth)))
-(global-set-key [f11] 'my/fullscreen)
-
-;; (defun my/open-init-folder()
-;;   "設定フォルダを開きます．"
-;;   (interactive)
-;;   (find-file "~/.emacs.d/init.org"))
-;; (global-set-key (kbd "<f1>") 'my/open-init-folder)
-
-
-(defun my/other-window-backward ()
-  "Move to other window backward."
-  (interactive)
-  (other-window -1))
-
-(define-prefix-command 'personal-map)
-(global-set-key (kbd "C-.") 'personal-map)
-
-(define-key 'personal-map (kbd "?") 'help-command)
-
-(define-key 'personal-map (kbd "C-n") 'other-window)
-(define-key 'personal-map (kbd "C-p") 'my/other-window-backward)
-
-(define-key 'personal-map (kbd "m") 'imenu)
-
-(define-key 'personal-map (kbd "i") 'yas-insert-snippet)
-(define-key 'personal-map (kbd "n") 'yas-new-snippet)
-(define-key 'personal-map (kbd "v") 'yas-visit-snippet-file)
-
-(define-key 'personal-map (kbd "y") 'helm-c-yas-complete)
-(define-key 'personal-map (kbd "s") 'helm-c-yas-create-snippet-on-region)
-
-(define-key 'personal-map (kbd "b") 'org-beamer-export-to-pdf)
-
-(cond ((eq system-type 'gnu/linux)
-       (define-key 'personal-map (kbd "p") 'evince-forward-search))
-      ((eq system-type 'darwin)
-       (define-key 'personal-map (kbd "p") 'skim-forward-search)))
 
 (setq custom-file "~/.emacs.d/custom.el")
 (if (file-exists-p custom-file)
@@ -783,60 +731,56 @@
 
 (require 'ox-reveal)
 
-;;  (require 'mu4e)
+;バッファのフォントサイズを大きく
+(global-set-key (kbd "<prior>") 'text-scale-increase)
+;バッファのフォントサイズを小さく
+(global-set-key (kbd "<next>")  'text-scale-decrease)
 
-;;  (setq mu4e-maildir       "~/Maildir")
-;;  (setq mu4e-sent-folder   "/[Gmail].All Mail")
-;;  (setq mu4e-drafts-folder "/[Gmail].Drafts")
-;;  (setq mu4e-trash-folder  "/[Gmail].Trash")
-;;  (setq mu4e-refile-folder "/[Gmail].All Mail")
+(when (eq system-type 'gnu/linux)
+  (global-set-key (kbd "C-o") 'toggle-input-method))
 
-;;  (setq mu4e-sent-messages-behavior 'delete)
+(defun my/fullscreen ()
+  (interactive)
+  (set-frame-parameter
+   nil
+   'fullscreen
+   (if (frame-parameter nil 'fullscreen)
+       nil
+     'fullboth)))
+(global-set-key [f11] 'my/fullscreen)
 
-;; (setq mu4e-maildir-shortcuts
-;;       '( ("/INBOX"             . ?i)
-;;          ("/[Gmail].All Mail"  . ?a)
-;;          ("/[Gmail].Drafts"    . ?d)
-;;          ("/[Gmail].Trash"     . ?t)))
+;; (defun my/open-init-folder()
+;;   "設定フォルダを開きます．"
+;;   (interactive)
+;;   (find-file "~/.emacs.d/init.org"))
+;; (global-set-key (kbd "<f1>") 'my/open-init-folder)
 
-;; (require 'smtpmail)
-;; (setq message-send-mail-function 'smtpmail-send-it
-;;       smtpmail-stream-type 'starttls
-;;       smtpmail-default-smtp-server "smtp.gmail.com"
-;;       smtpmail-smtp-server "smtp.gmail.com"
-;;       smtpmail-smtp-service 587)
 
-;;  (setq message-kill-buffer-on-exit t)
+(defun my/other-window-backward ()
+  "Move to other window backward."
+  (interactive)
+  (other-window -1))
 
-;;  (setq mu4e-show-images t)
+(define-prefix-command 'personal-map)
+(global-set-key (kbd "C-.") 'personal-map)
 
-;;  (when (fboundp 'imagemagick-register-types)
-;;    (imagemagick-register-types))
+(define-key 'personal-map (kbd "?") 'help-command)
 
-;;  (setq mu4e-msg2pdf "/usr/bin/msg2pdf")
+(define-key 'personal-map (kbd "C-n") 'other-window)
+(define-key 'personal-map (kbd "C-p") 'my/other-window-backward)
 
-;;  (add-to-list 'mu4e-view-actions
-;;             '("View in browser" . mu4e-action-view-in-browser) t)
+(define-key 'personal-map (kbd "m") 'imenu)
 
-;;  (setq mu4e-html2text-command "w3m -dump -T text/html")
+(define-key 'personal-map (kbd "i") 'yas-insert-snippet)
+(define-key 'personal-map (kbd "n") 'yas-new-snippet)
+(define-key 'personal-map (kbd "v") 'yas-visit-snippet-file)
 
-;;  (add-to-list 'mu4e-bookmarks '("flag:flagged" "Flagged (Starred in Gmail)" ?s))
+(define-key 'personal-map (kbd "y") 'helm-c-yas-complete)
+(define-key 'personal-map (kbd "s") 'helm-c-yas-create-snippet-on-region)
 
-;;  (setq mu4e-headers-date-format "%y-%m-%d %H:%M")
-;;  (setq mu4e-headers-time-format "%y-%m-%d %H:%M")
+(define-key 'personal-map (kbd "b") 'org-beamer-export-to-pdf)
 
-;; (setq mu4e-headers-fields
-;;       '((:human-date . 14)
-;;         (:flags . 6)
-;;         (:from . 15)
-;;         (:subject)))
-
-;;  (setq mu4e-headers-skip-duplicates 't)
-
-;;  (require 'org-mu4e)
-
-;;  (defalias 'org-mail 'org-mu4e-compose-org-mode)
-
-;;  (setq org-mu4e-convert-to-html t)
-
-;;  (global-set-key (kbd "C-c m") 'mu4e)
+(cond ((eq system-type 'gnu/linux)
+       (define-key 'personal-map (kbd "p") 'evince-forward-search))
+      ((eq system-type 'darwin)
+       (define-key 'personal-map (kbd "p") 'skim-forward-search)))
