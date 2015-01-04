@@ -1,3 +1,95 @@
+* system-typeに応じたcustom.el
+
+#+begin_src emacs-lisp
+  (let (custom-file-system-name)
+    (setq custom-file-system-name
+	  (format "~/.emacs.d/custom/%s.el" (system-name)))
+    (when (file-exists-p custom-file-system-name)
+      (message "%s" (format "%sを読み込みます" custom-file-system-name))
+      (load custom-file)))
+#+end_src
+
+* 日本語入力時のカーソル色の変更
+
+#+begin_src emacs-lisp
+  (add-hook 'input-method-activate-hook
+	    '(lambda () (set-cursor-color "green")))
+  (add-hook 'input-method-inactivate-hook
+	    '(lambda () (set-cursor-color "orchid")))
+#+end_src
+
+* 開始の通知
+
+#+begin_src emacs-lisp
+ (message "%s" "%% Emacsの設定を開始します %%")
+#+end_src
+
+* TODO Macでフォントを正しく設定する
+   :PROPERTIES:
+   :ID:       16b070ee-507e-49fa-b84d-fa573911ebeb
+   :END:
+
+- let* は，同じスコープ内のローカル変数への参照を許す(letは許さない）
+- ifはthenを1つの式しか書けないのでcondを使う．whenもある．
+- [[http://blog.sanojimaru.com/post/19807398882/cocoa-emacs-ricty][cocoa emacsでプログラミング用フォントRictyを使う]]
+  ｰ この記事，あやしいかも．
+- daemonで動かすとおちるかも
+
+* LinuxでのMozcの設定
+
+注意: in ~/.Xresourcesに
+  Emacs*useXIM:	false
+と設定しておくこと．
+
+- http://www11.atwiki.jp/s-irie/pages/21.html#basic
+- http://d.hatena.ne.jp/iRiE/20100530/1275212234
+
+- 筆者の場合，OS側でもC-oでIMEを切り替えるようにしているため，
+  これを設定しておかないと，C-c C-oなどが効かなくなる．
+
+#+begin_src emacs-lisp
+  (when (eq system-type 'gnu/linux)
+    (require 'mozc)
+    (setq default-input-method "japanese-mozc")
+    (setq mozc-candidate-style 'overlay))
+#+end_src
+
+* after-init-hookの設定
+  - after-init-hookはパッケージの初期化が完了したら呼ばれるフックです．
+    - [[http://www.gnu.org/software/emacs/manual/html_node/elisp/Init-File.html#Init-File][Init File - GNU Emacs Lisp Reference Manual]]
+
+#+begin_src emacs-lisp
+    (add-hook 'after-init-hook
+	      (lambda ()
+		(message "%s" "%% custom.elを読み込みました %%")))
+#+end_src
+
+* Caskの設定
+#+begin_src emacs-lisp
+(require 'cask "~/.cask/cask.el")
+(cask-initialize)
+#+end_src
+
+* ロードパスの設定						 :startup.el:
+
+- normal-top-level-add-subdirs-to-load-path は
+  default-directory の全てのサブディレクトリを load-path に追加する
+  関数です．
+
+- gitのsubmoduleとして管理するライブラリを追加します．
+
+#+begin_src emacs-lisp
+  (let ((default-directory "~/.emacs.d/git/"))
+    (normal-top-level-add-subdirs-to-load-path))
+#+end_src
+
+- ソースコードで管理するライブラリを追加します．
+
+#+begin_src emacs-lisp
+  (let ((default-directory "~/.emacs.d/site-lisp/"))
+    (normal-top-level-add-subdirs-to-load-path))
+#+end_src
+
 * TODO mu4e [[https://github.com/ychubachi/.emacs.d/blob/master/plugins-available/mu4e.org][(GitHub)]]
 ** 概要
 mu4eは，offlineimap及びmaildir-toolsと組み合わせることで動作する，
@@ -229,4 +321,1248 @@ Gmailでスターをつけると，flagが付く．
 
 #+begin_src emacs-lisp
 ;;  (global-set-key (kbd "C-c m") 'mu4e)
+#+end_src
+* TODO Todo List
+** TODO org-insert-heading-respect-contentをC-jにする
+   :PROPERTIES:
+   :ID:       f9593ce6-203d-47a7-9342-fd602c193a0c
+   :END:
+   C-jはorg-return-indentにバインドされている
+** TODO [[http://www.emacswiki.org/emacs/UnitTesting][EmacsWiki: Unit Testing]]
+   :PROPERTIES:
+   :ID:       5cb66ace-65c3-4e01-9c1c-f25ae7008668
+   :END:
+** TODO [[https://github.com/purcell/exec-path-from-shell][purcell/exec-path-from-shell]]
+   :PROPERTIES:
+   :ID:       cd8617f9-5634-467f-9c14-ca657a802726
+   :END:
+** TODO flyspell-modeでC-.がかちあう
+   :PROPERTIES:
+   :ID:       7af985a9-1630-4e8a-8202-3d434351c518
+   :END:
+** TODO [[http://shibayu36.hatenablog.com/entry/2012/12/29/001418][年末emacs設定大掃除をして、これは捨てられないと思った設定書いてく - $shibayu36->blog;]]
+   :PROPERTIES:
+   :ID:       e010dd60-ee65-4042-9b16-9ae0f2681837
+   :END:
+** TODO Qiitaに投稿できないか
+   :PROPERTIES:
+   :ID:       7cd92222-91c7-4c46-9325-85e891c20216
+   :END:
+** TODO org-modeで候補をインラインにできないか
+   :PROPERTIES:
+   :ID:       0d60c33f-5d9b-4447-bf76-8344bf44471c
+   :END:
+** TODO F1はssh時、ターミナルとかぶる
+** TODO [[http://www.fan.gr.jp/~ring/doc/elisp_19/elisp-jp_39.html][GNU Emacs Lispリファレンス・マニュアル: A. ヒントと標準的な作法]]
+** TODO 参考文献
+
+ Emacs LISP テクニックバイブル
+
+- p.31より
+** TODO プラグインを実行した時のエラー処理
+** TODO os-name
+
+[[http://wisdom.sakura.ne.jp/programming/lisp/clisp11.html][condとcase]]
+
+(defun convert-system-type-to-os-name ()
+  (cond ((eq system-type 'gnu/linux) 'linux)
+	((eq system-type 'darwin) 'osx)
+	((eq system-type 'windows-nt) 'windows)
+	((eq system-type 'cygwin) 'cygwin)
+	(t 'unknown)))
+
+(convert-system-type-to-os-name)	; => linux
+
+(let (custom-file-system-name)
+  (setq custom-file-system-name
+	(format "custom-%s.el" system-type)) ; => "custom-gnu/linux.el"
+  (message custom-file-system-name))	       ; => "custom-gnu/linux.el"
+
+* smartrep.el
+- [[http://sheephead.homelinux.org/2011/12/19/6930/][連続操作を素敵にするsmartrep.el作った - sheephead]]
+
+#+begin_src emacs-lisp
+  (require 'smartrep)
+#+end_src
+
+* org-modeでヘッダの移動にsmartrepを利用する設定
+
+- eval-after-loadにより，orgがロードされた後，
+  もしくは，既にロードされていれば即，実行する．
+
+#+begin_src emacs-lisp
+  (eval-after-load "org"
+    '(progn
+       (smartrep-define-key
+	   org-mode-map
+	   "C-c" '(("C-n" . (lambda ()
+			      (outline-next-visible-heading 1)))
+		   ("C-p" . (lambda ()
+			      (outline-previous-visible-heading 1)))))
+       ))
+#+end_src
+
+* TODO PHP
+
+#+begin_src emacs-lisp
+  ;; (dolist (package '(php-mode))
+  ;;   (when (not (package-installed-p package))
+  ;;     (package-install package)))
+#+end_src
+
+* paredit - カッコの対応を保持して編集
+
+#+begin_src emacs-lisp
+  (require 'paredit)
+  (add-hook 'emacs-lisp-mode-hook 'enable-paredit-mode)
+  (add-hook 'lisp-interaction-mode-hook 'enable-paredit-mode)
+  (add-hook 'lisp-mode-hook 'enable-paredit-mode)
+  (add-hook 'ielm-mode-hook 'enable-paredit-mode)
+#+end_src
+
+* outline-minnor-mode - プリフィックスをC-c C-oに変更する．
+
+#+begin_src emacs-lisp
+  (add-hook 'outline-minor-mode-hook
+	    (lambda () (local-set-key "\C-c\C-o"
+				      outline-mode-prefix-map)))
+#+end_src
+* lispxmp - lisp式の評価結果を注釈する
+
+  - M-; M-; で lispxmp用コメントの自動挿入
+  - C-c e で評価結果を注釈
+
+#+begin_src emacs-lisp
+  (require 'lispxmp)
+  (define-key emacs-lisp-mode-map (kbd "C-c e") 'lispxmp)
+#+end_src
+
+* TODO markdown
+  - [[http://jblevins.org/projects/markdown-mode/][Emacs Markdown Mode]]
+  - 拡張子が.text，.markdown，.mdであるファイルはmarkdown-modeになる
+    （markdown-mode-autoloads.el参照）．
+
+* markdownモードでアウトラインを有効にする
+
+#+begin_src emacs-lisp
+  (add-hook 'markdown-mode-hook
+	    '(lambda () (outline-minor-mode t)))
+#+end_src
+* auto-complete - 自動補間
+  - [[http://cx4a.org/software/auto-complete/index.ja.html][Auto Complete Mode - GNU Emacsのための最も賢い自動補完機能]]
+* Clean Mode Line
+  - mode-lineのモード情報をコンパクトに表示する- Life is very short
+    - http://d.hatena.ne.jp/syohex/20130131/1359646452
+
+#+begin_src emacs-lisp
+(defvar mode-line-cleaner-alist
+  '( ;; For minor-mode, first char is 'space'
+    (yas-minor-mode . " Ys")
+    (paredit-mode . " Pe")
+    (eldoc-mode . "")
+    (abbrev-mode . "")
+    (undo-tree-mode . " Ut")
+    (elisp-slime-nav-mode . " EN")
+    (helm-gtags-mode . " HG")
+    (flymake-mode . " Fm")
+    (outline-minor-mode . " Ol")
+    (ibus-mode . " IB")
+    ;; Major modes
+    (lisp-interaction-mode . "Li")
+    (python-mode . "Py")
+    (ruby-mode   . "Rb")
+    (emacs-lisp-mode . "El")
+    (markdown-mode . "Md")))
+
+(defun clean-mode-line ()
+  (interactive)
+  (loop for (mode . mode-str) in mode-line-cleaner-alist
+	do
+	(let ((old-mode-str (cdr (assq mode minor-mode-alist))))
+	  (when old-mode-str
+	    (setcar old-mode-str mode-str))
+	  ;; major mode
+	  (when (eq mode major-mode)
+	    (setq mode-name mode-str)))))
+
+(add-hook 'after-change-major-mode-hook 'clean-mode-line)
+#+end_src
+* AUCTeX
+
+#+begin_src emacs-lisp
+;; (require 'tex-site)
+(require 'tex-jp)
+#+end_src
+
+#+begin_src emacs-lisp
+  (eval-after-load "tex-jp"
+    '(progn
+       (setq TeX-engine-alist '((pdfuptex "pdfupTeX"
+					  "ptex2pdf -u -e -ot '%S %(mode)'"
+					  "ptex2pdf -u -l -ot '%S %(mode)'"
+					  "euptex")))
+       (setq japanese-TeX-engine-default 'pdfuptex)
+       (setq TeX-view-program-selection '((output-dvi "Evince")
+					  (output-pdf "Evince")))
+       (setq japanese-LaTeX-default-style "jsarticle")
+       (dolist (command '("pTeX" "pLaTeX" "pBibTeX" "jTeX" "jLaTeX" "jBibTeX" "Mendex"))
+	 (delq (assoc command TeX-command-list) TeX-command-list))))
+  (setq preview-image-type 'dvipng)
+  (setq TeX-source-correlate-method 'synctex)
+  (setq TeX-source-correlate-start-server t)
+  (add-hook 'LaTeX-mode-hook 'TeX-source-correlate-mode)
+  (add-hook 'LaTeX-mode-hook 'TeX-PDF-mode)
+  (add-hook 'LaTeX-mode-hook 'LaTeX-math-mode)
+  (add-hook 'LaTeX-mode-hook
+	    (function (lambda ()
+			(add-to-list 'TeX-command-list
+				     '("Latexmk"
+				       "latexmk %t"
+				       TeX-run-TeX nil (latex-mode) :help "Run Latexmk"))
+			(add-to-list 'TeX-command-list
+				     '("Latexmk-pdfupLaTeX"
+				       "latexmk -e '$latex=q/uplatex %%O %S %(mode) %%S/' -e '$bibtex=q/upbibtex %%O %%B/' -e '$biber=q/biber %%O --bblencoding=utf8 -u -U --output_safechars %%B/' -e '$makeindex=q/mendex %%O -U -o %%D %%S/' -e '$dvipdf=q/dvipdfmx %%O -o %%D %%S/' -norc -gg -pdfdvi %t"
+				       TeX-run-TeX nil (latex-mode) :help "Run Latexmk-pdfupLaTeX"))
+			(add-to-list 'TeX-command-list
+				     '("Latexmk-pdfupLaTeX2"
+				       "latexmk -e '$latex=q/uplatex %%O %S %(mode) %%S/' -e '$bibtex=q/upbibtex %%O %%B/' -e '$biber=q/biber %%O --bblencoding=utf8 -u -U --output_safechars %%B/' -e '$makeindex=q/mendex %%O -U -o %%D %%S/' -e '$dvips=q/dvips %%O -z -f %%S | convbkmk -u > %%D/' -e '$ps2pdf=q/ps2pdf %%O %%S %%D/' -norc -gg -pdfps %t"
+				       TeX-run-TeX nil (latex-mode) :help "Run Latexmk-pdfupLaTeX2"))
+			(add-to-list 'TeX-command-list
+				     '("Latexmk-pdfLaTeX"
+				       "latexmk -e '$pdflatex=q/pdflatex %%O %S %(mode) %%S/' -e '$bibtex=q/bibtex %%O %%B/' -e '$biber=q/biber %%O --bblencoding=utf8 -u -U --output_safechars %%B/' -e '$makeindex=q/makeindex %%O -o %%D %%S/' -norc -gg -pdf %t"
+				       TeX-run-TeX nil (latex-mode) :help "Run Latexmk-pdfLaTeX"))
+			(add-to-list 'TeX-command-list
+				     '("Latexmk-LuaLaTeX"
+				       "latexmk -e '$pdflatex=q/lualatex %%O %S %(mode) %%S/' -e '$bibtex=q/bibtexu %%O %%B/' -e '$biber=q/biber %%O --bblencoding=utf8 -u -U --output_safechars %%B/' -e '$makeindex=q/makeindex %%O -o %%D %%S/' -norc -gg -pdf %t"
+				       TeX-run-TeX nil (latex-mode) :help "Run Latexmk-LuaLaTeX"))
+			(add-to-list 'TeX-command-list
+				     '("Latexmk-LuaJITLaTeX"
+				       "latexmk -e '$pdflatex=q/luajitlatex %%O %S %(mode) %%S/' -e '$bibtex=q/bibtexu %%O %%B/' -e '$biber=q/biber %%O --bblencoding=utf8 -u -U --output_safechars %%B/' -e '$makeindex=q/makeindex %%O -o %%D %%S/' -norc -gg -pdf %t"
+				       TeX-run-TeX nil (latex-mode) :help "Run Latexmk-LuaJITLaTeX"))
+			(add-to-list 'TeX-command-list
+				     '("Latexmk-XeLaTeX"
+				       "latexmk -e '$pdflatex=q/xelatex %%O %S %(mode) %%S/' -e '$bibtex=q/bibtexu %%O %%B/' -e '$biber=q/biber %%O --bblencoding=utf8 -u -U --output_safechars %%B/' -e '$makeindex=q/makeindex %%O -o %%D %%S/' -norc -gg -pdf %t"
+				       TeX-run-TeX nil (latex-mode) :help "Run Latexmk-XeLaTeX"))
+			(add-to-list 'TeX-command-list
+				     '("xdg-open"
+				       "xdg-open %s.pdf"
+				       TeX-run-discard-or-function t t :help "Run xdg-open"))
+			(add-to-list 'TeX-command-list
+				     '("Evince"
+				       "evince %s.pdf"
+				       TeX-run-discard-or-function t t :help "Run Evince"))
+			(add-to-list 'TeX-command-list
+				     '("fwdevince"
+				       "fwdevince %s.pdf %n \"%b\""
+				       TeX-run-discard-or-function t t :help "Forward search with Evince"))
+			(add-to-list 'TeX-command-list
+				     '("Okular"
+				       "okular --unique \"file:\"%s.pdf\"#src:%n %a\""
+				       TeX-run-discard-or-function t t :help "Forward search with Okular"))
+			(add-to-list 'TeX-command-list
+				     '("zathura"
+				       "zathura -s -x \"emacsclient --no-wait +%%{line} %%{input}\" %s.pdf"
+				       TeX-run-discard-or-function t t :help "Run zathura"))
+			(add-to-list 'TeX-command-list
+				     '("fwdzathura"
+				       "zathura --synctex-forward %n:0:%b %s.pdf"
+				       TeX-run-discard-or-function t t :help "Forward search with zathura"))
+			(add-to-list 'TeX-command-list
+				     '("qpdfview"
+				       "qpdfview --unique \"\"%s.pdf\"#src:%b:%n:0\""
+				       TeX-run-discard-or-function t t :help "Forward search with qpdfview"))
+			(add-to-list 'TeX-command-list
+				     '("TeXworks"
+				       "synctex view -i \"%n:0:%b\" -o %s.pdf -x \"texworks --position=%%{page+1} %%{output}\""
+				       TeX-run-discard-or-function t t :help "Run TeXworks"))
+			(add-to-list 'TeX-command-list
+				     '("TeXstudio"
+				       "synctex view -i \"%n:0:%b\" -o %s.pdf -x \"texstudio --pdf-viewer-only --page %%{page+1} %%{output}\""
+				       TeX-run-discard-or-function t t :help "Run TeXstudio"))
+			(add-to-list 'TeX-command-list
+				     '("MuPDF"
+				       "mupdf %s.pdf"
+				       TeX-run-discard-or-function t t :help "Run MuPDF"))
+			(add-to-list 'TeX-command-list
+				     '("Firefox"
+				       "firefox -new-window %s.pdf"
+				       TeX-run-discard-or-function t t :help "Run Mozilla Firefox"))
+			(add-to-list 'TeX-command-list
+				     '("Chromium"
+				       "chromium --new-window %s.pdf"
+				       TeX-run-discard-or-function t t :help "Run Chromium")))))
+
+  ;;
+  ;; RefTeX with AUCTeX
+  ;;
+  (add-hook 'LaTeX-mode-hook 'turn-on-reftex)
+  (setq reftex-plug-into-AUCTeX t)
+
+  ;;
+  ;; kinsoku.el
+  ;;
+  (setq kinsoku-limit 10)
+#+end_src
+
+#+begin_src emacs-lisp
+  (add-hook 'LaTeX-mode-hook 'outline-minnor-mode)
+#+end_src
+
+* eldoc
+
+#+begin_src emacs-lisp
+  (add-hook 'emacs-lisp-mode-hook 'turn-on-eldoc-mode)
+  (add-hook 'lisp-interaction-mode-hook 'turn-on-eldoc-mode)
+  (add-hook 'ielm-mode-hook 'turn-on-eldoc-mode)
+  (setq eldoc-idle-delay 0.2)
+  (setq eldoc-minor-mode-string "")
+#+end_src
+
+* graphviz-dot-mode
+  - .dot ファイルをgraphviz-dot-modeで開くようにします．
+
+#+begin_src emacs-lisp
+(setq graphviz-dot-preview-extension "pdf")
+#+end_src
+
+* Helm
+** 参考
+   - [[http://d.hatena.ne.jp/a_bicky/20140104/1388822688][Helm をストレスなく使うための個人的な設定 - あらびき日記]]
+   - [[https://github.com/emacs-helm/helm/wiki][Home · emacs-helm/helm Wiki]]
+   - [[http://sleepboy-zzz.blogspot.jp/2012/09/anythinghelm.html][memo: AnythingからHelmに移行しました]]
+   - [[http://www49.atwiki.jp/ntemacs/m/pages/32.html][NTEmacs @ ウィキ - helm を使うための設定 - @ｳｨｷﾓﾊﾞｲﾙ]]
+   - [[http://qiita.com/akisute3@github/items/7c8ea3970e4cbb7baa97][Emacs - helm-mode 有効時でも helm-find-files は無効にする - Qiita {キータ}]]
+   - [[http://www.fan.gr.jp/~ring/doc/elisp_19/elisp-jp_14.html#IDX592][GNU Emacs Lispリファレンス・マニュアル: 12. マクロ]]
+     - 逆引用符は`,'の引数を評価し、 リスト構造にその値を入れます。
+   - helm-mode 1 はおせっかいすぎるので使わない
+
+** パッケージの読み込み
+
+#+begin_src emacs-lisp
+  (require 'helm-config)
+#+end_src
+
+** helm-M-xを有効にする
+
+#+begin_src emacs-lisp
+  (global-set-key (kbd "M-x") 'helm-M-x)
+#+end_src
+
+** helm-miniを有効にする
+
+#+begin_src emacs-lisp
+  (global-set-key (kbd "C-c h") 'helm-mini)
+#+end_src
+
+** C-k
+ミニバッファで C-k 入力時にカーソル以降を削除する
+
+#+begin_src emacs-lisp
+(setq helm-delete-minibuffer-contents-from-point t)
+#+end_src
+
+** 他のパッケージ
+
+#+begin_src emacs-lisp
+(dolist (package '(helm-descbinds
+		   helm-migemo
+		   helm-themes
+		   imenu-anywhere
+		   helm-c-yasnippet))
+  (when (not (package-installed-p package))
+    (package-install package)))
+#+end_src
+
+** ???
+
+#+begin_src emacs-lisp
+(require 'helm-command)
+(require 'helm-descbinds)
+
+(setq helm-idle-delay             0.1
+      helm-input-idle-delay       0.1
+      helm-candidate-number-limit 200)
+#+end_src
+
+** helm-migemo - ローマ字検索
+
+#+begin_src emacs-lisp
+  (when (executable-find "cmigemo")
+    (require 'helm-migemo)
+    (setq helm-use-migemo t)
+
+    (defadvice helm-c-apropos
+      (around ad-helm-apropos activate)
+      "候補が表示されないときがあるので migemoらないように設定."
+      (let ((helm-use-migemo nil))
+	ad-do-it))
+
+    (defadvice helm-M-x
+      (around ad-helm-M-x activate)
+      "候補が表示されないときがあるので migemoらないように設定."
+      (let ((helm-use-migemo nil))
+	ad-do-it))
+    )
+#+end_src
+
+** その他
+
+#+begin_src emacs-lisp
+(require 'helm-imenu)
+(setq imenu-auto-rescan t)
+(setq imenu-after-jump-hook (lambda () (recenter 10))) ; 選択後の表示位置を調整
+
+(require 'helm-themes)
+
+(require 'helm-c-yasnippet)
+#+end_src
+
+** package listをhelmで選択
+
+#+begin_src emacs-lisp
+(require 'helm-package)
+#+end_src
+
+** keybinding
+
+  ;;         (,(kbd "C-r")   helm-for-files)
+  ;;         (,(kbd "C-^")   helm-c-apropos)
+  ;;         (,(kbd "C-;")   helm-resume)
+  ;;         (,(kbd "M-s")   helm-occur)
+  ;;         (,(kbd "M-z")   helm-do-grep)
+  ;;         (,(kbd "C-S-h") helm-descbinds)
+
+** helm-recentfを呼び出す
+
+#+BEGIN_SRC emacs-lisp
+(require 'recentf)
+(recentf-mode 1)
+(setq recentf-max-menu-items 25)
+(global-set-key "\C-x\ \C-r" 'helm-recentf)
+#+END_SRC
+
+* migemo
+** 概要
+ローマ字で日本語をインクリメンタルサーチ
+
+- 注意
+  - cmigemoコマンドがインストールされていること．
+  - locate migemo-dictで辞書の場所調べ，設定してください．
+- 参考
+  - https://github.com/emacs-jp/migemo
+  - [[http://qiita.com/catatsuy/items/c5fa34ead92d496b8a51][migemoを使ってEmacsライフを快適に - Qiita {キータ}]]
+
+** 実行可否確認
+
+#+begin_src emacs-lisp
+  (unless (executable-find "cmigemo")
+    (warn "！！ 警告：cmigemoコマンドが呼び出せません　！！"))
+#+end_src
+
+** 設定
+
+#+begin_src emacs-lisp
+  (when (and (executable-find "cmigemo")
+	     (require 'migemo nil t))
+    (setq migemo-options '("-q" "--emacs"))
+
+    (setq migemo-user-dictionary nil)
+    (setq migemo-regex-dictionary nil)
+    (setq migemo-coding-system 'utf-8-unix)
+    (load-library "migemo")
+    (migemo-init)
+
+    (setq migemo-command "cmigemo")
+
+    (cond
+     ((eq system-type 'gnu/linux)
+      (setq migemo-dictionary "/usr/share/cmigemo/utf-8/migemo-dict"))
+     ((eq system-type 'darwin)
+      (setq migemo-dictionary "/usr/local/share/migemo/utf-8/migemo-dict")))
+    )
+#+end_src
+
+* Org
+** Orgについて
+*** マニュアル
+  - [[http://orgmode.org/org.html][The Org Manual]]
+  - [[http://orgmode.org/elpa.html][Org Emacs lisp Package Archive]]
+*** Dropboxとの連携
+
+** orgパッケージのインストール
+
+#+begin_src emacs-lisp
+  (require 'org)
+#+end_src
+
+** 思いついたらすぐ記録（Capture）
+- 準備
+  - mkdir ~/Dropbox/Org
+- org-directory のデフォルトは~/org
+- これをDropboxの下にする．Dropbox/Org
+- ディレクトリは自分で作ること．
+
+- org-default-notes-file のデフォルトは .notes
+- ただし，.notesを開いてもorgモードにならないので，エラーになる．
+- だから，ファイル名は指定する必要がある． -> notes.org
+- その他に，t: Todoとj: Journal（日記帳）を．
+
+- notes.orgは，トップページ扱い
+
+| 説明                       | 変数名                 | 推奨               |
+|----------------------------+------------------------+--------------------|
+| 備忘録用ファイルを置く場所 | org-directory          | "~/Dropbox/Org"    |
+| アジェンダファイルの指定   | org-agenda-files       | ("~/Dropbox/Org/") |
+| デフォルトのノーツ         | org-default-notes-file | "notes.org"        |
+| キャプチャ                 | org-capture-templates  | t: Todo j: Journal |
+
+- org-agenda-files -> MobileOrgにPushする
+
+#+begin_src emacs-lisp
+  (setq org-directory "~/Dropbox/Org")
+  (setq org-agenda-files (quote ("~/Dropbox/Org/")))
+  (setq org-default-notes-file "notes.org")
+#+end_src
+
+** キャプチャのテンプレート
+
+#+begin_src emacs-lisp
+    (setq org-capture-templates
+	  (quote
+	   (("t" "Todo" entry (file+headline "todo.org" "Tasks")
+	     "* TODO %?
+")
+	    ("l" "Link as Todo" entry (file+headline "todo.org" "Tasks")
+	     "* TODO %?
+  Link: %a
+  Text: %i
+")
+	    ("j" "Journal" entry (file+datetree "journal.org")
+	     "* %?
+")
+	    ("b" "Bookmark" entry (file+headline "bookmark.org" "Bookmarks")
+	     "* %a :bookmark:
+  　引用: %i
+  %?
+")
+	    )))
+#+end_src
+
+#+RESULTS:
+| t | Todo         | entry | (file+headline todo.org Tasks)         | * TODO %?\n                           |
+| l | Link as Todo | entry | (file+headline todo.org Tasks)         | * TODO %?\n  Link: %a\n  Text: %i\n   |
+| j | Journal      | entry | (file+datetree journal.org)            | * %?\n                                |
+| b | Bookmark     | entry | (file+headline bookmark.org Bookmarks) | * %a :bookmark:\n  　引用: %i\n  %?\n |
+
+** Mobile Org関連
+
+- [[https://github.com/matburt/mobileorg-android/wiki][Home · matburt/mobileorg-android Wiki]]
+
+
+#+begin_src emacs-lisp
+  (setq org-mobile-directory "~/Dropbox/アプリ/MobileOrg")
+  (setq org-mobile-inbox-for-pull "~/Dropbox/Org/from-mobile.org")
+#+end_src
+
+#+RESULTS:
+: ~/Dropbox/Org/from-mobile.org
+
+** Babel
+
+| 説明 | 変数名 | 推奨 |
+|------+--------+------|
+|      |        |      |
+
+#+begin_src emacs-lisp
+  (setq org-babel-load-languages
+	(quote
+	 ((emacs-lisp . t)
+	  (dot . t)
+	  (java . t)
+	  (ruby . t)
+	  (sh . t))))
+#+end_src
+
+#+RESULTS:
+| (emacs-lisp . t) | (dot . t) | (java . t) | (ruby . t) | (sh . t) |
+
+#+begin_src emacs-lisp
+  (setq org-confirm-babel-evaluate nil)
+#+end_src
+
+#+RESULTS:
+
+** 予定表生成追加命令
+
+- [[http://orgmode.org/manual/Matching-tags-and-properties.html][Matching tags and properties - The Org Manual]]
+- [[https://www.gnu.org/software/emacs/manual/html_node/org/Special-agenda-views.html][Special agenda views - The Org Manual]]
+
+#+begin_src emacs-lisp
+  (setq org-agenda-custom-commands
+	(quote
+	 (("x" "TODOs without Scheduled" tags-todo "+SCHEDULED=\"\"" nil)
+	  ("d" "TODOs without Deadline" tags-todo "+DEADLINE=\"\"" nil)
+	  ("p" "私用" tags-todo "+私用" nil)
+	  ("P" "私用以外" tags-todo "-私用" nil)
+	  ("n" "Agenda and all TODO's" ((agenda "" nil)
+					(alltodo "" nil)) nil))))
+#+end_src
+
+#+RESULTS:
+| x | TODOs without Scheduled | tags-todo                      | +SCHEDULED="" | nil |
+| d | TODOs without Deadline  | tags-todo                      | +DEADLINE=""  | nil |
+| p | 私用                    | tags-todo                      | +私用         | nil |
+| P | 私用以外                | tags-todo                      | -私用         | nil |
+| n | Agenda and all TODO's   | ((agenda  nil) (alltodo  nil)) | nil           |     |
+
+** Org Column Title
+- Heightをフォントの高さに合わせる
+
+** その他
+
+| 説明                           | 変数名                         | 推奨                          |
+|--------------------------------+--------------------------------+-------------------------------|
+| バックグランドでのエキスポート | org-export-in-background       | nil                           |
+| 画像を表示                     | org-startup-with-inline-images | t                             |
+| ToDoアイテムの状態             | org-todo-keywords              | TODO WAIT DONE SOMEDAY CANCEL |
+|                                |                                |                               |
+
+** TODOの種類
+
+#+begin_src emacs-lisp
+  (setq org-todo-keywords (quote ((sequence "TODO(t)" "WIP(p)" "WAIT(w)" "|" "DONE(d)" "SOMEDAY(s)" "CANCEL(c)"))))
+#+end_src
+
+#+RESULTS:
+| sequence | TODO(t) | WIP(p) | WAIT(w) |   |   | DONE(d) | SOMEDAY(s) | CANCEL(c) |
+
+** 期日の何日前に予定表（Agenda）に表示するか
+
+#+begin_src emacs-lisp
+  (setq org-deadline-warning-days 7)
+#+end_src
+
+#+RESULTS:
+: 7
+
+** Linewrap
+
+- [[http://superuser.com/questions/299886/linewrap-in-org-mode-of-emacs][Linewrap in Org-mode of Emacs? - Super User]]
+
+#+begin_src emacs-lisp
+  (define-key org-mode-map "\M-q" 'toggle-truncate-lines)
+#+end_src
+
+#+RESULTS:
+: toggle-truncate-lines
+
+** TODO 未整理
+
+#+begin_src emacs-lisp
+(custom-set-variables
+ '(org-export-in-background nil)
+ '(org-src-fontify-natively t))
+#+end_src
+
+** Shellのコードの実行にbashを使う
+    :PROPERTIES:
+    :ID:       adc108a7-c5d7-49b7-b1fb-bfb681d748b0
+    :END:
+   - デフォルトのシェルがzshなので，設定しておく．
+   - 2014-01-24現在，customizationの対応ではない模様．
+
+#+begin_src emacs-lisp
+(setq org-babel-sh-command "bash")
+#+end_src
+
+** エキスポート
+*** Markdown export
+
+#+begin_src emacs-lisp
+  (require 'ox-md)
+#+end_src
+
+*** mediawiki export
+
+#+begin_src emacs-lisp :tangle no
+  (require 'ox-mediawiki)
+#+end_src
+
+*** LaTeX export
+
+LaTeXでエキスポートできるようにします．
+下記URLのコードから，xelatex用の設定を抜き出しました．
+
+− [[http://oku.edu.mie-u.ac.jp/~okumura/texwiki/?Emacs%2FOrg%20mode#h20d131a][Emacs/Org mode - TeX Wiki]] （2014-08-03 参照）
+
+#+begin_src emacs-lisp
+(require 'ox-latex)
+(add-to-list 'auto-mode-alist '("\\.org$" . org-mode))
+(setq org-latex-default-class "bxjsarticle")
+(setq org-latex-pdf-process '("latexmk -e '$pdflatex=q/xelatex %S/' -e '$bibtex=q/bibtexu %B/' -e '$biber=q/biber --bblencoding=utf8 -u -U --output_safechars %B/' -e '$makeindex=q/makeindex -o %D %S/' -norc -gg -pdf %f"))
+(setq org-export-in-background t)
+
+(add-to-list 'org-latex-classes
+	     '("bxjsarticle"
+	       "\\documentclass{bxjsarticle}
+[NO-DEFAULT-PACKAGES]
+\\usepackage{zxjatype}
+\\usepackage[ipa]{zxjafont}
+\\usepackage{xltxtra}
+\\usepackage{amsmath}
+\\usepackage{newtxtext,newtxmath}
+\\usepackage{graphicx}
+\\usepackage{hyperref}
+\\ifdefined\\kanjiskip
+  \\usepackage{pxjahyper}
+  \\hypersetup{colorlinks=true}
+\\else
+  \\ifdefined\\XeTeXversion
+      \\hypersetup{colorlinks=true}
+  \\else
+    \\ifdefined\\directlua
+      \\hypersetup{pdfencoding=auto,colorlinks=true}
+    \\else
+      \\hypersetup{unicode,colorlinks=true}
+    \\fi
+  \\fi
+\\fi"
+	       ("\\section{%s}" . "\\section*{%s}")
+	       ("\\subsection{%s}" . "\\subsection*{%s}")
+	       ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+	       ("\\paragraph{%s}" . "\\paragraph*{%s}")
+	       ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
+
+#+end_src
+
+#+RESULTS:
+| beamer      | \documentclass{beamer}\n[NO-DEFAULT-PACKAGES]\n\usepackage{zxjatype}\n\usepackage[ipa]{zxjafont}\n\usepackage{xltxtra}\n\usepackage{amsmath}\n\usepackage{newtxtext,newtxmath}\n\usepackage{graphicx}\n\usepackage{hyperref}\n\usepackage{bxdpx-beamer}\n\AtBeginSection[]\n{\n  \begin{frame}<beamer>{Outline}\n  \tableofcontents[currentsection,currentsubsection]\n  \end{frame}\n}                                                                                                                                                                     | (\section{%s} . \section*{%s}) | (\subsection{%s} . \subsection*{%s}) | (\subsubsection{%s} . \subsubsection*{%s}) | (\paragraph{%s} . \paragraph*{%s})   | (\subparagraph{%s} . \subparagraph*{%s})   |
+| beamer      | \documentclass[presentation]{beamer}                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        | (\section{%s} . \section*{%s}) | (\subsection{%s} . \subsection*{%s}) | (\subsubsection{%s} . \subsubsection*{%s}) |                                      |                                            |
+| bxjsarticle | \documentclass{bxjsarticle}\n[NO-DEFAULT-PACKAGES]\n\usepackage{zxjatype}\n\usepackage[ipa]{zxjafont}\n\usepackage{xltxtra}\n\usepackage{amsmath}\n\usepackage{newtxtext,newtxmath}\n\usepackage{graphicx}\n\usepackage{hyperref}\n\ifdefined\kanjiskip\n  \usepackage{pxjahyper}\n  \hypersetup{colorlinks=true}\n\else\n  \ifdefined\XeTeXversion\n      \hypersetup{colorlinks=true}\n  \else\n    \ifdefined\directlua\n      \hypersetup{pdfencoding=auto,colorlinks=true}\n    \else\n      \hypersetup{unicode,colorlinks=true}\n    \fi\n  \fi\n\fi | (\section{%s} . \section*{%s}) | (\subsection{%s} . \subsection*{%s}) | (\subsubsection{%s} . \subsubsection*{%s}) | (\paragraph{%s} . \paragraph*{%s})   | (\subparagraph{%s} . \subparagraph*{%s})   |
+| article     | \documentclass[11pt]{article}                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               | (\section{%s} . \section*{%s}) | (\subsection{%s} . \subsection*{%s}) | (\subsubsection{%s} . \subsubsection*{%s}) | (\paragraph{%s} . \paragraph*{%s})   | (\subparagraph{%s} . \subparagraph*{%s})   |
+| report      | \documentclass[11pt]{report}                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                | (\part{%s} . \part*{%s})       | (\chapter{%s} . \chapter*{%s})       | (\section{%s} . \section*{%s})             | (\subsection{%s} . \subsection*{%s}) | (\subsubsection{%s} . \subsubsection*{%s}) |
+| book        | \documentclass[11pt]{book}                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  | (\part{%s} . \part*{%s})       | (\chapter{%s} . \chapter*{%s})       | (\section{%s} . \section*{%s})             | (\subsection{%s} . \subsection*{%s}) | (\subsubsection{%s} . \subsubsection*{%s}) |
+
+ソースコードのエクスポート．
+
+#+begin_src emacs-lisp
+(add-to-list 'org-latex-packages-alist '("" "minted"))
+(setq org-latex-listings 'minted)
+#+end_src
+
+#+RESULTS:
+: minted
+
+*** LeTex (beamer) export
+ パッケージの読み込み
+
+#+begin_src emacs-lisp
+(require 'ox-beamer)
+#+end_src
+
+ 文書クラスの設定(beamer)
+
+#+begin_src emacs-lisp
+(add-to-list 'org-latex-classes
+	     '("beamer"
+	       "\\documentclass[t]{beamer}
+\\usepackage{zxjatype}
+\\usepackage[ipa]{zxjafont}
+\\setbeamertemplate{navigation symbols}{}
+\\hypersetup{colorlinks,linkcolor=,urlcolor=gray}
+\\AtBeginSection[]
+{
+  \\begin{frame}<beamer>{Outline}
+  \\tableofcontents[currentsection,currentsubsection]
+  \\end{frame}
+}
+\\setbeamertemplate{navigation symbols}{}"
+	       ("\\section{%s}" . "\\section*{%s}")
+	       ("\\subsection{%s}" . "\\subsection*{%s}")
+	       ("\\subsubsection{%s}" . "\\subsubsection*{%s}")))
+#+end_src
+
+#+RESULTS:
+| beamer         | \documentclass[t]{beamer}\n\usepackage{zxjatype}\n\usepackage[ipa]{zxjafont}\n\setbeamertemplate{navigation symbols}{}\n\hypersetup{colorlinks,linkcolor=,urlcolor=gray}\n\AtBeginSection[]\n{\n  \begin{frame}<beamer>{Outline}\n  \tableofcontents[currentsection,currentsubsection]\n  \end{frame}\n}\n\setbeamertemplate{navigation symbols}{}                                                                                                                                                                                                          | (\section{%s} . \section*{%s})                                                                                                                                                                                       | (\subsection{%s} . \subsection*{%s}) | (\subsubsection{%s} . \subsubsection*{%s}) |                                      |                                            |
+| beamer         | \documentclass[t]{beamer}\n\usepackage{zxjatype}\n\usepackage[ipa]{zxjafont}\n\setbeamertemplate{navigation symbols}{}\n\AtBeginSection[]\n{\n  \begin{frame}<beamer>{Outline}\n  \tableofcontents[currentsection,currentsubsection]\n  \end{frame}\n}\n\setbeamertemplate{navigation symbols}{}                                                                                                                                                                                                                                                            | (\section{%s} . \section*{%s})                                                                                                                                                                                       | (\subsection{%s} . \subsection*{%s}) | (\subsubsection{%s} . \subsubsection*{%s}) |                                      |                                            |
+| beamer_lecture | \documentclass[t]{beamer}\n[NO-DEFAULT-PACKAGES]\n\usepackage{zxjatype}\n\usepackage[ipa]{zxjafont}\n\setbeamertemplate{navigation symbols}{}\n\AtBeginPart\n{\n  \begin{frame}<beamer                                                                                                                                                                                                                                                                                                                                                                      | handout>\n    \date{第{\insertpartnumber}回 \insertpart}\n    \maketitle\n  \end{frame}\n}\n\AtBeginSubsection[]\n{\n  \begin{frame}<beamer>\n  \tableofcontents[currentsection,currentsubsection]\n  \end{frame}\n} | (\part{%s} . \part*{%s})             | (\section{%s} . \section*{%s})             | (\subsection{%s} . \subsection*{%s}) | (\subsubsection{%s} . \subsubsection*{%s}) |
+| beamer         | \documentclass[t]{beamer}\n[NO-DEFAULT-PACKAGES]\n\usepackage{zxjatype}\n\usepackage[ipa]{zxjafont}\n\setbeamertemplate{navigation symbols}{}\n\AtBeginSection[]\n{\n  \begin{frame}<beamer>{Outline}\n  \tableofcontents[currentsection,currentsubsection]\n  \end{frame}\n}\n\setbeamertemplate{navigation symbols}{}                                                                                                                                                                                                                                     | (\section{%s} . \section*{%s})                                                                                                                                                                                       | (\subsection{%s} . \subsection*{%s}) | (\subsubsection{%s} . \subsubsection*{%s}) |                                      |                                            |
+| beamer         | \documentclass[presentation]{beamer}                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        | (\section{%s} . \section*{%s})                                                                                                                                                                                       | (\subsection{%s} . \subsection*{%s}) | (\subsubsection{%s} . \subsubsection*{%s}) |                                      |                                            |
+| bxjsarticle    | \documentclass{bxjsarticle}\n[NO-DEFAULT-PACKAGES]\n\usepackage{zxjatype}\n\usepackage[ipa]{zxjafont}\n\usepackage{xltxtra}\n\usepackage{amsmath}\n\usepackage{newtxtext,newtxmath}\n\usepackage{graphicx}\n\usepackage{hyperref}\n\ifdefined\kanjiskip\n  \usepackage{pxjahyper}\n  \hypersetup{colorlinks=true}\n\else\n  \ifdefined\XeTeXversion\n      \hypersetup{colorlinks=true}\n  \else\n    \ifdefined\directlua\n      \hypersetup{pdfencoding=auto,colorlinks=true}\n    \else\n      \hypersetup{unicode,colorlinks=true}\n    \fi\n  \fi\n\fi | (\section{%s} . \section*{%s})                                                                                                                                                                                       | (\subsection{%s} . \subsection*{%s}) | (\subsubsection{%s} . \subsubsection*{%s}) | (\paragraph{%s} . \paragraph*{%s})   | (\subparagraph{%s} . \subparagraph*{%s})   |
+| article        | \documentclass[11pt]{article}                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               | (\section{%s} . \section*{%s})                                                                                                                                                                                       | (\subsection{%s} . \subsection*{%s}) | (\subsubsection{%s} . \subsubsection*{%s}) | (\paragraph{%s} . \paragraph*{%s})   | (\subparagraph{%s} . \subparagraph*{%s})   |
+| report         | \documentclass[11pt]{report}                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                | (\part{%s} . \part*{%s})                                                                                                                                                                                             | (\chapter{%s} . \chapter*{%s})       | (\section{%s} . \section*{%s})             | (\subsection{%s} . \subsection*{%s}) | (\subsubsection{%s} . \subsubsection*{%s}) |
+| book           | \documentclass[11pt]{book}                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  | (\part{%s} . \part*{%s})                                                                                                                                                                                             | (\chapter{%s} . \chapter*{%s})       | (\section{%s} . \section*{%s})             | (\subsection{%s} . \subsection*{%s}) | (\subsubsection{%s} . \subsubsection*{%s}) |
+
+#+begin_src emacs-lisp
+(add-to-list 'org-latex-classes
+	     '("beamer_lecture"
+	       "\\documentclass[t]{beamer}
+[NO-DEFAULT-PACKAGES]
+\\usepackage{zxjatype}
+\\usepackage[ipa]{zxjafont}
+\\setbeamertemplate{navigation symbols}{}
+\\hypersetup{colorlinks,linkcolor=,urlcolor=gray}
+\\AtBeginPart
+{
+  \\begin{frame}<beamer|handout>
+    \\date{\\insertpart}
+    \\maketitle
+  \\end{frame}
+}
+\\AtBeginSection[]
+{
+  \\begin{frame}<beamer>
+  \\tableofcontents[currentsection,currentsubsection]
+  \\end{frame}
+}"
+	       ("\\part{%s}" . "\\part*{%s}")
+	       ("\\section{%s}" . "\\section*{%s}")
+	       ("\\subsection{%s}" . "\\subsection*{%s}")
+	       ("\\subsubsection{%s}" . "\\subsubsection*{%s}")))
+#+end_src
+
+#+RESULTS:
+| beamer_lecture | \documentclass[t]{beamer}\n[NO-DEFAULT-PACKAGES]\n\usepackage{zxjatype}\n\usepackage[ipa]{zxjafont}\n\setbeamertemplate{navigation symbols}{}\n\hypersetup{colorlinks,linkcolor=,urlcolor=gray}\n\AtBeginPart\n{\n  \begin{frame}<beamer                                                                                                                                                                                                                                                                                                                    | handout>\n    \date{\insertpart}\n    \maketitle\n  \end{frame}\n}\n\AtBeginSection[]\n{\n  \begin{frame}<beamer>\n  \tableofcontents[currentsection,currentsubsection]\n  \end{frame}\n}                            | (\part{%s} . \part*{%s})             | (\section{%s} . \section*{%s})             | (\subsection{%s} . \subsection*{%s}) | (\subsubsection{%s} . \subsubsection*{%s}) |
+| beamer_lecture | \documentclass[t]{beamer}\n[NO-DEFAULT-PACKAGES]\n\usepackage{zxjatype}\n\usepackage[ipa]{zxjafont}\n\setbeamertemplate{navigation symbols}{}\n\hypersetup{colorlinks,linkcolor=,urlcolor=gray}\n\AtBeginPart\n{\n  \begin{frame}<beamer                                                                                                                                                                                                                                                                                                                    | handout>\n    \date{第{\insertpartnumber}回 \insertpart}\n    \maketitle\n  \end{frame}\n}\n\AtBeginSection[]\n{\n  \begin{frame}<beamer>\n  \tableofcontents[currentsection,currentsubsection]\n  \end{frame}\n}    | (\part{%s} . \part*{%s})             | (\section{%s} . \section*{%s})             | (\subsection{%s} . \subsection*{%s}) | (\subsubsection{%s} . \subsubsection*{%s}) |
+| beamer_lecture | \documentclass[t]{beamer}\n[NO-DEFAULT-PACKAGES]\n\usepackage{zxjatype}\n\usepackage[ipa]{zxjafont}\n\setbeamertemplate{navigation symbols}{}\n\hypersetup{colorlinks,linkcolor=,urlcolor=gray}\n\AtBeginPart\n{\n  \begin{frame}<beamer                                                                                                                                                                                                                                                                                                                    | handout>\n    \date{第{\insertpartnumber}回 \insertpart}\n    \maketitle\n  \end{frame}\n}\n\AtBeginSubsection[]\n{\n  \begin{frame}<beamer>\n  \tableofcontents[currentsection,currentsubsection]\n  \end{frame}\n} | (\part{%s} . \part*{%s})             | (\section{%s} . \section*{%s})             | (\subsection{%s} . \subsection*{%s}) | (\subsubsection{%s} . \subsubsection*{%s}) |
+| beamer         | \documentclass[t]{beamer}\n\usepackage{zxjatype}\n\usepackage[ipa]{zxjafont}\n\setbeamertemplate{navigation symbols}{}\n\hypersetup{colorlinks,linkcolor=,urlcolor=gray}\n\AtBeginSection[]\n{\n  \begin{frame}<beamer>{Outline}\n  \tableofcontents[currentsection,currentsubsection]\n  \end{frame}\n}\n\setbeamertemplate{navigation symbols}{}                                                                                                                                                                                                          | (\section{%s} . \section*{%s})                                                                                                                                                                                       | (\subsection{%s} . \subsection*{%s}) | (\subsubsection{%s} . \subsubsection*{%s}) |                                      |                                            |
+| beamer         | \documentclass[t]{beamer}\n\usepackage{zxjatype}\n\usepackage[ipa]{zxjafont}\n\setbeamertemplate{navigation symbols}{}\n\AtBeginSection[]\n{\n  \begin{frame}<beamer>{Outline}\n  \tableofcontents[currentsection,currentsubsection]\n  \end{frame}\n}\n\setbeamertemplate{navigation symbols}{}                                                                                                                                                                                                                                                            | (\section{%s} . \section*{%s})                                                                                                                                                                                       | (\subsection{%s} . \subsection*{%s}) | (\subsubsection{%s} . \subsubsection*{%s}) |                                      |                                            |
+| beamer_lecture | \documentclass[t]{beamer}\n[NO-DEFAULT-PACKAGES]\n\usepackage{zxjatype}\n\usepackage[ipa]{zxjafont}\n\setbeamertemplate{navigation symbols}{}\n\AtBeginPart\n{\n  \begin{frame}<beamer                                                                                                                                                                                                                                                                                                                                                                      | handout>\n    \date{第{\insertpartnumber}回 \insertpart}\n    \maketitle\n  \end{frame}\n}\n\AtBeginSubsection[]\n{\n  \begin{frame}<beamer>\n  \tableofcontents[currentsection,currentsubsection]\n  \end{frame}\n} | (\part{%s} . \part*{%s})             | (\section{%s} . \section*{%s})             | (\subsection{%s} . \subsection*{%s}) | (\subsubsection{%s} . \subsubsection*{%s}) |
+| beamer         | \documentclass[t]{beamer}\n[NO-DEFAULT-PACKAGES]\n\usepackage{zxjatype}\n\usepackage[ipa]{zxjafont}\n\setbeamertemplate{navigation symbols}{}\n\AtBeginSection[]\n{\n  \begin{frame}<beamer>{Outline}\n  \tableofcontents[currentsection,currentsubsection]\n  \end{frame}\n}\n\setbeamertemplate{navigation symbols}{}                                                                                                                                                                                                                                     | (\section{%s} . \section*{%s})                                                                                                                                                                                       | (\subsection{%s} . \subsection*{%s}) | (\subsubsection{%s} . \subsubsection*{%s}) |                                      |                                            |
+| beamer         | \documentclass[presentation]{beamer}                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        | (\section{%s} . \section*{%s})                                                                                                                                                                                       | (\subsection{%s} . \subsection*{%s}) | (\subsubsection{%s} . \subsubsection*{%s}) |                                      |                                            |
+| bxjsarticle    | \documentclass{bxjsarticle}\n[NO-DEFAULT-PACKAGES]\n\usepackage{zxjatype}\n\usepackage[ipa]{zxjafont}\n\usepackage{xltxtra}\n\usepackage{amsmath}\n\usepackage{newtxtext,newtxmath}\n\usepackage{graphicx}\n\usepackage{hyperref}\n\ifdefined\kanjiskip\n  \usepackage{pxjahyper}\n  \hypersetup{colorlinks=true}\n\else\n  \ifdefined\XeTeXversion\n      \hypersetup{colorlinks=true}\n  \else\n    \ifdefined\directlua\n      \hypersetup{pdfencoding=auto,colorlinks=true}\n    \else\n      \hypersetup{unicode,colorlinks=true}\n    \fi\n  \fi\n\fi | (\section{%s} . \section*{%s})                                                                                                                                                                                       | (\subsection{%s} . \subsection*{%s}) | (\subsubsection{%s} . \subsubsection*{%s}) | (\paragraph{%s} . \paragraph*{%s})   | (\subparagraph{%s} . \subparagraph*{%s})   |
+| article        | \documentclass[11pt]{article}                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               | (\section{%s} . \section*{%s})                                                                                                                                                                                       | (\subsection{%s} . \subsection*{%s}) | (\subsubsection{%s} . \subsubsection*{%s}) | (\paragraph{%s} . \paragraph*{%s})   | (\subparagraph{%s} . \subparagraph*{%s})   |
+| report         | \documentclass[11pt]{report}                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                | (\part{%s} . \part*{%s})                                                                                                                                                                                             | (\chapter{%s} . \chapter*{%s})       | (\section{%s} . \section*{%s})             | (\subsection{%s} . \subsection*{%s}) | (\subsubsection{%s} . \subsubsection*{%s}) |
+| book           | \documentclass[11pt]{book}                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  | (\part{%s} . \part*{%s})                                                                                                                                                                                             | (\chapter{%s} . \chapter*{%s})       | (\section{%s} . \section*{%s})             | (\subsection{%s} . \subsection*{%s}) | (\subsubsection{%s} . \subsubsection*{%s}) |
+
+** カラムのタイトルのフォント
+
+#+begin_src emacs-lisp
+  (custom-set-faces
+   '(org-column-title
+     ((t (:background "grey30" :underline t :weight bold :height 135)))))
+#+end_src
+
+*** 設定方法
+  - C-c C-lでOrg形式のリンク挿入
+  - [[http://stackoverflow.com/questions/7464951/how-to-make-org-protocol-work][firefox - How to make org-protocol work? - Stack Overflow]]
+    - gistで公開してあげようかな
+  - [[http://d.hatena.ne.jp/reppets/20111109/1320846292][Unityランチャーに自分でインストール/ビルドしたアプリケーションを登録する - reppets.log.1]]
+  - [[http://kb.mozillazine.org/Register_protocol#Linux][Register protocol - MozillaZine Knowledge Base]]
+  - [[http://orgmode.org/worg/org-contrib/org-protocol.html#sec-3-6]]
+    - 古い
+
+[[http://orgmode.org/worg/org-contrib/org-protocol.html#sec-3-6][* org-protocol
+org-protocol.el – Intercept calls from emacsclient to trigger custom actions]]
+
+#+begin_src
+javascript:location.href='org-protocol://store-link://'+encodeURIComponent(location.href)
+javascript:location.href='org-protocol://capture://t/'+encodeURIComponent(location.href)+'/'+encodeURIComponent(document.title)+'/'+encodeURIComponent(window.getSelection())
+#+end_src
+
+*** 有効化
+
+#+begin_src emacs-lisp
+  (require 'org-protocol)
+#+end_src
+
+#+RESULTS:
+: org-protocol
+
+** キーバインディング
+
+#+begin_src emacs-lisp
+  (global-set-key (kbd "C-c l") 'org-store-link)
+  (global-set-key (kbd "C-c c") 'org-capture)
+  (global-set-key (kbd "C-c a") 'org-agenda)
+  (global-set-key (kbd "C-c b") 'org-switchb)
+#+end_src
+** TODO WebにHTMLでPublishする                                         :個人設定:
+   :PROPERTIES:
+   :ID:       fcdb09c8-3a9a-4ea9-9482-10d445b6db9f
+   :END:
+   - customzationに移動する？
+
+#+begin_src emacs-lisp
+(setq org-publish-project-alist
+      '(
+	("chubachi.net-notes"
+	 :base-directory "~/Ubuntu One/WebSites/chubachi.net/org/"
+	 :base-extension "org"
+	 :publishing-directory "~/Ubuntu One/WebSites/chubachi.net/www/"
+	 :publishing-function org-html-publish-to-html
+	 ;; :headline-levels 3
+	 ;; :section-numbers nil
+	 ;; :with-toc nil
+	 ;; :html-head "<link rel=\"stylesheet\"
+	 ;;               href=\"../other/mystyle.css\" type=\"text/css\"/>"
+	 ;; :html-preamble t
+	 :recursive t
+	 )
+	("chubachi.net-static"
+	 :base-directory "~/Ubuntu One/WebSites/chubachi.net/org/"
+	 :base-extension "css\\|js\\|png\\|jpg\\|gif\\|pdf\\|mp3\\|ogg\\|swf"
+	 :publishing-directory "~/Ubuntu One/WebSites/chubachi.net/www/"
+	 :recursive t
+	 :publishing-function org-publish-attachment
+	 )
+	("chubachi.net"
+	 :components ("chubachi.net-notes" "chubachi.net-static"))
+      ))
+#+end_src
+
+* org-page
+  - [[https://github.com/kelvinh/org-page][kelvinh/org-page]]
+  - 新しいリポジトリを作る
+    - op/new-repository
+  ｰ 公開
+    - op/do-publication
+
+#+begin_src emacs-lisp
+(require 'org-page)
+#+end_src
+
+** customize
+
+| 変数名                  | 設定例                             |
+|-------------------------+------------------------------------|
+| op/repository-directory | "/home/yc/git/ychubachi.github.io" |
+| op/site-domain          | "http://ychubachi.github.io/"      |
+
+* WordPressに記事を投稿（org2blog）
+** 利用法
+  - org2blogを使うと，subtreeをwordpressに投稿できる．
+  - 使い方は [[https://github.com/punchagan/org2blog][punchagan/org2blog]] を参照．
+
+   |--------------------------+--------------------------|
+   | 機能                     | コマンド                 |
+   |--------------------------+--------------------------|
+   | 下位層を投稿             | org2blog/wp-post-subtree |
+   |--------------------------+--------------------------|
+   | ログイン                 | org2blog/wp-login        |
+   | 新規投稿                 | org2blog/wp-new-entry    |
+   |--------------------------+--------------------------|
+   | 草稿として投稿           | C-c d                    |
+   | 公開                     | C-c p                    |
+   | 草稿として草稿（ページ） | C-c D                    |
+   | 公開（ページ）           | C-c P                    |
+   |--------------------------+--------------------------|
+
+1. キャプチャして新しい記事を作成
+2. 投稿したいエントリのヘッダにカーソルを移動して
+   org2blog/wp-new-entry
+   -> ログインしてなければログインが促される
+3. ブラウザで確認
+
+** 導入
+
+#+begin_src emacs-lisp
+  (require 'org2blog-autoloads)
+#+end_src
+
+** 手動設定
+
+- wordpressのログイン情報をcustom.el内に記述
+
+** ソースコードを投稿できるようにする
+
+#+begin_src emacs-lisp
+  (setq org2blog/wp-use-sourcecode-shortcode t)
+#+end_src
+
+** 備考
+   - ソースコードを表示させるには
+     [[http://wordpress.org/plugins/syntaxhighlighter/][WordPress › SyntaxHighlighter Evolved « WordPress Plugins]]
+     をインストールしておく．
+   - emacs lispには対応していない．残念．
+
+* Ruby
+  ;; S式から正規表現を作成する - by shigemk2
+  ;; - http://d.hatena.ne.jp/shigemk2/20120419/1334762456
+
+  ;; EmacsでRubyの開発環境をめちゃガチャパワーアップしたまとめ | Futurismo
+  ;; http://hmi-me.ciao.jp/wordpress/archives/1295
+
+  ;;; Code:
+
+  ;; ================================================================
+  ;; パッケージのインストール
+  ;; ================================================================
+
+#+begin_src emacs-lisp
+  (autoload 'ruby-mode "ruby-mode"
+    "Mode for editing ruby source files" t)
+  (require 'ruby-mode)
+
+  ;; ================================================================
+  ;; Ruby DSLs
+  ;; ================================================================
+
+  (add-to-list 'auto-mode-alist '("Capfile" . ruby-mode))
+  (add-to-list 'auto-mode-alist '("Gemfile" . ruby-mode))
+  (add-to-list 'auto-mode-alist '("Guardfile" . ruby-mode))
+  (add-to-list 'auto-mode-alist '("Vagrantfile" . ruby-mode))
+  (add-to-list 'auto-mode-alist '("Berksfile" . ruby-mode))
+
+  ;; ================================================================
+  ;; outline-minnor-mode
+  ;; ================================================================
+
+  (require 'outline)
+  (add-hook 'ruby-mode-hook
+	    (function
+	     (lambda ()
+	       (defun ruby-outline-level ()
+		 (or (and (match-string 1)
+			  (or (cdr (assoc (match-string 1) outline-heading-alist))
+			      (- (match-end 1) (match-beginning 1))))
+		     (cdr (assoc (match-string 0) outline-heading-alist))
+		     (- (match-end 0) (match-beginning 0))))
+
+	       (set (make-local-variable 'outline-level) 'ruby-outline-level)
+
+	       (set (make-local-variable 'outline-regexp)
+		    (rx (group (* " "))
+			bow
+			(or "begin" "case" "class" "def" "else" "elsif"
+			    "ensure" "if" "module" "rescue" "when" "unless"
+			    "private")
+			eow))
+	       (outline-minor-mode))))
+
+  (add-hook 'rspec-mode-hook
+	    (function
+	     (lambda ()
+	       (defun rspec-outline-level ()
+		 (or (and (match-string 1)
+			  (or (cdr (assoc (match-string 1) outline-heading-alist))
+			      (- (match-end 1) (match-beginning 1))))
+		     (cdr (assoc (match-string 0) outline-heading-alist))
+		     (- (match-end 0) (match-beginning 0))))
+
+	       (set (make-local-variable 'outline-level) 'rspec-outline-level)
+
+	       (set (make-local-variable 'outline-regexp)
+		    (rx (group (* " "))
+			bow
+			(or "context" "describe" "it" "subject")
+			eow))
+	       (outline-minor-mode))))
+
+  ;; ================================================================
+  ;; flymake関係
+  ;; ================================================================
+
+  (require 'flymake-ruby)
+  (add-hook 'ruby-mode-hook 'flymake-ruby-load)
+
+  (require 'flymake-haml)
+  (add-hook 'haml-mode-hook 'flymake-haml-load)
+
+  (require 'flymake-sass)
+  (add-hook 'sass-mode-hook 'flymake-sass-load)
+
+  (require 'flymake-coffee)
+  (add-hook 'coffee-mode-hook 'flymake-coffee-load)
+
+  ;; ================================================================
+  ;; Use the right Ruby with Emacs and rbenv - Fist of Senn
+  ;; - http://blog.senny.ch/blog/2013/02/11/use-the-right-ruby-with-emacs-and-rbenv/
+  ;; ================================================================
+  ;; (prelude-require-package 'rbenv)
+
+  ;; ;; Setting rbenv path
+  ;; (setenv "PATH" (concat (getenv "HOME") "/.rbenv/shims:"
+  ;;                        (getenv "HOME") "/.rbenv/bin:"
+  ;;                        (getenv "PATH")))
+  ;; (setq exec-path (cons (concat (getenv "HOME") "/.rbenv/shims")
+  ;;                       (cons (concat (getenv "HOME") "/.rbenv/bin") exec-path)))
+
+  ;; ================================================================
+  ;; 賢いコンパイル
+  ;; ================================================================
+
+  (require 'smart-compile)
+
+  (define-key ruby-mode-map (kbd "C-c c") 'smart-compile)
+  (define-key ruby-mode-map (kbd "C-c C-c") (kbd "C-c c C-m"))
+
+  (setq smart-compile-alist
+	(quote ((emacs-lisp-mode emacs-lisp-byte-compile)
+		(html-mode browse-url-of-buffer)
+		(nxhtml-mode browse-url-of-buffer)
+		(html-helper-mode browse-url-of-buffer)
+		(octave-mode run-octave)
+		("\\.c\\'" . "gcc -O2 %f -lm -o %n")
+		("\\.[Cc]+[Pp]*\\'" . "g++ -O2 %f -lm -o %n")
+		("\\.m\\'" . "gcc -O2 %f -lobjc -lpthread -o %n")
+		("\\.java\\'" . "javac %f")
+		("\\.php\\'" . "php -l %f")
+		("\\.f90\\'" . "gfortran %f -o %n")
+		("\\.[Ff]\\'" . "gfortran %f -o %n")
+		("\\.cron\\(tab\\)?\\'" . "crontab %f")
+		("\\.tex\\'" tex-file)
+		("\\.texi\\'" . "makeinfo %f")
+		("\\.mp\\'" . "mptopdf %f")
+		("\\.pl\\'" . "perl -cw %f")
+		("\\.rb\\'" . "bundle exec ruby %f"))))
+
+  ;; ================================================================
+  ;; Emacsで保存時にFirefoxのタブを探してリロード - Qiita [キータ]
+  ;; - http://qiita.com/hakomo/items/9a99115f8911b55957bb
+  ;; ================================================================
+  (require 'moz)
+
+  (defun my/reload-firefox ()
+    "Reload firefox."
+    (interactive)
+    (comint-send-string (inferior-moz-process) "BrowserReload();"))
+
+  (defun my/run-rake-yard ()
+    "Run rake yard."
+    (interactive)
+    (shell-command "rake yard"))
+
+  (define-key ruby-mode-map (kbd "C-c y") (lambda ()
+					    (interactive)
+					    (my/run-rake-yard)
+					    (my/reload-firefox)))
+#+end_src
+
+* Windows用設定
+** TODO 設定全体
+
+#+begin_src emacs-lisp :noweb yes
+  (when (or (eq system-type 'windows-nt)
+	    (eq system-type 'cygwin))
+    <<windows-settings>>
+  )
+#+end_src
+
+** Windows用設定
+
+#+name: windows-settings
+#+begin_src emacs-lisp :tangle no
+  (setq file-name-coding-system 'cp932)
+
+  ;; Ctrl-gとかでベルを鳴らさないようにします。
+  (setq visible-bell t)
+  (setq ring-bell-function 'ignore)
+
+  ;;;** 標準IMEの設定
+  (setq default-input-method "W32-IME")
+
+  ;;;** IMEの初期化
+  (w32-ime-initialize)
+
+  ;;;** IME状態のモードライン表示
+  (setq-default w32-ime-mode-line-state-indicator "[--]")
+  (setq w32-ime-mode-line-state-indicator-list '("[--]" "[あ]" "[--]"))
+
+  ;;;** IME OFF時の初期カーソルカラー
+  (set-cursor-color "red")
+
+  ;;;** IME ON/OFF時のカーソルカラー
+  (add-hook 'input-method-activate-hook
+	    (lambda() (set-cursor-color "green")))
+  (add-hook 'input-method-inactivate-hook
+	    (lambda() (set-cursor-color "red")))
+
+  ;;;** バッファ切り替え時にIME状態を引き継ぐ
+  (setq w32-ime-buffer-switch-p nil)
+
+  ;;;** Ctrl-Oでトグルするようにする
+  (global-set-key (kbd "C-o") 'toggle-input-method)
+
+  ;; ;; cp932エンコード時の表示を「P」とする
+  ;; (coding-system-put 'cp932 :mnemonic ?P)
+  ;; (coding-system-put 'cp932-dos :mnemonic ?P)
+  ;; (coding-system-put 'cp932-unix :mnemonic ?P)
+  ;; (coding-system-put 'cp932-mac :mnemonic ?P)
+#+end_src
+* Scala
+  - 参考
+    - [[http://futurismo.biz/archives/2449][EmacsでScala開発環境を構築(Ensime) | Futurismo]]
+
+#+begin_src emacs-lisp
+(require 'ensime)
+(add-hook 'scala-mode-hook 'ensime-scala-mode-hook)
+
+(require 'sbt-mode)
+#+end_src
+* org-reveal
+  - https://github.com/yjwen/org-reveal
+
+#+begin_src emacs-lisp
+(require 'ox-reveal)
+#+end_src
+* キーバインディング
+** フォントサイズをPU，PDで変更できるようにする
+
+- Page Up，Page Downで操作
+- Macの場合はfn+↑，fn+↓
+
+#+begin_src emacs-lisp
+  ;バッファのフォントサイズを大きく
+  (global-set-key (kbd "<prior>") 'text-scale-increase)
+  ;バッファのフォントサイズを小さく
+  (global-set-key (kbd "<next>")  'text-scale-decrease)
+#+end_src
+
+** [Linux] 日本語変換キー
+
+#+begin_src emacs-lisp
+  (when (eq system-type 'gnu/linux)
+    (global-set-key (kbd "C-o") 'toggle-input-method))
+#+end_src
+
+** 個人用キーマップの設定
+#+begin_src emacs-lisp
+  (defun my/fullscreen ()
+    (interactive)
+    (set-frame-parameter
+     nil
+     'fullscreen
+     (if (frame-parameter nil 'fullscreen)
+	 nil
+       'fullboth)))
+  (global-set-key [f11] 'my/fullscreen)
+
+  ;; (defun my/open-init-folder()
+  ;;   "設定フォルダを開きます．"
+  ;;   (interactive)
+  ;;   (find-file "~/.emacs.d/init.org"))
+  ;; (global-set-key (kbd "<f1>") 'my/open-init-folder)
+
+
+  (defun my/other-window-backward ()
+    "Move to other window backward."
+    (interactive)
+    (other-window -1))
+#+end_src
+
+#+begin_src emacs-lisp
+  (define-prefix-command 'personal-map)
+  (global-set-key (kbd "C-.") 'personal-map)
+
+  (define-key 'personal-map (kbd "?") 'help-command)
+
+  (define-key 'personal-map (kbd "C-n") 'other-window)
+  (define-key 'personal-map (kbd "C-p") 'my/other-window-backward)
+
+  (define-key 'personal-map (kbd "m") 'imenu)
+
+  (define-key 'personal-map (kbd "i") 'yas-insert-snippet)
+  (define-key 'personal-map (kbd "n") 'yas-new-snippet)
+  (define-key 'personal-map (kbd "v") 'yas-visit-snippet-file)
+
+  (define-key 'personal-map (kbd "y") 'helm-c-yas-complete)
+  (define-key 'personal-map (kbd "s") 'helm-c-yas-create-snippet-on-region)
+
+  (define-key 'personal-map (kbd "b") 'org-beamer-export-to-pdf)
+
+  (cond ((eq system-type 'gnu/linux)
+	 (define-key 'personal-map (kbd "p") 'evince-forward-search))
+	((eq system-type 'darwin)
+	 (define-key 'personal-map (kbd "p") 'skim-forward-search)))
 #+end_src
