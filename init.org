@@ -237,7 +237,6 @@ wdiredのrequireはdired-mode-mapを定義するために必要．
 	       :ensure t)
 #+end_src
 
-
 * 後処理
 ** カスタマイズ設定を保存するファイルの指定
   - 概要
