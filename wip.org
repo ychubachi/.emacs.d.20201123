@@ -819,8 +819,6 @@ Gmailでスターをつけると，flagが付く．
 - org-agenda-files -> MobileOrgにPushする
 
 #+begin_src emacs-lisp
-  (setq org-directory "~/Dropbox/Org")
-  (setq org-agenda-files (quote ("~/Dropbox/Org/")))
   (setq org-default-notes-file "notes.org")
 #+end_src
 
