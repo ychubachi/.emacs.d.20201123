@@ -1,33 +1,29 @@
-# -*- org -*-
-#+TITLE: init.org
-#+STARTUP: overview
-#+PROPERTY: header-args:emacs-lisp :tangle init.el
-#+PROPERTY: header-args            :results silent
+#+BABEL: :cache yes :tangle yes :noweb yes
 
 * これはなに？
 ** 使い方
   - C-c C-v t でinit.elを生成
-    - [[http://orgmode.org/manual/Header-arguments-in-Org-mode-properties.html#Header-arguments-in-Org-mode-properties][Header arguments in Org mode properties - The Org Manual]]
+	- [[http://orgmode.org/manual/Header-arguments-in-Org-mode-properties.html#Header-arguments-in-Org-mode-properties][Header arguments in Org mode properties - The Org Manual]]
   - [[http://cask.readthedocs.org/en/latest/index.html][Cask — Cask 0.7.0]]
   - 日本のEmacsユーザ向け．
   - Emacsを設定するためのelです．
-    - [[https://github.com/ychubachi/.emacs.d/blob/master/init.org][.emacs.d/init.org at master · ychubachi/.emacs.d]]
+	- [[https://github.com/ychubachi/.emacs.d/blob/master/init.org][.emacs.d/init.org at master · ychubachi/.emacs.d]]
   - preludeを意識しています
-    - [[http://batsov.com/prelude/][Prelude by bbatsov]]
+	- [[http://batsov.com/prelude/][Prelude by bbatsov]]
   - コードネーム候補
-    - aperitif 食前酒
+	- aperitif 食前酒
   - daemonについて
   - 対応するEmacsのバージョンは24.3（2013-03-11公開版）以降です．
-    - [[http://www.gnu.org/software/emacs/][GNU Emacs - GNU Project - Free Software Foundation (FSF)]]
-    - [[http://www.gnu.org/software/emacs/news/NEWS.24.3]]
-    - [[http://www.gnu.org/software/emacs/manual/html_node/elisp/Lexical-Binding.html][Lexical Binding - GNU Emacs Lisp Reference Manual]]
-    - [[http://www.gnu.org/software/emacs/manual/html_node/elisp/Closures.html#Closures][Closures - GNU Emacs Lisp Reference Manual]]
+	- [[http://www.gnu.org/software/emacs/][GNU Emacs - GNU Project - Free Software Foundation (FSF)]]
+	- [[http://www.gnu.org/software/emacs/news/NEWS.24.3]]
+	- [[http://www.gnu.org/software/emacs/manual/html_node/elisp/Lexical-Binding.html][Lexical Binding - GNU Emacs Lisp Reference Manual]]
+	- [[http://www.gnu.org/software/emacs/manual/html_node/elisp/Closures.html#Closures][Closures - GNU Emacs Lisp Reference Manual]]
 
   - init.elについて
-    - [[http://www.gnu.org/software/emacs/manual/html_node/emacs/Init-File.html#Init-File][Init File - GNU Emacs Manual]]
-    - [[http://www.gnu.org/software/emacs/manual/html_node/emacs/Init-Syntax.html#Init-Syntax][Init Syntax - GNU Emacs Manual]]
-      - init fileの文法．
-      - 特定の変数は自動的にbuffer localになる．
+	- [[http://www.gnu.org/software/emacs/manual/html_node/emacs/Init-File.html#Init-File][Init File - GNU Emacs Manual]]
+	- [[http://www.gnu.org/software/emacs/manual/html_node/emacs/Init-Syntax.html#Init-Syntax][Init Syntax - GNU Emacs Manual]]
+	  - init fileの文法．
+	  - 特定の変数は自動的にbuffer localになる．
 	- この場合はset-defaultを使うこと．
 
 ** カスタマイズ
@@ -44,15 +40,27 @@
 *** aspell コマンドのインストール
   - git-commit-mode-hook でflyspellが自動的にonになる．
   - .aspell.conf の設定
-    - [[http://sky-y.hatenablog.jp/entry/20091229/1262106336][YaTeX + aspell - 雲行きそらゆきココロイキ]]
+	- [[http://sky-y.hatenablog.jp/entry/20091229/1262106336][YaTeX + aspell - 雲行きそらゆきココロイキ]]
 
   Error enabling Flyspell mode:
   (Error: No word lists can be found for the language "ja_JP".)
 
-* ヘッダコメント
+* トップブロック
 
-#+begin_src emacs-lisp :padline no
-;; init.el --- Emacsの初期設定
+#+NAME: top_block
+#+begin_src emacs-lisp :tangle "init.el" :noweb tangle :padline no
+  ;; init.el --- Emacsの初期設定
+  <<server>>
+  <<C-h>>
+  <<wdired>>
+  <<japanese>>
+  <<font>>
+  <<package-archives>>
+  <<use-package>>
+
+  <<package>>
+  <<custom-file>>
+  ;;; init.el ends here
 #+end_src
 
 * Emacs本体が提供する機能
@@ -62,35 +70,24 @@
 - Emacs 既に起動している場合は立ち上げない
   - [[http://stackoverflow.com/questions/5570451/how-to-start-emacs-server-only-if-it-is-not-started][configuration - How to start emacs server only if it is not started? - Stack Overflow]]
 
+#+NAME: server
 #+begin_src emacs-lisp
   (load "server")
   (unless (server-running-p)
-    (server-start))
+	(server-start))
 #+end_src
 
 ** C-hをDELキーに設定
    - C-h が押されたら，C-? (<DEL>) に変換する．
    - ヘルプは[F1]でも参照できる．
    - 参考
-     - [[http://akisute3.hatenablog.com/entry/20120318/1332059326][EmacsのC-hをbackspaceとして使用する - 勉強日記]]
-     - [[http://www.gnu.org/software/emacs/manual/html_node/efaq/Swapping-keys.html#Swapping-keys][Swapping keys - GNU Emacs FAQ]]
+	 - [[http://akisute3.hatenablog.com/entry/20120318/1332059326][EmacsのC-hをbackspaceとして使用する - 勉強日記]]
+	 - [[http://www.gnu.org/software/emacs/manual/html_node/efaq/Swapping-keys.html#Swapping-keys][Swapping keys - GNU Emacs FAQ]]
    - keyboad-translate関数はサーバにする際動作しなかった
-     - [[http://lists.gnu.org/archive/html/help-gnu-emacs/2009-10/msg00505.html][Re: keyboard-translate not working with emacs daemon]]
-
+	 - [[http://lists.gnu.org/archive/html/help-gnu-emacs/2009-10/msg00505.html][Re: keyboard-translate not working with emacs daemon]]
+#+NAME: C-h
 #+begin_src emacs-lisp
 (define-key key-translation-map [?\C-h] [?\C-?])
-#+end_src
-
-** 不要な行末の空白を削除
-
-- 保存する前に，不要な空白を取り除きます．
-- 参考
-  - [[http://batsov.com/articles/2011/11/25/emacs-tip-number-3-whitespace-cleanup/][Emacs Tip #3: Whitespace Cleanup - (think)]]
-  - [[http://qiita.com/itiut@github/items/4d74da2412a29ef59c3a][Emacs - whitespace-modeを使って、ファイルの保存時に行末のスペースや末尾の改行を削除する - Qiita]]
-
-#+begin_src emacs-lisp
-  (add-hook 'before-save-hook
-   'whitespace-cleanup)
 #+end_src
 
 ** diredでファイル名のリネーム
@@ -100,17 +97,19 @@ diredモードで r キーを押すと編集モードに入る．
 
 wdiredのrequireはdired-mode-mapを定義するために必要．
 
+#+NAME: wdired
 #+begin_src emacs-lisp
   (require 'wdired)
   (define-key dired-mode-map "r"
-    'wdired-change-to-wdired-mode)
+	'wdired-change-to-wdired-mode)
 #+end_src
 
-* 日本語関連の設定						:mule-cmd.el:
+* 日本語関連の設定
 ** 日本語文字コード
 
 - 言語環境を日本語に，コード体系をUTF-8にします．
 
+#+NAME: japanese
 #+begin_src emacs-lisp
   (set-language-environment "japanese")
   (prefer-coding-system 'utf-8)
@@ -122,137 +121,366 @@ wdiredのrequireはdired-mode-mapを定義するために必要．
 
 - この値はcustomize可能です．
 
+#+NAME: font
 #+begin_src emacs-lisp
   (when (eq system-type 'gnu/linux)
-    (add-to-list 'default-frame-alist '(font . "ricty-13.5")))
+	(add-to-list 'default-frame-alist '(font . "ricty-13.5")))
 #+end_src
 
 * パッケージ機能の初期化
 ** ELPAアーカイブスの設定
+
+#+NAME: package-archives
 #+begin_src emacs-lisp
   (require 'package)
   (add-to-list 'package-archives
-	       '("melpa" . "http://melpa.milkbox.net/packages/") t)
+		   '("melpa" . "http://melpa.milkbox.net/packages/") t)
   (add-to-list 'package-archives
-	       '("marmalade" . "http://marmalade-repo.org/packages/"))
+		   '("marmalade" . "http://marmalade-repo.org/packages/"))
   (package-initialize)
 #+end_src
 
 ** use-packageの設定
+   use-packageマクロを利用できるようにします。
    - [[https://github.com/jwiegley/use-package][jwiegley/use-package]]
+
+- [[https://github.com/emacsattic/bind-key][emacsattic/bind-key]]
+  you can use M-x describe-personal-keybindings to see all such bindings you've set throughout your Emacs.
+  (describe-personal-keybindings)
+
+#+NAME: use-package
 #+begin_src emacs-lisp
   (package-refresh-contents)
   (unless (package-installed-p 'use-package)
-    (package-install 'use-package))
+	(package-install 'use-package))
   (require 'use-package)
 #+end_src
 
 * パッケージ
-** ace-jump-mode
+** パッケージの設定
+#+NAME: package
 #+begin_src emacs-lisp
-  (use-package ace-jump-mode
-	       :bind (("C-." . ace-jump-mode)
-		      ("C-," . ace-jump-line-mode))
-	       :ensure t)
+  <<exec-path-from-shell>>
+  <<shell-pop>>
+  <<undo-tree>>
+  <<yasnippet>>
+  <<magit>>
+  <<open-junk-file>>
+  <<multiple-cursors>>
+  <<region-bindings-mode>>
+  <<org>>
 #+end_src
+
 ** ShellのPATH設定を引き継ぐ
   - [[http://qiita.com/catatsuy/items/3dda714f4c60c435bb25][EmacsでPATHの設定が引き継がれない問題をエレガントに解決する - Qiita {キータ}]]
 
+#+NAME: exec-path-from-shell
 #+begin_src emacs-lisp
   (use-package exec-path-from-shell
-	       :config
-	       (progn (exec-path-from-shell-initialize))
-	       :ensure t)
+		   :config
+		   (progn (exec-path-from-shell-initialize))
+		   :ensure t)
 #+end_src
 
 ** shell-pop
+
+#+NAME: shell-pop
 #+begin_src emacs-lisp
   (use-package shell-pop
-	       :config
-	       (custom-set-variables
-		'(shell-pop-autocd-to-working-dir nil)
-		'(shell-pop-shell-type
-		  (quote ("eshell" "*eshell*" (lambda nil (eshell)))))
-		'(shell-pop-universal-key "C-z")
-		'(shell-pop-window-height 30))
-	       :ensure t)
+               :config
+               (custom-set-variables
+                '(shell-pop-autocd-to-working-dir nil)
+                '(shell-pop-shell-type
+                  (quote ("eshell" "*eshell*" (lambda nil (eshell)))))
+                '(shell-pop-universal-key "C-z")
+                '(shell-pop-window-height 30))
+               :ensure t)
 #+end_src
 
 ** Undo Tree
+#+NAME: undo-tree
 #+begin_src emacs-lisp
   (use-package undo-tree
-	       :config
-	       (global-undo-tree-mode t)
-	       :ensure t)
+               :config
+               (global-undo-tree-mode t)
+               :ensure t)
 #+end_src
 
 ** yasnippet
   - [[https://github.com/capitaomorte/yasnippet][capitaomorte/yasnippet]]
   - [[http://fukuyama.co/yasnippet][yasnippet 8.0の導入からスニペットの書き方、anything/helm/auto-completeとの連携 - Web学び]]
 
+#+NAME: yasnippet
 #+begin_src emacs-lisp
   (use-package yasnippet
-	       :config
-	       (yas-global-mode 1)
-	       :ensure t)
+               :config
+               (yas-global-mode 1)
+               :ensure t)
 #+end_src
 ** Magit
+#+NAME: magit
 #+begin_src emacs-lisp
   (use-package magit
-	       :bind ("C-c g" . magit-status)
-	       :ensure t)
+               :bind ("C-c g" . magit-status)
+               :ensure t)
 #+end_src
+
 ** open-junk-file
+
+#+NAME: open-junk-file
 #+begin_src emacs-lisp
   (use-package open-junk-file
-	       :bind ("C-c j" . open-junk-file)
-	       :config
-	       (setq open-junk-file-directory "~/tmp/junk/%Y/%m/%d-%H%M%S.")
-	       :ensure t)
+               :bind ("C-c j" . open-junk-file)
+               :config
+               (setq open-junk-file-directory "~/tmp/junk/%Y/%m/%d-%H%M%S.")
+               :ensure t)
 #+end_src
 
 ** 複数のカーソルを扱う:multiple-cursors
 - [[https://github.com/magnars/multiple-cursors.el][magnars/multiple-cursors.el]]
+
+#+NAME: multiple-cursors
 #+begin_src emacs-lisp
   (use-package multiple-cursors
-	       :ensure t)
+               :ensure t)
 #+end_src
 
 ** リージョンがある間のキーバインディングを変更する
+
+#+NAME: region-bindings-mode
 #+begin_src emacs-lisp
   (use-package region-bindings-mode
-	       :init
-	       (progn
-		 (region-bindings-mode-enable)
-		 (define-key region-bindings-mode-map
-		   "a" 'mc/mark-all-like-this)
-		 (define-key region-bindings-mode-map
-		   "p" 'mc/mark-previous-like-this)
-		 (define-key region-bindings-mode-map
-		   "n" 'mc/mark-next-like-this)
-		 (define-key region-bindings-mode-map
-		   "m" 'mc/mark-more-like-this-extended)
-		 (define-key region-bindings-mode-map
-		   "e" 'mc/edit-lines))
-	       :ensure t)
+               :init
+               (progn
+                 (region-bindings-mode-enable)
+                 (define-key region-bindings-mode-map
+                   "a" 'mc/mark-all-like-this)
+                 (define-key region-bindings-mode-map
+                   "p" 'mc/mark-previous-like-this)
+                 (define-key region-bindings-mode-map
+                   "n" 'mc/mark-next-like-this)
+                 (define-key region-bindings-mode-map
+                   "m" 'mc/mark-more-like-this-extended)
+                 (define-key region-bindings-mode-map
+                   "e" 'mc/edit-lines))
+                   :ensure t)
 #+end_src
 
-* 後処理
-** カスタマイズ設定を保存するファイルの指定
-  - 概要
-     - カスタマイズ設定を保存するファイルを指定して，読み込みます．
-       - custom.elには個人用の設定を書く
-     - このコードで設定した値は，custom.el内で上書きすることができます．
-  - 参考
-     - [[http://www.gnu.org/software/emacs/manual/html_node/emacs/Saving-Customizations.html][Saving Customizations - GNU Emacs Manual]]
+** org-mode
+*** Orgについて
+- マニュアル
+  - [[http://orgmode.org/org.html][The Org Manual]]
+  - [[http://orgmode.org/elpa.html][Org Emacs lisp Package Archive]]
 
+- Dropboxとの連携
+  - Dropboxと連携させると便利
+
+- 準備
+  - mkdir ~/Dropbox/Org
+- org-directory のデフォルトは~/org
+- これをDropboxの下にする．Dropbox/Org
+- ディレクトリは自分で作ること．
+
+- org-default-notes-file のデフォルトは .notes
+- ただし，.notesを開いてもorgモードにならないので，エラーになる．
+- だから，ファイル名は指定する必要がある． -> notes.org
+- その他に，t: Todoとj: Journal（日記帳）を．
+
+- notes.orgは，トップページ扱い
+
+| 説明                       | 変数名                 | 推奨               |
+|----------------------------+------------------------+--------------------|
+| 備忘録用ファイルを置く場所 | org-directory          | "~/Dropbox/Org"    |
+| アジェンダファイルの指定   | org-agenda-files       | ("~/Dropbox/Org/") |
+| デフォルトのノーツ         | org-default-notes-file | "notes.org"        |
+| キャプチャ                 | org-capture-templates  | t: Todo j: Journal |
+
+- org-agenda-files -> MobileOrgにPushする
+
+| 説明                           | 変数名                         | 推奨                          |
+|--------------------------------+--------------------------------+-------------------------------|
+| バックグランドでのエキスポート | org-export-in-background       | nil                           |
+| 画像を表示                     | org-startup-with-inline-images | t                             |
+| ToDoアイテムの状態             | org-todo-keywords              | TODO WAIT DONE SOMEDAY CANCEL |
+
+| 変数名                  | 設定例                             |
+|-------------------------+------------------------------------|
+| op/repository-directory | "/home/yc/git/ychubachi.github.io" |
+| op/site-domain          | "http://ychubachi.github.io/"      |
+
+*** 全体の定義
+
+#+NAME: org
+#+begin_src emacs-lisp
+  (use-package org
+               :bind
+               <<org-bind>>
+               :init
+               (progn
+                 <<org-caputure-templates>>
+                 <<org-todo-keywords>>
+                 <<org-babel-load-languages>>
+                 <<org-babel-sh-command>>
+                 <<org-deadline-warning-days>>
+                 <<org/truncate-lines>>
+                 <<org-agenda-custom-commands>>
+                 <<org-confirm-babel-evaluate>>
+                 <<org/mobile>>
+                 <<org-column-title>>
+                 <<org/custom-set-variables>>)
+               :ensure t)
+#+end_src
+
+*** キーバインド
+#+NAME: org-bind
+#+begin_src emacs-lisp
+  (("C-c l" . org-store-link)
+   ("C-c c" . org-capture)
+   ("C-c a" . org-agenda)
+   ("C-c b" . org-switchb))
+#+end_src
+
+*** キャプチャ
+#+NAME: org-caputure-templates
+#+begin_src emacs-lisp
+  (setq org-capture-templates
+        (quote
+         (("t" "Todo" entry (file+headline "todo.org" "Tasks")
+           "* TODO %?
+  ")
+          ("l" "Link as Todo" entry (file+headline "todo.org" "Tasks")
+           "* TODO %?
+  Link: %a
+  Text: %i
+  ")
+          ("j" "Journal" entry (file+datetree "journal.org")
+           "* %?
+  ")
+          ("b" "Bookmark" entry (file+headline "bookmark.org" "Bookmarks")
+           "* %a :bookmark:
+  引用: %i
+  %?
+  ")
+          )))
+#+end_src
+
+*** TODOの種類
+
+#+NAME: org-todo-keywords
+#+begin_src emacs-lisp
+  (setq org-todo-keywords
+        (quote
+         ((sequence
+           "TODO(t)"
+           "WIP(p)"
+           "WAIT(w)"
+           "|"
+           "DONE(d)"
+           "SOMEDAY(s)"
+           "CANCEL(c)"))))
+#+end_src
+
+*** 期日の何日前に予定表（Agenda）に表示するか
+
+#+NAME: org-deadline-warning-days
+#+begin_src emacs-lisp
+  (setq org-deadline-warning-days 7)
+#+end_src
+
+*** Babelで対応する言語
+#+NAME: org-babel-load-languages
+#+begin_src emacs-lisp
+  (setq org-babel-load-languages
+        (quote
+         ((emacs-lisp . t)
+          (dot . t)
+          (java . t)
+          (ruby . t)
+          (sh . t))))
+#+end_src
+*** BabelのShellのコードの実行にbashを使う
+   - デフォルトのシェルがzshなので，設定しておく．
+   - 2014-01-24現在，customizationの対応ではない模様．
+
+#+NAME: org-babel-sh-command
+#+begin_src emacs-lisp
+(setq org-babel-sh-command "bash")
+#+end_src
+
+*** Linewrap
+
+- [[http://superuser.com/questions/299886/linewrap-in-org-mode-of-emacs][Linewrap in Org-mode of Emacs? - Super User]]
+
+#+NAME: org/truncate-lines
+#+begin_src emacs-lisp
+  (define-key org-mode-map "\M-q" 'toggle-truncate-lines)
+#+end_src
+*** 予定表生成追加命令
+
+- [[http://orgmode.org/manual/Matching-tags-and-properties.html][Matching tags and properties - The Org Manual]]
+- [[https://www.gnu.org/software/emacs/manual/html_node/org/Special-agenda-views.html][Special agenda views - The Org Manual]]
+
+#+NAME: org-agenda-custom-commands
+#+begin_src emacs-lisp
+  (setq org-agenda-custom-commands
+	(quote
+	 (("x" "TODOs without Scheduled" tags-todo "+SCHEDULED=\"\"" nil)
+	  ("d" "TODOs without Deadline" tags-todo "+DEADLINE=\"\"" nil)
+	  ("p" "私用" tags-todo "+私用" nil)
+	  ("P" "私用以外" tags-todo "-私用" nil)
+	  ("n" "Agenda and all TODO's" ((agenda "" nil)
+					(alltodo "" nil)) nil))))
+#+end_src
+
+*** org-confirm-babel-evaluate
+
+#+NAME: org-confirm-babel-evaluate
+#+begin_src emacs-lisp
+  (setq org-confirm-babel-evaluate nil)
+#+end_src
+
+*** Mobile Org関連
+
+- [[https://github.com/matburt/mobileorg-android/wiki][Home · matburt/mobileorg-android Wiki]]
+
+
+#+NAME: org/mobile
+#+begin_src emacs-lisp
+  (setq org-mobile-directory "~/Dropbox/アプリ/MobileOrg")
+  (setq org-mobile-inbox-for-pull "~/Dropbox/Org/from-mobile.org")
+#+end_src
+
+*** カラムのタイトルのフォント
+- Heightをフォントの高さに合わせる
+
+#+NAME: org-column-title
+#+begin_src emacs-lisp
+  (custom-set-faces
+   '(org-column-title
+	 ((t (:background "grey30" :underline t :weight bold :height 135)))))
+#+end_src
+
+*** カスタマイズ
+
+#+NAME: org/custom-set-variables
+#+begin_src emacs-lisp
+(custom-set-variables
+ '(org-export-in-background nil)
+ '(org-src-fontify-natively t))
+#+end_src
+
+* カスタマイズ
+カスタマイズ設定を保存するファイルの指定
+  - 概要
+	 - カスタマイズ設定を保存するファイルを指定して，読み込みます．
+	   - custom.elには個人用の設定を書く
+	 - このコードで設定した値は，custom.el内で上書きすることができます．
+  - 参考
+	 - [[http://www.gnu.org/software/emacs/manual/html_node/emacs/Saving-Customizations.html][Saving Customizations - GNU Emacs Manual]]
+
+#+NAME: custom-file
 #+begin_src emacs-lisp
   (setq custom-file "~/.emacs.d/custom.el")
   (if (file-exists-p custom-file)
-      (load custom-file))
-#+end_src
-
-* フッタコメント
-#+begin_src emacs-lisp
-  ;;; init.el ends here
+	  (load custom-file))
 #+end_src

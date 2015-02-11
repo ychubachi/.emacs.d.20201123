@@ -1,21 +1,38 @@
+#+PROPERTY: header-args:emacs-lisp :tangle init.el
+#+PROPERTY: header-args            :results silent
+
+
+* TODO 不要な行末の空白を削除
+- org-modeで保存すると、勝手にフォーマットが変わる
+
+- 保存する前に，不要な空白を取り除きます．
+- 参考
+  - [[http://batsov.com/articles/2011/11/25/emacs-tip-number-3-whitespace-cleanup/][Emacs Tip #3: Whitespace Cleanup - (think)]]
+  - [[http://qiita.com/itiut@github/items/4d74da2412a29ef59c3a][Emacs - whitespace-modeを使って、ファイルの保存時に行末のスペースや末尾の改行を削除する - Qiita]]
+
+#+begin_src emacs-lisp
+##  (add-hook 'before-save-hook
+##   'whitespace-cleanup)
+#+end_src
+
 * system-typeに応じたcustom.el
 
 #+begin_src emacs-lisp
   (let (custom-file-system-name)
-    (setq custom-file-system-name
+	(setq custom-file-system-name
 	  (format "~/.emacs.d/custom/%s.el" (system-name)))
-    (when (file-exists-p custom-file-system-name)
-      (message "%s" (format "%sを読み込みます" custom-file-system-name))
-      (load custom-file)))
+	(when (file-exists-p custom-file-system-name)
+	  (message "%s" (format "%sを読み込みます" custom-file-system-name))
+	  (load custom-file)))
 #+end_src
 
 * 日本語入力時のカーソル色の変更
 
 #+begin_src emacs-lisp
   (add-hook 'input-method-activate-hook
-	    '(lambda () (set-cursor-color "green")))
+		'(lambda () (set-cursor-color "green")))
   (add-hook 'input-method-inactivate-hook
-	    '(lambda () (set-cursor-color "orchid")))
+		'(lambda () (set-cursor-color "orchid")))
 #+end_src
 
 * 開始の通知
@@ -49,18 +66,18 @@
 
 #+begin_src emacs-lisp
   (when (eq system-type 'gnu/linux)
-    (require 'mozc)
-    (setq default-input-method "japanese-mozc")
-    (setq mozc-candidate-style 'overlay))
+	(require 'mozc)
+	(setq default-input-method "japanese-mozc")
+	(setq mozc-candidate-style 'overlay))
 #+end_src
 
 * after-init-hookの設定
   - after-init-hookはパッケージの初期化が完了したら呼ばれるフックです．
-    - [[http://www.gnu.org/software/emacs/manual/html_node/elisp/Init-File.html#Init-File][Init File - GNU Emacs Lisp Reference Manual]]
+	- [[http://www.gnu.org/software/emacs/manual/html_node/elisp/Init-File.html#Init-File][Init File - GNU Emacs Lisp Reference Manual]]
 
 #+begin_src emacs-lisp
-    (add-hook 'after-init-hook
-	      (lambda ()
+	(add-hook 'after-init-hook
+		  (lambda ()
 		(message "%s" "%% custom.elを読み込みました %%")))
 #+end_src
 
@@ -80,14 +97,14 @@
 
 #+begin_src emacs-lisp
   (let ((default-directory "~/.emacs.d/git/"))
-    (normal-top-level-add-subdirs-to-load-path))
+	(normal-top-level-add-subdirs-to-load-path))
 #+end_src
 
 - ソースコードで管理するライブラリを追加します．
 
 #+begin_src emacs-lisp
   (let ((default-directory "~/.emacs.d/site-lisp/"))
-    (normal-top-level-add-subdirs-to-load-path))
+	(normal-top-level-add-subdirs-to-load-path))
 #+end_src
 
 * TODO mu4e [[https://github.com/ychubachi/.emacs.d/blob/master/plugins-available/mu4e.org][(GitHub)]]
@@ -207,10 +224,10 @@ don't save message to Sent Messages, Gmail/IMAP takes care of this
 ;;  (setq mu4e-sent-messages-behavior 'delete)
 #+end_src
 
-      ;; setup some handy shortcuts
-      ;; you can quickly switch to your Inbox -- press ``ji''
-      ;; then, when you want archive some messages, move them to
-      ;; the 'All Mail' folder by pressing ``ma''.
+	  ;; setup some handy shortcuts
+	  ;; you can quickly switch to your Inbox -- press ``ji''
+	  ;; then, when you want archive some messages, move them to
+	  ;; the 'All Mail' folder by pressing ``ma''.
 
 rでrefileしたほうが便利．
 
@@ -259,7 +276,7 @@ SMTPの設定．Emacs標準のコンポーネント．
 
 #+begin_src emacs-lisp
 ;;  (add-to-list 'mu4e-view-actions
-;;	       '("View in browser" . mu4e-action-view-in-browser) t)
+;;		   '("View in browser" . mu4e-action-view-in-browser) t)
 #+end_src
 
 HTML形式のメールをEmacs内で読むためにテキスト形式に整形するための
@@ -376,7 +393,7 @@ Gmailでスターをつけると，flagが付く．
 (let (custom-file-system-name)
   (setq custom-file-system-name
 	(format "custom-%s.el" system-type)) ; => "custom-gnu/linux.el"
-  (message custom-file-system-name))	       ; => "custom-gnu/linux.el"
+  (message custom-file-system-name))		   ; => "custom-gnu/linux.el"
 
 * smartrep.el
 - [[http://sheephead.homelinux.org/2011/12/19/6930/][連続操作を素敵にするsmartrep.el作った - sheephead]]
@@ -392,14 +409,14 @@ Gmailでスターをつけると，flagが付く．
 
 #+begin_src emacs-lisp
   (eval-after-load "org"
-    '(progn
-       (smartrep-define-key
+	'(progn
+	   (smartrep-define-key
 	   org-mode-map
 	   "C-c" '(("C-n" . (lambda ()
-			      (outline-next-visible-heading 1)))
+				  (outline-next-visible-heading 1)))
 		   ("C-p" . (lambda ()
-			      (outline-previous-visible-heading 1)))))
-       ))
+				  (outline-previous-visible-heading 1)))))
+	   ))
 #+end_src
 
 * TODO PHP
@@ -424,8 +441,8 @@ Gmailでスターをつけると，flagが付く．
 
 #+begin_src emacs-lisp
   (add-hook 'outline-minor-mode-hook
-	    (lambda () (local-set-key "\C-c\C-o"
-				      outline-mode-prefix-map)))
+		(lambda () (local-set-key "\C-c\C-o"
+					  outline-mode-prefix-map)))
 #+end_src
 * lispxmp - lisp式の評価結果を注釈する
 
@@ -440,39 +457,39 @@ Gmailでスターをつけると，flagが付く．
 * TODO markdown
   - [[http://jblevins.org/projects/markdown-mode/][Emacs Markdown Mode]]
   - 拡張子が.text，.markdown，.mdであるファイルはmarkdown-modeになる
-    （markdown-mode-autoloads.el参照）．
+	（markdown-mode-autoloads.el参照）．
 
 * markdownモードでアウトラインを有効にする
 
 #+begin_src emacs-lisp
   (add-hook 'markdown-mode-hook
-	    '(lambda () (outline-minor-mode t)))
+		'(lambda () (outline-minor-mode t)))
 #+end_src
 * auto-complete - 自動補間
   - [[http://cx4a.org/software/auto-complete/index.ja.html][Auto Complete Mode - GNU Emacsのための最も賢い自動補完機能]]
 * Clean Mode Line
   - mode-lineのモード情報をコンパクトに表示する- Life is very short
-    - http://d.hatena.ne.jp/syohex/20130131/1359646452
+	- http://d.hatena.ne.jp/syohex/20130131/1359646452
 
 #+begin_src emacs-lisp
 (defvar mode-line-cleaner-alist
   '( ;; For minor-mode, first char is 'space'
-    (yas-minor-mode . " Ys")
-    (paredit-mode . " Pe")
-    (eldoc-mode . "")
-    (abbrev-mode . "")
-    (undo-tree-mode . " Ut")
-    (elisp-slime-nav-mode . " EN")
-    (helm-gtags-mode . " HG")
-    (flymake-mode . " Fm")
-    (outline-minor-mode . " Ol")
-    (ibus-mode . " IB")
-    ;; Major modes
-    (lisp-interaction-mode . "Li")
-    (python-mode . "Py")
-    (ruby-mode   . "Rb")
-    (emacs-lisp-mode . "El")
-    (markdown-mode . "Md")))
+	(yas-minor-mode . " Ys")
+	(paredit-mode . " Pe")
+	(eldoc-mode . "")
+	(abbrev-mode . "")
+	(undo-tree-mode . " Ut")
+	(elisp-slime-nav-mode . " EN")
+	(helm-gtags-mode . " HG")
+	(flymake-mode . " Fm")
+	(outline-minor-mode . " Ol")
+	(ibus-mode . " IB")
+	;; Major modes
+	(lisp-interaction-mode . "Li")
+	(python-mode . "Py")
+	(ruby-mode   . "Rb")
+	(emacs-lisp-mode . "El")
+	(markdown-mode . "Md")))
 
 (defun clean-mode-line ()
   (interactive)
@@ -480,10 +497,10 @@ Gmailでスターをつけると，flagが付く．
 	do
 	(let ((old-mode-str (cdr (assq mode minor-mode-alist))))
 	  (when old-mode-str
-	    (setcar old-mode-str mode-str))
+		(setcar old-mode-str mode-str))
 	  ;; major mode
 	  (when (eq mode major-mode)
-	    (setq mode-name mode-str)))))
+		(setq mode-name mode-str)))))
 
 (add-hook 'after-change-major-mode-hook 'clean-mode-line)
 #+end_src
@@ -496,16 +513,16 @@ Gmailでスターをつけると，flagが付く．
 
 #+begin_src emacs-lisp
   (eval-after-load "tex-jp"
-    '(progn
-       (setq TeX-engine-alist '((pdfuptex "pdfupTeX"
+	'(progn
+	   (setq TeX-engine-alist '((pdfuptex "pdfupTeX"
 					  "ptex2pdf -u -e -ot '%S %(mode)'"
 					  "ptex2pdf -u -l -ot '%S %(mode)'"
 					  "euptex")))
-       (setq japanese-TeX-engine-default 'pdfuptex)
-       (setq TeX-view-program-selection '((output-dvi "Evince")
+	   (setq japanese-TeX-engine-default 'pdfuptex)
+	   (setq TeX-view-program-selection '((output-dvi "Evince")
 					  (output-pdf "Evince")))
-       (setq japanese-LaTeX-default-style "jsarticle")
-       (dolist (command '("pTeX" "pLaTeX" "pBibTeX" "jTeX" "jLaTeX" "jBibTeX" "Mendex"))
+	   (setq japanese-LaTeX-default-style "jsarticle")
+	   (dolist (command '("pTeX" "pLaTeX" "pBibTeX" "jTeX" "jLaTeX" "jBibTeX" "Mendex"))
 	 (delq (assoc command TeX-command-list) TeX-command-list))))
   (setq preview-image-type 'dvipng)
   (setq TeX-source-correlate-method 'synctex)
@@ -514,83 +531,83 @@ Gmailでスターをつけると，flagが付く．
   (add-hook 'LaTeX-mode-hook 'TeX-PDF-mode)
   (add-hook 'LaTeX-mode-hook 'LaTeX-math-mode)
   (add-hook 'LaTeX-mode-hook
-	    (function (lambda ()
+		(function (lambda ()
 			(add-to-list 'TeX-command-list
-				     '("Latexmk"
-				       "latexmk %t"
-				       TeX-run-TeX nil (latex-mode) :help "Run Latexmk"))
+					 '("Latexmk"
+					   "latexmk %t"
+					   TeX-run-TeX nil (latex-mode) :help "Run Latexmk"))
 			(add-to-list 'TeX-command-list
-				     '("Latexmk-pdfupLaTeX"
-				       "latexmk -e '$latex=q/uplatex %%O %S %(mode) %%S/' -e '$bibtex=q/upbibtex %%O %%B/' -e '$biber=q/biber %%O --bblencoding=utf8 -u -U --output_safechars %%B/' -e '$makeindex=q/mendex %%O -U -o %%D %%S/' -e '$dvipdf=q/dvipdfmx %%O -o %%D %%S/' -norc -gg -pdfdvi %t"
-				       TeX-run-TeX nil (latex-mode) :help "Run Latexmk-pdfupLaTeX"))
+					 '("Latexmk-pdfupLaTeX"
+					   "latexmk -e '$latex=q/uplatex %%O %S %(mode) %%S/' -e '$bibtex=q/upbibtex %%O %%B/' -e '$biber=q/biber %%O --bblencoding=utf8 -u -U --output_safechars %%B/' -e '$makeindex=q/mendex %%O -U -o %%D %%S/' -e '$dvipdf=q/dvipdfmx %%O -o %%D %%S/' -norc -gg -pdfdvi %t"
+					   TeX-run-TeX nil (latex-mode) :help "Run Latexmk-pdfupLaTeX"))
 			(add-to-list 'TeX-command-list
-				     '("Latexmk-pdfupLaTeX2"
-				       "latexmk -e '$latex=q/uplatex %%O %S %(mode) %%S/' -e '$bibtex=q/upbibtex %%O %%B/' -e '$biber=q/biber %%O --bblencoding=utf8 -u -U --output_safechars %%B/' -e '$makeindex=q/mendex %%O -U -o %%D %%S/' -e '$dvips=q/dvips %%O -z -f %%S | convbkmk -u > %%D/' -e '$ps2pdf=q/ps2pdf %%O %%S %%D/' -norc -gg -pdfps %t"
-				       TeX-run-TeX nil (latex-mode) :help "Run Latexmk-pdfupLaTeX2"))
+					 '("Latexmk-pdfupLaTeX2"
+					   "latexmk -e '$latex=q/uplatex %%O %S %(mode) %%S/' -e '$bibtex=q/upbibtex %%O %%B/' -e '$biber=q/biber %%O --bblencoding=utf8 -u -U --output_safechars %%B/' -e '$makeindex=q/mendex %%O -U -o %%D %%S/' -e '$dvips=q/dvips %%O -z -f %%S | convbkmk -u > %%D/' -e '$ps2pdf=q/ps2pdf %%O %%S %%D/' -norc -gg -pdfps %t"
+					   TeX-run-TeX nil (latex-mode) :help "Run Latexmk-pdfupLaTeX2"))
 			(add-to-list 'TeX-command-list
-				     '("Latexmk-pdfLaTeX"
-				       "latexmk -e '$pdflatex=q/pdflatex %%O %S %(mode) %%S/' -e '$bibtex=q/bibtex %%O %%B/' -e '$biber=q/biber %%O --bblencoding=utf8 -u -U --output_safechars %%B/' -e '$makeindex=q/makeindex %%O -o %%D %%S/' -norc -gg -pdf %t"
-				       TeX-run-TeX nil (latex-mode) :help "Run Latexmk-pdfLaTeX"))
+					 '("Latexmk-pdfLaTeX"
+					   "latexmk -e '$pdflatex=q/pdflatex %%O %S %(mode) %%S/' -e '$bibtex=q/bibtex %%O %%B/' -e '$biber=q/biber %%O --bblencoding=utf8 -u -U --output_safechars %%B/' -e '$makeindex=q/makeindex %%O -o %%D %%S/' -norc -gg -pdf %t"
+					   TeX-run-TeX nil (latex-mode) :help "Run Latexmk-pdfLaTeX"))
 			(add-to-list 'TeX-command-list
-				     '("Latexmk-LuaLaTeX"
-				       "latexmk -e '$pdflatex=q/lualatex %%O %S %(mode) %%S/' -e '$bibtex=q/bibtexu %%O %%B/' -e '$biber=q/biber %%O --bblencoding=utf8 -u -U --output_safechars %%B/' -e '$makeindex=q/makeindex %%O -o %%D %%S/' -norc -gg -pdf %t"
-				       TeX-run-TeX nil (latex-mode) :help "Run Latexmk-LuaLaTeX"))
+					 '("Latexmk-LuaLaTeX"
+					   "latexmk -e '$pdflatex=q/lualatex %%O %S %(mode) %%S/' -e '$bibtex=q/bibtexu %%O %%B/' -e '$biber=q/biber %%O --bblencoding=utf8 -u -U --output_safechars %%B/' -e '$makeindex=q/makeindex %%O -o %%D %%S/' -norc -gg -pdf %t"
+					   TeX-run-TeX nil (latex-mode) :help "Run Latexmk-LuaLaTeX"))
 			(add-to-list 'TeX-command-list
-				     '("Latexmk-LuaJITLaTeX"
-				       "latexmk -e '$pdflatex=q/luajitlatex %%O %S %(mode) %%S/' -e '$bibtex=q/bibtexu %%O %%B/' -e '$biber=q/biber %%O --bblencoding=utf8 -u -U --output_safechars %%B/' -e '$makeindex=q/makeindex %%O -o %%D %%S/' -norc -gg -pdf %t"
-				       TeX-run-TeX nil (latex-mode) :help "Run Latexmk-LuaJITLaTeX"))
+					 '("Latexmk-LuaJITLaTeX"
+					   "latexmk -e '$pdflatex=q/luajitlatex %%O %S %(mode) %%S/' -e '$bibtex=q/bibtexu %%O %%B/' -e '$biber=q/biber %%O --bblencoding=utf8 -u -U --output_safechars %%B/' -e '$makeindex=q/makeindex %%O -o %%D %%S/' -norc -gg -pdf %t"
+					   TeX-run-TeX nil (latex-mode) :help "Run Latexmk-LuaJITLaTeX"))
 			(add-to-list 'TeX-command-list
-				     '("Latexmk-XeLaTeX"
-				       "latexmk -e '$pdflatex=q/xelatex %%O %S %(mode) %%S/' -e '$bibtex=q/bibtexu %%O %%B/' -e '$biber=q/biber %%O --bblencoding=utf8 -u -U --output_safechars %%B/' -e '$makeindex=q/makeindex %%O -o %%D %%S/' -norc -gg -pdf %t"
-				       TeX-run-TeX nil (latex-mode) :help "Run Latexmk-XeLaTeX"))
+					 '("Latexmk-XeLaTeX"
+					   "latexmk -e '$pdflatex=q/xelatex %%O %S %(mode) %%S/' -e '$bibtex=q/bibtexu %%O %%B/' -e '$biber=q/biber %%O --bblencoding=utf8 -u -U --output_safechars %%B/' -e '$makeindex=q/makeindex %%O -o %%D %%S/' -norc -gg -pdf %t"
+					   TeX-run-TeX nil (latex-mode) :help "Run Latexmk-XeLaTeX"))
 			(add-to-list 'TeX-command-list
-				     '("xdg-open"
-				       "xdg-open %s.pdf"
-				       TeX-run-discard-or-function t t :help "Run xdg-open"))
+					 '("xdg-open"
+					   "xdg-open %s.pdf"
+					   TeX-run-discard-or-function t t :help "Run xdg-open"))
 			(add-to-list 'TeX-command-list
-				     '("Evince"
-				       "evince %s.pdf"
-				       TeX-run-discard-or-function t t :help "Run Evince"))
+					 '("Evince"
+					   "evince %s.pdf"
+					   TeX-run-discard-or-function t t :help "Run Evince"))
 			(add-to-list 'TeX-command-list
-				     '("fwdevince"
-				       "fwdevince %s.pdf %n \"%b\""
-				       TeX-run-discard-or-function t t :help "Forward search with Evince"))
+					 '("fwdevince"
+					   "fwdevince %s.pdf %n \"%b\""
+					   TeX-run-discard-or-function t t :help "Forward search with Evince"))
 			(add-to-list 'TeX-command-list
-				     '("Okular"
-				       "okular --unique \"file:\"%s.pdf\"#src:%n %a\""
-				       TeX-run-discard-or-function t t :help "Forward search with Okular"))
+					 '("Okular"
+					   "okular --unique \"file:\"%s.pdf\"#src:%n %a\""
+					   TeX-run-discard-or-function t t :help "Forward search with Okular"))
 			(add-to-list 'TeX-command-list
-				     '("zathura"
-				       "zathura -s -x \"emacsclient --no-wait +%%{line} %%{input}\" %s.pdf"
-				       TeX-run-discard-or-function t t :help "Run zathura"))
+					 '("zathura"
+					   "zathura -s -x \"emacsclient --no-wait +%%{line} %%{input}\" %s.pdf"
+					   TeX-run-discard-or-function t t :help "Run zathura"))
 			(add-to-list 'TeX-command-list
-				     '("fwdzathura"
-				       "zathura --synctex-forward %n:0:%b %s.pdf"
-				       TeX-run-discard-or-function t t :help "Forward search with zathura"))
+					 '("fwdzathura"
+					   "zathura --synctex-forward %n:0:%b %s.pdf"
+					   TeX-run-discard-or-function t t :help "Forward search with zathura"))
 			(add-to-list 'TeX-command-list
-				     '("qpdfview"
-				       "qpdfview --unique \"\"%s.pdf\"#src:%b:%n:0\""
-				       TeX-run-discard-or-function t t :help "Forward search with qpdfview"))
+					 '("qpdfview"
+					   "qpdfview --unique \"\"%s.pdf\"#src:%b:%n:0\""
+					   TeX-run-discard-or-function t t :help "Forward search with qpdfview"))
 			(add-to-list 'TeX-command-list
-				     '("TeXworks"
-				       "synctex view -i \"%n:0:%b\" -o %s.pdf -x \"texworks --position=%%{page+1} %%{output}\""
-				       TeX-run-discard-or-function t t :help "Run TeXworks"))
+					 '("TeXworks"
+					   "synctex view -i \"%n:0:%b\" -o %s.pdf -x \"texworks --position=%%{page+1} %%{output}\""
+					   TeX-run-discard-or-function t t :help "Run TeXworks"))
 			(add-to-list 'TeX-command-list
-				     '("TeXstudio"
-				       "synctex view -i \"%n:0:%b\" -o %s.pdf -x \"texstudio --pdf-viewer-only --page %%{page+1} %%{output}\""
-				       TeX-run-discard-or-function t t :help "Run TeXstudio"))
+					 '("TeXstudio"
+					   "synctex view -i \"%n:0:%b\" -o %s.pdf -x \"texstudio --pdf-viewer-only --page %%{page+1} %%{output}\""
+					   TeX-run-discard-or-function t t :help "Run TeXstudio"))
 			(add-to-list 'TeX-command-list
-				     '("MuPDF"
-				       "mupdf %s.pdf"
-				       TeX-run-discard-or-function t t :help "Run MuPDF"))
+					 '("MuPDF"
+					   "mupdf %s.pdf"
+					   TeX-run-discard-or-function t t :help "Run MuPDF"))
 			(add-to-list 'TeX-command-list
-				     '("Firefox"
-				       "firefox -new-window %s.pdf"
-				       TeX-run-discard-or-function t t :help "Run Mozilla Firefox"))
+					 '("Firefox"
+					   "firefox -new-window %s.pdf"
+					   TeX-run-discard-or-function t t :help "Run Mozilla Firefox"))
 			(add-to-list 'TeX-command-list
-				     '("Chromium"
-				       "chromium --new-window %s.pdf"
-				       TeX-run-discard-or-function t t :help "Run Chromium")))))
+					 '("Chromium"
+					   "chromium --new-window %s.pdf"
+					   TeX-run-discard-or-function t t :help "Run Chromium")))))
 
   ;;
   ;; RefTeX with AUCTeX
@@ -633,7 +650,7 @@ Gmailでスターをつけると，flagが付く．
    - [[http://www49.atwiki.jp/ntemacs/m/pages/32.html][NTEmacs @ ウィキ - helm を使うための設定 - @ｳｨｷﾓﾊﾞｲﾙ]]
    - [[http://qiita.com/akisute3@github/items/7c8ea3970e4cbb7baa97][Emacs - helm-mode 有効時でも helm-find-files は無効にする - Qiita {キータ}]]
    - [[http://www.fan.gr.jp/~ring/doc/elisp_19/elisp-jp_14.html#IDX592][GNU Emacs Lispリファレンス・マニュアル: 12. マクロ]]
-     - 逆引用符は`,'の引数を評価し、 リスト構造にその値を入れます。
+	 - 逆引用符は`,'の引数を評価し、 リスト構造にその値を入れます。
    - helm-mode 1 はおせっかいすぎるので使わない
 
 ** パッケージの読み込み
@@ -670,7 +687,7 @@ Gmailでスターをつけると，flagが付く．
 		   imenu-anywhere
 		   helm-c-yasnippet))
   (when (not (package-installed-p package))
-    (package-install package)))
+	(package-install package)))
 #+end_src
 
 ** ???
@@ -680,29 +697,29 @@ Gmailでスターをつけると，flagが付く．
 (require 'helm-descbinds)
 
 (setq helm-idle-delay             0.1
-      helm-input-idle-delay       0.1
-      helm-candidate-number-limit 200)
+	  helm-input-idle-delay       0.1
+	  helm-candidate-number-limit 200)
 #+end_src
 
 ** helm-migemo - ローマ字検索
 
 #+begin_src emacs-lisp
   (when (executable-find "cmigemo")
-    (require 'helm-migemo)
-    (setq helm-use-migemo t)
+	(require 'helm-migemo)
+	(setq helm-use-migemo t)
 
-    (defadvice helm-c-apropos
-      (around ad-helm-apropos activate)
-      "候補が表示されないときがあるので migemoらないように設定."
-      (let ((helm-use-migemo nil))
+	(defadvice helm-c-apropos
+	  (around ad-helm-apropos activate)
+	  "候補が表示されないときがあるので migemoらないように設定."
+	  (let ((helm-use-migemo nil))
 	ad-do-it))
 
-    (defadvice helm-M-x
-      (around ad-helm-M-x activate)
-      "候補が表示されないときがあるので migemoらないように設定."
-      (let ((helm-use-migemo nil))
+	(defadvice helm-M-x
+	  (around ad-helm-M-x activate)
+	  "候補が表示されないときがあるので migemoらないように設定."
+	  (let ((helm-use-migemo nil))
 	ad-do-it))
-    )
+	)
 #+end_src
 
 ** その他
@@ -756,223 +773,33 @@ Gmailでスターをつけると，flagが付く．
 
 #+begin_src emacs-lisp
   (unless (executable-find "cmigemo")
-    (warn "！！ 警告：cmigemoコマンドが呼び出せません　！！"))
+	(warn "！！ 警告：cmigemoコマンドが呼び出せません　！！"))
 #+end_src
 
 ** 設定
 
 #+begin_src emacs-lisp
   (when (and (executable-find "cmigemo")
-	     (require 'migemo nil t))
-    (setq migemo-options '("-q" "--emacs"))
+		 (require 'migemo nil t))
+	(setq migemo-options '("-q" "--emacs"))
 
-    (setq migemo-user-dictionary nil)
-    (setq migemo-regex-dictionary nil)
-    (setq migemo-coding-system 'utf-8-unix)
-    (load-library "migemo")
-    (migemo-init)
+	(setq migemo-user-dictionary nil)
+	(setq migemo-regex-dictionary nil)
+	(setq migemo-coding-system 'utf-8-unix)
+	(load-library "migemo")
+	(migemo-init)
 
-    (setq migemo-command "cmigemo")
+	(setq migemo-command "cmigemo")
 
-    (cond
-     ((eq system-type 'gnu/linux)
-      (setq migemo-dictionary "/usr/share/cmigemo/utf-8/migemo-dict"))
-     ((eq system-type 'darwin)
-      (setq migemo-dictionary "/usr/local/share/migemo/utf-8/migemo-dict")))
-    )
+	(cond
+	 ((eq system-type 'gnu/linux)
+	  (setq migemo-dictionary "/usr/share/cmigemo/utf-8/migemo-dict"))
+	 ((eq system-type 'darwin)
+	  (setq migemo-dictionary "/usr/local/share/migemo/utf-8/migemo-dict")))
+	)
 #+end_src
 
 * Org
-** Orgについて
-*** マニュアル
-  - [[http://orgmode.org/org.html][The Org Manual]]
-  - [[http://orgmode.org/elpa.html][Org Emacs lisp Package Archive]]
-*** Dropboxとの連携
-
-** orgパッケージのインストール
-
-#+begin_src emacs-lisp
-  (require 'org)
-#+end_src
-
-** 思いついたらすぐ記録（Capture）
-- 準備
-  - mkdir ~/Dropbox/Org
-- org-directory のデフォルトは~/org
-- これをDropboxの下にする．Dropbox/Org
-- ディレクトリは自分で作ること．
-
-- org-default-notes-file のデフォルトは .notes
-- ただし，.notesを開いてもorgモードにならないので，エラーになる．
-- だから，ファイル名は指定する必要がある． -> notes.org
-- その他に，t: Todoとj: Journal（日記帳）を．
-
-- notes.orgは，トップページ扱い
-
-| 説明                       | 変数名                 | 推奨               |
-|----------------------------+------------------------+--------------------|
-| 備忘録用ファイルを置く場所 | org-directory          | "~/Dropbox/Org"    |
-| アジェンダファイルの指定   | org-agenda-files       | ("~/Dropbox/Org/") |
-| デフォルトのノーツ         | org-default-notes-file | "notes.org"        |
-| キャプチャ                 | org-capture-templates  | t: Todo j: Journal |
-
-- org-agenda-files -> MobileOrgにPushする
-
-#+begin_src emacs-lisp
-  (setq org-default-notes-file "notes.org")
-#+end_src
-
-** キャプチャのテンプレート
-
-#+begin_src emacs-lisp
-    (setq org-capture-templates
-	  (quote
-	   (("t" "Todo" entry (file+headline "todo.org" "Tasks")
-	     "* TODO %?
-")
-	    ("l" "Link as Todo" entry (file+headline "todo.org" "Tasks")
-	     "* TODO %?
-  Link: %a
-  Text: %i
-")
-	    ("j" "Journal" entry (file+datetree "journal.org")
-	     "* %?
-")
-	    ("b" "Bookmark" entry (file+headline "bookmark.org" "Bookmarks")
-	     "* %a :bookmark:
-  　引用: %i
-  %?
-")
-	    )))
-#+end_src
-
-#+RESULTS:
-| t | Todo         | entry | (file+headline todo.org Tasks)         | * TODO %?\n                           |
-| l | Link as Todo | entry | (file+headline todo.org Tasks)         | * TODO %?\n  Link: %a\n  Text: %i\n   |
-| j | Journal      | entry | (file+datetree journal.org)            | * %?\n                                |
-| b | Bookmark     | entry | (file+headline bookmark.org Bookmarks) | * %a :bookmark:\n  　引用: %i\n  %?\n |
-
-** Mobile Org関連
-
-- [[https://github.com/matburt/mobileorg-android/wiki][Home · matburt/mobileorg-android Wiki]]
-
-
-#+begin_src emacs-lisp
-  (setq org-mobile-directory "~/Dropbox/アプリ/MobileOrg")
-  (setq org-mobile-inbox-for-pull "~/Dropbox/Org/from-mobile.org")
-#+end_src
-
-#+RESULTS:
-: ~/Dropbox/Org/from-mobile.org
-
-** Babel
-
-| 説明 | 変数名 | 推奨 |
-|------+--------+------|
-|      |        |      |
-
-#+begin_src emacs-lisp
-  (setq org-babel-load-languages
-	(quote
-	 ((emacs-lisp . t)
-	  (dot . t)
-	  (java . t)
-	  (ruby . t)
-	  (sh . t))))
-#+end_src
-
-#+RESULTS:
-| (emacs-lisp . t) | (dot . t) | (java . t) | (ruby . t) | (sh . t) |
-
-#+begin_src emacs-lisp
-  (setq org-confirm-babel-evaluate nil)
-#+end_src
-
-#+RESULTS:
-
-** 予定表生成追加命令
-
-- [[http://orgmode.org/manual/Matching-tags-and-properties.html][Matching tags and properties - The Org Manual]]
-- [[https://www.gnu.org/software/emacs/manual/html_node/org/Special-agenda-views.html][Special agenda views - The Org Manual]]
-
-#+begin_src emacs-lisp
-  (setq org-agenda-custom-commands
-	(quote
-	 (("x" "TODOs without Scheduled" tags-todo "+SCHEDULED=\"\"" nil)
-	  ("d" "TODOs without Deadline" tags-todo "+DEADLINE=\"\"" nil)
-	  ("p" "私用" tags-todo "+私用" nil)
-	  ("P" "私用以外" tags-todo "-私用" nil)
-	  ("n" "Agenda and all TODO's" ((agenda "" nil)
-					(alltodo "" nil)) nil))))
-#+end_src
-
-#+RESULTS:
-| x | TODOs without Scheduled | tags-todo                      | +SCHEDULED="" | nil |
-| d | TODOs without Deadline  | tags-todo                      | +DEADLINE=""  | nil |
-| p | 私用                    | tags-todo                      | +私用         | nil |
-| P | 私用以外                | tags-todo                      | -私用         | nil |
-| n | Agenda and all TODO's   | ((agenda  nil) (alltodo  nil)) | nil           |     |
-
-** Org Column Title
-- Heightをフォントの高さに合わせる
-
-** その他
-
-| 説明                           | 変数名                         | 推奨                          |
-|--------------------------------+--------------------------------+-------------------------------|
-| バックグランドでのエキスポート | org-export-in-background       | nil                           |
-| 画像を表示                     | org-startup-with-inline-images | t                             |
-| ToDoアイテムの状態             | org-todo-keywords              | TODO WAIT DONE SOMEDAY CANCEL |
-|                                |                                |                               |
-
-** TODOの種類
-
-#+begin_src emacs-lisp
-  (setq org-todo-keywords (quote ((sequence "TODO(t)" "WIP(p)" "WAIT(w)" "|" "DONE(d)" "SOMEDAY(s)" "CANCEL(c)"))))
-#+end_src
-
-#+RESULTS:
-| sequence | TODO(t) | WIP(p) | WAIT(w) |   |   | DONE(d) | SOMEDAY(s) | CANCEL(c) |
-
-** 期日の何日前に予定表（Agenda）に表示するか
-
-#+begin_src emacs-lisp
-  (setq org-deadline-warning-days 7)
-#+end_src
-
-#+RESULTS:
-: 7
-
-** Linewrap
-
-- [[http://superuser.com/questions/299886/linewrap-in-org-mode-of-emacs][Linewrap in Org-mode of Emacs? - Super User]]
-
-#+begin_src emacs-lisp
-  (define-key org-mode-map "\M-q" 'toggle-truncate-lines)
-#+end_src
-
-#+RESULTS:
-: toggle-truncate-lines
-
-** TODO 未整理
-
-#+begin_src emacs-lisp
-(custom-set-variables
- '(org-export-in-background nil)
- '(org-src-fontify-natively t))
-#+end_src
-
-** Shellのコードの実行にbashを使う
-    :PROPERTIES:
-    :ID:       adc108a7-c5d7-49b7-b1fb-bfb681d748b0
-    :END:
-   - デフォルトのシェルがzshなので，設定しておく．
-   - 2014-01-24現在，customizationの対応ではない模様．
-
-#+begin_src emacs-lisp
-(setq org-babel-sh-command "bash")
-#+end_src
-
 ** エキスポート
 *** Markdown export
 
@@ -1001,8 +828,8 @@ LaTeXでエキスポートできるようにします．
 (setq org-export-in-background t)
 
 (add-to-list 'org-latex-classes
-	     '("bxjsarticle"
-	       "\\documentclass{bxjsarticle}
+		 '("bxjsarticle"
+		   "\\documentclass{bxjsarticle}
 [NO-DEFAULT-PACKAGES]
 \\usepackage{zxjatype}
 \\usepackage[ipa]{zxjafont}
@@ -1016,30 +843,22 @@ LaTeXでエキスポートできるようにします．
   \\hypersetup{colorlinks=true}
 \\else
   \\ifdefined\\XeTeXversion
-      \\hypersetup{colorlinks=true}
+	  \\hypersetup{colorlinks=true}
   \\else
-    \\ifdefined\\directlua
-      \\hypersetup{pdfencoding=auto,colorlinks=true}
-    \\else
-      \\hypersetup{unicode,colorlinks=true}
-    \\fi
+	\\ifdefined\\directlua
+	  \\hypersetup{pdfencoding=auto,colorlinks=true}
+	\\else
+	  \\hypersetup{unicode,colorlinks=true}
+	\\fi
   \\fi
 \\fi"
-	       ("\\section{%s}" . "\\section*{%s}")
-	       ("\\subsection{%s}" . "\\subsection*{%s}")
-	       ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
-	       ("\\paragraph{%s}" . "\\paragraph*{%s}")
-	       ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
+		   ("\\section{%s}" . "\\section*{%s}")
+		   ("\\subsection{%s}" . "\\subsection*{%s}")
+		   ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+		   ("\\paragraph{%s}" . "\\paragraph*{%s}")
+		   ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
 
 #+end_src
-
-#+RESULTS:
-| beamer      | \documentclass{beamer}\n[NO-DEFAULT-PACKAGES]\n\usepackage{zxjatype}\n\usepackage[ipa]{zxjafont}\n\usepackage{xltxtra}\n\usepackage{amsmath}\n\usepackage{newtxtext,newtxmath}\n\usepackage{graphicx}\n\usepackage{hyperref}\n\usepackage{bxdpx-beamer}\n\AtBeginSection[]\n{\n  \begin{frame}<beamer>{Outline}\n  \tableofcontents[currentsection,currentsubsection]\n  \end{frame}\n}                                                                                                                                                                     | (\section{%s} . \section*{%s}) | (\subsection{%s} . \subsection*{%s}) | (\subsubsection{%s} . \subsubsection*{%s}) | (\paragraph{%s} . \paragraph*{%s})   | (\subparagraph{%s} . \subparagraph*{%s})   |
-| beamer      | \documentclass[presentation]{beamer}                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        | (\section{%s} . \section*{%s}) | (\subsection{%s} . \subsection*{%s}) | (\subsubsection{%s} . \subsubsection*{%s}) |                                      |                                            |
-| bxjsarticle | \documentclass{bxjsarticle}\n[NO-DEFAULT-PACKAGES]\n\usepackage{zxjatype}\n\usepackage[ipa]{zxjafont}\n\usepackage{xltxtra}\n\usepackage{amsmath}\n\usepackage{newtxtext,newtxmath}\n\usepackage{graphicx}\n\usepackage{hyperref}\n\ifdefined\kanjiskip\n  \usepackage{pxjahyper}\n  \hypersetup{colorlinks=true}\n\else\n  \ifdefined\XeTeXversion\n      \hypersetup{colorlinks=true}\n  \else\n    \ifdefined\directlua\n      \hypersetup{pdfencoding=auto,colorlinks=true}\n    \else\n      \hypersetup{unicode,colorlinks=true}\n    \fi\n  \fi\n\fi | (\section{%s} . \section*{%s}) | (\subsection{%s} . \subsection*{%s}) | (\subsubsection{%s} . \subsubsection*{%s}) | (\paragraph{%s} . \paragraph*{%s})   | (\subparagraph{%s} . \subparagraph*{%s})   |
-| article     | \documentclass[11pt]{article}                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               | (\section{%s} . \section*{%s}) | (\subsection{%s} . \subsection*{%s}) | (\subsubsection{%s} . \subsubsection*{%s}) | (\paragraph{%s} . \paragraph*{%s})   | (\subparagraph{%s} . \subparagraph*{%s})   |
-| report      | \documentclass[11pt]{report}                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                | (\part{%s} . \part*{%s})       | (\chapter{%s} . \chapter*{%s})       | (\section{%s} . \section*{%s})             | (\subsection{%s} . \subsection*{%s}) | (\subsubsection{%s} . \subsubsection*{%s}) |
-| book        | \documentclass[11pt]{book}                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  | (\part{%s} . \part*{%s})       | (\chapter{%s} . \chapter*{%s})       | (\section{%s} . \section*{%s})             | (\subsection{%s} . \subsection*{%s}) | (\subsubsection{%s} . \subsubsection*{%s}) |
 
 ソースコードのエクスポート．
 
@@ -1047,9 +866,6 @@ LaTeXでエキスポートできるようにします．
 (add-to-list 'org-latex-packages-alist '("" "minted"))
 (setq org-latex-listings 'minted)
 #+end_src
-
-#+RESULTS:
-: minted
 
 *** LeTex (beamer) export
  パッケージの読み込み
@@ -1062,8 +878,8 @@ LaTeXでエキスポートできるようにします．
 
 #+begin_src emacs-lisp
 (add-to-list 'org-latex-classes
-	     '("beamer"
-	       "\\documentclass[t]{beamer}
+		 '("beamer"
+		   "\\documentclass[t]{beamer}
 \\usepackage{zxjatype}
 \\usepackage[ipa]{zxjafont}
 \\setbeamertemplate{navigation symbols}{}
@@ -1075,9 +891,9 @@ LaTeXでエキスポートできるようにします．
   \\end{frame}
 }
 \\setbeamertemplate{navigation symbols}{}"
-	       ("\\section{%s}" . "\\section*{%s}")
-	       ("\\subsection{%s}" . "\\subsection*{%s}")
-	       ("\\subsubsection{%s}" . "\\subsubsection*{%s}")))
+		   ("\\section{%s}" . "\\section*{%s}")
+		   ("\\subsection{%s}" . "\\subsection*{%s}")
+		   ("\\subsubsection{%s}" . "\\subsubsection*{%s}")))
 #+end_src
 
 #+RESULTS:
@@ -1093,8 +909,8 @@ LaTeXでエキスポートできるようにします．
 
 #+begin_src emacs-lisp
 (add-to-list 'org-latex-classes
-	     '("beamer_lecture"
-	       "\\documentclass[t]{beamer}
+		 '("beamer_lecture"
+		   "\\documentclass[t]{beamer}
 [NO-DEFAULT-PACKAGES]
 \\usepackage{zxjatype}
 \\usepackage[ipa]{zxjafont}
@@ -1103,8 +919,8 @@ LaTeXでエキスポートできるようにします．
 \\AtBeginPart
 {
   \\begin{frame}<beamer|handout>
-    \\date{\\insertpart}
-    \\maketitle
+	\\date{\\insertpart}
+	\\maketitle
   \\end{frame}
 }
 \\AtBeginSection[]
@@ -1113,10 +929,10 @@ LaTeXでエキスポートできるようにします．
   \\tableofcontents[currentsection,currentsubsection]
   \\end{frame}
 }"
-	       ("\\part{%s}" . "\\part*{%s}")
-	       ("\\section{%s}" . "\\section*{%s}")
-	       ("\\subsection{%s}" . "\\subsection*{%s}")
-	       ("\\subsubsection{%s}" . "\\subsubsection*{%s}")))
+		   ("\\part{%s}" . "\\part*{%s}")
+		   ("\\section{%s}" . "\\section*{%s}")
+		   ("\\subsection{%s}" . "\\subsection*{%s}")
+		   ("\\subsubsection{%s}" . "\\subsubsection*{%s}")))
 #+end_src
 
 #+RESULTS:
@@ -1133,22 +949,14 @@ LaTeXでエキスポートできるようにします．
 | report         | \documentclass[11pt]{report}                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                | (\part{%s} . \part*{%s})                                                                                                                                                                                             | (\chapter{%s} . \chapter*{%s})       | (\section{%s} . \section*{%s})             | (\subsection{%s} . \subsection*{%s}) | (\subsubsection{%s} . \subsubsection*{%s}) |
 | book           | \documentclass[11pt]{book}                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  | (\part{%s} . \part*{%s})                                                                                                                                                                                             | (\chapter{%s} . \chapter*{%s})       | (\section{%s} . \section*{%s})             | (\subsection{%s} . \subsection*{%s}) | (\subsubsection{%s} . \subsubsection*{%s}) |
 
-** カラムのタイトルのフォント
-
-#+begin_src emacs-lisp
-  (custom-set-faces
-   '(org-column-title
-     ((t (:background "grey30" :underline t :weight bold :height 135)))))
-#+end_src
-
 *** 設定方法
   - C-c C-lでOrg形式のリンク挿入
   - [[http://stackoverflow.com/questions/7464951/how-to-make-org-protocol-work][firefox - How to make org-protocol work? - Stack Overflow]]
-    - gistで公開してあげようかな
+	- gistで公開してあげようかな
   - [[http://d.hatena.ne.jp/reppets/20111109/1320846292][Unityランチャーに自分でインストール/ビルドしたアプリケーションを登録する - reppets.log.1]]
   - [[http://kb.mozillazine.org/Register_protocol#Linux][Register protocol - MozillaZine Knowledge Base]]
   - [[http://orgmode.org/worg/org-contrib/org-protocol.html#sec-3-6]]
-    - 古い
+	- 古い
 
 [[http://orgmode.org/worg/org-contrib/org-protocol.html#sec-3-6][* org-protocol
 org-protocol.el – Intercept calls from emacsclient to trigger custom actions]]
@@ -1167,15 +975,7 @@ javascript:location.href='org-protocol://capture://t/'+encodeURIComponent(locati
 #+RESULTS:
 : org-protocol
 
-** キーバインディング
-
-#+begin_src emacs-lisp
-  (global-set-key (kbd "C-c l") 'org-store-link)
-  (global-set-key (kbd "C-c c") 'org-capture)
-  (global-set-key (kbd "C-c a") 'org-agenda)
-  (global-set-key (kbd "C-c b") 'org-switchb)
-#+end_src
-** TODO WebにHTMLでPublishする                                         :個人設定:
+** TODO WebにHTMLでPublishする 					       :個人設定:
    :PROPERTIES:
    :ID:       fcdb09c8-3a9a-4ea9-9482-10d445b6db9f
    :END:
@@ -1183,7 +983,7 @@ javascript:location.href='org-protocol://capture://t/'+encodeURIComponent(locati
 
 #+begin_src emacs-lisp
 (setq org-publish-project-alist
-      '(
+	  '(
 	("chubachi.net-notes"
 	 :base-directory "~/Ubuntu One/WebSites/chubachi.net/org/"
 	 :base-extension "org"
@@ -1206,26 +1006,19 @@ javascript:location.href='org-protocol://capture://t/'+encodeURIComponent(locati
 	 )
 	("chubachi.net"
 	 :components ("chubachi.net-notes" "chubachi.net-static"))
-      ))
+	  ))
 #+end_src
 
 * org-page
   - [[https://github.com/kelvinh/org-page][kelvinh/org-page]]
   - 新しいリポジトリを作る
-    - op/new-repository
+	- op/new-repository
   ｰ 公開
-    - op/do-publication
+	- op/do-publication
 
 #+begin_src emacs-lisp
 (require 'org-page)
 #+end_src
-
-** customize
-
-| 変数名                  | 設定例                             |
-|-------------------------+------------------------------------|
-| op/repository-directory | "/home/yc/git/ychubachi.github.io" |
-| op/site-domain          | "http://ychubachi.github.io/"      |
 
 * WordPressに記事を投稿（org2blog）
 ** 利用法
@@ -1270,8 +1063,8 @@ javascript:location.href='org-protocol://capture://t/'+encodeURIComponent(locati
 
 ** 備考
    - ソースコードを表示させるには
-     [[http://wordpress.org/plugins/syntaxhighlighter/][WordPress › SyntaxHighlighter Evolved « WordPress Plugins]]
-     をインストールしておく．
+	 [[http://wordpress.org/plugins/syntaxhighlighter/][WordPress › SyntaxHighlighter Evolved « WordPress Plugins]]
+	 をインストールしておく．
    - emacs lispには対応していない．残念．
 
 * Ruby
@@ -1289,7 +1082,7 @@ javascript:location.href='org-protocol://capture://t/'+encodeURIComponent(locati
 
 #+begin_src emacs-lisp
   (autoload 'ruby-mode "ruby-mode"
-    "Mode for editing ruby source files" t)
+	"Mode for editing ruby source files" t)
   (require 'ruby-mode)
 
   ;; ================================================================
@@ -1308,44 +1101,44 @@ javascript:location.href='org-protocol://capture://t/'+encodeURIComponent(locati
 
   (require 'outline)
   (add-hook 'ruby-mode-hook
-	    (function
-	     (lambda ()
-	       (defun ruby-outline-level ()
+		(function
+		 (lambda ()
+		   (defun ruby-outline-level ()
 		 (or (and (match-string 1)
 			  (or (cdr (assoc (match-string 1) outline-heading-alist))
-			      (- (match-end 1) (match-beginning 1))))
-		     (cdr (assoc (match-string 0) outline-heading-alist))
-		     (- (match-end 0) (match-beginning 0))))
+				  (- (match-end 1) (match-beginning 1))))
+			 (cdr (assoc (match-string 0) outline-heading-alist))
+			 (- (match-end 0) (match-beginning 0))))
 
-	       (set (make-local-variable 'outline-level) 'ruby-outline-level)
+		   (set (make-local-variable 'outline-level) 'ruby-outline-level)
 
-	       (set (make-local-variable 'outline-regexp)
-		    (rx (group (* " "))
+		   (set (make-local-variable 'outline-regexp)
+			(rx (group (* " "))
 			bow
 			(or "begin" "case" "class" "def" "else" "elsif"
-			    "ensure" "if" "module" "rescue" "when" "unless"
-			    "private")
+				"ensure" "if" "module" "rescue" "when" "unless"
+				"private")
 			eow))
-	       (outline-minor-mode))))
+		   (outline-minor-mode))))
 
   (add-hook 'rspec-mode-hook
-	    (function
-	     (lambda ()
-	       (defun rspec-outline-level ()
+		(function
+		 (lambda ()
+		   (defun rspec-outline-level ()
 		 (or (and (match-string 1)
 			  (or (cdr (assoc (match-string 1) outline-heading-alist))
-			      (- (match-end 1) (match-beginning 1))))
-		     (cdr (assoc (match-string 0) outline-heading-alist))
-		     (- (match-end 0) (match-beginning 0))))
+				  (- (match-end 1) (match-beginning 1))))
+			 (cdr (assoc (match-string 0) outline-heading-alist))
+			 (- (match-end 0) (match-beginning 0))))
 
-	       (set (make-local-variable 'outline-level) 'rspec-outline-level)
+		   (set (make-local-variable 'outline-level) 'rspec-outline-level)
 
-	       (set (make-local-variable 'outline-regexp)
-		    (rx (group (* " "))
+		   (set (make-local-variable 'outline-regexp)
+			(rx (group (* " "))
 			bow
 			(or "context" "describe" "it" "subject")
 			eow))
-	       (outline-minor-mode))))
+		   (outline-minor-mode))))
 
   ;; ================================================================
   ;; flymake関係
@@ -1412,19 +1205,19 @@ javascript:location.href='org-protocol://capture://t/'+encodeURIComponent(locati
   (require 'moz)
 
   (defun my/reload-firefox ()
-    "Reload firefox."
-    (interactive)
-    (comint-send-string (inferior-moz-process) "BrowserReload();"))
+	"Reload firefox."
+	(interactive)
+	(comint-send-string (inferior-moz-process) "BrowserReload();"))
 
   (defun my/run-rake-yard ()
-    "Run rake yard."
-    (interactive)
-    (shell-command "rake yard"))
+	"Run rake yard."
+	(interactive)
+	(shell-command "rake yard"))
 
   (define-key ruby-mode-map (kbd "C-c y") (lambda ()
-					    (interactive)
-					    (my/run-rake-yard)
-					    (my/reload-firefox)))
+						(interactive)
+						(my/run-rake-yard)
+						(my/reload-firefox)))
 #+end_src
 
 * Windows用設定
@@ -1432,8 +1225,8 @@ javascript:location.href='org-protocol://capture://t/'+encodeURIComponent(locati
 
 #+begin_src emacs-lisp :noweb yes
   (when (or (eq system-type 'windows-nt)
-	    (eq system-type 'cygwin))
-    <<windows-settings>>
+		(eq system-type 'cygwin))
+	<<windows-settings>>
   )
 #+end_src
 
@@ -1462,9 +1255,9 @@ javascript:location.href='org-protocol://capture://t/'+encodeURIComponent(locati
 
   ;;;** IME ON/OFF時のカーソルカラー
   (add-hook 'input-method-activate-hook
-	    (lambda() (set-cursor-color "green")))
+		(lambda() (set-cursor-color "green")))
   (add-hook 'input-method-inactivate-hook
-	    (lambda() (set-cursor-color "red")))
+		(lambda() (set-cursor-color "red")))
 
   ;;;** バッファ切り替え時にIME状態を引き継ぐ
   (setq w32-ime-buffer-switch-p nil)
@@ -1480,7 +1273,7 @@ javascript:location.href='org-protocol://capture://t/'+encodeURIComponent(locati
 #+end_src
 * Scala
   - 参考
-    - [[http://futurismo.biz/archives/2449][EmacsでScala開発環境を構築(Ensime) | Futurismo]]
+	- [[http://futurismo.biz/archives/2449][EmacsでScala開発環境を構築(Ensime) | Futurismo]]
 
 #+begin_src emacs-lisp
 (require 'ensime)
@@ -1511,19 +1304,19 @@ javascript:location.href='org-protocol://capture://t/'+encodeURIComponent(locati
 
 #+begin_src emacs-lisp
   (when (eq system-type 'gnu/linux)
-    (global-set-key (kbd "C-o") 'toggle-input-method))
+	(global-set-key (kbd "C-o") 'toggle-input-method))
 #+end_src
 
 ** 個人用キーマップの設定
 #+begin_src emacs-lisp
   (defun my/fullscreen ()
-    (interactive)
-    (set-frame-parameter
-     nil
-     'fullscreen
-     (if (frame-parameter nil 'fullscreen)
+	(interactive)
+	(set-frame-parameter
 	 nil
-       'fullboth)))
+	 'fullscreen
+	 (if (frame-parameter nil 'fullscreen)
+	 nil
+	   'fullboth)))
   (global-set-key [f11] 'my/fullscreen)
 
   ;; (defun my/open-init-folder()
@@ -1534,9 +1327,9 @@ javascript:location.href='org-protocol://capture://t/'+encodeURIComponent(locati
 
 
   (defun my/other-window-backward ()
-    "Move to other window backward."
-    (interactive)
-    (other-window -1))
+	"Move to other window backward."
+	(interactive)
+	(other-window -1))
 #+end_src
 
 #+begin_src emacs-lisp
@@ -1563,4 +1356,13 @@ javascript:location.href='org-protocol://capture://t/'+encodeURIComponent(locati
 	 (define-key 'personal-map (kbd "p") 'evince-forward-search))
 	((eq system-type 'darwin)
 	 (define-key 'personal-map (kbd "p") 'skim-forward-search)))
+#+end_src
+* TODO
+** TODO ace-jump-mode
+#+begin_src emacs-lisp
+  (use-package ace-jump-mode
+               :disabled
+               :bind (("C-." . ace-jump-mode)
+                      ("C-," . ace-jump-line-mode))
+               :ensure t)
 #+end_src
