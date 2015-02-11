@@ -54,9 +54,6 @@
 (require 'yasnippet)
 (yas-global-mode 1)
 
-(add-hook 'before-save-hook
- 'whitespace-cleanup)
-
 (require 'wdired)
 (define-key dired-mode-map "r"
   'wdired-change-to-wdired-mode)
