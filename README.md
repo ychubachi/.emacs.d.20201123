@@ -1,3 +1,13 @@
+* What is this?
+
+This is my init for Emacs.
+
+For debug,
+
+```
+/usr/local/bin/emacs -q -l init.el
+```
+
 * Keybind
 
 ```
@@ -31,17 +41,17 @@ grep -nH -e define-key *
 10-wdired.el:3:(define-key dired-mode-map "r"
 30-auto-complete.el:9:(define-key ac-complete-mode-map "\C-n" 'ac-next)
 30-auto-complete.el:10:(define-key ac-complete-mode-map "\C-p" 'ac-previous)
-30-haml-mode.el:14:	     (define-key haml-mode-map "\C-m" 'newline-and-indent)))
+30-haml-mode.el:14:		 (define-key haml-mode-map "\C-m" 'newline-and-indent)))
 30-ido.el_:18:; (define-key ido-mode-map (kbd "C-p") 'ido-prev-match) うまくいかない
 30-ido.el_:19:; (define-key ido-mode-map (kbd "C-n") 'ido-next-match)
-30-scss-mode.el:14:	     (define-key haml-mode-map "\C-m" 'newline-and-indent)))
-30-shell.el:13:	     (define-key term-raw-map (kbd "C-h") 'term-send-backspace)
-30-shell.el:15:	     (define-key term-raw-map (kbd "C-y") 'term-paste)
-30-shell.el:17:	     (define-key term-raw-map (kbd "C-c C-p") 'term-send-up)
-30-shell.el:19:	     (define-key term-raw-map (kbd "C-c C-n") 'term-send-down)
-30-shell.el:22:	     (define-key term-raw-map  (kbd "C-'") 'term-line-mode)
-30-shell.el:23:	     (define-key term-mode-map (kbd "C-'") 'term-char-mode)
-30-shell.el:26:	     (define-key term-raw-map  (kbd "C-y") 'term-paste)
+30-scss-mode.el:14:		 (define-key haml-mode-map "\C-m" 'newline-and-indent)))
+30-shell.el:13:		 (define-key term-raw-map (kbd "C-h") 'term-send-backspace)
+30-shell.el:15:		 (define-key term-raw-map (kbd "C-y") 'term-paste)
+30-shell.el:17:		 (define-key term-raw-map (kbd "C-c C-p") 'term-send-up)
+30-shell.el:19:		 (define-key term-raw-map (kbd "C-c C-n") 'term-send-down)
+30-shell.el:22:		 (define-key term-raw-map  (kbd "C-'") 'term-line-mode)
+30-shell.el:23:		 (define-key term-mode-map (kbd "C-'") 'term-char-mode)
+30-shell.el:26:		 (define-key term-raw-map  (kbd "C-y") 'term-paste)
 50-ruby-rcodetools.el:7:(define-key ruby-mode-map (kbd "<C-return>") 'rct-complete-symbol)
 50-yatex.el:79:             (define-key YaTeX-mode-map (kbd "C-c e") 'evince-forward-search)))
 ```
@@ -64,4 +74,3 @@ package.elで追加できないものを追加するときは，gitでcloneし�
 ```shell
 git submodule add https://github.com/magit/magit.git git/magit
 ```
-
