@@ -5,7 +5,7 @@ This is my init for Emacs.
 For debug,
 
 ```
-/usr/local/bin/emacs -q -l init.el
+/usr/local/bin/emacs -q -l init.el --debug-init
 ```
 
 * Keybind
