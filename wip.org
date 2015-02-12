@@ -4,8 +4,6 @@
 
 * Org
 ** エキスポート
-
-
 *** 設定方法
   - C-c C-lでOrg形式のリンク挿入
   - [[http://stackoverflow.com/questions/7464951/how-to-make-org-protocol-work][firefox - How to make org-protocol work? - Stack Overflow]]
@@ -155,59 +153,10 @@ javascript:location.href='org-protocol://capture://t/'+encodeURIComponent(locati
 	  (load custom-file)))
 #+end_src
 
-* LinuxでのMozcの設定
-
-注意: in ~/.Xresourcesに
-  Emacs*useXIM:	false
-と設定しておくこと．
-
-- http://www11.atwiki.jp/s-irie/pages/21.html#basic
-- http://d.hatena.ne.jp/iRiE/20100530/1275212234
-
-- 筆者の場合，OS側でもC-oでIMEを切り替えるようにしているため，
-  これを設定しておかないと，C-c C-oなどが効かなくなる．
-
-#+begin_src emacs-lisp
-  (when (eq system-type 'gnu/linux)
-	(require 'mozc)
-	(setq default-input-method "japanese-mozc")
-	(setq mozc-candidate-style 'overlay))
-#+end_src
-
-* after-init-hookの設定
-  - after-init-hookはパッケージの初期化が完了したら呼ばれるフックです．
-	- [[http://www.gnu.org/software/emacs/manual/html_node/elisp/Init-File.html#Init-File][Init File - GNU Emacs Lisp Reference Manual]]
-
-#+begin_src emacs-lisp
-	(add-hook 'after-init-hook
-		  (lambda ()
-		(message "%s" "%% custom.elを読み込みました %%")))
-#+end_src
-
 * Caskの設定
 #+begin_src emacs-lisp
 (require 'cask "~/.cask/cask.el")
 (cask-initialize)
-#+end_src
-
-* ロードパスの設定						 :startup.el:
-
-- normal-top-level-add-subdirs-to-load-path は
-  default-directory の全てのサブディレクトリを load-path に追加する
-  関数です．
-
-- gitのsubmoduleとして管理するライブラリを追加します．
-
-#+begin_src emacs-lisp
-  (let ((default-directory "~/.emacs.d/git/"))
-	(normal-top-level-add-subdirs-to-load-path))
-#+end_src
-
-- ソースコードで管理するライブラリを追加します．
-
-#+begin_src emacs-lisp
-  (let ((default-directory "~/.emacs.d/site-lisp/"))
-	(normal-top-level-add-subdirs-to-load-path))
 #+end_src
 
 * smartrep.el
@@ -217,6 +166,13 @@ javascript:location.href='org-protocol://capture://t/'+encodeURIComponent(locati
   (require 'smartrep)
 #+end_src
 
+* outline-minnor-mode - プリフィックスをC-c C-oに変更する．
+
+#+begin_src emacs-lisp
+  (add-hook 'outline-minor-mode-hook
+		(lambda () (local-set-key "\C-c\C-o"
+					  outline-mode-prefix-map)))
+#+end_src
 * paredit - カッコの対応を保持して編集
 
 #+begin_src emacs-lisp
@@ -227,13 +183,6 @@ javascript:location.href='org-protocol://capture://t/'+encodeURIComponent(locati
   (add-hook 'ielm-mode-hook 'enable-paredit-mode)
 #+end_src
 
-* outline-minnor-mode - プリフィックスをC-c C-oに変更する．
-
-#+begin_src emacs-lisp
-  (add-hook 'outline-minor-mode-hook
-		(lambda () (local-set-key "\C-c\C-o"
-					  outline-mode-prefix-map)))
-#+end_src
 * lispxmp - lisp式の評価結果を注釈する
 
   - M-; M-; で lispxmp用コメントの自動挿入
@@ -427,6 +376,44 @@ javascript:location.href='org-protocol://capture://t/'+encodeURIComponent(locati
 (setq graphviz-dot-preview-extension "pdf")
 #+end_src
 
+* migemo
+** 概要
+ローマ字で日本語をインクリメンタルサーチ
+
+- 注意
+  - cmigemoコマンドがインストールされていること．
+  - locate migemo-dictで辞書の場所調べ，設定してください．
+- 参考
+  - https://github.com/emacs-jp/migemo
+  - [[http://qiita.com/catatsuy/items/c5fa34ead92d496b8a51][migemoを使ってEmacsライフを快適に - Qiita {キータ}]]
+
+** 実行可否確認
+
+#+begin_src emacs-lisp
+  (unless (executable-find "cmigemo")
+	(warn "！！ 警告：cmigemoコマンドが呼び出せません　！！"))
+#+end_src
+
+** 設定
+
+#+begin_src emacs-lisp
+  (when (and (executable-find "cmigemo")
+		 (require 'migemo nil t))
+	(setq migemo-options '("-q" "--emacs"))
+	(setq migemo-user-dictionary nil)
+	(setq migemo-regex-dictionary nil)
+	(setq migemo-coding-system 'utf-8-unix)
+	(load-library "migemo")
+	(migemo-init)
+	(setq migemo-command "cmigemo")
+	(cond
+	 ((eq system-type 'gnu/linux)
+	  (setq migemo-dictionary "/usr/share/cmigemo/utf-8/migemo-dict"))
+	 ((eq system-type 'darwin)
+	  (setq migemo-dictionary "/usr/local/share/migemo/utf-8/migemo-dict")))
+	)
+#+end_src
+
 * Helm
 ** 参考
    - [[http://d.hatena.ne.jp/a_bicky/20140104/1388822688][Helm をストレスなく使うための個人的な設定 - あらびき日記]]
@@ -542,47 +529,6 @@ javascript:location.href='org-protocol://capture://t/'+encodeURIComponent(locati
 (setq recentf-max-menu-items 25)
 (global-set-key "\C-x\ \C-r" 'helm-recentf)
 #+END_SRC
-
-* migemo
-** 概要
-ローマ字で日本語をインクリメンタルサーチ
-
-- 注意
-  - cmigemoコマンドがインストールされていること．
-  - locate migemo-dictで辞書の場所調べ，設定してください．
-- 参考
-  - https://github.com/emacs-jp/migemo
-  - [[http://qiita.com/catatsuy/items/c5fa34ead92d496b8a51][migemoを使ってEmacsライフを快適に - Qiita {キータ}]]
-
-** 実行可否確認
-
-#+begin_src emacs-lisp
-  (unless (executable-find "cmigemo")
-	(warn "！！ 警告：cmigemoコマンドが呼び出せません　！！"))
-#+end_src
-
-** 設定
-
-#+begin_src emacs-lisp
-  (when (and (executable-find "cmigemo")
-		 (require 'migemo nil t))
-	(setq migemo-options '("-q" "--emacs"))
-
-	(setq migemo-user-dictionary nil)
-	(setq migemo-regex-dictionary nil)
-	(setq migemo-coding-system 'utf-8-unix)
-	(load-library "migemo")
-	(migemo-init)
-
-	(setq migemo-command "cmigemo")
-
-	(cond
-	 ((eq system-type 'gnu/linux)
-	  (setq migemo-dictionary "/usr/share/cmigemo/utf-8/migemo-dict"))
-	 ((eq system-type 'darwin)
-	  (setq migemo-dictionary "/usr/local/share/migemo/utf-8/migemo-dict")))
-	)
-#+end_src
 
 * Ruby
   ;; S式から正規表現を作成する - by shigemk2
@@ -868,8 +814,7 @@ javascript:location.href='org-protocol://capture://t/'+encodeURIComponent(locati
 	((eq system-type 'darwin)
 	 (define-key 'personal-map (kbd "p") 'skim-forward-search)))
 #+end_src
-* TODO
-** TODO ace-jump-mode
+* TODO ace-jump-mode
 #+begin_src emacs-lisp
   (use-package ace-jump-mode
                :disabled
@@ -1225,4 +1170,66 @@ Gmailでスターをつけると，flagが付く．
   (add-hook 'input-method-inactivate-hook
 		'(lambda () (set-cursor-color "orchid")))
 #+end_src
+
+
+* TODO LinuxでのMozcの設定
+
+注意: in ~/.Xresourcesに
+  Emacs*useXIM:	false
+と設定しておくこと．
+
+- http://www11.atwiki.jp/s-irie/pages/21.html#basic
+- http://d.hatena.ne.jp/iRiE/20100530/1275212234
+
+- 筆者の場合，OS側でもC-oでIMEを切り替えるようにしているため，
+  これを設定しておかないと，C-c C-oなどが効かなくなる．
+
+#+begin_src emacs-lisp
+  (when (eq system-type 'gnu/linux)
+	(require 'mozc)
+	(setq default-input-method "japanese-mozc")
+	(setq mozc-candidate-style 'overlay))
+#+end_src
+
+* TODO ロードパスの設定						 :startup.el:
+
+- normal-top-level-add-subdirs-to-load-path は
+  default-directory の全てのサブディレクトリを load-path に追加する
+  関数です．
+
+- gitのsubmoduleとして管理するライブラリを追加します．
+
+#+begin_src emacs-lisp
+  (let ((default-directory "~/.emacs.d/git/"))
+	(normal-top-level-add-subdirs-to-load-path))
+#+end_src
+
+- ソースコードで管理するライブラリを追加します．
+
+#+begin_src emacs-lisp
+  (let ((default-directory "~/.emacs.d/site-lisp/"))
+	(normal-top-level-add-subdirs-to-load-path))
+#+end_src
+
+* TODO after-init-hookの設定
+  - after-init-hookはパッケージの初期化が完了したら呼ばれるフックです．
+	- [[http://www.gnu.org/software/emacs/manual/html_node/elisp/Init-File.html#Init-File][Init File - GNU Emacs Lisp Reference Manual]]
+
+#+begin_src emacs-lisp
+	(add-hook 'after-init-hook
+		  (lambda ()
+		(message "%s" "%% custom.elを読み込みました %%")))
+#+end_src
+
+
+* TODO after-init-hookの設定
+  - after-init-hookはパッケージの初期化が完了したら呼ばれるフックです．
+	- [[http://www.gnu.org/software/emacs/manual/html_node/elisp/Init-File.html#Init-File][Init File - GNU Emacs Lisp Reference Manual]]
+
+#+begin_src emacs-lisp
+	(add-hook 'after-init-hook
+		  (lambda ()
+		(message "%s" "%% custom.elを読み込みました %%")))
+#+end_src
+
 
