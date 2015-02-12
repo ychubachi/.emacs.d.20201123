@@ -20,7 +20,6 @@
 (unless (package-installed-p 'use-package)
       (package-install 'use-package))
 (require 'use-package)
-
 (use-package exec-path-from-shell
                  :config
                  (progn (exec-path-from-shell-initialize))
@@ -113,7 +112,6 @@
                        (sh . t))))
                (setq org-babel-sh-command "bash")
                (setq org-deadline-warning-days 7)
-               (define-key org-mode-map "\M-q" 'toggle-truncate-lines)
                (setq org-agenda-custom-commands
                      (quote
                       (("x" "TODOs without Scheduled" tags-todo "+SCHEDULED=\"\"" nil)
@@ -130,7 +128,93 @@
                       ((t (:background "grey30" :underline t :weight bold :height 135)))))
                (custom-set-variables
                 '(org-export-in-background nil)
-                '(org-src-fontify-natively t)))
+                '(org-src-fontify-natively t))
+               (require 'ox-md) 
+               (require 'ox-latex)
+               (add-to-list 'auto-mode-alist '("\\.org$" . org-mode))
+               (setq org-latex-default-class "bxjsarticle")
+               (setq org-latex-pdf-process '("latexmk -e '$pdflatex=q/xelatex %S/' -e '$bibtex=q/bibtexu %B/' -e '$biber=q/biber --bblencoding=utf8 -u -U --output_safechars %B/' -e '$makeindex=q/makeindex -o %D %S/' -norc -gg -pdf %f"))
+               (setq org-export-in-background t)
+               
+               (add-to-list 'org-latex-classes
+                                '("bxjsarticle"
+                                  "\\documentclass{bxjsarticle}
+               [NO-DEFAULT-PACKAGES]
+               \\usepackage{zxjatype}
+               \\usepackage[ipa]{zxjafont}
+               \\usepackage{xltxtra}
+               \\usepackage{amsmath}
+               \\usepackage{newtxtext,newtxmath}
+               \\usepackage{graphicx}
+               \\usepackage{hyperref}
+               \\ifdefined\\kanjiskip
+                 \\usepackage{pxjahyper}
+                 \\hypersetup{colorlinks=true}
+               \\else
+                 \\ifdefined\\XeTeXversion
+                         \\hypersetup{colorlinks=true}
+                 \\else
+                       \\ifdefined\\directlua
+                         \\hypersetup{pdfencoding=auto,colorlinks=true}
+                       \\else
+                         \\hypersetup{unicode,colorlinks=true}
+                       \\fi
+                 \\fi
+               \\fi"
+                                  ("\\section{%s}" . "\\section*{%s}")
+                                  ("\\subsection{%s}" . "\\subsection*{%s}")
+                                  ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+                                  ("\\paragraph{%s}" . "\\paragraph*{%s}")
+                                  ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
+               
+               (add-to-list 'org-latex-packages-alist '("" "minted"))
+               (setq org-latex-listings 'minted)
+               (require 'ox-beamer)
+               (add-to-list 'org-latex-classes
+                                '("beamer"
+                                  "\\documentclass[t]{beamer}
+               \\usepackage{zxjatype}
+               \\usepackage[ipa]{zxjafont}
+               \\setbeamertemplate{navigation symbols}{}
+               \\hypersetup{colorlinks,linkcolor=,urlcolor=gray}
+               \\AtBeginSection[]
+               {
+                 \\begin{frame}<beamer>{Outline}
+                 \\tableofcontents[currentsection,currentsubsection]
+                 \\end{frame}
+               }
+               \\setbeamertemplate{navigation symbols}{}"
+                                  ("\\section{%s}" . "\\section*{%s}")
+                                  ("\\subsection{%s}" . "\\subsection*{%s}")
+                                  ("\\subsubsection{%s}" . "\\subsubsection*{%s}")))
+               (add-to-list 'org-latex-classes
+                                '("beamer_lecture"
+                                  "\\documentclass[t]{beamer}
+               [NO-DEFAULT-PACKAGES]
+               \\usepackage{zxjatype}
+               \\usepackage[ipa]{zxjafont}
+               \\setbeamertemplate{navigation symbols}{}
+               \\hypersetup{colorlinks,linkcolor=,urlcolor=gray}
+               \\AtBeginPart
+               {
+                 \\begin{frame}<beamer|handout>
+                       \\date{\\insertpart}
+                       \\maketitle
+                 \\end{frame}
+               }
+               \\AtBeginSection[]
+               {
+                 \\begin{frame}<beamer>
+                 \\tableofcontents[currentsection,currentsubsection]
+                 \\end{frame}
+               }"
+                                  ("\\part{%s}" . "\\part*{%s}")
+                                  ("\\section{%s}" . "\\section*{%s}")
+                                  ("\\subsection{%s}" . "\\subsection*{%s}")
+                                  ("\\subsubsection{%s}" . "\\subsubsection*{%s}"))))
+             :config
+             (progn
+               (define-key org-mode-map "\M-q" 'toggle-truncate-lines))
              :ensure t)
 (setq custom-file "~/.emacs.d/custom.el")
 (if (file-exists-p custom-file)
