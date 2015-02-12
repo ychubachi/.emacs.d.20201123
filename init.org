@@ -315,12 +315,15 @@ wdiredのrequireはdired-mode-mapを定義するために必要．
 
 #+NAME: org
 #+begin_src emacs-lisp
+  <<my/org-caputure-templates>>
+  <<my/ox-latex>>
+  <<my/ox-beamer>>
   (use-package org
                :bind
                <<org-bind>>
                :init
                (progn
-                 <<org-caputure-templates>>
+                 (my/org-caputure-templates)
                  <<org-todo-keywords>>
                  <<org-babel-load-languages>>
                  <<org-babel-sh-command>>
@@ -331,9 +334,9 @@ wdiredのrequireはdired-mode-mapを定義するために必要．
                  <<org-column-title>>
                  <<org/custom-set-variables>>
                  <<ox-md>> 
-                 <<ox-latex>>
-                 <<minted>>
-                 <<ox-beamer>>)
+                 (my/ox-latex)
+                 (my/ox-beamer)
+                 <<minted>>)
                :config
                (progn
                  <<org/truncate-lines>>)
@@ -350,27 +353,28 @@ wdiredのrequireはdired-mode-mapを定義するために必要．
 #+end_src
 
 *** キャプチャ
-#+NAME: org-caputure-templates
+#+NAME: my/org-caputure-templates
 #+begin_src emacs-lisp
-  (setq org-capture-templates
-        (quote
-         (("t" "Todo" entry (file+headline "todo.org" "Tasks")
-           "* TODO %?
+  (defun my/org-caputure-templates ()
+    (setq org-capture-templates
+          (quote
+           (("t" "Todo" entry (file+headline "todo.org" "Tasks")
+             "* TODO %?
   ")
-          ("l" "Link as Todo" entry (file+headline "todo.org" "Tasks")
-           "* TODO %?
+            ("l" "Link as Todo" entry (file+headline "todo.org" "Tasks")
+             "* TODO %?
   Link: %a
   Text: %i
   ")
-          ("j" "Journal" entry (file+datetree "journal.org")
-           "* %?
+            ("j" "Journal" entry (file+datetree "journal.org")
+             "* %?
   ")
-          ("b" "Bookmark" entry (file+headline "bookmark.org" "Bookmarks")
-           "* %a :bookmark:
+            ("b" "Bookmark" entry (file+headline "bookmark.org" "Bookmarks")
+             "* %a :bookmark:
   引用: %i
   %?
   ")
-          )))
+            ))))
 #+end_src
 
 *** TODOの種類
@@ -492,45 +496,96 @@ LaTeXでエキスポートできるようにします．
 
 − [[http://oku.edu.mie-u.ac.jp/~okumura/texwiki/?Emacs%2FOrg%20mode#h20d131a][Emacs/Org mode - TeX Wiki]] （2014-08-03 参照）
 
-#+NAME: ox-latex
+#+NAME: my/ox-latex
 #+begin_src emacs-lisp
-(require 'ox-latex)
-(add-to-list 'auto-mode-alist '("\\.org$" . org-mode))
-(setq org-latex-default-class "bxjsarticle")
-(setq org-latex-pdf-process '("latexmk -e '$pdflatex=q/xelatex %S/' -e '$bibtex=q/bibtexu %B/' -e '$biber=q/biber --bblencoding=utf8 -u -U --output_safechars %B/' -e '$makeindex=q/makeindex -o %D %S/' -norc -gg -pdf %f"))
-(setq org-export-in-background t)
+  (defun my/ox-latex ()
+    (require 'ox-latex)
+    (setq org-latex-default-class "bxjsarticle")
+    (setq org-latex-pdf-process '("latexmk -e '$pdflatex=q/xelatex %S/' -e '$bibtex=q/bibtexu %B/' -e '$biber=q/biber --bblencoding=utf8 -u -U --output_safechars %B/' -e '$makeindex=q/makeindex -o %D %S/' -norc -gg -pdf %f"))
+    (setq org-export-in-background t)
 
-(add-to-list 'org-latex-classes
-		 '("bxjsarticle"
-		   "\\documentclass{bxjsarticle}
-[NO-DEFAULT-PACKAGES]
-\\usepackage{zxjatype}
-\\usepackage[ipa]{zxjafont}
-\\usepackage{xltxtra}
-\\usepackage{amsmath}
-\\usepackage{newtxtext,newtxmath}
-\\usepackage{graphicx}
-\\usepackage{hyperref}
-\\ifdefined\\kanjiskip
-  \\usepackage{pxjahyper}
-  \\hypersetup{colorlinks=true}
-\\else
-  \\ifdefined\\XeTeXversion
-	  \\hypersetup{colorlinks=true}
+    (add-to-list 'org-latex-classes
+                 '("bxjsarticle"
+                   "\\documentclass{bxjsarticle}
+  [NO-DEFAULT-PACKAGES]
+  \\usepackage{zxjatype}
+  \\usepackage[ipa]{zxjafont}
+  \\usepackage{xltxtra}
+  \\usepackage{amsmath}
+  \\usepackage{newtxtext,newtxmath}
+  \\usepackage{graphicx}
+  \\usepackage{hyperref}
+  \\ifdefined\\kanjiskip
+    \\usepackage{pxjahyper}
+    \\hypersetup{colorlinks=true}
   \\else
-	\\ifdefined\\directlua
-	  \\hypersetup{pdfencoding=auto,colorlinks=true}
-	\\else
-	  \\hypersetup{unicode,colorlinks=true}
-	\\fi
-  \\fi
-\\fi"
-		   ("\\section{%s}" . "\\section*{%s}")
-		   ("\\subsection{%s}" . "\\subsection*{%s}")
-		   ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
-		   ("\\paragraph{%s}" . "\\paragraph*{%s}")
-		   ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
+    \\ifdefined\\XeTeXversion
+      \\hypersetup{colorlinks=true}
+    \\else
+      \\ifdefined\\directlua
+        \\hypersetup{pdfencoding=auto,colorlinks=true}
+      \\else
+        \\hypersetup{unicode,colorlinks=true}
+      \\fi
+    \\fi
+  \\fi"
+                     ("\\section{%s}" . "\\section*{%s}")
+                     ("\\subsection{%s}" . "\\subsection*{%s}")
+                     ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+                     ("\\paragraph{%s}" . "\\paragraph*{%s}")
+                     ("\\subparagraph{%s}" . "\\subparagraph*{%s}"))))
+#+end_src
 
+*** LeTeX (beamer) export
+ パッケージの読み込み
+ 文書クラスの設定(beamer)
+
+#+NAME: my/ox-beamer
+#+begin_src emacs-lisp
+  (defun my/ox-beamer ()
+    (require 'ox-beamer)
+    (add-to-list 'org-latex-classes
+                 '("beamer"
+                   "\\documentclass[t]{beamer}
+  \\usepackage{zxjatype}
+  \\usepackage[ipa]{zxjafont}
+  \\setbeamertemplate{navigation symbols}{}
+  \\hypersetup{colorlinks,linkcolor=,urlcolor=gray}
+  \\AtBeginSection[]
+  {
+    \\begin{frame}<beamer>{Outline}
+    \\tableofcontents[currentsection,currentsubsection]
+    \\end{frame}
+  }
+  \\setbeamertemplate{navigation symbols}{}"
+                   ("\\section{%s}" . "\\section*{%s}")
+                   ("\\subsection{%s}" . "\\subsection*{%s}")
+                   ("\\subsubsection{%s}" . "\\subsubsection*{%s}")))
+    (add-to-list 'org-latex-classes
+                 '("beamer_lecture"
+                   "\\documentclass[t]{beamer}
+  [NO-DEFAULT-PACKAGES]
+  \\usepackage{zxjatype}
+  \\usepackage[ipa]{zxjafont}
+  \\setbeamertemplate{navigation symbols}{}
+  \\hypersetup{colorlinks,linkcolor=,urlcolor=gray}
+  \\AtBeginPart
+  {
+  \\begin{frame}<beamer|handout>
+  \\date{\\insertpart}
+  \\maketitle
+  \\end{frame}
+  }
+  \\AtBeginSection[]
+  {
+  \\begin{frame}<beamer>
+  \\tableofcontents[currentsection,currentsubsection]
+  \\end{frame}
+  }"
+                     ("\\part{%s}" . "\\part*{%s}")
+                     ("\\section{%s}" . "\\section*{%s}")
+                     ("\\subsection{%s}" . "\\subsection*{%s}")
+                     ("\\subsubsection{%s}" . "\\subsubsection*{%s}"))))
 #+end_src
 
 *** LaTeXでソースコードのエクスポート
@@ -539,57 +594,6 @@ LaTeXでエキスポートできるようにします．
 #+begin_src emacs-lisp
 (add-to-list 'org-latex-packages-alist '("" "minted"))
 (setq org-latex-listings 'minted)
-#+end_src
-
-*** LeTeX (beamer) export
- パッケージの読み込み
- 文書クラスの設定(beamer)
-
-#+NAME: ox-beamer
-#+begin_src emacs-lisp
-(require 'ox-beamer)
-(add-to-list 'org-latex-classes
-		 '("beamer"
-		   "\\documentclass[t]{beamer}
-\\usepackage{zxjatype}
-\\usepackage[ipa]{zxjafont}
-\\setbeamertemplate{navigation symbols}{}
-\\hypersetup{colorlinks,linkcolor=,urlcolor=gray}
-\\AtBeginSection[]
-{
-  \\begin{frame}<beamer>{Outline}
-  \\tableofcontents[currentsection,currentsubsection]
-  \\end{frame}
-}
-\\setbeamertemplate{navigation symbols}{}"
-		   ("\\section{%s}" . "\\section*{%s}")
-		   ("\\subsection{%s}" . "\\subsection*{%s}")
-		   ("\\subsubsection{%s}" . "\\subsubsection*{%s}")))
-(add-to-list 'org-latex-classes
-		 '("beamer_lecture"
-		   "\\documentclass[t]{beamer}
-[NO-DEFAULT-PACKAGES]
-\\usepackage{zxjatype}
-\\usepackage[ipa]{zxjafont}
-\\setbeamertemplate{navigation symbols}{}
-\\hypersetup{colorlinks,linkcolor=,urlcolor=gray}
-\\AtBeginPart
-{
-  \\begin{frame}<beamer|handout>
-	\\date{\\insertpart}
-	\\maketitle
-  \\end{frame}
-}
-\\AtBeginSection[]
-{
-  \\begin{frame}<beamer>
-  \\tableofcontents[currentsection,currentsubsection]
-  \\end{frame}
-}"
-		   ("\\part{%s}" . "\\part*{%s}")
-		   ("\\section{%s}" . "\\section*{%s}")
-		   ("\\subsection{%s}" . "\\subsection*{%s}")
-		   ("\\subsubsection{%s}" . "\\subsubsection*{%s}")))
 #+end_src
 
 * カスタマイズ
