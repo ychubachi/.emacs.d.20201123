@@ -50,14 +50,15 @@
 #+NAME: top_block
 #+begin_src emacs-lisp :tangle "init.el" :noweb tangle :padline no
   ;; init.el --- Emacsの初期設定
+  <<init-package>>
   <<basic>>
   <<japanese>>
-  <<init-package>>
   <<package>>
   <<custom-file>>
   ;;; init.el ends here
 #+end_src
 
+* パッケージ機能の初期化
 * Emacs本体が提供する機能
 ** Emacs本体が提供する機能の設定
 #+NAME: basic
@@ -103,8 +104,7 @@ wdiredのrequireはdired-mode-mapを定義するために必要．
 #+NAME: wdired
 #+begin_src emacs-lisp
   (require 'wdired)
-  (define-key dired-mode-map "r"
-	'wdired-change-to-wdired-mode)
+  (bind-key "r" 'wdired-change-to-wdired-mode dired-mode-map)
 #+end_src
 
 * 日本語関連
@@ -123,7 +123,6 @@ wdiredのrequireはdired-mode-mapを定義するために必要．
 	(add-to-list 'default-frame-alist '(font . "ricty-13.5")))
 #+end_src
 
-* パッケージ機能の初期化
 ** パッケージ機能の初期化の設定
 #+NAME: init-package
 #+begin_src emacs-lisp
@@ -169,6 +168,8 @@ wdiredのrequireはdired-mode-mapを定義するために必要．
   <<yasnippet>>
   <<magit>>
   <<open-junk-file>>
+  <<paredit>>
+  <<lispxmp>>
   <<multiple-cursors>>
   <<region-bindings-mode>>
   <<org>>
@@ -239,6 +240,32 @@ wdiredのrequireはdired-mode-mapを定義するために必要．
                :ensure t)
 #+end_src
 
+** paredit - カッコの対応を保持して編集
+
+#+NAME: paredit
+#+begin_src emacs-lisp
+  (use-package paredit
+               :init
+               (add-hook 'emacs-lisp-mode-hook 'enable-paredit-mode)
+               (add-hook 'lisp-interaction-mode-hook 'enable-paredit-mode)
+               (add-hook 'lisp-mode-hook 'enable-paredit-mode)
+               (add-hook 'ielm-mode-hook 'enable-paredit-mode)
+               :ensure t)
+#+end_src
+
+** lispxmp - lisp式の評価結果を注釈する
+
+  - M-; M-; で lispxmp用コメントの自動挿入
+  - C-c e で評価結果を注釈
+
+#+NAME: lispxmp
+#+begin_src emacs-lisp
+  (use-package lispxmp
+               :init
+               (bind-key "C-c e" 'lispxmp emacs-lisp-mode-map)
+               :ensure t)
+#+end_src
+
 ** 複数のカーソルを扱う:multiple-cursors
 - [[https://github.com/magnars/multiple-cursors.el][magnars/multiple-cursors.el]]
 
@@ -256,17 +283,13 @@ wdiredのrequireはdired-mode-mapを定義するために必要．
                :init
                (progn
                  (region-bindings-mode-enable)
-                 (define-key region-bindings-mode-map
-                   "a" 'mc/mark-all-like-this)
-                 (define-key region-bindings-mode-map
-                   "p" 'mc/mark-previous-like-this)
-                 (define-key region-bindings-mode-map
-                   "n" 'mc/mark-next-like-this)
-                 (define-key region-bindings-mode-map
-                   "m" 'mc/mark-more-like-this-extended)
-                 (define-key region-bindings-mode-map
-                   "e" 'mc/edit-lines))
-                   :ensure t)
+                 (bind-keys :map region-bindings-mode-map
+                         ("a" . mc/mark-all-like-this)
+                         ("p" . mc/mark-previous-like-this)
+                         ("n" . mc/mark-next-like-this)
+                         ("m" . mc/mark-more-like-this-extended)
+                         ("e" . mc/edit-lines)))
+               :ensure t)
 #+end_src
 
 ** org-mode
@@ -336,7 +359,8 @@ wdiredのrequireはdired-mode-mapを定義するために必要．
                  <<ox-md>> 
                  (my/ox-latex)
                  (my/ox-beamer)
-                 <<minted>>)
+                 <<minted>>
+                 <<ox-reveal>>)
                :config
                (progn
                  <<org/truncate-lines>>)
@@ -450,7 +474,7 @@ wdiredのrequireはdired-mode-mapを定義するために必要．
 
 #+NAME: org/truncate-lines
 #+begin_src emacs-lisp
-  (define-key org-mode-map "\M-q" 'toggle-truncate-lines)
+  (bind-key "M-q" 'toggle-truncate-lines org-mode-map)
 #+end_src
 *** Mobile Org関連
 
@@ -596,6 +620,13 @@ LaTeXでエキスポートできるようにします．
 (setq org-latex-listings 'minted)
 #+end_src
 
+*** org-reveal
+  - https://github.com/yjwen/org-reveal
+
+#+NAME: ox-reveal
+#+begin_src emacs-lisp
+  (use-package ox-reveal :ensure t)
+#+end_src
 * カスタマイズ
 カスタマイズ設定を保存するファイルの指定
   - 概要

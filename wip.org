@@ -27,98 +27,6 @@ javascript:location.href='org-protocol://capture://t/'+encodeURIComponent(locati
   (require 'org-protocol)
 #+end_src
 
-** TODO WebにHTMLでPublishする 					       :個人設定:
-   :PROPERTIES:
-   :ID:       fcdb09c8-3a9a-4ea9-9482-10d445b6db9f
-   :END:
-   - customzationに移動する？
-
-#+begin_src emacs-lisp
-(setq org-publish-project-alist
-	  '(
-	("chubachi.net-notes"
-	 :base-directory "~/Ubuntu One/WebSites/chubachi.net/org/"
-	 :base-extension "org"
-	 :publishing-directory "~/Ubuntu One/WebSites/chubachi.net/www/"
-	 :publishing-function org-html-publish-to-html
-	 ;; :headline-levels 3
-	 ;; :section-numbers nil
-	 ;; :with-toc nil
-	 ;; :html-head "<link rel=\"stylesheet\"
-	 ;;               href=\"../other/mystyle.css\" type=\"text/css\"/>"
-	 ;; :html-preamble t
-	 :recursive t
-	 )
-	("chubachi.net-static"
-	 :base-directory "~/Ubuntu One/WebSites/chubachi.net/org/"
-	 :base-extension "css\\|js\\|png\\|jpg\\|gif\\|pdf\\|mp3\\|ogg\\|swf"
-	 :publishing-directory "~/Ubuntu One/WebSites/chubachi.net/www/"
-	 :recursive t
-	 :publishing-function org-publish-attachment
-	 )
-	("chubachi.net"
-	 :components ("chubachi.net-notes" "chubachi.net-static"))
-	  ))
-#+end_src
-
-* org-page
-  - [[https://github.com/kelvinh/org-page][kelvinh/org-page]]
-  - 新しいリポジトリを作る
-	- op/new-repository
-  ｰ 公開
-	- op/do-publication
-
-#+begin_src emacs-lisp
-(require 'org-page)
-#+end_src
-
-* WordPressに記事を投稿（org2blog）
-** 利用法
-  - org2blogを使うと，subtreeをwordpressに投稿できる．
-  - 使い方は [[https://github.com/punchagan/org2blog][punchagan/org2blog]] を参照．
-
-   |--------------------------+--------------------------|
-   | 機能                     | コマンド                 |
-   |--------------------------+--------------------------|
-   | 下位層を投稿             | org2blog/wp-post-subtree |
-   |--------------------------+--------------------------|
-   | ログイン                 | org2blog/wp-login        |
-   | 新規投稿                 | org2blog/wp-new-entry    |
-   |--------------------------+--------------------------|
-   | 草稿として投稿           | C-c d                    |
-   | 公開                     | C-c p                    |
-   | 草稿として草稿（ページ） | C-c D                    |
-   | 公開（ページ）           | C-c P                    |
-   |--------------------------+--------------------------|
-
-1. キャプチャして新しい記事を作成
-2. 投稿したいエントリのヘッダにカーソルを移動して
-   org2blog/wp-new-entry
-   -> ログインしてなければログインが促される
-3. ブラウザで確認
-
-** 導入
-
-#+begin_src emacs-lisp
-  (require 'org2blog-autoloads)
-#+end_src
-
-** 手動設定
-
-- wordpressのログイン情報をcustom.el内に記述
-
-** ソースコードを投稿できるようにする
-
-#+begin_src emacs-lisp
-  (setq org2blog/wp-use-sourcecode-shortcode t)
-#+end_src
-
-** 備考
-   - ソースコードを表示させるには
-	 [[http://wordpress.org/plugins/syntaxhighlighter/][WordPress › SyntaxHighlighter Evolved « WordPress Plugins]]
-	 をインストールしておく．
-   - emacs lispには対応していない．残念．
-
 * org-modeでヘッダの移動にsmartrepを利用する設定
 
 - eval-after-loadにより，orgがロードされた後，
@@ -136,23 +44,6 @@ javascript:location.href='org-protocol://capture://t/'+encodeURIComponent(locati
 	   ))
 #+end_src
 
-* org-reveal
-  - https://github.com/yjwen/org-reveal
-
-#+begin_src emacs-lisp
-(require 'ox-reveal)
-#+end_src
-* system-typeに応じたcustom.el
-
-#+begin_src emacs-lisp
-  (let (custom-file-system-name)
-	(setq custom-file-system-name
-	  (format "~/.emacs.d/custom/%s.el" (system-name)))
-	(when (file-exists-p custom-file-system-name)
-	  (message "%s" (format "%sを読み込みます" custom-file-system-name))
-	  (load custom-file)))
-#+end_src
-
 * smartrep.el
 - [[http://sheephead.homelinux.org/2011/12/19/6930/][連続操作を素敵にするsmartrep.el作った - sheephead]]
 
@@ -167,26 +58,6 @@ javascript:location.href='org-protocol://capture://t/'+encodeURIComponent(locati
 		(lambda () (local-set-key "\C-c\C-o"
 					  outline-mode-prefix-map)))
 #+end_src
-* paredit - カッコの対応を保持して編集
-
-#+begin_src emacs-lisp
-  (require 'paredit)
-  (add-hook 'emacs-lisp-mode-hook 'enable-paredit-mode)
-  (add-hook 'lisp-interaction-mode-hook 'enable-paredit-mode)
-  (add-hook 'lisp-mode-hook 'enable-paredit-mode)
-  (add-hook 'ielm-mode-hook 'enable-paredit-mode)
-#+end_src
-
-* lispxmp - lisp式の評価結果を注釈する
-
-  - M-; M-; で lispxmp用コメントの自動挿入
-  - C-c e で評価結果を注釈
-
-#+begin_src emacs-lisp
-  (require 'lispxmp)
-  (define-key emacs-lisp-mode-map (kbd "C-c e") 'lispxmp)
-#+end_src
-
 * markdownモードでアウトラインを有効にする
 
 #+begin_src emacs-lisp
@@ -1218,4 +1089,109 @@ Gmailでスターをつけると，flagが付く．
 (require 'cask "~/.cask/cask.el")
 (cask-initialize)
 #+end_src
+
+* TODO WebにHTMLでPublishする 					       :個人設定:
+   :PROPERTIES:
+   :ID:       fcdb09c8-3a9a-4ea9-9482-10d445b6db9f
+   :END:
+   - customzationに移動する？
+
+#+begin_src emacs-lisp
+(setq org-publish-project-alist
+	  '(
+	("chubachi.net-notes"
+	 :base-directory "~/Ubuntu One/WebSites/chubachi.net/org/"
+	 :base-extension "org"
+	 :publishing-directory "~/Ubuntu One/WebSites/chubachi.net/www/"
+	 :publishing-function org-html-publish-to-html
+	 ;; :headline-levels 3
+	 ;; :section-numbers nil
+	 ;; :with-toc nil
+	 ;; :html-head "<link rel=\"stylesheet\"
+	 ;;               href=\"../other/mystyle.css\" type=\"text/css\"/>"
+	 ;; :html-preamble t
+	 :recursive t
+	 )
+	("chubachi.net-static"
+	 :base-directory "~/Ubuntu One/WebSites/chubachi.net/org/"
+	 :base-extension "css\\|js\\|png\\|jpg\\|gif\\|pdf\\|mp3\\|ogg\\|swf"
+	 :publishing-directory "~/Ubuntu One/WebSites/chubachi.net/www/"
+	 :recursive t
+	 :publishing-function org-publish-attachment
+	 )
+	("chubachi.net"
+	 :components ("chubachi.net-notes" "chubachi.net-static"))
+	  ))
+#+end_src
+
+* TODO org-page
+  - [[https://github.com/kelvinh/org-page][kelvinh/org-page]]
+  - 新しいリポジトリを作る
+	- op/new-repository
+  ｰ 公開
+	- op/do-publication
+
+#+begin_src emacs-lisp
+(require 'org-page)
+#+end_src
+
+* TODO WordPressに記事を投稿（org2blog）
+** 利用法
+  - org2blogを使うと，subtreeをwordpressに投稿できる．
+  - 使い方は [[https://github.com/punchagan/org2blog][punchagan/org2blog]] を参照．
+
+   |--------------------------+--------------------------|
+   | 機能                     | コマンド                 |
+   |--------------------------+--------------------------|
+   | 下位層を投稿             | org2blog/wp-post-subtree |
+   |--------------------------+--------------------------|
+   | ログイン                 | org2blog/wp-login        |
+   | 新規投稿                 | org2blog/wp-new-entry    |
+   |--------------------------+--------------------------|
+   | 草稿として投稿           | C-c d                    |
+   | 公開                     | C-c p                    |
+   | 草稿として草稿（ページ） | C-c D                    |
+   | 公開（ページ）           | C-c P                    |
+   |--------------------------+--------------------------|
+
+1. キャプチャして新しい記事を作成
+2. 投稿したいエントリのヘッダにカーソルを移動して
+   org2blog/wp-new-entry
+   -> ログインしてなければログインが促される
+3. ブラウザで確認
+
+** 導入
+
+#+begin_src emacs-lisp
+  (require 'org2blog-autoloads)
+#+end_src
+
+** 手動設定
+
+- wordpressのログイン情報をcustom.el内に記述
+
+** ソースコードを投稿できるようにする
+
+#+begin_src emacs-lisp
+  (setq org2blog/wp-use-sourcecode-shortcode t)
+#+end_src
+
+** 備考
+   - ソースコードを表示させるには
+	 [[http://wordpress.org/plugins/syntaxhighlighter/][WordPress › SyntaxHighlighter Evolved « WordPress Plugins]]
+	 をインストールしておく．
+   - emacs lispには対応していない．残念．
+
+
+* TODO system-typeに応じたcustom.el
+
+#+begin_src emacs-lisp
+  (let (custom-file-system-name)
+	(setq custom-file-system-name
+	  (format "~/.emacs.d/custom/%s.el" (system-name)))
+	(when (file-exists-p custom-file-system-name)
+	  (message "%s" (format "%sを読み込みます" custom-file-system-name))
+	  (load custom-file)))
+#+end_src
+
 
