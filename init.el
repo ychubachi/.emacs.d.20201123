@@ -13,16 +13,20 @@
 (unless (server-running-p)
       (server-start))
 (define-key key-translation-map [?\C-h] [?\C-?])
-(require 'wdired)
-(bind-key "r" 'wdired-change-to-wdired-mode dired-mode-map)
+(use-package wdired
+             :init
+             (bind-key "r" 'wdired-change-to-wdired-mode dired-mode-map))
+(add-hook 'outline-minor-mode-hook
+          (lambda () (local-set-key "\C-c\C-o"
+                                    outline-mode-prefix-map)))
 (set-language-environment "japanese")
 (prefer-coding-system 'utf-8)
 (when (eq system-type 'gnu/linux)
       (add-to-list 'default-frame-alist '(font . "ricty-13.5")))
 (use-package exec-path-from-shell
-                 :config
-                 (progn (exec-path-from-shell-initialize))
-                 :ensure t)
+             :config
+             (progn (exec-path-from-shell-initialize))
+             :ensure t)
 (use-package shell-pop
              :config
              (custom-set-variables
@@ -174,6 +178,13 @@ Text: %i
                    ("\\section{%s}" . "\\section*{%s}")
                    ("\\subsection{%s}" . "\\subsection*{%s}")
                    ("\\subsubsection{%s}" . "\\subsubsection*{%s}"))))
+(defun my/smartrep ()
+  (smartrep-define-key
+      org-mode-map
+      "C-c" '(("C-n" . (lambda ()
+                         (outline-next-visible-heading 1)))
+              ("C-p" . (lambda ()
+                         (outline-previous-visible-heading 1))))))
 (use-package org
              :bind
              (("C-c l" . org-store-link)
@@ -228,7 +239,8 @@ Text: %i
                (require 'org-protocol))
              :config
              (progn
-               (bind-key "M-q" 'toggle-truncate-lines org-mode-map))
+               (bind-key "M-q" 'toggle-truncate-lines org-mode-map)
+               (my/smartrep))
              :ensure t)
 (setq custom-file "~/.emacs.d/custom.el")
 (if (file-exists-p custom-file)

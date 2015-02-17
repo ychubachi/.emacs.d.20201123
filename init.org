@@ -66,6 +66,7 @@
   <<server>>
   <<C-h>>
   <<wdired>>
+  <<outline-minnor-mode>>
 #+end_src
 
 ** Emacsサーバーの起動
@@ -103,8 +104,18 @@ wdiredのrequireはdired-mode-mapを定義するために必要．
 
 #+NAME: wdired
 #+begin_src emacs-lisp
-  (require 'wdired)
-  (bind-key "r" 'wdired-change-to-wdired-mode dired-mode-map)
+  (use-package wdired
+               :init
+               (bind-key "r" 'wdired-change-to-wdired-mode dired-mode-map))
+#+end_src
+
+** outline-minnor-mode - プリフィックスをC-c C-oに変更する．
+
+#+NAME: outline-minnor-mode
+#+begin_src emacs-lisp
+  (add-hook 'outline-minor-mode-hook
+            (lambda () (local-set-key "\C-c\C-o"
+                                      outline-mode-prefix-map)))
 #+end_src
 
 * 日本語関連
@@ -182,9 +193,9 @@ wdiredのrequireはdired-mode-mapを定義するために必要．
 #+NAME: exec-path-from-shell
 #+begin_src emacs-lisp
   (use-package exec-path-from-shell
-		   :config
-		   (progn (exec-path-from-shell-initialize))
-		   :ensure t)
+               :config
+               (progn (exec-path-from-shell-initialize))
+               :ensure t)
 #+end_src
 
 ** shell-pop
@@ -302,7 +313,6 @@ wdiredのrequireはdired-mode-mapを定義するために必要．
                :ensure t)
 #+end_src
 
-
 ** org-mode
 *** Orgについて
 - マニュアル
@@ -352,6 +362,7 @@ wdiredのrequireはdired-mode-mapを定義するために必要．
   <<my/org-caputure-templates>>
   <<my/ox-latex>>
   <<my/ox-beamer>>
+  <<my/smartrep>>
   (use-package org
                :bind
                <<org-bind>>
@@ -375,7 +386,8 @@ wdiredのrequireはdired-mode-mapを定義するために必要．
                  <<ox-protocol>>)
                :config
                (progn
-                 <<org/truncate-lines>>)
+                 <<org/truncate-lines>>
+                 (my/smartrep))
                :ensure t)
 #+end_src
 
@@ -659,6 +671,22 @@ javascript:location.href='org-protocol://capture://t/'+encodeURIComponent(locati
 #+NAME: ox-protocol
 #+begin_src emacs-lisp
   (require 'org-protocol)
+#+end_src
+
+*** my/smartrep
+- eval-after-loadにより，orgがロードされた後，
+  もしくは，既にロードされていれば即，実行する．
+- TODO smartrepは既にrequireされている前提
+
+#+NAME: my/smartrep
+#+begin_src emacs-lisp
+  (defun my/smartrep ()
+    (smartrep-define-key
+        org-mode-map
+        "C-c" '(("C-n" . (lambda ()
+                           (outline-next-visible-heading 1)))
+                ("C-p" . (lambda ()
+                           (outline-previous-visible-heading 1))))))
 #+end_src
 
 * カスタマイズ

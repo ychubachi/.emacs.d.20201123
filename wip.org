@@ -1,41 +1,6 @@
 #+PROPERTY: header-args:emacs-lisp :tangle init.el
 #+PROPERTY: header-args            :results silent
 
-
-* Org
-** エキスポート
-* org-modeでヘッダの移動にsmartrepを利用する設定
-
-- eval-after-loadにより，orgがロードされた後，
-  もしくは，既にロードされていれば即，実行する．
-
-#+begin_src emacs-lisp
-  (eval-after-load "org"
-	'(progn
-	   (smartrep-define-key
-	   org-mode-map
-	   "C-c" '(("C-n" . (lambda ()
-				  (outline-next-visible-heading 1)))
-		   ("C-p" . (lambda ()
-				  (outline-previous-visible-heading 1)))))
-	   ))
-#+end_src
-
-* outline-minnor-mode - プリフィックスをC-c C-oに変更する．
-
-#+begin_src emacs-lisp
-  (add-hook 'outline-minor-mode-hook
-		(lambda () (local-set-key "\C-c\C-o"
-					  outline-mode-prefix-map)))
-#+end_src
-* markdownモードでアウトラインを有効にする
-
-#+begin_src emacs-lisp
-  (add-hook 'markdown-mode-hook
-		'(lambda () (outline-minor-mode t)))
-#+end_src
-* auto-complete - 自動補間
-  - [[http://cx4a.org/software/auto-complete/index.ja.html][Auto Complete Mode - GNU Emacsのための最も賢い自動補完機能]]
 * Clean Mode Line
   - mode-lineのモード情報をコンパクトに表示する- Life is very short
 	- http://d.hatena.ne.jp/syohex/20130131/1359646452
@@ -518,57 +483,6 @@
 						(my/reload-firefox)))
 #+end_src
 
-* Windows用設定
-** TODO 設定全体
-
-#+begin_src emacs-lisp :noweb yes
-  (when (or (eq system-type 'windows-nt)
-		(eq system-type 'cygwin))
-	<<windows-settings>>
-  )
-#+end_src
-
-** Windows用設定
-
-#+name: windows-settings
-#+begin_src emacs-lisp :tangle no
-  (setq file-name-coding-system 'cp932)
-
-  ;; Ctrl-gとかでベルを鳴らさないようにします。
-  (setq visible-bell t)
-  (setq ring-bell-function 'ignore)
-
-  ;;;** 標準IMEの設定
-  (setq default-input-method "W32-IME")
-
-  ;;;** IMEの初期化
-  (w32-ime-initialize)
-
-  ;;;** IME状態のモードライン表示
-  (setq-default w32-ime-mode-line-state-indicator "[--]")
-  (setq w32-ime-mode-line-state-indicator-list '("[--]" "[あ]" "[--]"))
-
-  ;;;** IME OFF時の初期カーソルカラー
-  (set-cursor-color "red")
-
-  ;;;** IME ON/OFF時のカーソルカラー
-  (add-hook 'input-method-activate-hook
-		(lambda() (set-cursor-color "green")))
-  (add-hook 'input-method-inactivate-hook
-		(lambda() (set-cursor-color "red")))
-
-  ;;;** バッファ切り替え時にIME状態を引き継ぐ
-  (setq w32-ime-buffer-switch-p nil)
-
-  ;;;** Ctrl-Oでトグルするようにする
-  (global-set-key (kbd "C-o") 'toggle-input-method)
-
-  ;; ;; cp932エンコード時の表示を「P」とする
-  ;; (coding-system-put 'cp932 :mnemonic ?P)
-  ;; (coding-system-put 'cp932-dos :mnemonic ?P)
-  ;; (coding-system-put 'cp932-unix :mnemonic ?P)
-  ;; (coding-system-put 'cp932-mac :mnemonic ?P)
-#+end_src
 * Scala
   - 参考
 	- [[http://futurismo.biz/archives/2449][EmacsでScala開発環境を構築(Ensime) | Futurismo]]
@@ -649,6 +563,8 @@
 	((eq system-type 'darwin)
 	 (define-key 'personal-map (kbd "p") 'skim-forward-search)))
 #+end_src
+* TODO auto-complete - 自動補間
+  - [[http://cx4a.org/software/auto-complete/index.ja.html][Auto Complete Mode - GNU Emacsのための最も賢い自動補完機能]]
 * TODO ace-jump-mode
 #+begin_src emacs-lisp
   (use-package ace-jump-mode
@@ -1152,7 +1068,6 @@ Gmailでスターをつけると，flagが付く．
 	 をインストールしておく．
    - emacs lispには対応していない．残念．
 
-
 * TODO system-typeに応じたcustom.el
 
 #+begin_src emacs-lisp
@@ -1164,4 +1079,63 @@ Gmailでスターをつけると，flagが付く．
 	  (load custom-file)))
 #+end_src
 
+
+* TODO markdownモードでアウトラインを有効にする
+- markdown-mode-hook 定義されてない？
+#+begin_src emacs-lisp
+  (add-hook 'markdown-mode-hook
+		'(lambda () (outline-minor-mode t)))
+#+end_src
+
+* TODO Windows用設定
+** TODO 設定全体
+
+#+begin_src emacs-lisp :noweb yes
+  (when (or (eq system-type 'windows-nt)
+		(eq system-type 'cygwin))
+	<<windows-settings>>
+  )
+#+end_src
+
+** Windows用設定
+
+#+name: windows-settings
+#+begin_src emacs-lisp :tangle no
+  (setq file-name-coding-system 'cp932)
+
+  ;; Ctrl-gとかでベルを鳴らさないようにします。
+  (setq visible-bell t)
+  (setq ring-bell-function 'ignore)
+
+  ;;;** 標準IMEの設定
+  (setq default-input-method "W32-IME")
+
+  ;;;** IMEの初期化
+  (w32-ime-initialize)
+
+  ;;;** IME状態のモードライン表示
+  (setq-default w32-ime-mode-line-state-indicator "[--]")
+  (setq w32-ime-mode-line-state-indicator-list '("[--]" "[あ]" "[--]"))
+
+  ;;;** IME OFF時の初期カーソルカラー
+  (set-cursor-color "red")
+
+  ;;;** IME ON/OFF時のカーソルカラー
+  (add-hook 'input-method-activate-hook
+		(lambda() (set-cursor-color "green")))
+  (add-hook 'input-method-inactivate-hook
+		(lambda() (set-cursor-color "red")))
+
+  ;;;** バッファ切り替え時にIME状態を引き継ぐ
+  (setq w32-ime-buffer-switch-p nil)
+
+  ;;;** Ctrl-Oでトグルするようにする
+  (global-set-key (kbd "C-o") 'toggle-input-method)
+
+  ;; ;; cp932エンコード時の表示を「P」とする
+  ;; (coding-system-put 'cp932 :mnemonic ?P)
+  ;; (coding-system-put 'cp932-dos :mnemonic ?P)
+  ;; (coding-system-put 'cp932-unix :mnemonic ?P)
+  ;; (coding-system-put 'cp932-mac :mnemonic ?P)
+#+end_src
 
