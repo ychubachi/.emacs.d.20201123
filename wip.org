@@ -4,29 +4,6 @@
 
 * Org
 ** エキスポート
-*** 設定方法
-  - C-c C-lでOrg形式のリンク挿入
-  - [[http://stackoverflow.com/questions/7464951/how-to-make-org-protocol-work][firefox - How to make org-protocol work? - Stack Overflow]]
-	- gistで公開してあげようかな
-  - [[http://d.hatena.ne.jp/reppets/20111109/1320846292][Unityランチャーに自分でインストール/ビルドしたアプリケーションを登録する - reppets.log.1]]
-  - [[http://kb.mozillazine.org/Register_protocol#Linux][Register protocol - MozillaZine Knowledge Base]]
-  - [[http://orgmode.org/worg/org-contrib/org-protocol.html#sec-3-6]]
-	- 古い
-
-[[http://orgmode.org/worg/org-contrib/org-protocol.html#sec-3-6][* org-protocol
-org-protocol.el – Intercept calls from emacsclient to trigger custom actions]]
-
-#+begin_src
-javascript:location.href='org-protocol://store-link://'+encodeURIComponent(location.href)
-javascript:location.href='org-protocol://capture://t/'+encodeURIComponent(location.href)+'/'+encodeURIComponent(document.title)+'/'+encodeURIComponent(window.getSelection())
-#+end_src
-
-*** 有効化
-
-#+begin_src emacs-lisp
-  (require 'org-protocol)
-#+end_src
-
 * org-modeでヘッダの移動にsmartrepを利用する設定
 
 - eval-after-loadにより，orgがロードされた後，
@@ -42,13 +19,6 @@ javascript:location.href='org-protocol://capture://t/'+encodeURIComponent(locati
 		   ("C-p" . (lambda ()
 				  (outline-previous-visible-heading 1)))))
 	   ))
-#+end_src
-
-* smartrep.el
-- [[http://sheephead.homelinux.org/2011/12/19/6930/][連続操作を素敵にするsmartrep.el作った - sheephead]]
-
-#+begin_src emacs-lisp
-  (require 'smartrep)
 #+end_src
 
 * outline-minnor-mode - プリフィックスをC-c C-oに変更する．

@@ -61,6 +61,8 @@
              :ensure t)
 (use-package multiple-cursors
              :ensure t)
+(use-package smartrep
+             :ensure t)
 (use-package region-bindings-mode
              :init
              (progn
@@ -222,7 +224,8 @@ Text: %i
                (my/ox-beamer)
                (add-to-list 'org-latex-packages-alist '("" "minted"))
                (setq org-latex-listings 'minted)
-               (use-package ox-reveal :ensure t))
+               (use-package ox-reveal :ensure t)
+               (require 'org-protocol))
              :config
              (progn
                (bind-key "M-q" 'toggle-truncate-lines org-mode-map))
