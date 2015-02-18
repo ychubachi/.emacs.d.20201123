@@ -159,61 +159,6 @@
   (add-hook 'LaTeX-mode-hook 'outline-minnor-mode)
 #+end_src
 
-* eldoc
-
-#+begin_src emacs-lisp
-  (add-hook 'emacs-lisp-mode-hook 'turn-on-eldoc-mode)
-  (add-hook 'lisp-interaction-mode-hook 'turn-on-eldoc-mode)
-  (add-hook 'ielm-mode-hook 'turn-on-eldoc-mode)
-  (setq eldoc-idle-delay 0.2)
-  (setq eldoc-minor-mode-string "")
-#+end_src
-
-* graphviz-dot-mode
-  - .dot ファイルをgraphviz-dot-modeで開くようにします．
-
-#+begin_src emacs-lisp
-(setq graphviz-dot-preview-extension "pdf")
-#+end_src
-
-* migemo
-** 概要
-ローマ字で日本語をインクリメンタルサーチ
-
-- 注意
-  - cmigemoコマンドがインストールされていること．
-  - locate migemo-dictで辞書の場所調べ，設定してください．
-- 参考
-  - https://github.com/emacs-jp/migemo
-  - [[http://qiita.com/catatsuy/items/c5fa34ead92d496b8a51][migemoを使ってEmacsライフを快適に - Qiita {キータ}]]
-
-** 実行可否確認
-
-#+begin_src emacs-lisp
-  (unless (executable-find "cmigemo")
-	(warn "！！ 警告：cmigemoコマンドが呼び出せません　！！"))
-#+end_src
-
-** 設定
-
-#+begin_src emacs-lisp
-  (when (and (executable-find "cmigemo")
-		 (require 'migemo nil t))
-	(setq migemo-options '("-q" "--emacs"))
-	(setq migemo-user-dictionary nil)
-	(setq migemo-regex-dictionary nil)
-	(setq migemo-coding-system 'utf-8-unix)
-	(load-library "migemo")
-	(migemo-init)
-	(setq migemo-command "cmigemo")
-	(cond
-	 ((eq system-type 'gnu/linux)
-	  (setq migemo-dictionary "/usr/share/cmigemo/utf-8/migemo-dict"))
-	 ((eq system-type 'darwin)
-	  (setq migemo-dictionary "/usr/local/share/migemo/utf-8/migemo-dict")))
-	)
-#+end_src
-
 * Helm
 ** 参考
    - [[http://d.hatena.ne.jp/a_bicky/20140104/1388822688][Helm をストレスなく使うための個人的な設定 - あらびき日記]]
@@ -563,6 +508,16 @@
 	((eq system-type 'darwin)
 	 (define-key 'personal-map (kbd "p") 'skim-forward-search)))
 #+end_src
+* TODO eldoc
+
+#+begin_src emacs-lisp
+  (add-hook 'emacs-lisp-mode-hook 'turn-on-eldoc-mode)
+  (add-hook 'lisp-interaction-mode-hook 'turn-on-eldoc-mode)
+  (add-hook 'ielm-mode-hook 'turn-on-eldoc-mode)
+  (setq eldoc-idle-delay 0.2)
+  (setq eldoc-minor-mode-string "")
+#+end_src
+
 * TODO auto-complete - 自動補間
   - [[http://cx4a.org/software/auto-complete/index.ja.html][Auto Complete Mode - GNU Emacsのための最も賢い自動補完機能]]
 * TODO ace-jump-mode
@@ -1137,5 +1092,12 @@ Gmailでスターをつけると，flagが付く．
   ;; (coding-system-put 'cp932-dos :mnemonic ?P)
   ;; (coding-system-put 'cp932-unix :mnemonic ?P)
   ;; (coding-system-put 'cp932-mac :mnemonic ?P)
+#+end_src
+
+* TODO graphviz-dot-mode
+  - .dot ファイルをgraphviz-dot-modeで開くようにします．
+
+#+begin_src emacs-lisp
+(setq graphviz-dot-preview-extension "pdf")
 #+end_src
 

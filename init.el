@@ -78,6 +78,25 @@
                        ("m" . mc/mark-more-like-this-extended)
                        ("e" . mc/edit-lines)))
              :ensure t)
+(use-package migemo
+             :if (executable-find "cmigemo")
+             :init
+             (setq migemo-options '("-q" "--emacs"))
+             (setq migemo-user-dictionary nil)
+             (setq migemo-regex-dictionary nil)
+             (setq migemo-coding-system 'utf-8-unix)
+             (load-library "migemo")
+             (migemo-init)
+             (setq migemo-command "cmigemo")
+             (cond
+              ((eq system-type 'gnu/linux)
+               (setq migemo-dictionary
+                     "/usr/share/cmigemo/utf-8/migemo-dict"))
+              ((eq system-type 'darwin)
+               (setq migemo-dictionary
+                     "/usr/local/share/migemo/utf-8/migemo-dict")))
+             :ensure t)
+
 (defun my/org-caputure-templates ()
   (setq org-capture-templates
         (quote
