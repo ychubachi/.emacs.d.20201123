@@ -186,6 +186,7 @@ wdiredのrequireはdired-mode-mapを定義するために必要．
   <<region-bindings-mode>>
   <<migemo>>
   <<org>>
+  <<helm>>
 #+end_src
 
 ** ShellのPATH設定を引き継ぐ
@@ -721,6 +722,38 @@ javascript:location.href='org-protocol://capture://t/'+encodeURIComponent(locati
                            (outline-next-visible-heading 1)))
                 ("C-p" . (lambda ()
                            (outline-previous-visible-heading 1))))))
+#+end_src
+
+** Helm
+*** Helmについて
+   - [[http://d.hatena.ne.jp/a_bicky/20140104/1388822688][Helm をストレスなく使うための個人的な設定 - あらびき日記]]
+   - [[https://github.com/emacs-helm/helm/wiki][Home · emacs-helm/helm Wiki]]
+   - [[http://sleepboy-zzz.blogspot.jp/2012/09/anythinghelm.html][memo: AnythingからHelmに移行しました]]
+   - [[http://www49.atwiki.jp/ntemacs/m/pages/32.html][NTEmacs @ ウィキ - helm を使うための設定 - @ｳｨｷﾓﾊﾞｲﾙ]]
+   - [[http://qiita.com/akisute3@github/items/7c8ea3970e4cbb7baa97][Emacs - helm-mode 有効時でも helm-find-files は無効にする - Qiita {キータ}]]
+   - [[http://www.fan.gr.jp/~ring/doc/elisp_19/elisp-jp_14.html#IDX592][GNU Emacs Lispリファレンス・マニュアル: 12. マクロ]]
+	 - 逆引用符は`,'の引数を評価し、 リスト構造にその値を入れます。
+   - helm-mode 1 はおせっかいすぎるので使わない
+*** 全体の定義
+
+- helm-M-xを有効にする
+- helm-miniを有効にする
+
+|                |                   | 上書き |
+|----------------+-------------------+--------|
+| helm-descbinds | describe-bindings | C-h b  | 
+
+#+NAME: helm
+#+begin_src emacs-lisp
+  (use-package helm-config
+               :bind (("M-x" . helm-M-x)
+                      ("C-c h" . helm-mini))
+               :init
+               (progn
+                (use-package helm-describe
+                             :init
+                             (helm-descbinds-mode)))
+               :ensure helm)
 #+end_src
 
 * カスタマイズ

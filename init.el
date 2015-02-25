@@ -261,6 +261,15 @@ Text: %i
                (bind-key "M-q" 'toggle-truncate-lines org-mode-map)
                (my/smartrep))
              :ensure t)
+(use-package helm-config
+             :bind (("M-x" . helm-M-x)
+                    ("C-c h" . helm-mini))
+             :init
+             (progn
+              (use-package helm-describe
+                           :init
+                           (helm-descbinds-mode)))
+             :ensure helm)
 (setq custom-file "~/.emacs.d/custom.el")
 (if (file-exists-p custom-file)
         (load custom-file))
