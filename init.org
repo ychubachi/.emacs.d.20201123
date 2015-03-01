@@ -50,7 +50,6 @@
 #+NAME: top_block
 #+begin_src emacs-lisp :tangle "init.el" :noweb tangle :padline no
   ;; init.el --- Emacsの初期設定
-  <<init-package>>
   <<basic>>
   <<japanese>>
   <<package>>
@@ -58,15 +57,51 @@
   ;;; init.el ends here
 #+end_src
 
-* パッケージ機能の初期化
 * Emacs本体が提供する機能
 ** Emacs本体が提供する機能の設定
 #+NAME: basic
 #+begin_src emacs-lisp
+  <<init-package>>
   <<server>>
   <<C-h>>
   <<wdired>>
   <<outline-minnor-mode>>
+#+end_src
+
+** パッケージ機能の初期化
+
+#+NAME: init-package
+#+begin_src emacs-lisp
+  <<package-archives>>
+  <<use-package>>
+#+end_src
+
+*** ELPAアーカイブスの設定
+
+#+NAME: package-archives
+#+begin_src emacs-lisp
+  (require 'package)
+  (add-to-list 'package-archives
+		   '("melpa" . "http://melpa.milkbox.net/packages/") t)
+  (add-to-list 'package-archives
+		   '("marmalade" . "http://marmalade-repo.org/packages/"))
+  (package-initialize)
+#+end_src
+
+*** use-packageの設定
+   use-packageマクロを利用できるようにします。
+   - [[https://github.com/jwiegley/use-package][jwiegley/use-package]]
+
+- [[https://github.com/emacsattic/bind-key][emacsattic/bind-key]]
+  you can use M-x describe-personal-keybindings to see all such bindings you've set throughout your Emacs.
+  (describe-personal-keybindings)
+
+#+NAME: use-package
+#+begin_src emacs-lisp
+  (package-refresh-contents)
+  (unless (package-installed-p 'use-package)
+	(package-install 'use-package))
+  (require 'use-package)
 #+end_src
 
 ** Emacsサーバーの起動
@@ -132,41 +167,6 @@ wdiredのrequireはdired-mode-mapを定義するために必要．
   (prefer-coding-system 'utf-8)
   (when (eq system-type 'gnu/linux)
 	(add-to-list 'default-frame-alist '(font . "ricty-13.5")))
-#+end_src
-
-** パッケージ機能の初期化の設定
-#+NAME: init-package
-#+begin_src emacs-lisp
-  <<package-archives>>
-  <<use-package>>
-#+end_src
-
-** ELPAアーカイブスの設定
-
-#+NAME: package-archives
-#+begin_src emacs-lisp
-  (require 'package)
-  (add-to-list 'package-archives
-		   '("melpa" . "http://melpa.milkbox.net/packages/") t)
-  (add-to-list 'package-archives
-		   '("marmalade" . "http://marmalade-repo.org/packages/"))
-  (package-initialize)
-#+end_src
-
-** use-packageの設定
-   use-packageマクロを利用できるようにします。
-   - [[https://github.com/jwiegley/use-package][jwiegley/use-package]]
-
-- [[https://github.com/emacsattic/bind-key][emacsattic/bind-key]]
-  you can use M-x describe-personal-keybindings to see all such bindings you've set throughout your Emacs.
-  (describe-personal-keybindings)
-
-#+NAME: use-package
-#+begin_src emacs-lisp
-  (package-refresh-contents)
-  (unless (package-installed-p 'use-package)
-	(package-install 'use-package))
-  (require 'use-package)
 #+end_src
 
 * パッケージ
@@ -739,9 +739,6 @@ javascript:location.href='org-protocol://capture://t/'+encodeURIComponent(locati
 - helm-M-xを有効にする
 - helm-miniを有効にする
 
-|                |                   | 上書き |
-|----------------+-------------------+--------|
-| helm-descbinds | describe-bindings | C-h b  | 
 
 #+NAME: helm
 #+begin_src emacs-lisp
@@ -750,10 +747,47 @@ javascript:location.href='org-protocol://capture://t/'+encodeURIComponent(locati
                       ("C-c h" . helm-mini))
                :init
                (progn
-                (use-package helm-describe
-                             :init
-                             (helm-descbinds-mode)))
+                 <<helm-descbinds>>
+                 <<helm-migemo>>)
                :ensure helm)
+#+end_src
+
+*** helm-descbinds
+
+|                |                   | 上書き |
+|----------------+-------------------+--------|
+| helm-descbinds | describe-bindings | C-h b  | 
+
+#+NAME: helm-descbinds
+#+begin_src emacs-lisp
+  (use-package helm-descbinds
+               :init
+               (helm-descbinds-mode)
+               :ensure t)
+#+end_src
+
+*** helm-migemo - ローマ字検索
+
+#+NAME: helm-migemo
+#+begin_src emacs-lisp
+  (use-package helm-migemo
+               :if (executable-find "cmigemo")
+               :init
+               (progn
+                 (setq helm-use-migemo t)
+
+                 (defadvice helm-c-apropos
+                   (around ad-helm-apropos activate)
+                   "候補が表示されないときがあるので migemoらないように設定."
+                   (let ((helm-use-migemo nil))
+                     ad-do-it))
+
+                 (defadvice helm-M-x
+                   (around ad-helm-M-x activate)
+                   "候補が表示されないときがあるので migemoらないように設定."
+                   (let ((helm-use-migemo nil))
+                     ad-do-it)))
+               :ensure t)
 #+end_src
 
 * カスタマイズ

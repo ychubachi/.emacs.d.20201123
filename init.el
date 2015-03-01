@@ -266,9 +266,28 @@ Text: %i
                     ("C-c h" . helm-mini))
              :init
              (progn
-              (use-package helm-describe
-                           :init
-                           (helm-descbinds-mode)))
+               (use-package helm-descbinds
+                            :init
+                            (helm-descbinds-mode)
+                            :ensure t)
+               (use-package helm-migemo
+                            :if (executable-find "cmigemo")
+                            :init
+                            (progn
+                              (setq helm-use-migemo t)
+               
+                              (defadvice helm-c-apropos
+                                (around ad-helm-apropos activate)
+                                "候補が表示されないときがあるので migemoらないように設定."
+                                (let ((helm-use-migemo nil))
+                                  ad-do-it))
+               
+                              (defadvice helm-M-x
+                                (around ad-helm-M-x activate)
+                                "候補が表示されないときがあるので migemoらないように設定."
+                                (let ((helm-use-migemo nil))
+                                  ad-do-it)))
+                            :ensure t))
              :ensure helm)
 (setq custom-file "~/.emacs.d/custom.el")
 (if (file-exists-p custom-file)

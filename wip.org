@@ -1,43 +1,72 @@
 #+PROPERTY: header-args:emacs-lisp :tangle init.el
 #+PROPERTY: header-args            :results silent
 
-* Clean Mode Line
-  - mode-lineのモード情報をコンパクトに表示する- Life is very short
-	- http://d.hatena.ne.jp/syohex/20130131/1359646452
+* Helm
+** TODO C-k
+ミニバッファで C-k 入力時にカーソル以降を削除する
 
 #+begin_src emacs-lisp
-(defvar mode-line-cleaner-alist
-  '( ;; For minor-mode, first char is 'space'
-	(yas-minor-mode . " Ys")
-	(paredit-mode . " Pe")
-	(eldoc-mode . "")
-	(abbrev-mode . "")
-	(undo-tree-mode . " Ut")
-	(elisp-slime-nav-mode . " EN")
-	(helm-gtags-mode . " HG")
-	(flymake-mode . " Fm")
-	(outline-minor-mode . " Ol")
-	(ibus-mode . " IB")
-	;; Major modes
-	(lisp-interaction-mode . "Li")
-	(python-mode . "Py")
-	(ruby-mode   . "Rb")
-	(emacs-lisp-mode . "El")
-	(markdown-mode . "Md")))
-
-(defun clean-mode-line ()
-  (interactive)
-  (loop for (mode . mode-str) in mode-line-cleaner-alist
-	do
-	(let ((old-mode-str (cdr (assq mode minor-mode-alist))))
-	  (when old-mode-str
-		(setcar old-mode-str mode-str))
-	  ;; major mode
-	  (when (eq mode major-mode)
-		(setq mode-name mode-str)))))
-
-(add-hook 'after-change-major-mode-hook 'clean-mode-line)
+(setq helm-delete-minibuffer-contents-from-point t)
 #+end_src
+
+** 他のパッケージ
+
+#+begin_src emacs-lisp
+(dolist (package '(
+		   helm-migemo
+		   helm-themes
+		   imenu-anywhere
+		   helm-c-yasnippet))
+  (when (not (package-installed-p package))
+	(package-install package)))
+#+end_src
+
+** ???
+
+#+begin_src emacs-lisp
+(require 'helm-command)
+
+(setq helm-idle-delay             0.1
+	  helm-input-idle-delay       0.1
+	  helm-candidate-number-limit 200)
+#+end_src
+
+** その他
+
+#+begin_src emacs-lisp
+(require 'helm-imenu)
+(setq imenu-auto-rescan t)
+(setq imenu-after-jump-hook (lambda () (recenter 10))) ; 選択後の表示位置を調整
+
+(require 'helm-themes)
+
+(require 'helm-c-yasnippet)
+#+end_src
+
+** package listをhelmで選択
+
+#+begin_src emacs-lisp
+(require 'helm-package)
+#+end_src
+
+** keybinding
+
+  ;;         (,(kbd "C-r")   helm-for-files)
+  ;;         (,(kbd "C-^")   helm-c-apropos)
+  ;;         (,(kbd "C-;")   helm-resume)
+  ;;         (,(kbd "M-s")   helm-occur)
+  ;;         (,(kbd "M-z")   helm-do-grep)
+  ;;         (,(kbd "C-S-h") helm-descbinds)
+
+** helm-recentfを呼び出す
+
+#+BEGIN_SRC emacs-lisp
+(require 'recentf)
+(recentf-mode 1)
+(setq recentf-max-menu-items 25)
+(global-set-key "\C-x\ \C-r" 'helm-recentf)
+#+END_SRC
+
 * AUCTeX
 
 #+begin_src emacs-lisp
@@ -158,94 +187,6 @@
 #+begin_src emacs-lisp
   (add-hook 'LaTeX-mode-hook 'outline-minnor-mode)
 #+end_src
-
-* Helm
-
-** TODO C-k
-ミニバッファで C-k 入力時にカーソル以降を削除する
-
-#+begin_src emacs-lisp
-(setq helm-delete-minibuffer-contents-from-point t)
-#+end_src
-
-** 他のパッケージ
-
-#+begin_src emacs-lisp
-(dolist (package '(
-		   helm-migemo
-		   helm-themes
-		   imenu-anywhere
-		   helm-c-yasnippet))
-  (when (not (package-installed-p package))
-	(package-install package)))
-#+end_src
-
-** ???
-
-#+begin_src emacs-lisp
-(require 'helm-command)
-
-(setq helm-idle-delay             0.1
-	  helm-input-idle-delay       0.1
-	  helm-candidate-number-limit 200)
-#+end_src
-
-** helm-migemo - ローマ字検索
-
-#+begin_src emacs-lisp
-  (when (executable-find "cmigemo")
-	(require 'helm-migemo)
-	(setq helm-use-migemo t)
-
-	(defadvice helm-c-apropos
-	  (around ad-helm-apropos activate)
-	  "候補が表示されないときがあるので migemoらないように設定."
-	  (let ((helm-use-migemo nil))
-	ad-do-it))
-
-	(defadvice helm-M-x
-	  (around ad-helm-M-x activate)
-	  "候補が表示されないときがあるので migemoらないように設定."
-	  (let ((helm-use-migemo nil))
-	ad-do-it))
-	)
-#+end_src
-
-** その他
-
-#+begin_src emacs-lisp
-(require 'helm-imenu)
-(setq imenu-auto-rescan t)
-(setq imenu-after-jump-hook (lambda () (recenter 10))) ; 選択後の表示位置を調整
-
-(require 'helm-themes)
-
-(require 'helm-c-yasnippet)
-#+end_src
-
-** package listをhelmで選択
-
-#+begin_src emacs-lisp
-(require 'helm-package)
-#+end_src
-
-** keybinding
-
-  ;;         (,(kbd "C-r")   helm-for-files)
-  ;;         (,(kbd "C-^")   helm-c-apropos)
-  ;;         (,(kbd "C-;")   helm-resume)
-  ;;         (,(kbd "M-s")   helm-occur)
-  ;;         (,(kbd "M-z")   helm-do-grep)
-  ;;         (,(kbd "C-S-h") helm-descbinds)
-
-** helm-recentfを呼び出す
-
-#+BEGIN_SRC emacs-lisp
-(require 'recentf)
-(recentf-mode 1)
-(setq recentf-max-menu-items 25)
-(global-set-key "\C-x\ \C-r" 'helm-recentf)
-#+END_SRC
 
 * Ruby
   ;; S式から正規表現を作成する - by shigemk2
@@ -479,6 +420,43 @@
 	 (define-key 'personal-map (kbd "p") 'evince-forward-search))
 	((eq system-type 'darwin)
 	 (define-key 'personal-map (kbd "p") 'skim-forward-search)))
+#+end_src
+* Clean Mode Line
+  - mode-lineのモード情報をコンパクトに表示する- Life is very short
+	- http://d.hatena.ne.jp/syohex/20130131/1359646452
+
+#+begin_src emacs-lisp
+(defvar mode-line-cleaner-alist
+  '( ;; For minor-mode, first char is 'space'
+	(yas-minor-mode . " Ys")
+	(paredit-mode . " Pe")
+	(eldoc-mode . "")
+	(abbrev-mode . "")
+	(undo-tree-mode . " Ut")
+	(elisp-slime-nav-mode . " EN")
+	(helm-gtags-mode . " HG")
+	(flymake-mode . " Fm")
+	(outline-minor-mode . " Ol")
+	(ibus-mode . " IB")
+	;; Major modes
+	(lisp-interaction-mode . "Li")
+	(python-mode . "Py")
+	(ruby-mode   . "Rb")
+	(emacs-lisp-mode . "El")
+	(markdown-mode . "Md")))
+
+(defun clean-mode-line ()
+  (interactive)
+  (loop for (mode . mode-str) in mode-line-cleaner-alist
+	do
+	(let ((old-mode-str (cdr (assq mode minor-mode-alist))))
+	  (when old-mode-str
+		(setcar old-mode-str mode-str))
+	  ;; major mode
+	  (when (eq mode major-mode)
+		(setq mode-name mode-str)))))
+
+(add-hook 'after-change-major-mode-hook 'clean-mode-line)
 #+end_src
 * TODO eldoc
 
