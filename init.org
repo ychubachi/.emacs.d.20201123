@@ -744,15 +744,21 @@ javascript:location.href='org-protocol://capture://t/'+encodeURIComponent(locati
 #+begin_src emacs-lisp
   (use-package helm-config
                :bind (("M-x" . helm-M-x)
-                      ("C-c h" . helm-mini))
+                      ("C-c h" . helm-mini)
+                      ("C-x C-r" . helm-recentf))
                :init
                (progn
                  <<helm-descbinds>>
-                 <<helm-migemo>>)
+                 <<helm-migemo>>
+                 <<helm-package>>)
                :ensure helm)
 #+end_src
 
 *** helm-descbinds
+
+- helm-descbinds-mode を評価すると、describe-bindings 関数が helm-descbinds 関数で上書きされる
+- describe-bindings にはもともと C-h b がバインドされているので結果として C-h b で helm-descbinds が起動されるようになる
+- TODO bind-keys を使ったほうが確認しやすいかもしれない
 
 |                |                   | 上書き |
 |----------------+-------------------+--------|
@@ -788,6 +794,15 @@ javascript:location.href='org-protocol://capture://t/'+encodeURIComponent(locati
                    (let ((helm-use-migemo nil))
                      ad-do-it)))
                :ensure t)
+#+end_src
+
+*** package listをhelmで選択
+
+[[http://rubikitch.com/2014/11/16/helm-package/][emacs helm-package.el : パッケージをhelmインターフェースで即座に見付けてインストール | MELPA Emacs Lisp Elisp パッケージ インストール 設定 使い方 スクリーンショット | るびきち「日刊Emacs」]]
+
+#+NAME: helm-package
+#+begin_src emacs-lisp
+(use-package helm-package :ensure t)
 #+end_src
 
 * カスタマイズ

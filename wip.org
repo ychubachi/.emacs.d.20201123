@@ -13,7 +13,6 @@
 
 #+begin_src emacs-lisp
 (dolist (package '(
-		   helm-migemo
 		   helm-themes
 		   imenu-anywhere
 		   helm-c-yasnippet))
@@ -41,12 +40,6 @@
 (require 'helm-themes)
 
 (require 'helm-c-yasnippet)
-#+end_src
-
-** package listをhelmで選択
-
-#+begin_src emacs-lisp
-(require 'helm-package)
 #+end_src
 
 ** keybinding

@@ -263,7 +263,8 @@ Text: %i
              :ensure t)
 (use-package helm-config
              :bind (("M-x" . helm-M-x)
-                    ("C-c h" . helm-mini))
+                    ("C-c h" . helm-mini)
+                    ("C-x C-r" . helm-recentf))
              :init
              (progn
                (use-package helm-descbinds
@@ -287,7 +288,8 @@ Text: %i
                                 "候補が表示されないときがあるので migemoらないように設定."
                                 (let ((helm-use-migemo nil))
                                   ad-do-it)))
-                            :ensure t))
+                            :ensure t)
+               (use-package helm-package :ensure t))
              :ensure helm)
 (setq custom-file "~/.emacs.d/custom.el")
 (if (file-exists-p custom-file)
