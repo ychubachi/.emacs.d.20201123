@@ -74,6 +74,7 @@
 #+begin_src emacs-lisp
   <<package-archives>>
   <<use-package>>
+  <<describe-personal-keybindings>>
 #+end_src
 
 *** ELPAアーカイブスの設定
@@ -93,7 +94,7 @@
    - [[https://github.com/jwiegley/use-package][jwiegley/use-package]]
 
 - [[https://github.com/emacsattic/bind-key][emacsattic/bind-key]]
-  you can use M-x describe-personal-keybindings to see all such bindings you've set throughout your Emacs.
+  - you can use M-x describe-personal-keybindings to see all such bindings you've set throughout your Emacs.
   (describe-personal-keybindings)
 
 #+NAME: use-package
@@ -102,6 +103,12 @@
   (unless (package-installed-p 'use-package)
 	(package-install 'use-package))
   (require 'use-package)
+#+end_src
+*** bind-keyを C-c d で
+
+#+NAME: describe-personal-keybindings
+#+begin_src emacs-lisp
+  (bind-key "C-c d" 'describe-personal-keybindings)
 #+end_src
 
 ** Emacsサーバーの起動
@@ -797,8 +804,8 @@ javascript:location.href='org-protocol://capture://t/'+encodeURIComponent(locati
 #+end_src
 
 *** package listをhelmで選択
-
-[[http://rubikitch.com/2014/11/16/helm-package/][emacs helm-package.el : パッケージをhelmインターフェースで即座に見付けてインストール | MELPA Emacs Lisp Elisp パッケージ インストール 設定 使い方 スクリーンショット | るびきち「日刊Emacs」]]
+- M-x helm-package で起動
+- [[http://rubikitch.com/2014/11/16/helm-package/][emacs helm-package.el : パッケージをhelmインターフェースで即座に見付けてインストール | MELPA Emacs Lisp Elisp パッケージ インストール 設定 使い方 スクリーンショット | るびきち「日刊Emacs」]]
 
 #+NAME: helm-package
 #+begin_src emacs-lisp

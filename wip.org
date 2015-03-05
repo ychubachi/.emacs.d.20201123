@@ -1,65 +1,6 @@
 #+PROPERTY: header-args:emacs-lisp :tangle init.el
 #+PROPERTY: header-args            :results silent
 
-* Helm
-** TODO C-k
-ミニバッファで C-k 入力時にカーソル以降を削除する
-
-#+begin_src emacs-lisp
-(setq helm-delete-minibuffer-contents-from-point t)
-#+end_src
-
-** 他のパッケージ
-
-#+begin_src emacs-lisp
-(dolist (package '(
-		   helm-themes
-		   imenu-anywhere
-		   helm-c-yasnippet))
-  (when (not (package-installed-p package))
-	(package-install package)))
-#+end_src
-
-** ???
-
-#+begin_src emacs-lisp
-(require 'helm-command)
-
-(setq helm-idle-delay             0.1
-	  helm-input-idle-delay       0.1
-	  helm-candidate-number-limit 200)
-#+end_src
-
-** その他
-
-#+begin_src emacs-lisp
-(require 'helm-imenu)
-(setq imenu-auto-rescan t)
-(setq imenu-after-jump-hook (lambda () (recenter 10))) ; 選択後の表示位置を調整
-
-(require 'helm-themes)
-
-(require 'helm-c-yasnippet)
-#+end_src
-
-** keybinding
-
-  ;;         (,(kbd "C-r")   helm-for-files)
-  ;;         (,(kbd "C-^")   helm-c-apropos)
-  ;;         (,(kbd "C-;")   helm-resume)
-  ;;         (,(kbd "M-s")   helm-occur)
-  ;;         (,(kbd "M-z")   helm-do-grep)
-  ;;         (,(kbd "C-S-h") helm-descbinds)
-
-** helm-recentfを呼び出す
-
-#+BEGIN_SRC emacs-lisp
-(require 'recentf)
-(recentf-mode 1)
-(setq recentf-max-menu-items 25)
-(global-set-key "\C-x\ \C-r" 'helm-recentf)
-#+END_SRC
-
 * AUCTeX
 
 #+begin_src emacs-lisp
@@ -977,7 +918,6 @@ Gmailでスターをつけると，flagが付く．
 	  (load custom-file)))
 #+end_src
 
-
 * TODO markdownモードでアウトラインを有効にする
 - markdown-mode-hook 定義されてない？
 #+begin_src emacs-lisp
@@ -1042,5 +982,43 @@ Gmailでスターをつけると，flagが付く．
 
 #+begin_src emacs-lisp
 (setq graphviz-dot-preview-extension "pdf")
+#+end_src
+
+* TODO Helm
+** TODO C-k
+ミニバッファで C-k 入力時にカーソル以降を削除する
+
+#+begin_src emacs-lisp
+(setq helm-delete-minibuffer-contents-from-point t)
+#+end_src
+
+** TODO 他のパッケージ
+
+#+begin_src emacs-lisp
+(dolist (package '(
+		   helm-themes
+		   imenu-anywhere
+		   helm-c-yasnippet))
+  (when (not (package-installed-p package))
+	(package-install package)))
+#+end_src
+
+#+begin_src emacs-lisp
+(require 'helm-command)
+
+(setq helm-idle-delay             0.1
+	  helm-input-idle-delay       0.1
+	  helm-candidate-number-limit 200)
+#+end_src
+
+
+#+begin_src emacs-lisp
+(require 'helm-imenu)
+(setq imenu-auto-rescan t)
+(setq imenu-after-jump-hook (lambda () (recenter 10))) ; 選択後の表示位置を調整
+
+(require 'helm-themes)
+
+(require 'helm-c-yasnippet)
 #+end_src
 

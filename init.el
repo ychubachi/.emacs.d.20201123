@@ -9,6 +9,7 @@
 (unless (package-installed-p 'use-package)
       (package-install 'use-package))
 (require 'use-package)
+(bind-key "C-c d" 'describe-personal-keybindings)
 (load "server")
 (unless (server-running-p)
       (server-start))
