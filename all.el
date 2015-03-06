@@ -5,6 +5,12 @@
 (unless (server-running-p)		; サーバが起動していないならば
   (server-start))			; サーバを開始する
 
+;;; カスタマイズ設定
+(setq custom-file "~/.emacs.d/custom.el")
+
+(if (file-exists-p custom-file)
+    (load custom-file))
+
 ;;; packageシステムを初期化します
 (require 'package)
 (add-to-list 'package-archives
@@ -33,11 +39,6 @@
 ;;; describe-personal-keybindings をバインドします
 (bind-key "C-c d" 'describe-personal-keybindings)
 
-;;; wdired でリネームできるようにします
-(use-package wdired
-  :init
-  (bind-key "r" 'wdired-change-to-wdired-mode dired-mode-map))
-
 ;;; Ctrl-OでIMEをトグルするようにする
 
 ;; 注意: in ~/.Xresourcesに
@@ -64,19 +65,31 @@
     (setq mozc-candidate-style 'popup))
   :ensure t)
 
+;;;  日本語入力時のカーソル色の変更
+
+(add-hook 'input-method-activate-hook
+	  '(lambda () (set-cursor-color "green")))
+(add-hook 'input-method-inactivate-hook
+	  '(lambda () (set-cursor-color "orchid")))
+
 ;;; outline-minor-modeのプリフィックスがC-c @なので、C-c C-oにする
 ;; http://emacswiki.org/emacs/OutlineMinorMode
 (add-hook 'outline-minor-mode-hook
           (lambda () (bind-key "C-c C-o"
 			       outline-mode-prefix-map)))
 
+;;; outline-minor-modeを有効にするモードを設定
+(add-hook 'emacs-lisp-mode-hook 'outline-minor-mode)
+(add-hook 'LaTeX-mode-hook 'outline-minor-mode)
+
 ;;; デフォルトフォントの設定
 (when (eq system-type 'gnu/linux)
       (add-to-list 'default-frame-alist '(font . "ricty-13.5")))
 
-;;; emacs-lisp
-(add-hook 'emacs-lisp-mode-hook 'outline-minor-mode)
-
+;;; wdired でリネームできるようにします
+(use-package wdired
+  :init
+  (bind-key "r" 'wdired-change-to-wdired-mode dired-mode-map))
 
 ;;; exec-path-from-shell
 (use-package exec-path-from-shell
@@ -101,25 +114,25 @@
   (global-undo-tree-mode t)
   :ensure t)
 
-;;; 
+;;; yasnippet
 (use-package yasnippet
   :init
   (yas-global-mode 1)
   :ensure t)
 
-;;; 
+;;; magit
 (use-package magit
   :bind ("C-c g" . magit-status)
   :ensure t)
 
-;;; 
+;;; open-junk-file
 (use-package open-junk-file
   :bind ("C-c j" . open-junk-file)
   :init
   (setq open-junk-file-directory "~/tmp/junk/%Y/%m/%d-%H%M%S.")
   :ensure t)
 
-;;; 
+;;; paredit
 (use-package paredit
   :init
   (add-hook 'emacs-lisp-mode-hook 'enable-paredit-mode)
@@ -128,21 +141,21 @@
   (add-hook 'ielm-mode-hook 'enable-paredit-mode)
   :ensure t)
 
-;;; 
+;;; lispxmp
 (use-package lispxmp
   :init
   (bind-key "C-c e" 'lispxmp emacs-lisp-mode-map)
   :ensure t)
 
-;;; 
+;;; multiple-cursors
 (use-package multiple-cursors
   :ensure t)
 
-;;; 
+;;; smartrep
 (use-package smartrep
   :ensure t)
 
-;;; 
+;;; region-bindings-mode
 (use-package region-bindings-mode
   :init
   (progn
@@ -155,7 +168,7 @@
 	       ("e" . mc/edit-lines)))
   :ensure t)
 
-;;; 
+;;; migemo
 (use-package migemo
   :if (executable-find "cmigemo")
   :init
@@ -175,7 +188,13 @@
 	  "/usr/local/share/migemo/utf-8/migemo-dict")))
   :ensure t)
 
-;;; 
+;;; ace-jump-mode
+(use-package ace-jump-mode
+  :bind (("C-c ." . ace-jump-mode)
+	 ("C-c ," . ace-jump-line-mode))
+  :ensure t)
+
+;;; org関連
 (defun my/org-caputure-templates ()
   (setq org-capture-templates
         (quote
@@ -378,12 +397,6 @@ Text: %i
     (use-package helm-package :ensure t))
   :ensure helm)
 
-;;; カスタマイズ設定
-(setq custom-file "~/.emacs.d/custom.el")
-
-(if (file-exists-p custom-file)
-    (load custom-file))
-
 ;;; 未整理
 ;;; Clean Mode Line
 ;; - mode-lineのモード情報をコンパクトに表示する- Life is very short
@@ -421,5 +434,146 @@ Text: %i
 
 (add-hook 'after-change-major-mode-hook 'clean-mode-line)
 
+
+;;; フォントサイズをPU，PDで変更できるようにする
+
+;; - Page Up，Page Downで操作
+;; - Macの場合はfn+↑，fn+↓
+
+(global-set-key (kbd "<prior>") 'text-scale-increase)
+(global-set-key (kbd "<next>")  'text-scale-decrease)
+
+;;; eldoc
+(add-hook 'emacs-lisp-mode-hook 'turn-on-eldoc-mode)
+(add-hook 'lisp-interaction-mode-hook 'turn-on-eldoc-mode)
+(add-hook 'ielm-mode-hook 'turn-on-eldoc-mode)
+(setq eldoc-idle-delay 0.2)
+(setq eldoc-minor-mode-string "")
+
+;;; TODO 不要な行末の空白を削除
+
+;; - org-modeで保存すると、勝手にフォーマットが変わるのが変
+
+;; - 保存する前に，不要な空白を取り除きます．
+;; - 参考
+;;   - [[http://batsov.com/articles/2011/11/25/emacs-tip-number-3-whitespace-cleanup/][Emacs Tip #3: Whitespace Cleanup - (think)]]
+;;   - [[http://qiita.com/itiut@github/items/4d74da2412a29ef59c3a][Emacs - whitespace-modeを使って、ファイルの保存時に行末のスペースや末尾の改行を削除する - Qiita]]
+
+;; (add-hook 'before-save-hook
+;; 	  'whitespace-cleanup)
+
+;;; AUCTeX
+
+(use-package tex-jp
+  :init
+  (progn
+    (setq preview-image-type 'dvipng)
+    (setq TeX-source-correlate-method 'synctex)
+    (setq TeX-source-correlate-start-server t)
+    (add-hook 'LaTeX-mode-hook 'TeX-source-correlate-mode)
+    (add-hook 'LaTeX-mode-hook 'TeX-PDF-mode)
+    (add-hook 'LaTeX-mode-hook 'LaTeX-math-mode)
+    (add-hook 'LaTeX-mode-hook
+	      (function (lambda ()
+			  (add-to-list 'TeX-command-list
+				       '("Latexmk"
+					 "latexmk %t"
+					 TeX-run-TeX nil (latex-mode) :help "Run Latexmk"))
+			  (add-to-list 'TeX-command-list
+				       '("Latexmk-pdfupLaTeX"
+					 "latexmk -e '$latex=q/uplatex %%O %S %(mode) %%S/' -e '$bibtex=q/upbibtex %%O %%B/' -e '$biber=q/biber %%O --bblencoding=utf8 -u -U --output_safechars %%B/' -e '$makeindex=q/mendex %%O -U -o %%D %%S/' -e '$dvipdf=q/dvipdfmx %%O -o %%D %%S/' -norc -gg -pdfdvi %t"
+					 TeX-run-TeX nil (latex-mode) :help "Run Latexmk-pdfupLaTeX"))
+			  (add-to-list 'TeX-command-list
+				       '("Latexmk-pdfupLaTeX2"
+					 "latexmk -e '$latex=q/uplatex %%O %S %(mode) %%S/' -e '$bibtex=q/upbibtex %%O %%B/' -e '$biber=q/biber %%O --bblencoding=utf8 -u -U --output_safechars %%B/' -e '$makeindex=q/mendex %%O -U -o %%D %%S/' -e '$dvips=q/dvips %%O -z -f %%S | convbkmk -u > %%D/' -e '$ps2pdf=q/ps2pdf %%O %%S %%D/' -norc -gg -pdfps %t"
+					 TeX-run-TeX nil (latex-mode) :help "Run Latexmk-pdfupLaTeX2"))
+			  (add-to-list 'TeX-command-list
+				       '("Latexmk-pdfLaTeX"
+					 "latexmk -e '$pdflatex=q/pdflatex %%O %S %(mode) %%S/' -e '$bibtex=q/bibtex %%O %%B/' -e '$biber=q/biber %%O --bblencoding=utf8 -u -U --output_safechars %%B/' -e '$makeindex=q/makeindex %%O -o %%D %%S/' -norc -gg -pdf %t"
+					 TeX-run-TeX nil (latex-mode) :help "Run Latexmk-pdfLaTeX"))
+			  (add-to-list 'TeX-command-list
+				       '("Latexmk-LuaLaTeX"
+					 "latexmk -e '$pdflatex=q/lualatex %%O %S %(mode) %%S/' -e '$bibtex=q/bibtexu %%O %%B/' -e '$biber=q/biber %%O --bblencoding=utf8 -u -U --output_safechars %%B/' -e '$makeindex=q/makeindex %%O -o %%D %%S/' -norc -gg -pdf %t"
+					 TeX-run-TeX nil (latex-mode) :help "Run Latexmk-LuaLaTeX"))
+			  (add-to-list 'TeX-command-list
+				       '("Latexmk-LuaJITLaTeX"
+					 "latexmk -e '$pdflatex=q/luajitlatex %%O %S %(mode) %%S/' -e '$bibtex=q/bibtexu %%O %%B/' -e '$biber=q/biber %%O --bblencoding=utf8 -u -U --output_safechars %%B/' -e '$makeindex=q/makeindex %%O -o %%D %%S/' -norc -gg -pdf %t"
+					 TeX-run-TeX nil (latex-mode) :help "Run Latexmk-LuaJITLaTeX"))
+			  (add-to-list 'TeX-command-list
+				       '("Latexmk-XeLaTeX"
+					 "latexmk -e '$pdflatex=q/xelatex %%O %S %(mode) %%S/' -e '$bibtex=q/bibtexu %%O %%B/' -e '$biber=q/biber %%O --bblencoding=utf8 -u -U --output_safechars %%B/' -e '$makeindex=q/makeindex %%O -o %%D %%S/' -norc -gg -pdf %t"
+					 TeX-run-TeX nil (latex-mode) :help "Run Latexmk-XeLaTeX"))
+			  (add-to-list 'TeX-command-list
+				       '("xdg-open"
+					 "xdg-open %s.pdf"
+					 TeX-run-discard-or-function t t :help "Run xdg-open"))
+			  (add-to-list 'TeX-command-list
+				       '("Evince"
+					 "evince %s.pdf"
+					 TeX-run-discard-or-function t t :help "Run Evince"))
+			  (add-to-list 'TeX-command-list
+				       '("fwdevince"
+					 "fwdevince %s.pdf %n \"%b\""
+					 TeX-run-discard-or-function t t :help "Forward search with Evince"))
+			  (add-to-list 'TeX-command-list
+				       '("Okular"
+					 "okular --unique \"file:\"%s.pdf\"#src:%n %a\""
+					 TeX-run-discard-or-function t t :help "Forward search with Okular"))
+			  (add-to-list 'TeX-command-list
+				       '("zathura"
+					 "zathura -s -x \"emacsclient --no-wait +%%{line} %%{input}\" %s.pdf"
+					 TeX-run-discard-or-function t t :help "Run zathura"))
+			  (add-to-list 'TeX-command-list
+				       '("fwdzathura"
+					 "zathura --synctex-forward %n:0:%b %s.pdf"
+					 TeX-run-discard-or-function t t :help "Forward search with zathura"))
+			  (add-to-list 'TeX-command-list
+				       '("qpdfview"
+					 "qpdfview --unique \"\"%s.pdf\"#src:%b:%n:0\""
+					 TeX-run-discard-or-function t t :help "Forward search with qpdfview"))
+			  (add-to-list 'TeX-command-list
+				       '("TeXworks"
+					 "synctex view -i \"%n:0:%b\" -o %s.pdf -x \"texworks --position=%%{page+1} %%{output}\""
+					 TeX-run-discard-or-function t t :help "Run TeXworks"))
+			  (add-to-list 'TeX-command-list
+				       '("TeXstudio"
+					 "synctex view -i \"%n:0:%b\" -o %s.pdf -x \"texstudio --pdf-viewer-only --page %%{page+1} %%{output}\""
+					 TeX-run-discard-or-function t t :help "Run TeXstudio"))
+			  (add-to-list 'TeX-command-list
+				       '("MuPDF"
+					 "mupdf %s.pdf"
+					 TeX-run-discard-or-function t t :help "Run MuPDF"))
+			  (add-to-list 'TeX-command-list
+				       '("Firefox"
+					 "firefox -new-window %s.pdf"
+					 TeX-run-discard-or-function t t :help "Run Mozilla Firefox"))
+			  (add-to-list 'TeX-command-list
+				       '("Chromium"
+					 "chromium --new-window %s.pdf"
+					 TeX-run-discard-or-function t t :help "Run Chromium")))))
+
+    ;;
+    ;; RefTeX with AUCTeX
+    ;;
+    (add-hook 'LaTeX-mode-hook 'turn-on-reftex)
+    (setq reftex-plug-into-AUCTeX t)
+
+    ;;
+    ;; kinsoku.el
+    ;;
+    (setq kinsoku-limit 10))
+  :config
+  (progn
+    (setq TeX-engine-alist '((pdfuptex "pdfupTeX"
+				       "ptex2pdf -u -e -ot '%S %(mode)'"
+				       "ptex2pdf -u -l -ot '%S %(mode)'"
+				       "euptex")))
+    (setq japanese-TeX-engine-default 'pdfuptex)
+    (setq TeX-view-program-selection '((output-dvi "Evince")
+				       (output-pdf "Evince")))
+    (setq japanese-LaTeX-default-style "jsarticle")
+    (dolist (command '("pTeX" "pLaTeX" "pBibTeX" "jTeX" "jLaTeX" "jBibTeX" "Mendex"))
+      (delq (assoc command TeX-command-list) TeX-command-list)))
+  :ensure auctex)
 
 ;;; init.el ends here
