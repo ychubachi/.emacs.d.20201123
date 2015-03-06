@@ -1,0 +1,425 @@
+;; init.el --- Emacsの初期設定
+
+;;; サーバを開始します
+(load "server")
+(unless (server-running-p)		; サーバが起動していないならば
+  (server-start))			; サーバを開始する
+
+;;; packageシステムを初期化します
+(require 'package)
+(add-to-list 'package-archives
+	     '("melpa" . "http://melpa.milkbox.net/packages/") t)
+(add-to-list 'package-archives
+	     '("marmalade" . "http://marmalade-repo.org/packages/"))
+(package-initialize)
+(package-refresh-contents)
+
+;;; use-packageを導入します
+;; - bind-key も利用できるようになります
+(unless (package-installed-p 'use-package)
+      (package-install 'use-package))
+(require 'use-package)
+
+;;; C-h を DELにします
+(define-key key-translation-map [?\C-h] [?\C-?])
+
+;;; C-c ? を help-for-help にします
+(bind-key "C-c ?" 'help-for-help)
+
+;;; 日本語/UTF-8にする
+(set-language-environment "japanese")
+(prefer-coding-system 'utf-8)
+
+;;; describe-personal-keybindings をバインドします
+(bind-key "C-c d" 'describe-personal-keybindings)
+
+;;; wdired でリネームできるようにします
+(use-package wdired
+  :init
+  (bind-key "r" 'wdired-change-to-wdired-mode dired-mode-map))
+
+;;; Ctrl-OでIMEをトグルするようにする
+
+;; 注意: in ~/.Xresourcesに
+;;   Emacs*useXIM:	false
+;; と設定しておくこと。設定したら
+;;   xrdb ~/.Xresources
+;; を端末で実行する。
+;;
+;; 筆者の場合，OS側でもC-oでIMEを切り替えるようにしているため，
+;; これを設定しておかないと，C-c C-oなどが効かなくなる．
+
+(global-set-key (kbd "C-o") 'toggle-input-method)
+
+;;; mozc-popup の設定
+
+;; - http://www11.atwiki.jp/s-irie/pages/21.html#basic
+;; - http://d.hatena.ne.jp/iRiE/20100530/1275212234
+
+(use-package mozc-popup
+  :if (eq system-type 'gnu/linux)
+  :init
+  (progn
+    (setq default-input-method "japanese-mozc")
+    (setq mozc-candidate-style 'popup))
+  :ensure t)
+
+;;; outline-minor-modeのプリフィックスがC-c @なので、C-c C-oにする
+;; http://emacswiki.org/emacs/OutlineMinorMode
+(add-hook 'outline-minor-mode-hook
+          (lambda () (bind-key "C-c C-o"
+			       outline-mode-prefix-map)))
+
+;;; デフォルトフォントの設定
+(when (eq system-type 'gnu/linux)
+      (add-to-list 'default-frame-alist '(font . "ricty-13.5")))
+
+;;; emacs-lisp
+(add-hook 'emacs-lisp-mode-hook 'outline-minor-mode)
+
+
+;;; exec-path-from-shell
+(use-package exec-path-from-shell
+  :init
+  (progn (exec-path-from-shell-initialize))
+  :ensure t)
+
+;;; shell-pop
+(use-package shell-pop
+  :init
+  (custom-set-variables
+   '(shell-pop-autocd-to-working-dir nil)
+   '(shell-pop-shell-type
+     (quote ("eshell" "*eshell*" (lambda nil (eshell)))))
+   '(shell-pop-universal-key "C-z")
+   '(shell-pop-window-height 30))
+  :ensure t)
+
+;;; undo-tree
+(use-package undo-tree
+  :init
+  (global-undo-tree-mode t)
+  :ensure t)
+
+;;; 
+(use-package yasnippet
+  :init
+  (yas-global-mode 1)
+  :ensure t)
+
+;;; 
+(use-package magit
+  :bind ("C-c g" . magit-status)
+  :ensure t)
+
+;;; 
+(use-package open-junk-file
+  :bind ("C-c j" . open-junk-file)
+  :init
+  (setq open-junk-file-directory "~/tmp/junk/%Y/%m/%d-%H%M%S.")
+  :ensure t)
+
+;;; 
+(use-package paredit
+  :init
+  (add-hook 'emacs-lisp-mode-hook 'enable-paredit-mode)
+  (add-hook 'lisp-interaction-mode-hook 'enable-paredit-mode)
+  (add-hook 'lisp-mode-hook 'enable-paredit-mode)
+  (add-hook 'ielm-mode-hook 'enable-paredit-mode)
+  :ensure t)
+
+;;; 
+(use-package lispxmp
+  :init
+  (bind-key "C-c e" 'lispxmp emacs-lisp-mode-map)
+  :ensure t)
+
+;;; 
+(use-package multiple-cursors
+  :ensure t)
+
+;;; 
+(use-package smartrep
+  :ensure t)
+
+;;; 
+(use-package region-bindings-mode
+  :init
+  (progn
+    (region-bindings-mode-enable)
+    (bind-keys :map region-bindings-mode-map
+	       ("a" . mc/mark-all-like-this)
+	       ("p" . mc/mark-previous-like-this)
+	       ("n" . mc/mark-next-like-this)
+	       ("m" . mc/mark-more-like-this-extended)
+	       ("e" . mc/edit-lines)))
+  :ensure t)
+
+;;; 
+(use-package migemo
+  :if (executable-find "cmigemo")
+  :init
+  (setq migemo-options '("-q" "--emacs"))
+  (setq migemo-user-dictionary nil)
+  (setq migemo-regex-dictionary nil)
+  (setq migemo-coding-system 'utf-8-unix)
+  (load-library "migemo")
+  (migemo-init)
+  (setq migemo-command "cmigemo")
+  (cond
+   ((eq system-type 'gnu/linux)
+    (setq migemo-dictionary
+	  "/usr/share/cmigemo/utf-8/migemo-dict"))
+   ((eq system-type 'darwin)
+    (setq migemo-dictionary
+	  "/usr/local/share/migemo/utf-8/migemo-dict")))
+  :ensure t)
+
+;;; 
+(defun my/org-caputure-templates ()
+  (setq org-capture-templates
+        (quote
+         (("t" "Todo" entry (file+headline "todo.org" "Tasks")
+           "* TODO %?
+")
+          ("l" "Link as Todo" entry (file+headline "todo.org" "Tasks")
+           "* TODO %?
+Link: %a
+Text: %i
+")
+          ("j" "Journal" entry (file+datetree "journal.org")
+           "* %?
+")
+          ("b" "Bookmark" entry (file+headline "bookmark.org" "Bookmarks")
+           "* %a :bookmark:
+引用: %i
+%?
+")
+          ))))
+
+;;; 
+(defun my/ox-latex ()
+  (require 'ox-latex)
+  (setq org-latex-default-class "bxjsarticle")
+  (setq org-latex-pdf-process '("latexmk -e '$pdflatex=q/xelatex %S/' -e '$bibtex=q/bibtexu %B/' -e '$biber=q/biber --bblencoding=utf8 -u -U --output_safechars %B/' -e '$makeindex=q/makeindex -o %D %S/' -norc -gg -pdf %f"))
+  (setq org-export-in-background t)
+
+  (add-to-list 'org-latex-classes
+               '("bxjsarticle"
+                 "\\documentclass{bxjsarticle}
+[NO-DEFAULT-PACKAGES]
+\\usepackage{zxjatype}
+\\usepackage[ipa]{zxjafont}
+\\usepackage{xltxtra}
+\\usepackage{amsmath}
+\\usepackage{newtxtext,newtxmath}
+\\usepackage{graphicx}
+\\usepackage{hyperref}
+\\ifdefined\\kanjiskip
+\\usepackage{pxjahyper}
+\\hypersetup{colorlinks=true}
+\\else
+\\ifdefined\\XeTeXversion
+\\hypersetup{colorlinks=true}
+\\else
+\\ifdefined\\directlua
+\\hypersetup{pdfencoding=auto,colorlinks=true}
+\\else
+\\hypersetup{unicode,colorlinks=true}
+\\fi
+\\fi
+\\fi"
+                   ("\\section{%s}" . "\\section*{%s}")
+                   ("\\subsection{%s}" . "\\subsection*{%s}")
+                   ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+                   ("\\paragraph{%s}" . "\\paragraph*{%s}")
+                   ("\\subparagraph{%s}" . "\\subparagraph*{%s}"))))
+
+(defun my/ox-beamer ()
+  (require 'ox-beamer)
+  (add-to-list 'org-latex-classes
+               '("beamer"
+                 "\\documentclass[t]{beamer}
+\\usepackage{zxjatype}
+\\usepackage[ipa]{zxjafont}
+\\setbeamertemplate{navigation symbols}{}
+\\hypersetup{colorlinks,linkcolor=,urlcolor=gray}
+\\AtBeginSection[]
+{
+  \\begin{frame}<beamer>{Outline}
+  \\tableofcontents[currentsection,currentsubsection]
+  \\end{frame}
+}
+\\setbeamertemplate{navigation symbols}{}"
+                 ("\\section{%s}" . "\\section*{%s}")
+                 ("\\subsection{%s}" . "\\subsection*{%s}")
+                 ("\\subsubsection{%s}" . "\\subsubsection*{%s}")))
+  (add-to-list 'org-latex-classes
+               '("beamer_lecture"
+                 "\\documentclass[t]{beamer}
+[NO-DEFAULT-PACKAGES]
+\\usepackage{zxjatype}
+\\usepackage[ipa]{zxjafont}
+\\setbeamertemplate{navigation symbols}{}
+\\hypersetup{colorlinks,linkcolor=,urlcolor=gray}
+\\AtBeginPart
+{
+\\begin{frame}<beamer|handout>
+\\date{\\insertpart}
+\\maketitle
+\\end{frame}
+}
+\\AtBeginSection[]
+{
+\\begin{frame}<beamer>
+\\tableofcontents[currentsection,currentsubsection]
+\\end{frame}
+}"
+                   ("\\part{%s}" . "\\part*{%s}")
+                   ("\\section{%s}" . "\\section*{%s}")
+                   ("\\subsection{%s}" . "\\subsection*{%s}")
+                   ("\\subsubsection{%s}" . "\\subsubsection*{%s}"))))
+
+(defun my/smartrep ()
+  (smartrep-define-key
+      org-mode-map
+      "C-c" '(("C-n" . (lambda ()
+                         (outline-next-visible-heading 1)))
+              ("C-p" . (lambda ()
+                         (outline-previous-visible-heading 1))))))
+
+;;; 
+(use-package org
+  :bind
+  (("C-c l" . org-store-link)
+   ("C-c c" . org-capture)
+   ("C-c a" . org-agenda)
+   ("C-c b" . org-switchb))
+  :init
+  (progn
+    (my/org-caputure-templates)
+    (setq org-todo-keywords
+	  (quote
+	   ((sequence
+	     "TODO(t)"
+	     "WIP(p)"
+	     "WAIT(w)"
+	     "|"
+	     "DONE(d)"
+	     "SOMEDAY(s)"
+	     "CANCEL(c)"))))
+    (setq org-babel-load-languages
+	  (quote
+	   ((emacs-lisp . t)
+	    (dot . t)
+	    (java . t)
+	    (ruby . t)
+	    (sh . t))))
+    (setq org-babel-sh-command "bash")
+    (setq org-deadline-warning-days 7)
+    (setq org-agenda-custom-commands
+	  (quote
+	   (("x" "TODOs without Scheduled" tags-todo "+SCHEDULED=\"\"" nil)
+	    ("d" "TODOs without Deadline" tags-todo "+DEADLINE=\"\"" nil)
+	    ("p" "私用" tags-todo "+私用" nil)
+	    ("P" "私用以外" tags-todo "-私用" nil)
+	    ("n" "Agenda and all TODO's" ((agenda "" nil)
+					  (alltodo "" nil)) nil))))
+    (setq org-confirm-babel-evaluate nil)
+    (setq org-mobile-directory "~/Dropbox/アプリ/MobileOrg")
+    (setq org-mobile-inbox-for-pull "~/Dropbox/Org/from-mobile.org")
+    (custom-set-faces
+     '(org-column-title
+       ((t (:background "grey30" :underline t :weight bold :height 135)))))
+    (custom-set-variables
+     '(org-export-in-background nil)
+     '(org-src-fontify-natively t))
+    (require 'ox-md) 
+    (my/ox-latex)
+    (my/ox-beamer)
+    (add-to-list 'org-latex-packages-alist '("" "minted"))
+    (setq org-latex-listings 'minted)
+    (use-package ox-reveal :ensure t)
+    (require 'org-protocol))
+  :config
+  (progn
+    (bind-key "M-q" 'toggle-truncate-lines org-mode-map)
+    (my/smartrep))
+  :ensure t)
+
+(use-package helm-config
+  :bind (("M-x" . helm-M-x)
+	 ("C-c h" . helm-mini)
+	 ("C-x C-r" . helm-recentf))
+  :init
+  (progn
+    (use-package helm-descbinds
+      :init
+      (helm-descbinds-mode)
+      :ensure t)
+    (use-package helm-migemo
+      :if (executable-find "cmigemo")
+      :init
+      (progn
+	(setq helm-use-migemo t)
+	
+	(defadvice helm-c-apropos
+	  (around ad-helm-apropos activate)
+	  "候補が表示されないときがあるので migemoらないように設定."
+	  (let ((helm-use-migemo nil))
+	    ad-do-it))
+	
+	(defadvice helm-M-x
+	  (around ad-helm-M-x activate)
+	  "候補が表示されないときがあるので migemoらないように設定."
+	  (let ((helm-use-migemo nil))
+	    ad-do-it)))
+      :ensure t)
+    (use-package helm-package :ensure t))
+  :ensure helm)
+
+;;; カスタマイズ設定
+(setq custom-file "~/.emacs.d/custom.el")
+
+(if (file-exists-p custom-file)
+    (load custom-file))
+
+;;; 未整理
+;;; Clean Mode Line
+;; - mode-lineのモード情報をコンパクトに表示する- Life is very short
+;;   - http://d.hatena.ne.jp/syohex/20130131/1359646452
+
+(defvar mode-line-cleaner-alist
+  '( ;; For minor-mode, first char is 'space'
+	(yas-minor-mode . " Ys")
+	(paredit-mode . " Pe")
+	(eldoc-mode . "")
+	(abbrev-mode . "")
+	(undo-tree-mode . " Ut")
+	(elisp-slime-nav-mode . " EN")
+	(helm-gtags-mode . " HG")
+	(flymake-mode . " Fm")
+	(outline-minor-mode . " Ol")
+	(ibus-mode . " IB")
+	;; Major modes
+	(lisp-interaction-mode . "Li")
+	(python-mode . "Py")
+	(ruby-mode   . "Rb")
+	(emacs-lisp-mode . "El")
+	(markdown-mode . "Md")))
+
+(defun clean-mode-line ()
+  (interactive)
+  (loop for (mode . mode-str) in mode-line-cleaner-alist
+	do
+	(let ((old-mode-str (cdr (assq mode minor-mode-alist))))
+	  (when old-mode-str
+		(setcar old-mode-str mode-str))
+	  ;; major mode
+	  (when (eq mode major-mode)
+		(setq mode-name mode-str)))))
+
+(add-hook 'after-change-major-mode-hook 'clean-mode-line)
+
+
+;;; init.el ends here

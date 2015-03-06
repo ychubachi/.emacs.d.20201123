@@ -6,9 +6,7 @@
 #+begin_src emacs-lisp
 ;; (require 'tex-site)
 (require 'tex-jp)
-#+end_src
 
-#+begin_src emacs-lisp
   (eval-after-load "tex-jp"
 	'(progn
 	   (setq TeX-engine-alist '((pdfuptex "pdfupTeX"
@@ -354,43 +352,6 @@
 	 (define-key 'personal-map (kbd "p") 'evince-forward-search))
 	((eq system-type 'darwin)
 	 (define-key 'personal-map (kbd "p") 'skim-forward-search)))
-#+end_src
-* Clean Mode Line
-  - mode-lineのモード情報をコンパクトに表示する- Life is very short
-	- http://d.hatena.ne.jp/syohex/20130131/1359646452
-
-#+begin_src emacs-lisp
-(defvar mode-line-cleaner-alist
-  '( ;; For minor-mode, first char is 'space'
-	(yas-minor-mode . " Ys")
-	(paredit-mode . " Pe")
-	(eldoc-mode . "")
-	(abbrev-mode . "")
-	(undo-tree-mode . " Ut")
-	(elisp-slime-nav-mode . " EN")
-	(helm-gtags-mode . " HG")
-	(flymake-mode . " Fm")
-	(outline-minor-mode . " Ol")
-	(ibus-mode . " IB")
-	;; Major modes
-	(lisp-interaction-mode . "Li")
-	(python-mode . "Py")
-	(ruby-mode   . "Rb")
-	(emacs-lisp-mode . "El")
-	(markdown-mode . "Md")))
-
-(defun clean-mode-line ()
-  (interactive)
-  (loop for (mode . mode-str) in mode-line-cleaner-alist
-	do
-	(let ((old-mode-str (cdr (assq mode minor-mode-alist))))
-	  (when old-mode-str
-		(setcar old-mode-str mode-str))
-	  ;; major mode
-	  (when (eq mode major-mode)
-		(setq mode-name mode-str)))))
-
-(add-hook 'after-change-major-mode-hook 'clean-mode-line)
 #+end_src
 * TODO eldoc
 
@@ -762,21 +723,10 @@ Gmailでスターをつけると，flagが付く．
 
 * TODO LinuxでのMozcの設定
 
-注意: in ~/.Xresourcesに
-  Emacs*useXIM:	false
-と設定しておくこと．
-
-- http://www11.atwiki.jp/s-irie/pages/21.html#basic
-- http://d.hatena.ne.jp/iRiE/20100530/1275212234
-
-- 筆者の場合，OS側でもC-oでIMEを切り替えるようにしているため，
-  これを設定しておかないと，C-c C-oなどが効かなくなる．
-
 #+begin_src emacs-lisp
   (when (eq system-type 'gnu/linux)
 	(require 'mozc)
 	(setq default-input-method "japanese-mozc")
-	(setq mozc-candidate-style 'overlay))
 #+end_src
 
 * TODO ロードパスの設定						 :startup.el:
@@ -966,9 +916,6 @@ Gmailでスターをつけると，flagが付く．
 
   ;;;** バッファ切り替え時にIME状態を引き継ぐ
   (setq w32-ime-buffer-switch-p nil)
-
-  ;;;** Ctrl-Oでトグルするようにする
-  (global-set-key (kbd "C-o") 'toggle-input-method)
 
   ;; ;; cp932エンコード時の表示を「P」とする
   ;; (coding-system-put 'cp932 :mnemonic ?P)
