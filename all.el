@@ -32,25 +32,32 @@
 ;;; C-c ? を help-for-help にします
 (bind-key "C-c ?" 'help-for-help)
 
-;;; 日本語/UTF-8にする
+;;; 日本語/UTF-8にします
 (set-language-environment "japanese")
 (prefer-coding-system 'utf-8)
 
 ;;; describe-personal-keybindings をバインドします
 (bind-key "C-c d" 'describe-personal-keybindings)
 
-;;; Ctrl-OでIMEをトグルするようにする
-
-;; 注意: in ~/.Xresourcesに
-;;   Emacs*useXIM:	false
-;; と設定しておくこと。設定したら
-;;   xrdb ~/.Xresources
-;; を端末で実行する。
-;;
-;; 筆者の場合，OS側でもC-oでIMEを切り替えるようにしているため，
-;; これを設定しておかないと，C-c C-oなどが効かなくなる．
-
-(global-set-key (kbd "C-o") 'toggle-input-method)
+;;; Linux用IMEの設定
+(when (eq system-type 'gnu/linux)
+  ;; Ctrl-OでIMEをトグルするようにする
+  ;;
+  ;;  注意: ~/.Xresourcesに
+  ;;    Emacs*useXIM:	false
+  ;;  と設定しておくこと。設定したら
+  ;;    xrdb ~/.Xresources
+  ;;  を端末で実行する。
+  ;;
+  ;;  筆者の場合、OS側でもC-oでIMEを切り替えるようにしているため，
+  ;;  これを設定しておかないと，C-c C-oなどが効かなくなる．
+  ;;
+  (global-set-key (kbd "C-o") 'toggle-input-method)
+  ;; 日本語入力時のカーソル色の変更
+  (add-hook 'input-method-activate-hook
+	    '(lambda () (set-cursor-color "green")))
+  (add-hook 'input-method-inactivate-hook
+	    '(lambda () (set-cursor-color "orchid"))))
 
 ;;; mozc-popup の設定
 
@@ -65,18 +72,23 @@
     (setq mozc-candidate-style 'popup))
   :ensure t)
 
-;;;  日本語入力時のカーソル色の変更
-
-(add-hook 'input-method-activate-hook
-	  '(lambda () (set-cursor-color "green")))
-(add-hook 'input-method-inactivate-hook
-	  '(lambda () (set-cursor-color "orchid")))
-
-;;; outline-minor-modeのプリフィックスがC-c @なので、C-c C-oにする
-;; http://emacswiki.org/emacs/OutlineMinorMode
-(add-hook 'outline-minor-mode-hook
-          (lambda () (bind-key "C-c C-o"
-			       outline-mode-prefix-map)))
+;;; outline-minor-modeのキーバインディング
+(use-package outline
+  :config
+  (progn
+    ;; C-c @ になっているプリフィックスを C-c C-o にします
+    (setq outline-minor-mode-prefix "\C-c\C-o")
+    ;; org-mode 風のキーバインディングを設定します
+    (bind-key "C-i" 'org-cycle
+	      outline-minor-mode-map)
+    (bind-key "C-c C-f" 'outline-forward-same-level
+	      outline-minor-mode-map)
+    (bind-key "C-c C-b" 'outline-backward-same-level
+	      outline-minor-mode-map)
+    (bind-key "C-c C-n" 'outline-next-visible-heading
+	      outline-minor-mode-map)
+    (bind-key "C-c C-p" 'outline-previous-visible-heading
+	      outline-minor-mode-map)))
 
 ;;; outline-minor-modeを有効にするモードを設定
 (add-hook 'emacs-lisp-mode-hook 'outline-minor-mode)
@@ -148,12 +160,10 @@
   :ensure t)
 
 ;;; multiple-cursors
-(use-package multiple-cursors
-  :ensure t)
+(use-package multiple-cursors :ensure t)
 
 ;;; smartrep
-(use-package smartrep
-  :ensure t)
+(use-package smartrep :ensure t)
 
 ;;; region-bindings-mode
 (use-package region-bindings-mode
@@ -216,7 +226,7 @@ Text: %i
 ")
           ))))
 
-;;; 
+;;; my/ox-latex
 (defun my/ox-latex ()
   (require 'ox-latex)
   (setq org-latex-default-class "bxjsarticle")
@@ -253,7 +263,7 @@ Text: %i
                    ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
                    ("\\paragraph{%s}" . "\\paragraph*{%s}")
                    ("\\subparagraph{%s}" . "\\subparagraph*{%s}"))))
-
+;;; my/ox-beamer
 (defun my/ox-beamer ()
   (require 'ox-beamer)
   (add-to-list 'org-latex-classes
@@ -299,6 +309,7 @@ Text: %i
                    ("\\subsection{%s}" . "\\subsection*{%s}")
                    ("\\subsubsection{%s}" . "\\subsubsection*{%s}"))))
 
+;;; org-mode 用 smartrep
 (defun my/smartrep ()
   (smartrep-define-key
       org-mode-map
@@ -307,7 +318,7 @@ Text: %i
               ("C-p" . (lambda ()
                          (outline-previous-visible-heading 1))))))
 
-;;; 
+;;; org-mode 本体
 (use-package org
   :bind
   (("C-c l" . org-store-link)
@@ -366,6 +377,7 @@ Text: %i
     (my/smartrep))
   :ensure t)
 
+;;; helm の設定
 (use-package helm-config
   :bind (("M-x" . helm-M-x)
 	 ("C-c h" . helm-mini)
