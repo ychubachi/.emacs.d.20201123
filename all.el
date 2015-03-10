@@ -7,8 +7,10 @@
 
 ;; Macで本家EmacsとHomebrew IMEパッチ版とEmacs Mac PortとAquamacsを比べてみる。 | たったのセブンクレジット
 ;;   (browse-url "http://www.sevencredit.com/2014/07/02/580/")
+
 ;; Downloads · railwaycat/emacs-mac-port Wiki
 ;;   (browse-url "https://github.com/railwaycat/emacs-mac-port/wiki/Downloads")
+
 ;; Macで本家EmacsとHomebrew IMEパッチ版とEmacs Mac PortとAquamacsを比べてみる。 | たったのセブンクレジット
 ;;   (browse-url "http://www.sevencredit.com/2014/07/02/580/")
 
