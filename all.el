@@ -1,17 +1,30 @@
 ;; init.el --- Emacsの初期設定
 
-;;; サーバを開始します
+;;; 説明
+
+;;;; Mac用Emacsについて
+;; - Emacs Mac Portを仕様
+
+;; Macで本家EmacsとHomebrew IMEパッチ版とEmacs Mac PortとAquamacsを比べてみる。 | たったのセブンクレジット
+;;   (browse-url "http://www.sevencredit.com/2014/07/02/580/")
+;; Downloads · railwaycat/emacs-mac-port Wiki
+;;   (browse-url "https://github.com/railwaycat/emacs-mac-port/wiki/Downloads")
+;; Macで本家EmacsとHomebrew IMEパッチ版とEmacs Mac PortとAquamacsを比べてみる。 | たったのセブンクレジット
+;;   (browse-url "http://www.sevencredit.com/2014/07/02/580/")
+
+;;; 基本設定
+;;;; サーバを開始します
 (load "server")
 (unless (server-running-p)		; サーバが起動していないならば
   (server-start))			; サーバを開始する
 
-;;; カスタマイズ設定
+;;;; カスタマイズ設定
 (setq custom-file "~/.emacs.d/custom.el")
 
 (if (file-exists-p custom-file)
     (load custom-file))
 
-;;; packageシステムを初期化します
+;;;; packageシステムを初期化します
 (require 'package)
 (add-to-list 'package-archives
 	     '("melpa" . "http://melpa.milkbox.net/packages/") t)
@@ -20,16 +33,16 @@
 (package-initialize)
 (package-refresh-contents)
 
-;;; use-packageを導入します
+;;;; use-packageを導入します
 ;; - bind-key も利用できるようになります
 (unless (package-installed-p 'use-package)
       (package-install 'use-package))
 (require 'use-package)
 
-;;; C-h を DELにします
+;;;; C-h を DELにします
 (define-key key-translation-map [?\C-h] [?\C-?])
 
-;;; C-c ? を help-for-help にします
+;;;; C-c ? を help-for-help にします
 (bind-key "C-c ?" 'help-for-help)
 
 ;;; 日本語/UTF-8にします
@@ -73,13 +86,18 @@
   :ensure t)
 
 ;;; outline-minor-modeのキーバインディング
+
+;; Emacs Lispの汎変数（とその他） - Qiita - http://qiita.com/kawabata@github/items/9a1a1e211c57a56578d8
+
 (use-package outline
   :config
   (progn
     ;; C-c @ になっているプリフィックスを C-c C-o にします
     (setq outline-minor-mode-prefix "\C-c\C-o")
     ;; org-mode 風のキーバインディングを設定します
-    (bind-key "C-i" 'org-cycle
+    (bind-key "<tab>" 'org-cycle
+	      outline-minor-mode-map)
+    (bind-key "S-<tab>" 'org-global-cycle
 	      outline-minor-mode-map)
     (bind-key "C-c C-f" 'outline-forward-same-level
 	      outline-minor-mode-map)
@@ -95,8 +113,16 @@
 (add-hook 'LaTeX-mode-hook 'outline-minor-mode)
 
 ;;; デフォルトフォントの設定
-(when (eq system-type 'gnu/linux)
-      (add-to-list 'default-frame-alist '(font . "ricty-13.5")))
+
+;; ↓のテーブルが揃っていればOK
+;;  |あぱ　ああ|
+;;  |+-+-+-+-+-|
+;;  |imimimimim|
+(cond
+ ((eq system-type 'gnu/linux)
+  (add-to-list 'default-frame-alist '(font . "ricty-13.5")))
+ ((eq system-type 'darwin)
+  (add-to-list 'default-frame-alist '(font . "ricty-14"))))
 
 ;;; wdired でリネームできるようにします
 (use-package wdired
@@ -446,12 +472,10 @@ Text: %i
 
 (add-hook 'after-change-major-mode-hook 'clean-mode-line)
 
-
 ;;; フォントサイズをPU，PDで変更できるようにする
 
-;; - Page Up，Page Downで操作
-;; - Macの場合はfn+↑，fn+↓
-
+;;; - Page Up，Page Downで操作
+;;; - Macの場合はfn+↑，fn+↓
 (global-set-key (kbd "<prior>") 'text-scale-increase)
 (global-set-key (kbd "<next>")  'text-scale-decrease)
 
