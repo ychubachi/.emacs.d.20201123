@@ -267,6 +267,11 @@
 	 ("C-c ," . ace-jump-line-mode))
   :ensure t)
 
+;;; org-directory
+(setq org-agenda-files (quote ("~/Dropbox/Org/")))
+(setq org-default-notes-file "~/Dropbox/Org/notes.org")
+(setq org-directory "~/Dropbox/Org")
+
 ;;; org関連
 (defun my/org-caputure-templates ()
   (setq org-capture-templates
