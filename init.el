@@ -123,8 +123,8 @@
     ;; org-mode 風のキーバインディングを設定します
     (bind-key "<tab>" 'org-cycle
 	      outline-minor-mode-map)
-    (bind-key "S-<tab>" 'org-global-cycle
-	      outline-minor-mode-map)
+    (bind-key "<backtab>" 'org-global-cycle ; S-<tab> ?
+ 	      outline-minor-mode-map)
     (bind-key "C-c C-f" 'outline-forward-same-level
 	      outline-minor-mode-map)
     (bind-key "C-c C-b" 'outline-backward-same-level
