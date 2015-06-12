@@ -111,6 +111,7 @@
                (yas-global-mode 1)
                :ensure t)
 #+end_src
+<<<<<<< HEAD
 ** Magit
 #+NAME: magit
 #+begin_src emacs-lisp
@@ -118,6 +119,13 @@
                :bind ("C-c g" . magit-status)
                :ensure t)
 #+end_src
+=======
+
+* diredでファイル名のリネーム                                    :wdired.el:
+
+diredモードで r キーを押すと編集モードに入る．
+完了したらC-c C-cで決定．C-c ESCでキャンセル．
+>>>>>>> 517ce932a645d6f44552245096db14ab9e713a41
 
 ** open-junk-file
 

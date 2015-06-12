@@ -12,11 +12,95 @@
 (bind-key "C-c d" 'describe-personal-keybindings)
 (load "server")
 (unless (server-running-p)
+<<<<<<< HEAD
       (server-start))
 (define-key key-translation-map [?\C-h] [?\C-?])
 (use-package wdired
              :init
              (bind-key "r" 'wdired-change-to-wdired-mode dired-mode-map))
+=======
+  (server-start))
+
+(let ((default-directory "~/.emacs.d/git/"))
+  (normal-top-level-add-subdirs-to-load-path))
+
+(let ((default-directory "~/.emacs.d/site-lisp/"))
+  (normal-top-level-add-subdirs-to-load-path))
+
+(require 'cask "~/.cask/cask.el")
+(cask-initialize)
+
+(set-language-environment "japanese")
+(prefer-coding-system 'utf-8)
+
+(add-to-list 'default-frame-alist '(font . "ricty-13.5"))
+
+(add-hook 'input-method-activate-hook
+          '(lambda () (set-cursor-color "green")))
+(add-hook 'input-method-inactivate-hook
+          '(lambda () (set-cursor-color "orchid")))
+
+(when (eq system-type 'gnu/linux)
+  (require 'mozc)
+  (setq default-input-method "japanese-mozc")
+  (setq mozc-candidate-style 'overlay))
+
+(setq custom-file "~/.emacs.d/custom.el")
+(if (file-exists-p custom-file)
+    (load custom-file))
+
+(let (custom-file-system-name)
+  (setq custom-file-system-name
+        (format "~/.emacs.d/custom/%s.el" (system-name)))
+  (when (file-exists-p custom-file-system-name)
+    (message "%s" (format "%sを読み込みます" custom-file-system-name))
+    (load custom-file)))
+
+(message "%s" "%% init.elは完了しました %%")
+
+;;; init.el ends here
+
+(require 'yasnippet)
+(yas-global-mode 1)
+
+(require 'wdired)
+(define-key dired-mode-map "r"
+  'wdired-change-to-wdired-mode)
+
+(require 'undo-tree)
+(global-undo-tree-mode t)
+
+(require 'smartrep)
+
+(eval-after-load "org"
+  '(progn
+     (smartrep-define-key
+         org-mode-map
+         "C-c" '(("C-n" . (lambda ()
+                            (outline-next-visible-heading 1)))
+                 ("C-p" . (lambda ()
+                            (outline-previous-visible-heading 1)))))
+     ))
+
+(require 'shell-pop)
+
+(custom-set-variables
+ '(shell-pop-autocd-to-working-dir nil)
+ '(shell-pop-shell-type (quote ("eshell" "*eshell*" (lambda nil (eshell)))))
+ '(shell-pop-universal-key "C-z")
+ '(shell-pop-window-height 30))
+
+;; (dolist (package '(php-mode))
+;;   (when (not (package-installed-p package))
+;;     (package-install package)))
+
+(require 'paredit)
+(add-hook 'emacs-lisp-mode-hook 'enable-paredit-mode)
+(add-hook 'lisp-interaction-mode-hook 'enable-paredit-mode)
+(add-hook 'lisp-mode-hook 'enable-paredit-mode)
+(add-hook 'ielm-mode-hook 'enable-paredit-mode)
+
+>>>>>>> 517ce932a645d6f44552245096db14ab9e713a41
 (add-hook 'outline-minor-mode-hook
           (lambda () (local-set-key "\C-c\C-o"
                                     outline-mode-prefix-map)))
