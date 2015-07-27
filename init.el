@@ -439,6 +439,14 @@ Text: %i
     (my/smartrep))
   :ensure t)
 
+;;; markdown-mode
+
+(use-package markdown-mode
+  :mode (("\\.text\\'" . markdown-mode)
+	 ("\\.markdown\\'" . markdown-mode)
+	 ("\\.md\\'" . markdown-mode))
+  :ensure t)
+
 ;;; helm の設定
 (use-package helm-config
   :bind (("M-x" . helm-M-x)
@@ -1873,11 +1881,6 @@ Text: %i
 ;;   ;;   (when (not (package-installed-p package))
 ;;   ;;     (package-install package)))
 ;; #+end_src
-
-;; * TODO markdown
-;;   - [[http://jblevins.org/projects/markdown-mode/][Emacs Markdown Mode]]
-;;   - 拡張子が.text，.markdown，.mdであるファイルはmarkdown-modeになる
-;; 	（markdown-mode-autoloads.el参照）．
 
 ;; * TODO mediawiki export
 ;;   - packageでインストールできなさそう
