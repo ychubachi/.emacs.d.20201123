@@ -60,3 +60,4 @@ url/
 custom.el
 *.pyc
 /plugins-enabled/
+recentf
