@@ -479,6 +479,42 @@ Text: %i
     (use-package helm-package :ensure t))
   :ensure helm)
 
+;;; mew の設定
+
+;; stunnel の設定方法
+;; - Emacs + Mew で Gmail を読み書きする - Jedipunkz's Blog - http://jedipunkz.github.io/blog/2013/08/12/emacs-mew-gmail/
+;; Less secure apps
+;; - Less secure apps - Account settings - https://www.google.com/settings/security/lesssecureapps
+
+(use-package mew
+  :ensure t
+  :init
+  (autoload 'mew "mew" nil t)
+  (autoload 'mew-send "mew" nil t)
+
+  ;; Optional setup (Read Mail menu):
+  (setq read-mail-command 'mew)
+
+  ;; Optional setup (e.g. C-xm for sending a message):
+  (autoload 'mew-user-agent-compose "mew" nil t)
+  (if (boundp 'mail-user-agent)
+      (setq mail-user-agent 'mew-user-agent))
+  (if (fboundp 'define-mail-user-agent)
+      (define-mail-user-agent
+	'mew-user-agent
+	'mew-user-agent-compose
+	'mew-draft-send-message
+	'mew-draft-kill
+	'mew-send-hook))
+  )
+
+
+;;; w3m
+
+(use-package w3m
+  :ensure t
+  )
+
 ;;; 未整理
 ;;; Clean Mode Line
 ;; - mode-lineのモード情報をコンパクトに表示する- Life is very short
