@@ -261,12 +261,13 @@
 	 ("C-c ," . ace-jump-line-mode))
   :ensure t)
 
-;;; org-directory
+;;; Org（ここに集約する）
+;;;; Org関連のディレクトリ
 (setq org-agenda-files (quote ("~/Dropbox/Org/")))
 (setq org-default-notes-file "~/Dropbox/Org/notes.org")
 (setq org-directory "~/Dropbox/Org")
 
-;;; org関連
+;;;; orgのキャプチャ設定
 (defun my/org-caputure-templates ()
   (setq org-capture-templates
         (quote
@@ -288,7 +289,7 @@ Text: %i
 ")
           ))))
 
-;;; my/ox-latex
+;;;; my/ox-latex
 (defun my/ox-latex ()
   (require 'ox-latex)
   (setq org-latex-default-class "bxjsarticle")
@@ -325,7 +326,7 @@ Text: %i
                    ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
                    ("\\paragraph{%s}" . "\\paragraph*{%s}")
                    ("\\subparagraph{%s}" . "\\subparagraph*{%s}"))))
-;;; my/ox-beamer
+;;;; my/ox-beamer
 (defun my/ox-beamer ()
   (require 'ox-beamer)
   (add-to-list 'org-latex-classes
@@ -371,7 +372,7 @@ Text: %i
                    ("\\subsection{%s}" . "\\subsection*{%s}")
                    ("\\subsubsection{%s}" . "\\subsubsection*{%s}"))))
 
-;;; org-mode 用 smartrep
+;;;; org-mode 用 smartrep
 (defun my/smartrep ()
   (smartrep-define-key
       org-mode-map
@@ -380,7 +381,7 @@ Text: %i
               ("C-p" . (lambda ()
                          (outline-previous-visible-heading 1))))))
 
-;;; org-mode 本体
+;;;; org-mode 本体
 (use-package org
   :bind
   (("C-c l" . org-store-link)
