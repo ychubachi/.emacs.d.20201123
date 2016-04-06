@@ -27,10 +27,11 @@
 
 ;;;; packageシステムを初期化します
 (require 'package)
-(add-to-list 'package-archives
-	     '("melpa" . "http://melpa.milkbox.net/packages/") t)
-(add-to-list 'package-archives
-	     '("marmalade" . "http://marmalade-repo.org/packages/"))
+(setq package-archives '(
+                        ("elpa" . "http://tromey.com/elpa/")
+                        ("gnu" . "http://elpa.gnu.org/packages/")
+                        ("marmalade" . "http://marmalade-repo.org/packages/")
+                        ("melpa-stable" . "http://stable.melpa.org/packages/")))
 (package-initialize)
 (package-refresh-contents)
 
