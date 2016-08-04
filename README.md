@@ -1,12 +1,12 @@
-* What is this?
+# What is this?
 
 This is my init for Emacs.
 
-* Key binding
+# Key binding
 
 - Use C-c d.
 
-* How to use
+# How to use
 
 ```shell
 $ cd ~
@@ -16,13 +16,13 @@ $ git submodule init
 $ git submolude update
 ```
 
-* How to add git module
+# How to add git module
 
 ```shell
 git submodule add https://github.com/magit/magit.git git/magit
 ```
 
-* For debug,
+# For debug,
 
 ```
 /usr/local/bin/emacs -q -l init.el --debug-init
