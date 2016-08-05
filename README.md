@@ -1,6 +1,7 @@
 # What is this?
 
-This is my init for Emacs.
+- This is my init for Emacs.
+- Uses init-loader because it makes error hundling easier.
 
 # Key binding
 
