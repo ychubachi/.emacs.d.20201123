@@ -163,6 +163,13 @@ Text: %i
                    ("\\subsection{%s}" . "\\subsection*{%s}")
                    ("\\subsubsection{%s}" . "\\subsubsection*{%s}"))))
 
+;;; LaTeXでソースコードのエクスポート
+(defun my/org-minted ()
+  (add-to-list 'org-latex-packages-alist '("" "minted"))
+  (setq org-latex-listings 'minted)
+  (setq org-latex-minted-options
+        '(("frame" "single") ("linenos" "true"))))
+
 ;;;; org-mode 用 smartrep
 (defun my/smartrep ()
   (use-package smartrep
@@ -230,10 +237,8 @@ Text: %i
     (require 'ox-md) 
     (my/ox-latex)
     (my/ox-beamer)
+    (my/org-minted)
 
-    ;; LaTeXでソースコードのエクスポート
-    (add-to-list 'org-latex-packages-alist '("" "minted"))
-    (setq org-latex-listings 'minted)
 
     ;;   - [[http://orgmode.org/worg/org-contrib/org-protocol.html#sec-3-6][org-protocol.el – Intercept calls from emacsclient to trigger custom actions]]
 
