@@ -97,7 +97,11 @@
     ;;
     ;; kinsoku.el
     ;;
-    (setq kinsoku-limit 10))
+    (setq kinsoku-limit 10)
+    
+    ;; Fonts size for sections
+    (setq font-latex-fontify-s‌​ectioning 1.0)
+    )
   :config
   (progn
     (setq TeX-engine-alist '((pdfuptex "pdfupTeX"
