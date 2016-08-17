@@ -43,12 +43,12 @@
 
 ;; 2016-07-31:(use-package ox-reveal :ensure t) <- エラー
 
-;;;; Org関連のディレクトリ
+;;; Org関連のディレクトリ
 (setq org-agenda-files (quote ("~/Dropbox/Org/")))
 (setq org-default-notes-file "~/Dropbox/Org/notes.org")
 (setq org-directory "~/Dropbox/Org")
 
-;;;; orgのキャプチャ設定
+;;; orgのキャプチャ設定
 (defun my/org-caputure-templates ()
   (setq org-capture-templates
         (quote
@@ -70,7 +70,7 @@ Text: %i
 ")
           ))))
 
-;;;; my/ox-latex
+;;; my/ox-latex
 
 ;; LaTeXでエキスポートできるようにします．
 ;; 下記URLのコードから，xelatex用の設定を抜き出しました．
@@ -113,7 +113,7 @@ Text: %i
                    ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
                    ("\\paragraph{%s}" . "\\paragraph*{%s}")
                    ("\\subparagraph{%s}" . "\\subparagraph*{%s}"))))
-;;;; my/ox-beamer
+;;; my/ox-beamer
 
 ;;  パッケージの読み込み
 ;;  文書クラスの設定(beamer)
@@ -170,7 +170,7 @@ Text: %i
   (setq org-latex-minted-options
         '(("frame" "single") ("linenos" "true"))))
 
-;;;; org-mode 用 smartrep
+;;; org-mode 用 smartrep
 (defun my/smartrep ()
   (use-package smartrep
     :init
@@ -182,7 +182,7 @@ Text: %i
 			   (outline-previous-visible-heading 1)))))
     :ensure t))
 
-;;;; org-mode 本体
+;;; org-mode 本体
 (use-package org
   :bind
   (("C-c l" . org-store-link)
