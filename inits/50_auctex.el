@@ -109,5 +109,10 @@
 				       (output-pdf "Evince")))
     (setq japanese-LaTeX-default-style "jsarticle")
     (dolist (command '("pTeX" "pLaTeX" "pBibTeX" "jTeX" "jLaTeX" "jBibTeX" "Mendex"))
-      (delq (assoc command TeX-command-list) TeX-command-list)))
+      (delq (assoc command TeX-command-list) TeX-command-list))
+
+    ;; 
+    ;; How can I have titles with normal font size with AUCTeX+Emacs? - TeX - LaTeX Stack Exchange - http://tex.stackexchange.com/questions/176748/how-can-i-have-titles-with-normal-font-size-with-auctexemacs
+    ;; 
+    (setq font-latex-fontify-sectioning 1.0))
   :ensure auctex)
