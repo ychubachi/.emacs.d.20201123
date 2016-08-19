@@ -70,49 +70,74 @@ Text: %i
 ")
           ))))
 
-;;; my/ox-latex
+;;; LaTeXでエキスポート
 
-;; LaTeXでエキスポートできるようにします．
-;; 下記URLのコードから，xelatex用の設定を抜き出しました．
-
-;; − [[http://oku.edu.mie-u.ac.jp/~okumura/texwiki/?Emacs%2FOrg%20mode#h20d131a][Emacs/Org mode - TeX Wiki]] （2014-08-03 参照）
+;; 下記URLのコードを参考
+;; [[https://texwiki.texjp.org/?Emacs%2FOrg%20mode][Emacs/Org mode - TeX Wiki]]
+;; （2016-08-19参照）
+;; - shell-escapeオプションを追加
+;; - backgroundをtに
+;; - luatexのクラスを削除
+;; - 縦書き（utarticle）を作成
 
 (defun my/ox-latex ()
   (require 'ox-latex)
   (setq org-latex-default-class "bxjsarticle")
-  (setq org-latex-pdf-process '("latexmk -e '$pdflatex=q/xelatex %S/' -e '$bibtex=q/bibtexu %B/' -e '$biber=q/biber --bblencoding=utf8 -u -U --output_safechars %B/' -e '$makeindex=q/makeindex -o %D %S/' -norc -gg -pdf %f"))
+  (setq org-latex-pdf-process '("latexmk -e '$latex=q/uplatex -shell-escape %S/' -e '$bibtex=q/upbibtex %B/' -e '$biber=q/biber --bblencoding=utf8 -u -U --output_safechars %B/' -e '$makeindex=q/upmendex -o %D %S/' -e '$dvipdf=q/dvipdfmx -o %D %S/' -norc -gg -pdfdvi %f"))
   (setq org-export-in-background t)
 
   (add-to-list 'org-latex-classes
-               '("bxjsarticle"
-                 "\\documentclass{bxjsarticle}
+	       '("bxjsarticle"
+		 "\\ifdefined\\kanjiskip
+  \\documentclass[autodetect-engine,dvipdfmx,12pt,a4paper,ja=standard]{bxjsarticle}
+\\else
+  \\ifdefined\\pdfoutput
+    \\ifnum\\pdfoutput=0
+      \\documentclass[autodetect-engine,dvipdfmx,12pt,a4paper,ja=standard]{bxjsarticle}
+    \\else
+      \\documentclass[autodetect-engine,12pt,a4paper,ja=standard]{bxjsarticle}
+    \\fi
+  \\else
+    \\documentclass[autodetect-engine,12pt,a4paper,ja=standard]{bxjsarticle}
+  \\fi
+\\fi
 [NO-DEFAULT-PACKAGES]
-\\usepackage{zxjatype}
-\\usepackage[ipa]{zxjafont}
-\\usepackage{xltxtra}
 \\usepackage{amsmath}
 \\usepackage{newtxtext,newtxmath}
 \\usepackage{graphicx}
 \\usepackage{hyperref}
 \\ifdefined\\kanjiskip
-\\usepackage{pxjahyper}
-\\hypersetup{colorlinks=true}
+  \\usepackage{pxjahyper}
+  \\hypersetup{colorlinks=true}
 \\else
-\\ifdefined\\XeTeXversion
-\\hypersetup{colorlinks=true}
-\\else
-\\ifdefined\\directlua
-\\hypersetup{pdfencoding=auto,colorlinks=true}
-\\else
-\\hypersetup{unicode,colorlinks=true}
-\\fi
-\\fi
+  \\ifdefined\\XeTeXversion
+      \\hypersetup{colorlinks=true}
+  \\else
+    \\ifdefined\\directlua
+      \\hypersetup{pdfencoding=auto,colorlinks=true}
+    \\else
+      \\hypersetup{unicode,colorlinks=true}
+    \\fi
+  \\fi
 \\fi"
-                   ("\\section{%s}" . "\\section*{%s}")
-                   ("\\subsection{%s}" . "\\subsection*{%s}")
-                   ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
-                   ("\\paragraph{%s}" . "\\paragraph*{%s}")
-                   ("\\subparagraph{%s}" . "\\subparagraph*{%s}"))))
+               ("\\section{%s}" . "\\section*{%s}")
+               ("\\subsection{%s}" . "\\subsection*{%s}")
+               ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+               ("\\paragraph{%s}" . "\\paragraph*{%s}")
+               ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
+
+  (add-to-list 'org-latex-classes
+               '("utarticle"
+                 "\\documentclass{utarticle}
+[NO-DEFAULT-PACKAGES]
+[NO-PACKAGES]
+\\usepackage{hyperref}
+"
+                 ("\\section{%s}" . "\\section*{%s}")
+                 ("\\subsection{%s}" . "\\subsection*{%s}")
+                 ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+                 ("\\paragraph{%s}" . "\\paragraph*{%s}")
+                 ("\\subparagraph{%s}" . "\\subparagraph*{%s}"))))
 ;;; my/ox-beamer
 
 ;;  パッケージの読み込み
