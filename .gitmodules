@@ -4,3 +4,6 @@
 [submodule "git/init-loader"]
 	path = git/init-loader
 	url = git@github.com:emacs-jp/init-loader.git
+[submodule "git/mozc-popup"]
+	path = git/mozc-popup
+	url = git@github.com:d5884/mozc-popup.git
