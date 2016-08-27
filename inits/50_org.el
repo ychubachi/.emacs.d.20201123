@@ -159,9 +159,7 @@ Text: %i
 % ゴシック体
 \\renewcommand{\\kanjifamilydefault}{\\gtdefault}
 % ナビゲーション表示消去
-\\setbeamertemplate{navigation symbols}{}
-\\hypersetup{colorlinks,linkcolor=,urlcolor=gray}
-"
+\\setbeamertemplate{navigation symbols}{}"
                  ("\\section{%s}" . "\\section*{%s}")
                  ("\\subsection{%s}" . "\\subsection*{%s}")
                  ("\\subsubsection{%s}" . "\\subsubsection*{%s}")))
