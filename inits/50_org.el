@@ -73,10 +73,8 @@ Text: %i
 ;;; LaTeXでエキスポート
 
 ;; OrgからLaTeXにエクスポートするための設定です．
-;; - backgroundをtに
-;; - 縦書き（utarticle）を作成
 
-;; 特殊なプレースホルダについては次のとおり．
+;; クラスに設定できるプレースホルダについては次のとおり．
 ;;   [DEFAULT-PACKAGES]      \usepackage statements for default packages
 ;;   [NO-DEFAULT-PACKAGES]   do not include any of the default packages
 ;;   [PACKAGES]              \usepackage statements for packages
@@ -93,23 +91,39 @@ Text: %i
 (defun my/ox-latex ()
   (require 'ox-latex)
 
-  ;; LaTeXはuplatexを利用
-  ;; - mintedを使いたいので，-shell-escapeオプションを設定
-  (setq org-latex-pdf-process
-	'("latexmk -e '$latex=q/uplatex -shell-escape %S/' -e '$bibtex=q/upbibtex %B/' -e '$biber=q/biber --bblencoding=utf8 -u -U --output_safechars %B/' -e '$makeindex=q/upmendex -o %D %S/' -e '$dvipdf=q/dvipdfmx -o %D %S/' -norc -gg -pdfdvi %f"))
+  ;; PDFの生成のためにupLaTeXを利用するlatexmkの設定
+  ;; - minted等のために-shell-escapeオプションを設定
+  (setq
+   org-latex-pdf-process
+   `(,(concat
+       "latexmk "
+       "-e '$latex=q/uplatex -shell-escape %S/' "
+       "-e '$bibtex=q/upbibtex %B/' "
+       "-e '$biber=q/biber "
+       "--bblencoding=utf8 -u -U --output_safechars %B/' "
+       "-e '$makeindex=q/upmendex -o %D %S/' "
+       "-e '$dvipdf=q/dvipdfmx "
+       "-o %D %S/' -norc -gg -pdfdvi %f")))
 
+  ;; 標準のLaTeXクラスを削除
+  ;; (setq org-latex-classes nil)
+
+  ;; PDFの目次の日本語文字化け対策
+  (add-to-list 'org-latex-packages-alist '("" "pxjahyper") t)
+
+  ;; ソースコードの整形にmintedを利用
+  (add-to-list 'org-latex-packages-alist '("" "minted") t)
+  (setq org-latex-listings 'minted)
+  (setq org-latex-minted-options
+        '(("frame" "single") ("linenos" "true")))
+
+  ;; upLaTeX用jsarticleを標準のクラスファイルに設定
   (setq org-latex-default-class "ujsarticle")
 
+  ;; upLaTeX用jsarticleの設定（fvipdfmxを使用）
   (add-to-list 'org-latex-classes
                '("ujsarticle"
-                 "\\documentclass[uplatex]{jsarticle}
-[NO-DEFAULT-PACKAGES]
-[PACKAGES]
-[EXTRA]
-\\usepackage[dvipdfmx]{hyperref}
-\\usepackage{pxjahyper}
-\\tolerance=1000
-"
+                 "\\documentclass[uplatex,dvipdfmx]{jsarticle}"
                  ("\\section{%s}" . "\\section*{%s}")
                  ("\\subsection{%s}" . "\\subsection*{%s}")
                  ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
@@ -117,22 +131,21 @@ Text: %i
                  ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
 
   ;; 縦書きモード
-  ;; -  mintedは使えないので[NO-PACKAGES]を指定
+  ;; - mintedが使えないので[NO-PACKAGES]を指定し，pxjahyperのみ使用
   (add-to-list 'org-latex-classes
-               '("utarticle"
-                 "\\documentclass{utarticle}
-[NO-DEFAULT-PACKAGES]
+	       '("utarticle"
+		 "\\documentclass[uplatex,dvipdfmx]{utarticle}
+[DEFAULT-PACKAGES]
 [NO-PACKAGES]
 [EXTRA]
-\\usepackage[dvipdfmx]{hyperref}
-\\usepackage{pxjahyper}
-\\tolerance=1000
-"
-                 ("\\section{%s}" . "\\section*{%s}")
-                 ("\\subsection{%s}" . "\\subsection*{%s}")
-                 ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
-                 ("\\paragraph{%s}" . "\\paragraph*{%s}")
-                 ("\\subparagraph{%s}" . "\\subparagraph*{%s}"))))
+\\usepackage{pxjahyper}"
+                  ("\\section{%s}" . "\\section*{%s}")
+		  ("\\subsection{%s}" . "\\subsection*{%s}")
+		  ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+		  ("\\paragraph{%s}" . "\\paragraph*{%s}")
+		  ("\\subparagraph{%s}" . "\\subparagraph*{%s}"))))
+
+
 ;;; my/ox-beamer
 
 ;;  パッケージの読み込み
@@ -142,27 +155,21 @@ Text: %i
   (require 'ox-beamer)
   (add-to-list 'org-latex-classes
                '("beamer"
-                 "\\documentclass[t]{beamer}
-\\usepackage{zxjatype}
-\\usepackage[ipa]{zxjafont}
+                 "\\documentclass[uplatex,dvipdfmx,presentation,14pt]{beamer}
+% ゴシック体
+\\renewcommand{\\kanjifamilydefault}{\\gtdefault}
+% ナビゲーション表示消去
 \\setbeamertemplate{navigation symbols}{}
 \\hypersetup{colorlinks,linkcolor=,urlcolor=gray}
-\\AtBeginSection[]
-{
-  \\begin{frame}<beamer>{Outline}
-  \\tableofcontents[currentsection,currentsubsection]
-  \\end{frame}
-}
-\\setbeamertemplate{navigation symbols}{}"
+"
                  ("\\section{%s}" . "\\section*{%s}")
                  ("\\subsection{%s}" . "\\subsection*{%s}")
                  ("\\subsubsection{%s}" . "\\subsubsection*{%s}")))
+
   (add-to-list 'org-latex-classes
                '("beamer_lecture"
                  "\\documentclass[t]{beamer}
 [NO-DEFAULT-PACKAGES]
-\\usepackage{zxjatype}
-\\usepackage[ipa]{zxjafont}
 \\setbeamertemplate{navigation symbols}{}
 \\hypersetup{colorlinks,linkcolor=,urlcolor=gray}
 \\AtBeginPart
@@ -177,18 +184,13 @@ Text: %i
 \\begin{frame}<beamer>
 \\tableofcontents[currentsection,currentsubsection]
 \\end{frame}
-}"
+}
+
+\\renewcommand{\\kanjifamilydefault}{\\gtdefault}"
                    ("\\part{%s}" . "\\part*{%s}")
                    ("\\section{%s}" . "\\section*{%s}")
                    ("\\subsection{%s}" . "\\subsection*{%s}")
                    ("\\subsubsection{%s}" . "\\subsubsection*{%s}"))))
-
-;;; LaTeXでソースコードのエクスポート
-(defun my/org-minted ()
-  (add-to-list 'org-latex-packages-alist '("" "minted"))
-  (setq org-latex-listings 'minted)
-  (setq org-latex-minted-options
-        '(("frame" "single") ("linenos" "true"))))
 
 ;;; org-mode 用 smartrep
 (defun my/smartrep ()
@@ -260,7 +262,6 @@ Text: %i
     (setq org-export-in-background nil)	; tにすると時間がかかる
     (my/ox-latex)
     (my/ox-beamer)
-    (my/org-minted)
 
     ;;   - [[http://orgmode.org/worg/org-contrib/org-protocol.html#sec-3-6][org-protocol.el – Intercept calls from emacsclient to trigger custom actions]]
 
