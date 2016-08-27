@@ -5,4 +5,39 @@
 #+TITLE: ${1:Title \linebreak Sub-title}
 #+AUTHOR: ${2:産業技術大学院大学 \linebreak 中鉢 欣秀}
 #+DATE: ${3:yyyy-mm-dd}
+
+* COMMENT 使い方
+** LaTeXクラスファイルの指定
+*** upLaTeX横書き
+# * upLaTeX（横書き）
+# #+LaTeX_CLASS: ujsarticle
+
+# #+LaTeX_CLASS_OPTIONS: [uplatex]
+# #+LaTeX_CLASS_OPTIONS: [uplatex, twocolumn]
+
+*** upLaTeX縦書き
+使えなくなるパッケージに注意すること
+
+# * upLaTeX（縦書き）
+# #+LaTeX_CLASS: utarticle
+
+** LaTeXパッケージの設定
+*** 図
+#+LATEX_HEADER: \usepackage [dvipdfmx,hiresbb] {graphicx}
+
+*** URL
+#+LATEX_HEADER: \usepackage {url}
+
+*** 余白の設定
+#+LATEX_HEADER: \usepackage[margin=2.5cm,includefoot]{geometry}
+
+** 目次・表題
+*** 目次（\tableofcontent）の設定
 #+OPTIONS: toc:nil
+
+*** 表題（\maketitle）の設定
+出力そのものを抑制するならば，下記全てを空白にする．
+
+# #+TITLE:
+# #+AUTHOR:
+# #+DATE:

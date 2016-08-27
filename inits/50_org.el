@@ -72,66 +72,61 @@ Text: %i
 
 ;;; LaTeXでエキスポート
 
-;; 下記URLのコードを参考
-;; [[https://texwiki.texjp.org/?Emacs%2FOrg%20mode][Emacs/Org mode - TeX Wiki]]
-;; （2016-08-19参照）
-;; - shell-escapeオプションを追加
+;; OrgからLaTeXにエクスポートするための設定です．
 ;; - backgroundをtに
-;; - luatexのクラスを削除
 ;; - 縦書き（utarticle）を作成
+
+;; 特殊なプレースホルダについては次のとおり．
+;;   [DEFAULT-PACKAGES]      \usepackage statements for default packages
+;;   [NO-DEFAULT-PACKAGES]   do not include any of the default packages
+;;   [PACKAGES]              \usepackage statements for packages
+;;   [NO-PACKAGES]           do not include the packages
+;;   [EXTRA]                 the stuff from #+LATEX_HEADER(_EXTRA)
+;;   [NO-EXTRA]              do not include #+LATEX_HEADER(_EXTRA) stuff
+
+;; 参考文献
+;; - Emacs/Org mode - TeX Wiki
+;;   https://texwiki.texjp.org/?Emacs%2FOrg%20mode
+;; - org-mode で日本語LaTeXを出力する方法 - Qiita
+;;   http://qiita.com/kawabata@github/items/1b56ec8284942ff2646b
 
 (defun my/ox-latex ()
   (require 'ox-latex)
-  (setq org-latex-default-class "bxjsarticle")
-  (setq org-latex-pdf-process '("latexmk -e '$latex=q/uplatex -shell-escape %S/' -e '$bibtex=q/upbibtex %B/' -e '$biber=q/biber --bblencoding=utf8 -u -U --output_safechars %B/' -e '$makeindex=q/upmendex -o %D %S/' -e '$dvipdf=q/dvipdfmx -o %D %S/' -norc -gg -pdfdvi %f"))
-  (setq org-export-in-background t)
+
+  ;; LaTeXはuplatexを利用
+  ;; - mintedを使いたいので，-shell-escapeオプションを設定
+  (setq org-latex-pdf-process
+	'("latexmk -e '$latex=q/uplatex -shell-escape %S/' -e '$bibtex=q/upbibtex %B/' -e '$biber=q/biber --bblencoding=utf8 -u -U --output_safechars %B/' -e '$makeindex=q/upmendex -o %D %S/' -e '$dvipdf=q/dvipdfmx -o %D %S/' -norc -gg -pdfdvi %f"))
+
+  (setq org-latex-default-class "ujsarticle")
 
   (add-to-list 'org-latex-classes
-	       '("bxjsarticle"
-		 "\\ifdefined\\kanjiskip
-  \\documentclass[autodetect-engine,dvipdfmx,12pt,a4paper,ja=standard]{bxjsarticle}
-\\else
-  \\ifdefined\\pdfoutput
-    \\ifnum\\pdfoutput=0
-      \\documentclass[autodetect-engine,dvipdfmx,12pt,a4paper,ja=standard]{bxjsarticle}
-    \\else
-      \\documentclass[autodetect-engine,12pt,a4paper,ja=standard]{bxjsarticle}
-    \\fi
-  \\else
-    \\documentclass[autodetect-engine,12pt,a4paper,ja=standard]{bxjsarticle}
-  \\fi
-\\fi
+               '("ujsarticle"
+                 "\\documentclass[uplatex]{jsarticle}
 [NO-DEFAULT-PACKAGES]
-\\usepackage{amsmath}
-\\usepackage{newtxtext,newtxmath}
-\\usepackage{graphicx}
-\\usepackage{hyperref}
-\\ifdefined\\kanjiskip
-  \\usepackage{pxjahyper}
-  \\hypersetup{colorlinks=true}
-\\else
-  \\ifdefined\\XeTeXversion
-      \\hypersetup{colorlinks=true}
-  \\else
-    \\ifdefined\\directlua
-      \\hypersetup{pdfencoding=auto,colorlinks=true}
-    \\else
-      \\hypersetup{unicode,colorlinks=true}
-    \\fi
-  \\fi
-\\fi"
-               ("\\section{%s}" . "\\section*{%s}")
-               ("\\subsection{%s}" . "\\subsection*{%s}")
-               ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
-               ("\\paragraph{%s}" . "\\paragraph*{%s}")
-               ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
+[PACKAGES]
+[EXTRA]
+\\usepackage[dvipdfmx]{hyperref}
+\\usepackage{pxjahyper}
+\\tolerance=1000
+"
+                 ("\\section{%s}" . "\\section*{%s}")
+                 ("\\subsection{%s}" . "\\subsection*{%s}")
+                 ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+                 ("\\paragraph{%s}" . "\\paragraph*{%s}")
+                 ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
 
+  ;; 縦書きモード
+  ;; -  mintedは使えないので[NO-PACKAGES]を指定
   (add-to-list 'org-latex-classes
                '("utarticle"
                  "\\documentclass{utarticle}
 [NO-DEFAULT-PACKAGES]
 [NO-PACKAGES]
-\\usepackage{hyperref}
+[EXTRA]
+\\usepackage[dvipdfmx]{hyperref}
+\\usepackage{pxjahyper}
+\\tolerance=1000
 "
                  ("\\section{%s}" . "\\section*{%s}")
                  ("\\subsection{%s}" . "\\subsection*{%s}")
@@ -227,6 +222,7 @@ Text: %i
 	     "DONE(d)"
 	     "SOMEDAY(s)"
 	     "CANCEL(c)"))))
+    ;;  Babelの設定
     (setq org-babel-load-languages	;Babelで対応する言語
 	  (quote
 	   ((emacs-lisp . t)
@@ -235,7 +231,7 @@ Text: %i
 	    (ruby . t)
 	    (sh . t))))
     (setq org-babel-sh-command "bash")	;BabelのShellのコードの実行にbashを使う
-    (setq org-deadline-warning-days 7) 	;期日の何日前に予定表（Agenda）に表示するか
+    (setq org-deadline-warning-days 7) 	;期日の何日前にAgendaに表示するか
 
     ;; - [[http://orgmode.org/manual/Matching-tags-and-properties.html][Matching tags and properties - The Org Manual]]
     ;; - [[https://www.gnu.org/software/emacs/manual/html_node/org/Special-agenda-views.html][Special agenda views - The Org Manual]]
@@ -252,18 +248,19 @@ Text: %i
     ;; - [[https://github.com/matburt/mobileorg-android/wiki][Home · matburt/mobileorg-android Wiki]]
     (setq org-mobile-directory "~/Dropbox/アプリ/MobileOrg")
     (setq org-mobile-inbox-for-pull "~/Dropbox/Org/from-mobile.org")
-    
+
     (custom-set-faces
      '(org-column-title
        ((t (:background "grey30" :underline t :weight bold :height 135)))))
     (custom-set-variables
-     '(org-export-in-background nil)
      '(org-src-fontify-natively t))
-    (require 'ox-md) 
+    (require 'ox-md)
+
+    ;; エクスポート関係
+    (setq org-export-in-background nil)	; tにすると時間がかかる
     (my/ox-latex)
     (my/ox-beamer)
     (my/org-minted)
-
 
     ;;   - [[http://orgmode.org/worg/org-contrib/org-protocol.html#sec-3-6][org-protocol.el – Intercept calls from emacsclient to trigger custom actions]]
 
