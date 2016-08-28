@@ -1,0 +1,44 @@
+% My Beamer by Y.Chubachi (2016)
+
+% * 色の設定
+% - texdoc xcolorで色見本が確認できる（dvipsnames）
+\colorlet{ThemeColor}{Green!70!white} % 基調となる色
+\colorlet{AlertedText}{orange}        % 強調（alert）の色
+
+% * Beamerのテーマ
+% \usetheme{default}
+% \usetheme{Szeged} % 横線
+\usetheme{Madrid}
+% \usetheme{Goettingen} % サイドバーの色が変わらない
+% \usetheme[hideothersubsections]{Berkeley}
+
+% * インナーテーマ
+\useinnertheme{circles} % 箇条書きをシンプルに
+\useinnertheme{rounded}
+\setbeamertemplate{blocks}[rounded] % 影を消す（オプションで消せない？）
+
+% * アウターテーマ
+\useoutertheme[right]{sidebar}
+\setbeamercolor{frametitle}{fg=white} % heightを設定すると黒になる
+\setbeamertemplate{navigation symbols}{} % ナビゲーションシンボルを消す
+% \setbeamertemplate{footline}[frame number] % フッターはスライド番号のみ
+
+% * 色のテーマ
+\usecolortheme[named=ThemeColor]{structure} % 基調となる色を設定
+\setbeamercolor{alerted text}{fg=AlertedText} % 強調（alert）の色を設定
+
+% * フォントテーマ
+\usefonttheme{structurebold}
+\renewcommand{\kanjifamilydefault}{\gtdefault}  % 本文の和字もゴシック体に
+
+% 節ごとの目次フレーム
+\AtBeginSection[]{
+  \begin{frame}
+    \frametitle{目次}
+    \tableofcontents[currentsection,currentsubsection]
+  \end{frame}
+}
+
+% 参考
+% - Beamer — Tasuku Soma's webpage
+% http://www.opt.mist.i.u-tokyo.ac.jp/~tasuku/beamer.html#tips

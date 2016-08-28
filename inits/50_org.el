@@ -111,11 +111,17 @@ Text: %i
   ;; PDFの目次の日本語文字化け対策
   (add-to-list 'org-latex-packages-alist '("" "pxjahyper") t)
 
+  ;; Times を TeX 用に配置し直した TX フォント
+  ;; - txfonts.sty: LaTeX パッケージ
+  ;;   http://www.biwako.shiga-u.ac.jp/sensei/kumazawa/tex/txfonts.html
+  ;; - 英文字の横幅が少し詰まる
+  (add-to-list 'org-latex-packages-alist '("" "txfonts") t)
+
   ;; ソースコードの整形にmintedを利用
-  (add-to-list 'org-latex-packages-alist '("" "minted") t)
   (setq org-latex-listings 'minted)
+  (add-to-list 'org-latex-packages-alist '("" "minted") t)
   (setq org-latex-minted-options
-        '(("frame" "single") ("linenos" "true")))
+        '(("frame" "single") ("linenos" "true") ("fontfamily" "courier")))
 
   ;; upLaTeX用jsarticleを標準のクラスファイルに設定
   (setq org-latex-default-class "ujsarticle")
@@ -147,48 +153,53 @@ Text: %i
 
 
 ;;; my/ox-beamer
-
-;;  パッケージの読み込み
-;;  文書クラスの設定(beamer)
-
 (defun my/ox-beamer ()
   (require 'ox-beamer)
+
+  ;; Outlineのタイトルを目次にします
+  (setq org-beamer-outline-frame-title "目次")
+
+  ;; Beamer用クラスの設定
   (add-to-list 'org-latex-classes
                '("beamer"
-                 "\\documentclass[uplatex,dvipdfmx,presentation,14pt]{beamer}
-% ゴシック体
-\\renewcommand{\\kanjifamilydefault}{\\gtdefault}
-% ナビゲーション表示消去
-\\setbeamertemplate{navigation symbols}{}"
+                 "\\documentclass[uplatex,dvipdfmx,14pt,xcolor=dvipsnames,table,presentation]{beamer}
+\\input{\\string~/.emacs.d/misc/my_beamer}"
+                 ("\\section{%s}" . "\\section*{%s}")
+                 ("\\subsection{%s}" . "\\subsection*{%s}")
+                 ("\\subsubsection{%s}" . "\\subsubsection*{%s}")))
+
+    (add-to-list 'org-latex-classes
+               '("aqua_beamer"
+                 "\\documentclass[uplatex,14pt,xcolor=dvipsnames,table,dvipdfmx]{beamer}
+\\input{\\string~/.emacs.d/misc/aqua_beamer}"
                  ("\\section{%s}" . "\\section*{%s}")
                  ("\\subsection{%s}" . "\\subsection*{%s}")
                  ("\\subsubsection{%s}" . "\\subsubsection*{%s}")))
 
   (add-to-list 'org-latex-classes
-               '("beamer_lecture"
-                 "\\documentclass[t]{beamer}
-[NO-DEFAULT-PACKAGES]
+               '("beamerlecture"
+                 "\\documentclass[uplatex,dvipdfmx,14pt,presentation]{beamer}
+% ゴシック体
+\\renewcommand{\\kanjifamilydefault}{\\gtdefault}
+% ナビゲーション表示消去
 \\setbeamertemplate{navigation symbols}{}
-\\hypersetup{colorlinks,linkcolor=,urlcolor=gray}
-\\AtBeginPart
-{
-\\begin{frame}<beamer|handout>
-\\date{\\insertpart}
-\\maketitle
-\\end{frame}
+% 部（第一階層）ごとに表題を表示
+\\AtBeginPart{
+  \\begin{frame}
+    \\date{\\insertpart}
+    \\maketitle
+  \\end{frame}
 }
-\\AtBeginSection[]
-{
-\\begin{frame}<beamer>
-\\tableofcontents[currentsection,currentsubsection]
-\\end{frame}
-}
-
-\\renewcommand{\\kanjifamilydefault}{\\gtdefault}"
-                   ("\\part{%s}" . "\\part*{%s}")
-                   ("\\section{%s}" . "\\section*{%s}")
-                   ("\\subsection{%s}" . "\\subsection*{%s}")
-                   ("\\subsubsection{%s}" . "\\subsubsection*{%s}"))))
+% 節（第二階層）ごとに目次を表示
+\\AtBeginSection[]{
+  \\begin{frame}
+    \\tableofcontents[currentsection,currentsubsection]
+  \\end{frame}
+}"
+		 ("\\part{%s}" . "\\part*{%s}")
+		 ("\\section{%s}" . "\\section*{%s}")
+		 ("\\subsection{%s}" . "\\subsection*{%s}")
+		 ("\\subsubsection{%s}" . "\\subsubsection*{%s}"))))
 
 ;;; org-mode 用 smartrep
 (defun my/smartrep ()

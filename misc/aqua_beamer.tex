@@ -1,0 +1,145 @@
+% Beamer — Tasuku Soma's webpage
+% - http://www.opt.mist.i.u-tokyo.ac.jp/~tasuku/beamer.html#tips
+
+% Beamerの設定
+\usetheme{Boadilla}
+
+%Beamerフォント設定
+\usepackage[deluxe,uplatex]{otf} % 日本語多ウェイト化
+
+\renewcommand{\familydefault}{\sfdefault} % 英文をサンセリフ体に
+\renewcommand{\kanjifamilydefault}{\gtdefault}  % 日本語をゴシック体に
+
+\usefonttheme{structurebold} % タイトル部を太字
+\setbeamerfont{alerted text}{series=\bfseries} % Alertを太字
+
+% タイトルスライド
+\setbeamerfont{title}{size=\LARGE} % タイトル文字サイズ
+\setbeamerfont{date}{size=\small}  % 日付文字サイズ
+
+% 目次スライド
+\setbeamerfont{section in toc}{series=\mdseries} % 目次は太字にしない
+
+% フレームスライド
+\setbeamerfont{frametitle}{size=\Large} % フレームタイトル文字サイズ
+
+% Beamer色設定
+\definecolor{UniBlue}{RGB}{0,150,200} % 全体のテーマ色
+\definecolor{AlertOrange}{RGB}{255,76,0}
+\definecolor{AlmostBlack}{RGB}{38,38,38}
+
+\setbeamercolor{structure}{fg=UniBlue} % 全体のテーマ色設定（見出しカラー）
+
+\setbeamercolor{block title}{fg=UniBlue!50!black} % ブロック部分タイトルカラー
+\setbeamercolor{alerted text}{fg=AlertOrange} % \alert 文字カラー
+
+% 本文カラー
+\setbeamercolor{normal text}{fg=AlmostBlack}
+
+% スライドモードのみ背景をわずかにグレーにする
+\mode<beamer>{
+    \definecolor{BackGroundGray}{RGB}{254,254,254}
+    \setbeamercolor{background canvas}{bg=BackGroundGray}
+}
+
+%フラットデザイン化
+\setbeamertemplate{blocks}[rounded] % Blockの影を消す
+\useinnertheme{circles} % 箇条書きをシンプルに
+
+% フッター
+\setbeamertemplate{navigation symbols}{} % ナビゲーションシンボルを消す
+\setbeamertemplate{footline}[frame number] % フッターはスライド番号のみ
+
+%タイトルページ
+\setbeamertemplate{title page}{%
+    \vspace{2.5em}
+    {\usebeamerfont{title} \usebeamercolor[fg]{title} \inserttitle \par}
+    {\usebeamerfont{subtitle}\usebeamercolor[fg]{subtitle}\insertsubtitle \par}
+    \vspace{1.5em}
+    \begin{flushright}
+        \usebeamerfont{author}\insertauthor\par
+        \usebeamerfont{institute}\insertinstitute \par
+        \vspace{3em}
+        \usebeamerfont{date}\insertdate\par
+        \usebeamercolor[fg]{titlegraphic}\inserttitlegraphic
+    \end{flushright}
+}
+
+\AtBeginSection[]{
+  \frame{\tableofcontents[currentsection, hideallsubsections]} %目次スライド
+}
+
+% Algorithm系
+\usepackage{algorithm}
+\usepackage[noend]{algorithmic}
+\algsetup{linenosize=\color{fg!50}\footnotesize}
+\renewcommand\algorithmicdo{:}
+\renewcommand\algorithmicthen{:}
+\renewcommand\algorithmicrequire{\textbf{Input:}}
+\renewcommand\algorithmicensure{\textbf{Output:}}
+
+% Tikz
+\usepackage{tikz}
+\usetikzlibrary{positioning,shapes,arrows}
+
+% Babel (日本語の場合のみ・英語の場合は不要)
+\uselanguage{japanese}
+\languagepath{japanese}
+\deftranslation[to=japanese]{Theorem}{定理}
+\deftranslation[to=japanese]{Lemma}{補題}
+\deftranslation[to=japanese]{Example}{例}
+\deftranslation[to=japanese]{Examples}{例}
+\deftranslation[to=japanese]{Definition}{定義}
+\deftranslation[to=japanese]{Definitions}{定義}
+\deftranslation[to=japanese]{Problem}{問題}
+\deftranslation[to=japanese]{Solution}{解}
+\deftranslation[to=japanese]{Fact}{事実}
+\deftranslation[to=japanese]{Proof}{証明}
+\def\proofname{証明}
+
+% 定理
+\theoremstyle{definition}
+\newenvironment{mythm}{\begin{alertblock}{定理}}{\end{alertblock}} %自分の結果は赤色で表示
+
+% %タイトル
+% \title{Aqua Beamer テンプレート}
+% \author{\textbf{相馬 輔 (東京大学)}}
+% \date{2015/3/26}
+% \institute{ほげほげ研究室}
+
+% \begin{document}
+% \maketitle
+% \frame{\tableofcontents[hideallsubsections]}
+% \section{フレーム}
+% \begin{frame}{フレーム}
+%     \begin{block}{block sample}
+%         ブロック環境のサンプル\\
+%         \alert{alerted text}
+%     \end{block}
+%     \vfill
+%     \begin{exampleblock}{example block sample}
+%         Exampleブロック環境のサンプル
+%     \end{exampleblock}
+%     \vfill
+%     \begin{mythm}
+%         mythm環境のサンプル
+%     \end{mythm}
+% \end{frame}
+
+% \section{アルゴリズム}
+% \begin{frame}{アルゴリズムサンプル}
+%     \begin{block}{Matrix Multiplication}
+%         \begin{algorithmic}[1]
+%             \STATE $C = O$
+%             \FOR{$i = 1, \dots, m$}
+%             \FOR{$j = 1, \dots, n$}
+%             \FOR{$k = 1, \dots, r$}
+%             \STATE $C[i,j] = C[i,j] + A[i, k] \cdot B[k, j]$
+%             \ENDFOR
+%             \ENDFOR
+%             \ENDFOR
+%             \RETURN $C$
+%         \end{algorithmic}
+%     \end{block}
+% \end{frame}
+% \end{document}
