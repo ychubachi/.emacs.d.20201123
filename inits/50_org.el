@@ -156,6 +156,9 @@ Text: %i
 (defun my/ox-beamer ()
   (require 'ox-beamer)
 
+  ;; フレームにするセクションのレベル（#+OPTIONS: H:2）
+  (setq org-beamer-frame-level 2)
+
   ;; Outlineのタイトルを目次にします
   (setq org-beamer-outline-frame-title "目次")
 
