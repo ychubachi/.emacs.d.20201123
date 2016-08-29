@@ -123,6 +123,10 @@ Text: %i
   (setq org-latex-minted-options
         '(("frame" "single") ("linenos" "true") ("fontfamily" "courier")))
 
+  ;; TODO: TikZ
+  ;; #+LATEX_HEADER: \usetikzlibrary{positioning}
+  (add-to-list 'org-latex-packages-alist '("" "tikz") t)
+
   ;; upLaTeX用jsarticleを標準のクラスファイルに設定
   (setq org-latex-default-class "ujsarticle")
 

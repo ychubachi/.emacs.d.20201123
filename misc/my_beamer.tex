@@ -18,7 +18,7 @@
 \setbeamertemplate{blocks}[rounded] % 影を消す（オプションで消せない？）
 
 % * アウターテーマ
-\useoutertheme[right]{sidebar}
+\useoutertheme[height=1.5cm, width=2cm, right]{sidebar}
 \setbeamercolor{frametitle}{fg=white} % heightを設定すると黒になる
 \setbeamertemplate{navigation symbols}{} % ナビゲーションシンボルを消す
 % \setbeamertemplate{footline}[frame number] % フッターはスライド番号のみ
@@ -38,6 +38,10 @@
     \tableofcontents[currentsection,currentsubsection]
   \end{frame}
 }
+
+%% * フレームのカスタマイズ
+% フレームタイトルのサイズを少々小さめに
+\setbeamerfont{frametitle}{size=\large}
 
 % 参考
 % - Beamer — Tasuku Soma's webpage
