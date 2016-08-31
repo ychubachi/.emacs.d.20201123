@@ -1,6 +1,6 @@
 # -*- mode: snippet -*-
-# name: IMRAD
-# key: imrad
+# name: imrad_full
+# key: imradfull
 # --
 #+TITLE: Title \linebreak Sub-title
 #+AUTHOR: 産業技術大学院大学 \linebreak 中鉢 欣秀

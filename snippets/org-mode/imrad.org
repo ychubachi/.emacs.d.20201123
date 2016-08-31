@@ -1,0 +1,13 @@
+# -*- mode: snippet -*-
+# name: imrad
+# key: imrad
+# --
+* はじめに（introduction）
+** 背景（Background）
+** 関連研究（Related work）
+* 研究の方法（Methodlogy）
+** 研究対象（Material）
+** 研究方法（Methodlogy）
+* 研究の結果（Result）
+* 考察（Descussion）
+* おわりに（Concludion）
