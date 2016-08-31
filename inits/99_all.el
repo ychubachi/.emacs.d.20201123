@@ -206,7 +206,7 @@
 ;;                  <<org/mobile>>
 ;;                  <<org-column-title>>
 ;;                  <<org/custom-set-variables>>
-;;                  <<ox-md>> 
+;;                  <<ox-md>>
 ;;                  (my/ox-latex)
 ;;                  (my/ox-beamer)
 ;;                  <<minted>>
@@ -223,7 +223,7 @@
 
 
 
-;; *** 
+;; ***
 
 
 
@@ -446,25 +446,6 @@
 ;; (require 'sbt-mode)
 ;; #+end_src
 ;; * キーバインディング
-
-;; ** 個人用キーマップの設定
-;; #+begin_src emacs-lisp
-;;   (defun my/fullscreen ()
-;; 	(interactive)
-;; 	(set-frame-parameter
-;; 	 nil
-;; 	 'fullscreen
-;; 	 (if (frame-parameter nil 'fullscreen)
-;; 	 nil
-;; 	   'fullboth)))
-;;   (global-set-key [f11] 'my/fullscreen)
-
-;;   ;; (defun my/open-init-folder()
-;;   ;;   "設定フォルダを開きます．"
-;;   ;;   (interactive)
-;;   ;;   (find-file "~/.emacs.d/init.org"))
-;;   ;; (global-set-key (kbd "<f1>") 'my/open-init-folder)
-
 
 ;;   (defun my/other-window-backward ()
 ;; 	"Move to other window backward."

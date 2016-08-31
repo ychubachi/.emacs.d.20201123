@@ -1,0 +1,21 @@
+# -*- mode: snippet -*-
+# name: dot
+# key: dot
+# --
+#+BEGIN_SRC dot :file dot_example0.pdf
+digraph {
+  lec1 [label="フレームワーク\n開発特論" shape=box]
+  lec2 [label="コラボレイティブ\n開発特論" shape=box]
+  lec3 [label="アジャイル開発特論" shape=box]
+  lec4 [label="ビジネスアプリケーション\n特別演習（PBL）" shape=oval]
+  lec1->lec3;
+  lec2->lec3;
+  lec3->lec4;
+}
+#+END_SRC
+#+CAPTION: AIITで開講するenPiT科目
+#+NAME: fig:aiit-lectures
+#+ATTR_LATEX: :placement [tb] :width .7\linewidth
+#+ATTR_LATEX: :options [clip,trim=30 30 30 30]
+#+RESULTS:
+[[file:dot_example0.pdf]]

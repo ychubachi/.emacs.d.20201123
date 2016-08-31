@@ -1,0 +1,8 @@
+# -*- mode: snippet -*-
+# name: caption
+# key: caption
+# --
+#+CAPTION: This is the caption for the next figure link (or table)
+#+NAME:   fig:SED-HR4049
+#+ATTR_LATEX: :width 0.9\linewidth
+[[file:アジャイルソフトウェア開発宣言.png]]
