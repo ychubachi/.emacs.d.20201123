@@ -4,10 +4,13 @@
 # --
 - はじめに（introduction）
   - 背景（Background）
+  - 研究設問（Research Question）
   - 関連研究（Related work）
 - 研究の方法（Methodlogy）
   - 研究対象（Material）
   - 研究方法（Methodlogy）
 - 研究の結果（Result）
+  - データ（Data）
+  - 得られた知見（Lessons Learned）
 - 考察（Descussion）
 - おわりに（Concludion）
