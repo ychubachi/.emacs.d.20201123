@@ -1,4 +1,4 @@
-;;; F11でWikiを開く
+;;; F12でWikiを開く
 (defun my/open-wiki-home()
    "設定フォルダを開きます．"
    (interactive)
