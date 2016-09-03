@@ -166,7 +166,6 @@
 ;;   <<lispxmp>>
 ;;   <<multiple-cursors>>
 ;;   <<smartrep>>
-;;   <<region-bindings-mode>>
 ;;   <<migemo>>
 ;;   <<org>>
 ;;   <<helm>>

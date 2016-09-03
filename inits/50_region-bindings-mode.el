@@ -2,7 +2,7 @@
 
 ;; リージョンがある間のキーバインディングを変更する
 (use-package region-bindings-mode
-  :init
+  :config
   (progn
     (region-bindings-mode-enable)
     (bind-keys :map region-bindings-mode-map
