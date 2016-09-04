@@ -59,11 +59,10 @@
 (bind-key "C-c ?" 'help-for-help)
 
 ;;; 日本語/UTF-8に
-
 ;; - 言語環境を日本語に，コード体系をUTF-8にします．
-
 (set-language-environment "japanese")
 (prefer-coding-system 'utf-8)
+
 ;;; デフォルトフォントの設定
 
 ;; ↓のテーブルが揃っていればOK
@@ -80,5 +79,13 @@
   (add-to-list 'default-frame-alist '(font . "ricty-13.5")))
  ((eq system-type 'darwin)
   (add-to-list 'default-frame-alist '(font . "ricty-14"))))
+
 ;;; 無駄な行末の空白を削除
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
+
+;;; recentf - 最近使ったファイル
+(require 'recentf)
+(recentf-mode 1)
+(setq recentf-max-menu-items 200)
+(global-set-key "\C-x\ \C-r" 'recentf-open-files)
+(run-at-time nil (* 5 60) 'recentf-save-list)

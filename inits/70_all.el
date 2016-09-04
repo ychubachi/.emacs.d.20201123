@@ -884,7 +884,6 @@
    (quote
     (("blog.chubachi.net" :url "http://blog.chubachi.net/xmlrpc.php" :username "yc" :password "6mX6fj4p2kZZ"))))
  '(outline-minor-mode-prefix "")
- '(recentf-max-menu-items 25)
  '(send-mail-function (quote smtpmail-send-it))
  '(shell-pop-autocd-to-working-dir nil)
  '(shell-pop-shell-type (quote ("eshell" "*eshell*" (lambda nil (eshell)))))
