@@ -185,22 +185,6 @@
 ;; 		   (outline-minor-mode))))
 
 ;;   ;; ================================================================
-;;   ;; flymake関係
-;;   ;; ================================================================
-
-;;   (require 'flymake-ruby)
-;;   (add-hook 'ruby-mode-hook 'flymake-ruby-load)
-
-;;   (require 'flymake-haml)
-;;   (add-hook 'haml-mode-hook 'flymake-haml-load)
-
-;;   (require 'flymake-sass)
-;;   (add-hook 'sass-mode-hook 'flymake-sass-load)
-
-;;   (require 'flymake-coffee)
-;;   (add-hook 'coffee-mode-hook 'flymake-coffee-load)
-
-;;   ;; ================================================================
 ;;   ;; Use the right Ruby with Emacs and rbenv - Fist of Senn
 ;;   ;; - http://blog.senny.ch/blog/2013/02/11/use-the-right-ruby-with-emacs-and-rbenv/
 ;;   ;; ================================================================
