@@ -1,3 +1,0 @@
-;;; htmlize
-
-(use-package htmlize)
