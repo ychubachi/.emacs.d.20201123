@@ -248,8 +248,6 @@ Text: %i
            :recursive t
            :publishing-function org-html-publish-to-html
 	   :body-only t
-           ;; :html-head "<link rel=\"stylesheet\"
-           ;;               href=\"../other/mystyle.css\" type=\"text/css\"/>"
 	   :section-numbers nil
 	   :with-toc nil
 	   :html-extension "html.erb"
