@@ -340,7 +340,7 @@ Text: %i
   :config
   (progn
     ;; HTMLのexport用
-    (use-package htmlize)
+;;    (use-package htmlize)
 
     ;; linerapの設定
     (bind-key "M-q" 'toggle-truncate-lines org-mode-map)
