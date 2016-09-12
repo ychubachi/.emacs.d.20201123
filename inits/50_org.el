@@ -127,7 +127,7 @@ Text: %i
   ;; #+LATEX_HEADER: \usetikzlibrary{positioning}
   (add-to-list 'org-latex-packages-alist '("" "tikz") t)
 
-  ;; upLaTeX用jsarticleを標準のクラスファイルに設定
+  ;; 標準のクラスファイルをupLaTeX用jsarticleに設定
   (setq org-latex-default-class "ujsarticle")
 
   ;; upLaTeX用jsarticleの設定（fvipdfmxを使用）
@@ -166,23 +166,16 @@ Text: %i
   ;; Outlineのタイトルを目次にします
   (setq org-beamer-outline-frame-title "目次")
 
-  ;; Beamer用クラスの設定
+  ;; Beamer用クラスの設定（3階層用）
   (add-to-list 'org-latex-classes
                '("beamer"
                  "\\documentclass[uplatex,dvipdfmx,14pt,xcolor=dvipsnames,table,presentation]{beamer}
-\\input{\\string~/.emacs.d/misc/my_beamer}"
+\\input{style}"
                  ("\\section{%s}" . "\\section*{%s}")
                  ("\\subsection{%s}" . "\\subsection*{%s}")
                  ("\\subsubsection{%s}" . "\\subsubsection*{%s}")))
 
-    (add-to-list 'org-latex-classes
-               '("aqua_beamer"
-                 "\\documentclass[uplatex,14pt,xcolor=dvipsnames,table,dvipdfmx]{beamer}
-\\input{\\string~/.emacs.d/misc/aqua_beamer}"
-                 ("\\section{%s}" . "\\section*{%s}")
-                 ("\\subsection{%s}" . "\\subsection*{%s}")
-                 ("\\subsubsection{%s}" . "\\subsubsection*{%s}")))
-
+  ;; Beamer用クラスの設定（4階層用）
   (add-to-list 'org-latex-classes
                '("beamerlecture"
                  "\\documentclass[uplatex,dvipdfmx,14pt,presentation]{beamer}
