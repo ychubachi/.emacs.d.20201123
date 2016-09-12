@@ -213,6 +213,60 @@ Text: %i
 			   (outline-previous-visible-heading 1)))))
     :ensure t))
 
+;;; my/org-publish
+;; WebにHTMLでPublishする
+
+;; - Publishing Org-mode files to HTML
+;;   http://orgmode.org/worg/org-tutorials/org-publish-html-tutorial.html
+(defun my/org-publish ()
+  (require 'ox-publish)
+  (setq org-publish-project-alist
+	'(
+	  ("org-notes"
+	   :base-directory "~/Dropbox/Org/Publish/org"
+           :base-extension "org"
+           :publishing-directory "~/Dropbox/Org/Publish/public_html/"
+           :recursive t
+           :publishing-function org-html-publish-to-html
+	   :body-only t
+           )
+	  ("org-static"
+	   :base-directory "~/Dropbox/Org/Publish/org"
+	   :base-extension "css\\|js\\|png\\|jpg\\|gif\\|pdf\\|mp3\\|ogg\\|swf"
+	   :publishing-directory "~/Dropbox/Org/Publish/public_html/"
+	   :recursive t
+	   :publishing-function org-publish-attachment
+	   )
+	  ("org"
+	   :components ("org-notes" "org-static"))
+
+	  ;; www.chubachi.net
+	  ("www-notes"
+	   :base-directory       "~/git/www_chubachi_net/org"
+           :publishing-directory "~/git/www_chubachi_net/source/"
+           :base-extension "org"
+           :recursive t
+           :publishing-function org-html-publish-to-html
+	   :body-only t
+           ;; :section-numbers nil
+           ;; :with-toc nil
+           ;; :html-head "<link rel=\"stylesheet\"
+           ;;               href=\"../other/mystyle.css\" type=\"text/css\"/>"
+           )
+	  ("www-static"
+	   :base-directory       "~/git/www_chubachi_net/org"
+	   :publishing-directory "~/git/www_chubachi_net/source/"
+	   :base-extension "css\\|js\\|png\\|jpg\\|gif\\|pdf\\|mp3\\|ogg\\|swf"
+	   :recursive t
+	   :publishing-function org-publish-attachment
+	   )
+	  ("www"
+	   :components ("www-notes" "www-static")
+	   )
+	  )
+	)
+  )
+
 ;;; org-mode 本体
 (use-package org
   :bind
@@ -284,11 +338,15 @@ Text: %i
     (require 'org-protocol))
   :config
   (progn
+    ;; - eval-after-loadにより，orgがロードされた後，
+    ;;   もしくは，既にロードされていれば即，実行する．
+
     ;; - [[http://superuser.com/questions/299886/linewrap-in-org-mode-of-emacs][Linewrap in Org-mode of Emacs? - Super User]]
     (bind-key "M-q" 'toggle-truncate-lines org-mode-map)
 
-    ;; - eval-after-loadにより，orgがロードされた後，
-    ;;   もしくは，既にロードされていれば即，実行する．
     ;; - TODO smartrepは既にrequireされている前提
     (my/smartrep))
+
+  ;; org-publish
+    (my/org-publish)
   :ensure t)

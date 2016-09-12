@@ -628,39 +628,6 @@
 ;; (cask-initialize)
 ;; #+end_src
 
-;; * TODO WebにHTMLでPublishする 					       :個人設定:
-;;    :PROPERTIES:
-;;    :ID:       fcdb09c8-3a9a-4ea9-9482-10d445b6db9f
-;;    :END:
-;;    - customzationに移動する？
-
-;; #+begin_src emacs-lisp
-;; (setq org-publish-project-alist
-;; 	  '(
-;; 	("chubachi.net-notes"
-;; 	 :base-directory "~/Ubuntu One/WebSites/chubachi.net/org/"
-;; 	 :base-extension "org"
-;; 	 :publishing-directory "~/Ubuntu One/WebSites/chubachi.net/www/"
-;; 	 :publishing-function org-html-publish-to-html
-;; 	 ;; :headline-levels 3
-;; 	 ;; :section-numbers nil
-;; 	 ;; :with-toc nil
-;; 	 ;; :html-head "<link rel=\"stylesheet\"
-;; 	 ;;               href=\"../other/mystyle.css\" type=\"text/css\"/>"
-;; 	 ;; :html-preamble t
-;; 	 :recursive t
-;; 	 )
-;; 	("chubachi.net-static"
-;; 	 :base-directory "~/Ubuntu One/WebSites/chubachi.net/org/"
-;; 	 :base-extension "css\\|js\\|png\\|jpg\\|gif\\|pdf\\|mp3\\|ogg\\|swf"
-;; 	 :publishing-directory "~/Ubuntu One/WebSites/chubachi.net/www/"
-;; 	 :recursive t
-;; 	 :publishing-function org-publish-attachment
-;; 	 )
-;; 	("chubachi.net"
-;; 	 :components ("chubachi.net-notes" "chubachi.net-static"))
-;; 	  ))
-;; #+end_src
 
 ;; * TODO org-page
 ;;   - [[https://github.com/kelvinh/org-page][kelvinh/org-page]]
