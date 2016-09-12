@@ -339,10 +339,10 @@ Text: %i
     (require 'org-protocol))
   :config
   (progn
-    ;; - eval-after-loadにより，orgがロードされた後，
-    ;;   もしくは，既にロードされていれば即，実行する．
+    ;; HTMLのexport用
+    (use-package htmlize)
 
-    ;; - [[http://superuser.com/questions/299886/linewrap-in-org-mode-of-emacs][Linewrap in Org-mode of Emacs? - Super User]]
+    ;; linerapの設定
     (bind-key "M-q" 'toggle-truncate-lines org-mode-map)
 
     ;; - TODO smartrepは既にrequireされている前提
