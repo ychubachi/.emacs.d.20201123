@@ -20,10 +20,9 @@
 ;;; packageシステムの初期化
 (require 'package)
 (setq package-archives '(
-                        ("elpa" . "http://tromey.com/elpa/")
-                        ("gnu" . "http://elpa.gnu.org/packages/")
-                        ("marmalade" . "http://marmalade-repo.org/packages/")
-                        ("melpa-stable" . "http://stable.melpa.org/packages/")))
+			 ("melpa" . "http://melpa.org/packages/")
+			)
+      )
 (package-initialize)
 (package-refresh-contents)
 
