@@ -204,7 +204,7 @@ Text: %i
 ;;; org-mode 用 smartrep
 (defun my/smartrep ()
   (use-package smartrep
-    :init
+    :config
     (smartrep-define-key
 	org-mode-map
 	"C-c" '(("C-n" . (lambda ()
