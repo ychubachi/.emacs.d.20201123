@@ -276,6 +276,7 @@ Text: %i
    ("C-c b" . org-switchb))
   :init
   (progn
+    ;; キャプチャのテンプレート
     (my/org-caputure-templates)
     (setq org-todo-keywords
 	  (quote
@@ -287,6 +288,7 @@ Text: %i
 	     "DONE(d)"
 	     "SOMEDAY(s)"
 	     "CANCEL(c)"))))
+
     ;;  Babelの設定
     (setq org-babel-load-languages	;Babelで対応する言語
 	  (quote
@@ -295,11 +297,11 @@ Text: %i
 	    (java . t)
 	    (ruby . t)
 	    (sh . t))))
-    (setq org-babel-sh-command "bash")	;BabelのShellのコードの実行にbashを使う
-    (setq org-deadline-warning-days 7) 	;期日の何日前にAgendaに表示するか
+    (setq org-babel-sh-command "bash")	; BabelのShellコードの実行にbashを使う
+    (setq org-confirm-babel-evaluate nil) ; ブロックの評価時の確認を無効に
 
-    ;; - [[http://orgmode.org/manual/Matching-tags-and-properties.html][Matching tags and properties - The Org Manual]]
-    ;; - [[https://www.gnu.org/software/emacs/manual/html_node/org/Special-agenda-views.html][Special agenda views - The Org Manual]]
+    ;; アジェンダ機能の設定
+    (setq org-deadline-warning-days 7) 	;期日の何日前にAgendaに表示するか
     (setq org-agenda-custom-commands	;予定表生成追加命令
 	  (quote
 	   (("x" "TODOs without Scheduled" tags-todo "+SCHEDULED=\"\"" nil)
@@ -308,9 +310,8 @@ Text: %i
 	    ("P" "私用以外" tags-todo "-私用" nil)
 	    ("n" "Agenda and all TODO's" ((agenda "" nil)
 					  (alltodo "" nil)) nil))))
-    (setq org-confirm-babel-evaluate nil)
 
-    ;; - [[https://github.com/matburt/mobileorg-android/wiki][Home · matburt/mobileorg-android Wiki]]
+    ;; MobileOrgの設定
     (setq org-mobile-directory "~/Dropbox/アプリ/MobileOrg")
     (setq org-mobile-inbox-for-pull "~/Dropbox/Org/from-mobile.org")
 
@@ -325,6 +326,7 @@ Text: %i
     (setq org-export-in-background nil)	; tにすると時間がかかる
     (my/ox-latex)
     (my/ox-beamer)
+
 
     ;;   - [[http://orgmode.org/worg/org-contrib/org-protocol.html#sec-3-6][org-protocol.el – Intercept calls from emacsclient to trigger custom actions]]
 
