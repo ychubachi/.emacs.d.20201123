@@ -6,11 +6,8 @@
 ;; - Less secure apps - Account settings - https://www.google.com/settings/security/lesssecureapps
 
 (use-package mew
-  :ensure t
-  :init
-  (autoload 'mew "mew" nil t)
-  (autoload 'mew-send "mew" nil t)
-
+  :commands (mew mew-send)
+  :config
   ;; Optional setup (Read Mail menu):
   (setq read-mail-command 'mew)
 
