@@ -252,6 +252,7 @@ Text: %i
            ;; :with-toc nil
            ;; :html-head "<link rel=\"stylesheet\"
            ;;               href=\"../other/mystyle.css\" type=\"text/css\"/>"
+	   :html-extension "html.erb"
            )
 	  ("www-static"
 	   :base-directory       "~/git/www_chubachi_net/org"
