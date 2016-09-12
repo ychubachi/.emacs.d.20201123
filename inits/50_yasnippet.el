@@ -5,5 +5,4 @@
 
 (use-package yasnippet
   :init
-  (yas-global-mode 1)
-  :ensure t)
+  (yas-global-mode 1))
