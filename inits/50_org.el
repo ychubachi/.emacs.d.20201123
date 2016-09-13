@@ -247,10 +247,12 @@ Text: %i
            :base-extension "org"
            :recursive t
            :publishing-function org-html-publish-to-html
-	   :body-only t
 	   :section-numbers nil
 	   :with-toc nil
+	   :with-sub-superscript nil
+	   :body-only t
 	   :html-extension "html.erb"
+	   :headline-levels 3
            )
 	  ("www-static"
 	   :base-directory       "~/git/www_chubachi_net/org"
