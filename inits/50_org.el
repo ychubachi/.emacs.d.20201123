@@ -174,32 +174,7 @@ Text: %i
                  ("\\section{%s}" . "\\section*{%s}")
                  ("\\subsection{%s}" . "\\subsection*{%s}")
                  ("\\subsubsection{%s}" . "\\subsubsection*{%s}")))
-
-  ;; Beamer用クラスの設定（4階層用）
-  (add-to-list 'org-latex-classes
-               '("beamerlecture"
-                 "\\documentclass[uplatex,dvipdfmx,14pt,presentation]{beamer}
-% ゴシック体
-\\renewcommand{\\kanjifamilydefault}{\\gtdefault}
-% ナビゲーション表示消去
-\\setbeamertemplate{navigation symbols}{}
-% 部（第一階層）ごとに表題を表示
-\\AtBeginPart{
-  \\begin{frame}
-    \\date{\\insertpart}
-    \\maketitle
-  \\end{frame}
-}
-% 節（第二階層）ごとに目次を表示
-\\AtBeginSection[]{
-  \\begin{frame}
-    \\tableofcontents[currentsection,currentsubsection]
-  \\end{frame}
-}"
-		 ("\\part{%s}" . "\\part*{%s}")
-		 ("\\section{%s}" . "\\section*{%s}")
-		 ("\\subsection{%s}" . "\\subsection*{%s}")
-		 ("\\subsubsection{%s}" . "\\subsubsection*{%s}"))))
+  )
 
 ;;; org-mode 用 smartrep
 (defun my/smartrep ()
