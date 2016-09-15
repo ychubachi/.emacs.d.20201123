@@ -174,7 +174,17 @@ Text: %i
                  ("\\section{%s}" . "\\section*{%s}")
                  ("\\subsection{%s}" . "\\subsection*{%s}")
                  ("\\subsubsection{%s}" . "\\subsubsection*{%s}")))
-  )
+
+  ;; Beamer用クラスの設定（4階層用）
+  (add-to-list 'org-latex-classes
+               '("beamer-lecture"
+                 "\\documentclass[uplatex,dvipdfmx,14pt,presentation,t]{beamer}
+\\input{style}"
+                 ("\\part{%s}" . "\\part*{%s}")
+                 ("\\section{%s}" . "\\section*{%s}")
+                 ("\\subsection{%s}" . "\\subsection*{%s}")
+                 ("\\subsubsection{%s}" . "\\subsubsection*{%s}")))
+)
 
 ;;; org-mode 用 smartrep
 (defun my/smartrep ()
