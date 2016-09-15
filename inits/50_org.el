@@ -169,7 +169,7 @@ Text: %i
   ;; Beamer用クラスの設定（3階層用）
   (add-to-list 'org-latex-classes
                '("beamer"
-                 "\\documentclass[uplatex,dvipdfmx,14pt,xcolor=dvipsnames,table,presentation]{beamer}
+                 "\\documentclass[uplatex,dvipdfmx,14pt,presentation,t]{beamer}
 \\input{style}"
                  ("\\section{%s}" . "\\section*{%s}")
                  ("\\subsection{%s}" . "\\subsection*{%s}")
