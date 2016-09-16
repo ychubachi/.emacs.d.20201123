@@ -121,7 +121,8 @@ Text: %i
   (setq org-latex-listings 'minted)
   (add-to-list 'org-latex-packages-alist '("" "minted") t)
   (setq org-latex-minted-options
-        '(("frame" "single") ("linenos" "true") ("fontfamily" "courier")))
+        '(("frame" "single") ("linenos" "true") ("numbersep" "3pt")
+	  ("fontfamily" "courier") ("breaklines" "true")))
 
   ;; TODO: TikZ
   ;; #+LATEX_HEADER: \usetikzlibrary{positioning}
