@@ -91,25 +91,17 @@ Text: %i
 (defun my/ox-latex ()
   (require 'ox-latex)
 
-  ;; PDFの生成のためにupLaTeXを利用するlatexmkの設定
-  ;; - minted等のために-shell-escapeオプションを設定
+  ;; LaTeXエンジンにXeLaTeXを設定します
+  ;; - uplatexだと下線を箇所を改行できない
   (setq
    org-latex-pdf-process
    `(,(concat
-       "latexmk "
-       "-e '$latex=q/uplatex -shell-escape %S/' "
+       "latexmk -e '$pdflatex=q/xelatex -shell-escape %S/' "
        "-e '$bibtex=q/upbibtex %B/' "
        "-e '$biber=q/biber "
        "--bblencoding=utf8 -u -U --output_safechars %B/' "
        "-e '$makeindex=q/upmendex -o %D %S/' "
-       "-e '$dvipdf=q/dvipdfmx "
-       "-o %D %S/' -norc -gg -pdfdvi %f")))
-
-  ;; 標準のLaTeXクラスを削除
-  ;; (setq org-latex-classes nil)
-
-  ;; PDFの目次の日本語文字化け対策
-  (add-to-list 'org-latex-packages-alist '("" "pxjahyper") t)
+       "-norc -gg -pdf %f")))
 
   ;; Times を TeX 用に配置し直した TX フォント
   ;; - txfonts.sty: LaTeX パッケージ
@@ -128,19 +120,49 @@ Text: %i
   ;; #+LATEX_HEADER: \usetikzlibrary{positioning}
   (add-to-list 'org-latex-packages-alist '("" "tikz") t)
 
-  ;; 標準のクラスファイルをupLaTeX用jsarticleに設定
-  (setq org-latex-default-class "ujsarticle")
+  ;; 標準のクラスファイルを設定
+  ;; - bxjsarticleは各種LaTeXエンジンに対応したクラスファイル
+  (setq org-latex-default-class "bxjsarticle")
 
-  ;; upLaTeX用jsarticleの設定（fvipdfmxを使用）
+  ;; bxjsarticleの設定
+  ;; - 各種エンジン用のクラスオプション設定とgxjahyperの要否など
   (add-to-list 'org-latex-classes
-               '("ujsarticle"
-                 "\\documentclass[uplatex,dvipdfmx]{jsarticle}
-\\input{latex}"
-                 ("\\section{%s}" . "\\section*{%s}")
-                 ("\\subsection{%s}" . "\\subsection*{%s}")
-                 ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
-                 ("\\paragraph{%s}" . "\\paragraph*{%s}")
-                 ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
+             '("bxjsarticle"
+               "\\ifdefined\\kanjiskip
+  \\documentclass[autodetect-engine,dvipdfmx,12pt,a4paper,ja=standard]{bxjsarticle}
+\\else
+  \\ifdefined\\pdfoutput
+    \\ifnum\\pdfoutput=0
+      \\documentclass[autodetect-engine,dvipdfmx,12pt,a4paper,ja=standard]{bxjsarticle}
+    \\else
+      \\documentclass[autodetect-engine,12pt,a4paper,ja=standard]{bxjsarticle}
+    \\fi
+  \\else
+    \\documentclass[autodetect-engine,12pt,a4paper,ja=standard]{bxjsarticle}
+  \\fi
+\\fi
+[DEFAULT-PACKAGES]
+\\ifdefined\\kanjiskip
+  \\usepackage{pxjahyper}
+  \\hypersetup{colorlinks=true}
+\\else
+  \\ifdefined\\XeTeXversion
+      \\hypersetup{colorlinks=true}
+  \\else
+    \\ifdefined\\directlua
+      \\hypersetup{pdfencoding=auto,colorlinks=true}
+    \\else
+      \\hypersetup{unicode,colorlinks=true}
+    \\fi
+  \\fi
+\\fi
+[PACKAGES]
+[EXTRA]"
+               ("\\section{%s}" . "\\section*{%s}")
+               ("\\subsection{%s}" . "\\subsection*{%s}")
+               ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+               ("\\paragraph{%s}" . "\\paragraph*{%s}")
+               ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
 
   ;; 縦書きモード
   ;; - mintedが使えないので[NO-PACKAGES]を指定し，pxjahyperのみ使用
