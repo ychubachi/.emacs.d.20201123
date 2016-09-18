@@ -74,14 +74,6 @@ Text: %i
 
 ;; OrgからLaTeXにエクスポートするための設定です．
 
-;; クラスに設定できるプレースホルダについては次のとおり．
-;;   [DEFAULT-PACKAGES]      \usepackage statements for default packages
-;;   [NO-DEFAULT-PACKAGES]   do not include any of the default packages
-;;   [PACKAGES]              \usepackage statements for packages
-;;   [NO-PACKAGES]           do not include the packages
-;;   [EXTRA]                 the stuff from #+LATEX_HEADER(_EXTRA)
-;;   [NO-EXTRA]              do not include #+LATEX_HEADER(_EXTRA) stuff
-
 ;; 参考文献
 ;; - Emacs/Org mode - TeX Wiki
 ;;   https://texwiki.texjp.org/?Emacs%2FOrg%20mode
@@ -122,10 +114,21 @@ Text: %i
 
   ;; 標準のクラスファイルを設定
   ;; - bxjsarticleは各種LaTeXエンジンに対応したクラスファイル
+  ;; - geometryパッケージは利用できず，\setpagelayoutを利用する
+  ;;   - http://zrbabbler.sp.land.to/bxjscls.html#ssec-g-layout
   (setq org-latex-default-class "bxjsarticle")
 
   ;; bxjsarticleの設定
   ;; - 各種エンジン用のクラスオプション設定とgxjahyperの要否など
+
+  ;; クラスに設定できるプレースホルダについては次のとおり．
+  ;;   [DEFAULT-PACKAGES]      \usepackage statements for default packages
+  ;;   [NO-DEFAULT-PACKAGES]   do not include any of the default packages
+  ;;   [PACKAGES]              \usepackage statements for packages
+  ;;   [NO-PACKAGES]           do not include the packages
+  ;;   [EXTRA]                 the stuff from #+LATEX_HEADER(_EXTRA)
+  ;;   [NO-EXTRA]              do not include #+LATEX_HEADER(_EXTRA) stuff
+
   (add-to-list 'org-latex-classes
              '("bxjsarticle"
                "\\ifdefined\\kanjiskip
@@ -141,7 +144,9 @@ Text: %i
     \\documentclass[autodetect-engine,12pt,a4paper,ja=standard]{bxjsarticle}
   \\fi
 \\fi
+% default packages
 [DEFAULT-PACKAGES]
+% set up hyperref
 \\ifdefined\\kanjiskip
   \\usepackage{pxjahyper}
   \\hypersetup{colorlinks=true}
@@ -155,9 +160,7 @@ Text: %i
       \\hypersetup{unicode,colorlinks=true}
     \\fi
   \\fi
-\\fi
-[PACKAGES]
-[EXTRA]"
+\\fi"
                ("\\section{%s}" . "\\section*{%s}")
                ("\\subsection{%s}" . "\\subsection*{%s}")
                ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
