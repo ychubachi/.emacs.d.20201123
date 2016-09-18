@@ -134,7 +134,8 @@ Text: %i
   ;; upLaTeX用jsarticleの設定（fvipdfmxを使用）
   (add-to-list 'org-latex-classes
                '("ujsarticle"
-                 "\\documentclass[uplatex,dvipdfmx]{jsarticle}"
+                 "\\documentclass[uplatex,dvipdfmx]{jsarticle}
+\\input{latex}"
                  ("\\section{%s}" . "\\section*{%s}")
                  ("\\subsection{%s}" . "\\subsection*{%s}")
                  ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
@@ -171,7 +172,7 @@ Text: %i
   (add-to-list 'org-latex-classes
                '("beamer"
                  "\\documentclass[uplatex,dvipdfmx,14pt,presentation,t]{beamer}
-\\input{style}"
+\\input{beamer}"
                  ("\\section{%s}" . "\\section*{%s}")
                  ("\\subsection{%s}" . "\\subsection*{%s}")
                  ("\\subsubsection{%s}" . "\\subsubsection*{%s}")))
