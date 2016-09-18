@@ -172,7 +172,7 @@ Text: %i
   (add-to-list 'org-latex-classes
                '("beamer"
                  "\\documentclass[uplatex,dvipdfmx,14pt,presentation,t]{beamer}
-\\input{beamer}"
+\\input{style}"
                  ("\\section{%s}" . "\\section*{%s}")
                  ("\\subsection{%s}" . "\\subsection*{%s}")
                  ("\\subsubsection{%s}" . "\\subsubsection*{%s}")))
