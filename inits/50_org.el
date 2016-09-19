@@ -84,16 +84,42 @@ Text: %i
   (require 'ox-latex)
 
   ;; LaTeXエンジンにXeLaTeXを設定します
-  ;; - uplatexだと下線を箇所を改行できない
+  ;; - pdfのインクルードが容易
+  ;; - 他のエンジンでは下線の箇所を改行してくれない
+  ;; - \includesvgはできない
   (setq
    org-latex-pdf-process
    `(,(concat
        "latexmk -e '$pdflatex=q/xelatex -shell-escape %S/' "
        "-e '$bibtex=q/upbibtex %B/' "
-       "-e '$biber=q/biber "
-       "--bblencoding=utf8 -u -U --output_safechars %B/' "
+       "-e '$biber=q/biber --bblencoding=utf8 -u -U --output_safechars %B/' "
        "-e '$makeindex=q/upmendex -o %D %S/' "
        "-norc -gg -pdf %f")))
+
+  ;; 標準のクラスファイルを設定
+  ;; - bxjsarticleは各種LaTeXエンジンに対応したクラスファイル
+  ;; - geometryパッケージは利用できず，\setpagelayoutを利用する
+  ;;   - http://zrbabbler.sp.land.to/bxjscls.html#ssec-g-layout
+  (setq org-latex-default-class "bxjsarticle")
+
+  ;; bxjsarticleの設定
+  ;; - クラスに設定できるプレースホルダについては次のとおり．
+  ;;   [DEFAULT-PACKAGES]      \usepackage statements for default packages
+  ;;   [NO-DEFAULT-PACKAGES]   do not include any of the default packages
+  ;;   [PACKAGES]              \usepackage statements for packages
+  ;;   [NO-PACKAGES]           do not include the packages
+  ;;   [EXTRA]                 the stuff from #+LATEX_HEADER(_EXTRA)
+  ;;   [NO-EXTRA]              do not include #+LATEX_HEADER(_EXTRA) stuff
+  (add-to-list 'org-latex-classes
+             '("bxjsarticle"
+               "\\documentclass[xelatex,ja=standard,jbase=11Q,a4paper]{bxjsarticle}
+[DEFAULT-PACKAGES]
+\\hypersetup{colorlinks=true}"
+               ("\\section{%s}" . "\\section*{%s}")
+               ("\\subsection{%s}" . "\\subsection*{%s}")
+               ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+               ("\\paragraph{%s}" . "\\paragraph*{%s}")
+               ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
 
   ;; Times を TeX 用に配置し直した TX フォント
   ;; - txfonts.sty: LaTeX パッケージ
@@ -108,80 +134,13 @@ Text: %i
         '(("frame" "single") ("linenos" "true") ("numbersep" "3pt")
 	  ("fontfamily" "courier") ("breaklines" "true")))
 
+  ;; XeLaTeXでは利用できない
+  ;; (add-to-list 'org-latex-packages-alist '("" "svg") t)
+
   ;; TODO: TikZ
   ;; #+LATEX_HEADER: \usetikzlibrary{positioning}
   (add-to-list 'org-latex-packages-alist '("" "tikz") t)
-
-  ;; 標準のクラスファイルを設定
-  ;; - bxjsarticleは各種LaTeXエンジンに対応したクラスファイル
-  ;; - geometryパッケージは利用できず，\setpagelayoutを利用する
-  ;;   - http://zrbabbler.sp.land.to/bxjscls.html#ssec-g-layout
-  (setq org-latex-default-class "bxjsarticle")
-
-  ;; bxjsarticleの設定
-  ;; - 各種エンジン用のクラスオプション設定とgxjahyperの要否など
-
-  ;; クラスに設定できるプレースホルダについては次のとおり．
-  ;;   [DEFAULT-PACKAGES]      \usepackage statements for default packages
-  ;;   [NO-DEFAULT-PACKAGES]   do not include any of the default packages
-  ;;   [PACKAGES]              \usepackage statements for packages
-  ;;   [NO-PACKAGES]           do not include the packages
-  ;;   [EXTRA]                 the stuff from #+LATEX_HEADER(_EXTRA)
-  ;;   [NO-EXTRA]              do not include #+LATEX_HEADER(_EXTRA) stuff
-
-  (add-to-list 'org-latex-classes
-             '("bxjsarticle"
-               "\\ifdefined\\kanjiskip
-  \\documentclass[autodetect-engine,dvipdfmx,12pt,a4paper,ja=standard]{bxjsarticle}
-\\else
-  \\ifdefined\\pdfoutput
-    \\ifnum\\pdfoutput=0
-      \\documentclass[autodetect-engine,dvipdfmx,12pt,a4paper,ja=standard]{bxjsarticle}
-    \\else
-      \\documentclass[autodetect-engine,12pt,a4paper,ja=standard]{bxjsarticle}
-    \\fi
-  \\else
-    \\documentclass[autodetect-engine,12pt,a4paper,ja=standard]{bxjsarticle}
-  \\fi
-\\fi
-% default packages
-[DEFAULT-PACKAGES]
-% set up hyperref
-\\ifdefined\\kanjiskip
-  \\usepackage{pxjahyper}
-  \\hypersetup{colorlinks=true}
-\\else
-  \\ifdefined\\XeTeXversion
-      \\hypersetup{colorlinks=true}
-  \\else
-    \\ifdefined\\directlua
-      \\hypersetup{pdfencoding=auto,colorlinks=true}
-    \\else
-      \\hypersetup{unicode,colorlinks=true}
-    \\fi
-  \\fi
-\\fi"
-               ("\\section{%s}" . "\\section*{%s}")
-               ("\\subsection{%s}" . "\\subsection*{%s}")
-               ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
-               ("\\paragraph{%s}" . "\\paragraph*{%s}")
-               ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
-
-  ;; 縦書きモード
-  ;; - mintedが使えないので[NO-PACKAGES]を指定し，pxjahyperのみ使用
-  (add-to-list 'org-latex-classes
-	       '("utarticle"
-		 "\\documentclass[uplatex,dvipdfmx]{utarticle}
-[DEFAULT-PACKAGES]
-[NO-PACKAGES]
-[EXTRA]
-\\usepackage{pxjahyper}"
-                  ("\\section{%s}" . "\\section*{%s}")
-		  ("\\subsection{%s}" . "\\subsection*{%s}")
-		  ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
-		  ("\\paragraph{%s}" . "\\paragraph*{%s}")
-		  ("\\subparagraph{%s}" . "\\subparagraph*{%s}"))))
-
+)
 
 ;;; my/ox-beamer
 (defun my/ox-beamer ()
@@ -196,24 +155,14 @@ Text: %i
   ;; Beamer用クラスの設定（3階層用）
   (add-to-list 'org-latex-classes
                '("beamer"
-                 "\\documentclass[uplatex,dvipdfmx,14pt,presentation,t]{beamer}
-% default packages
+                 "\\documentclass[xelatex,14pt,presentation,t]{beamer}
+\\XeTeXgenerateactualtext=1
+\\usepackage{zxjatype}
+\\setjamainfont{IPAexMincho}
+\\setjasansfont{IPAexGothic}
+\\setjamonofont{IPAexGothic}
 [DEFAULT-PACKAGES]
-% set up hyperref
-\\ifdefined\\kanjiskip
-  \\usepackage{pxjahyper}
-  \\hypersetup{colorlinks=true}
-\\else
-  \\ifdefined\\XeTeXversion
-      \\hypersetup{colorlinks=true}
-  \\else
-    \\ifdefined\\directlua
-      \\hypersetup{pdfencoding=auto,colorlinks=true}
-    \\else
-      \\hypersetup{unicode,colorlinks=true}
-    \\fi
-  \\fi
-\\fi"
+\\hypersetup{colorlinks=true}"
                  ("\\section{%s}" . "\\section*{%s}")
                  ("\\subsection{%s}" . "\\subsection*{%s}")
                  ("\\subsubsection{%s}" . "\\subsubsection*{%s}")))
@@ -221,24 +170,14 @@ Text: %i
   ;; Beamer用クラスの設定（4階層用）
   (add-to-list 'org-latex-classes
                '("beamer-part"
-                 "\\documentclass[uplatex,dvipdfmx,14pt,presentation,t]{beamer}
-% default packages
+                 "\\documentclass[xelatex,14pt,presentation,t]{beamer}
+\\XeTeXgenerateactualtext=1
+\\usepackage{zxjatype}
+\\setjamainfont{IPAexMincho}
+\\setjasansfont{IPAexGothic}
+\\setjamonofont{IPAexGothic}
 [DEFAULT-PACKAGES]
-% set up hyperref
-\\ifdefined\\kanjiskip
-  \\usepackage{pxjahyper}
-  \\hypersetup{colorlinks=true}
-\\else
-  \\ifdefined\\XeTeXversion
-      \\hypersetup{colorlinks=true}
-  \\else
-    \\ifdefined\\directlua
-      \\hypersetup{pdfencoding=auto,colorlinks=true}
-    \\else
-      \\hypersetup{unicode,colorlinks=true}
-    \\fi
-  \\fi
-\\fi"
+\\hypersetup{colorlinks=true}"
                  ("\\part{%s}" . "\\part*{%s}")
                  ("\\section{%s}" . "\\section*{%s}")
                  ("\\subsection{%s}" . "\\subsection*{%s}")
