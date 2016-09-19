@@ -197,7 +197,24 @@ Text: %i
   (add-to-list 'org-latex-classes
                '("beamer"
                  "\\documentclass[uplatex,dvipdfmx,14pt,presentation,t]{beamer}
-\\input{style}"
+\\input{style}
+% default packages
+[DEFAULT-PACKAGES]
+% set up hyperref
+\\ifdefined\\kanjiskip
+  \\usepackage{pxjahyper}
+  \\hypersetup{colorlinks=true}
+\\else
+  \\ifdefined\\XeTeXversion
+      \\hypersetup{colorlinks=true}
+  \\else
+    \\ifdefined\\directlua
+      \\hypersetup{pdfencoding=auto,colorlinks=true}
+    \\else
+      \\hypersetup{unicode,colorlinks=true}
+    \\fi
+  \\fi
+\\fi"
                  ("\\section{%s}" . "\\section*{%s}")
                  ("\\subsection{%s}" . "\\subsection*{%s}")
                  ("\\subsubsection{%s}" . "\\subsubsection*{%s}")))
@@ -206,7 +223,24 @@ Text: %i
   (add-to-list 'org-latex-classes
                '("beamer-lecture"
                  "\\documentclass[uplatex,dvipdfmx,14pt,presentation,t]{beamer}
-\\input{style}"
+\\input{style}
+% default packages
+[DEFAULT-PACKAGES]
+% set up hyperref
+\\ifdefined\\kanjiskip
+  \\usepackage{pxjahyper}
+  \\hypersetup{colorlinks=true}
+\\else
+  \\ifdefined\\XeTeXversion
+      \\hypersetup{colorlinks=true}
+  \\else
+    \\ifdefined\\directlua
+      \\hypersetup{pdfencoding=auto,colorlinks=true}
+    \\else
+      \\hypersetup{unicode,colorlinks=true}
+    \\fi
+  \\fi
+\\fi"
                  ("\\part{%s}" . "\\part*{%s}")
                  ("\\section{%s}" . "\\section*{%s}")
                  ("\\subsection{%s}" . "\\subsection*{%s}")
