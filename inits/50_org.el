@@ -197,7 +197,6 @@ Text: %i
   (add-to-list 'org-latex-classes
                '("beamer"
                  "\\documentclass[uplatex,dvipdfmx,14pt,presentation,t]{beamer}
-\\input{style}
 % default packages
 [DEFAULT-PACKAGES]
 % set up hyperref
@@ -221,9 +220,8 @@ Text: %i
 
   ;; Beamer用クラスの設定（4階層用）
   (add-to-list 'org-latex-classes
-               '("beamer-lecture"
+               '("beamer-part"
                  "\\documentclass[uplatex,dvipdfmx,14pt,presentation,t]{beamer}
-\\input{style}
 % default packages
 [DEFAULT-PACKAGES]
 % set up hyperref
