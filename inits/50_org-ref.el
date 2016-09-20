@@ -14,3 +14,10 @@
 	org-ref-pdf-directory
 	"~/Dropbox/Bibliography/bibtex-pdfs/")
 )
+
+(use-package org
+    :bind
+    (:map org-mode-map
+     ("C-c r c" . org-ref-helm-insert-cite-link)
+     ("C-c r l" . org-ref-helm-insert-label-link)
+     ("C-c r r" . org-ref-helm-insert-ref-link)))
