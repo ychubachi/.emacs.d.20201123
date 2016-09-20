@@ -25,7 +25,7 @@
 
     ;; |                |                   | 上書き |
     ;; |----------------+-------------------+--------|
-    ;; | helm-descbinds | describe-bindings | C-h b  | 
+    ;; | helm-descbinds | describe-bindings | C-h b  |
     (use-package helm-descbinds
       :init
       (helm-descbinds-mode)
