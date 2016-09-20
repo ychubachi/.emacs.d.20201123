@@ -35,4 +35,9 @@
     ;; - [[http://rubikitch.com/2014/11/16/helm-package/][emacs helm-package.el : パッケージをhelmインターフェースで即座に見付けてインストール | MELPA Emacs Lisp Elisp パッケージ インストール 設定 使い方 スクリーンショット | るびきち「日刊Emacs」]]
 
     (use-package helm-package :ensure t))
+
+  :config
+  (progn
+    ;; migemoを有効にする
+    (helm-migemo-mode 1))
   :ensure helm)

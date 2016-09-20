@@ -27,22 +27,3 @@
     (setq migemo-dictionary
 	  "/usr/local/share/migemo/utf-8/migemo-dict")))
   :ensure t)
-
-(use-package helm-migemo
-  :if (executable-find "cmigemo")
-  :init
-  (progn
-    (setq helm-use-migemo t)
-	
-    (defadvice helm-c-apropos
-	(around ad-helm-apropos activate)
-      "候補が表示されないときがあるので migemoらないように設定."
-      (let ((helm-use-migemo nil))
-	ad-do-it))
-	
-    (defadvice helm-M-x
-	(around ad-helm-M-x activate)
-      "候補が表示されないときがあるので migemoらないように設定."
-      (let ((helm-use-migemo nil))
-	ad-do-it)))
-  :ensure t)
