@@ -1,6 +1,3 @@
-;;; org-ref
-;; jkitchin/org-ref: org-mode modules for citations, cross-references, bibliographies in org-mode and useful bibtex tools to go with it. - https://github.com/jkitchin/org-ref
-
 (use-package helm-bibtex
   :config
   (setq bibtex-completion-bibliography
