@@ -17,8 +17,7 @@
 	org-ref-default-bibliography
 	'("~/git/bibliography/references.bib")
 	org-ref-pdf-directory
-	"~/git/bibliography/bibtex-pdfs/")
-  )
+	"~/git/bibliography/bibtex-pdfs/"))
 
 (use-package org
   :bind
