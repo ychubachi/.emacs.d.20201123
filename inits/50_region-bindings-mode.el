@@ -5,12 +5,11 @@
   :config
   (progn
     (bind-keys :map region-bindings-mode-map
-	       ;; multiple-cursors
 	       ("a" . mc/mark-all-like-this)
 	       ("p" . mc/mark-previous-like-this)
 	       ("n" . mc/mark-next-like-this)
 	       ("m" . mc/mark-more-like-this-extended)
 	       ("e" . mc/edit-lines)
-	       ;; aign-regexp
-	       ("r" . align-regexp))
+	       ("r" . align-regexp)
+	       ("i" . indent-region))
     (region-bindings-mode-enable)))
