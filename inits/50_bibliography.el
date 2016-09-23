@@ -27,4 +27,10 @@
 	("C-c r r" . org-ref-helm-insert-ref-link)))
 
 (use-package ebib
-  :bind ("C-c e" . ebib))
+  :bind
+  ("C-c e" . ebib)
+  :config
+  (progn
+    (setq
+     ebib-file-search-dirs '("~/git/bibliography/")
+     ebib-preload-bib-files '("~/git/bibliography/references.bib"))))
