@@ -12,6 +12,8 @@
 ;; - helm-M-xを有効にする
 ;; - helm-miniを有効にする
 
+(use-package migemo)
+
 (use-package helm-config
   :bind (("M-x" . helm-M-x)
 	 ("C-c h" . helm-mini)
