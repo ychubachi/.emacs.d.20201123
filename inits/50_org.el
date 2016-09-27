@@ -4,30 +4,6 @@
 ;;   - [[http://orgmode.org/org.html][The Org Manual]]
 ;;   - [[http://orgmode.org/elpa.html][Org Emacs lisp Package Archive]]
 
-;; - Dropboxとの連携
-;;   - Dropboxと連携させると便利
-
-;; - 準備
-;;   - mkdir ~/Dropbox/Org
-;; - org-directory のデフォルトは~/org
-;; - これをDropboxの下にする．Dropbox/Org
-;; - ディレクトリは自分で作ること．
-
-;; - org-default-notes-file のデフォルトは .notes
-;; - ただし，.notesを開いてもorgモードにならないので，エラーになる．
-;; - だから，ファイル名は指定する必要がある． -> notes.org
-;; - その他に，t: Todoとj: Journal（日記帳）を．
-
-;; - notes.orgは，トップページ扱い
-;; - org-agenda-files -> MobileOrgにPushする
-
-;; | 説明                       | 変数名                 | 推奨               |
-;; |----------------------------+------------------------+--------------------|
-;; | 備忘録用ファイルを置く場所 | org-directory          | "~/Dropbox/Org"    |
-;; | アジェンダファイルの指定   | org-agenda-files       | ("~/Dropbox/Org/") |
-;; | デフォルトのノーツ         | org-default-notes-file | "notes.org"        |
-;; | キャプチャ                 | org-capture-templates  | t: Todo j: Journal |
-
 
 ;; | 説明                           | 変数名                         | 推奨                          |
 ;; |--------------------------------+--------------------------------+-------------------------------|
