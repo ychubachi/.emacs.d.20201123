@@ -19,26 +19,6 @@
 ;;; describe-personal-keybindings をバインドします
 (bind-key "C-c d" 'describe-personal-keybindings)
 
-;;; Linux用IMEの設定
-(when (eq system-type 'gnu/linux)
-  ;; Ctrl-OでIMEをトグルするようにする
-  ;;
-  ;;  注意: ~/.Xresourcesに
-  ;;    Emacs*useXIM:	false
-  ;;  と設定しておくこと。設定したら
-  ;;    xrdb ~/.Xresources
-  ;;  を端末で実行する。
-  ;;
-  ;;  筆者の場合、OS側でもC-oでIMEを切り替えるようにしているため，
-  ;;  これを設定しておかないと，C-c C-oなどが効かなくなる．
-  ;;
-  (global-set-key (kbd "C-o") 'toggle-input-method)
-  ;; 日本語入力時のカーソル色の変更
-  (add-hook 'input-method-activate-hook
-	    '(lambda () (set-cursor-color "green")))
-  (add-hook 'input-method-inactivate-hook
-	    '(lambda () (set-cursor-color "orchid"))))
-
 ;;; 未整理
 ;;; Clean Mode Line
 ;; - mode-lineのモード情報をコンパクトに表示する- Life is very short
