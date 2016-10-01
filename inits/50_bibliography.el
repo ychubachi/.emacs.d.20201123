@@ -1,4 +1,6 @@
 (use-package helm-bibtex
+  :bind
+  ("C-c b" . helm-bibtex)
   :config
   (setq bibtex-completion-bibliography
 	"~/git/bibliography/references.bib"
