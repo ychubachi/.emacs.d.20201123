@@ -232,8 +232,7 @@ Text: %i
   :bind
   (("C-c l" . org-store-link)
    ("C-c c" . org-capture)
-   ("C-c a" . org-agenda)
-   ("C-c b" . org-switchb))
+   ("C-c a" . org-agenda))
   :init
   (progn
     ;; キャプチャのテンプレート
