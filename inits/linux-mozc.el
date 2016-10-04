@@ -10,7 +10,6 @@
 ;; を端末で実行する
 
 (use-package mozc)
-(set-language-environment "Japanese")
 (setq default-input-method "japanese-mozc")
 
 (use-package mozc-popup)
