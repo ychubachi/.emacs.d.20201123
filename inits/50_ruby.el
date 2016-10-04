@@ -1,9 +1,5 @@
 ;;; Ruby開発
 
-(package-initialize)
-;; (package-install 'use-package)
-(require 'use-package)
-
 ;;; HAML
 (use-package haml-mode
   :mode ("\\.haml?\\'" . haml-mode)
