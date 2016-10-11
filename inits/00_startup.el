@@ -76,7 +76,9 @@
  ((eq system-type 'gnu/linux)
   (add-to-list 'default-frame-alist '(font . "ricty-13.5")))
  ((eq system-type 'darwin)
-  (add-to-list 'default-frame-alist '(font . "ricty-14"))))
+  (add-to-list 'default-frame-alist '(font . "ricty-14")))
+ ((eq system-type 'windows-nt)
+  (add-to-list 'default-frame-alist '(font . "Ricty Diminished"))))
 
 ;;; 無駄な行末の空白を削除
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
