@@ -25,5 +25,8 @@
 	  "/usr/share/cmigemo/utf-8/migemo-dict"))
    ((eq system-type 'darwin)
     (setq migemo-dictionary
-	  "/usr/local/share/migemo/utf-8/migemo-dict")))
+	  "/usr/local/share/migemo/utf-8/migemo-dict"))
+   ((eq system-type 'windows-nt)
+    (setq migemo-dictionary
+	  "/opt/cmigemo-default-win64/dict/utf-8/migemo-dict")))
   :ensure t)
