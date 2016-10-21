@@ -2,12 +2,23 @@
 # name: beamer
 # key: beamer
 # --
-#+TITLE: ${1:Title \linebreak Sub-title}
-#+AUTHOR: ${2:産業技術大学院大学 \linebreak 中鉢 欣秀}
+#+STARTUP: beamer
+#+TITLE: ${1:タイトル}
+#+SUBTITLE: ${2:サブタイトル}
 #+DATE: ${3:yyyy-mm-dd}
+#+AUTHOR: 産業技術大学院大学 中鉢 欣秀
 #+OPTIONS: H:2 toc:nil ^:nil
+#+BEAMER_THEME: default
+#+BEAMER_HEADER: \setbeamertemplate{navigation symbols}{}
+#+BEAMER_HEADER: \setbeamertemplate{footline}[frame number]
+#+BEAMER_HEADER: \setbeamerfont{frametitle}{size=\large}
+#+BEAMER_HEADER: \setbeamerfont{block title}{size=\normalsize}
+#+BEAMER_HEADER: \setbeamertemplate{itemize/enumerate body begin}{\normalsize}
+#+BEAMER_HEADER: \setbeamertemplate{itemize/enumerate subbody begin}{\normalsize}
 
 * はじめに
+** 目次
+#+TOC: headlines [currentsection]
 ** スライド1
    - あああ
    - いいい
@@ -17,6 +28,8 @@
    - いいい
    - ううう
 * つぎに
+** 目次
+#+TOC: headlines [currentsection]
 ** スライド3
    - あああ
    - いいい
