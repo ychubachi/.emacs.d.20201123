@@ -44,7 +44,7 @@ tramp
 /init.html
 /init.pdf
 /init.tex
-/server/server
+/server/server*
 /session.*
 /tramp
 \#*
