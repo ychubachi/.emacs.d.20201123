@@ -3,7 +3,9 @@
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
 (add-to-list 'package-archives '("org" . "https://orgmode.org/elpa/") t)
 (package-initialize)
-;;; (package-refresh-contents) ; TODO: 
+
+(unless package-archive-contents
+  (package-refresh-contents))
 
 ;;; use-packageの導入
 
